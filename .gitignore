@@ -1,0 +1,20 @@
+# Gradle / Android Studio
+.gradle/
+build/
+local.properties
+*.iml
+.idea/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# İmzalama anahtarları ve parolaları ASLA depoya konmaz
+keystore.properties
+*.jks
+*.keystore
+
+# Çıktılar
+dist/
+*.apk
+*.aab
+*.log

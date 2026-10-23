@@ -1,0 +1,205 @@
+name: RedoX TV 2 - APK derle
+
+# TV, tablet ve telefon için üç ayrı APK derler.
+#   * Her push / çekme isteğinde: üç APK "Artifacts" olarak indirilebilir.
+#   * "v*" etiketi (ör. v2.0.0) itildiğinde ya da elle "Run workflow" + release=true seçildiğinde:
+#     APK'lar bir GitHub Release'e de yüklenir.
+#   * wiki/ klasörü değiştiyse GitHub Wiki'ye eşitlenir (en iyi çaba; Wiki etkin değilse sessizce atlanır).
+#
+# Sabit imza için depo Secrets'ına şunları ekleyin (README > "İmza anahtarı"):
+#   REDOX_KEYSTORE_BASE64, REDOX_KEYSTORE_PASSWORD, REDOX_KEY_ALIAS, REDOX_KEY_PASSWORD
+# Eklenmezse APK, her derlemede yeniden üretilen debug anahtarıyla imzalanır: kurulabilir, ama bir önceki
+# derlemenin üzerine güncellenemez (önce kaldırmanız gerekir).
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    tags: [ "v*" ]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: "Derleme sonunda GitHub Release oluştur / güncelle"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: ${{ matrix.flavor }} APK
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - flavor: tv
+            task: assembleTvRelease
+          - flavor: tablet
+            task: assembleTabletRelease
+          - flavor: phone
+            task: assemblePhoneRelease
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Sürüm bilgisi
+        id: ver
+        run: |
+          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -n1)
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Sürüm: ${VERSION}"
+
+      - name: İmza anahtarı
+        env:
+          KEYSTORE_B64: ${{ secrets.REDOX_KEYSTORE_BASE64 }}
+        run: |
+          if [ -n "${KEYSTORE_B64}" ]; then
+            echo "${KEYSTORE_B64}" | base64 -d > "${RUNNER_TEMP}/redox-release.keystore"
+            echo "REDOX_KEYSTORE_FILE=${RUNNER_TEMP}/redox-release.keystore" >> "$GITHUB_ENV"
+            echo "SIGNING=sabit" >> "$GITHUB_ENV"
+            echo "Sabit imza anahtarı kullanılacak."
+          else
+            echo "SIGNING=debug" >> "$GITHUB_ENV"
+            echo "::warning::REDOX_KEYSTORE_BASE64 tanımlı değil: APK debug anahtarıyla imzalanacak (güncelleme için sabit anahtar ekleyin)."
+          fi
+
+      - name: Derle (${{ matrix.task }})
+        env:
+          REDOX_KEYSTORE_PASSWORD: ${{ secrets.REDOX_KEYSTORE_PASSWORD }}
+          REDOX_KEY_ALIAS: ${{ secrets.REDOX_KEY_ALIAS }}
+          REDOX_KEY_PASSWORD: ${{ secrets.REDOX_KEY_PASSWORD }}
+        run: |
+          set -o pipefail
+          gradle --no-daemon --stacktrace ":app:${{ matrix.task }}" 2>&1 | tee build.log
+
+      - name: Derleme hatalarını özetle
+        if: failure()
+        run: |
+          if [ ! -f build.log ]; then exit 0; fi
+          # Kotlin derleyici hataları ("e: file:///…:satır:sütun mesaj")
+          KERRS=$(grep -E '^e: ' build.log | sed -E 's#file:///home/runner/work/[^/]+/[^/]+/##' | head -n 80 || true)
+          # Kaynak (AAPT), manifest ve Gradle hataları
+          OTHER=$(grep -nE 'error:|AAPT|Manifest merger failed|What went wrong|Execution failed|Could not resolve' -A3 build.log | head -n 60 || true)
+          {
+            echo "### Derleme hataları (${{ matrix.flavor }})"
+            if [ -n "${KERRS}" ]; then echo '**Kotlin**'; echo '```'; echo "${KERRS}"; echo '```'; fi
+            if [ -n "${OTHER}" ]; then echo '**Diğer**'; echo '```'; echo "${OTHER}"; echo '```'; fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          # Tek bir açıklama olarak da yayınla: Actions ekranında ve API'de günlük indirmeden okunabilir
+          for NAME in KERRS OTHER; do
+            VALUE="${!NAME}"
+            if [ -n "${VALUE}" ]; then
+              ENC=$(printf '%s' "${VALUE}" | sed ':a;N;$!ba;s/%/%25/g;s/\r//g;s/\n/%0A/g')
+              echo "::error title=Derleme hatası ${NAME} (${{ matrix.flavor }})::${ENC}"
+            fi
+          done
+
+      - name: APK'yı adlandır
+        run: |
+          mkdir -p dist
+          SRC=$(ls app/build/outputs/apk/${{ matrix.flavor }}/release/*.apk | head -n1)
+          DEST="dist/RedoX-TV-2-v${{ steps.ver.outputs.version }}-${{ matrix.flavor }}.apk"
+          cp "${SRC}" "${DEST}"
+          ls -lh dist
+          {
+            echo "### ${{ matrix.flavor }} APK"
+            echo "- Dosya: \`$(basename "${DEST}")\` ($(du -h "${DEST}" | cut -f1))"
+            echo "- İmza: ${SIGNING}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: APK'yı yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: RedoX-TV-2-${{ matrix.flavor }}
+          path: dist/*.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.release)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: APK'ları indir
+        uses: actions/download-artifact@v4
+        with:
+          pattern: RedoX-TV-2-*
+          path: dist
+          merge-multiple: true
+
+      - name: Release oluştur / güncelle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(grep -oP 'versionName = "\K[^"]+' app/build.gradle.kts | head -n1)
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then TAG="${GITHUB_REF_NAME}"; else TAG="v${VERSION}"; fi
+          ls -lh dist
+          cat > release-notes.md <<EOF
+          ## RedoX TV 2 ${TAG}
+
+          Üç ayrı APK (her biri kendi arayüzüyle):
+
+          | Dosya | Cihaz |
+          |---|---|
+          | \`RedoX-TV-2-v${VERSION}-tv.apk\` | Android TV / Google TV (kumanda ile) |
+          | \`RedoX-TV-2-v${VERSION}-tablet.apk\` | Tablet |
+          | \`RedoX-TV-2-v${VERSION}-phone.apk\` | Telefon (aynı zamanda TV kumandası) |
+
+          Eski RedoX TV'den bağımsız, ayrı bir uygulamadır (paket: \`com.redoxtv.two\`); ikisi yan yana kurulabilir.
+          EOF
+          if gh release view "${TAG}" >/dev/null 2>&1; then
+            gh release upload "${TAG}" dist/*.apk --clobber
+          else
+            gh release create "${TAG}" dist/*.apk --target "${GITHUB_SHA}" --title "RedoX TV 2 ${TAG}" --notes-file release-notes.md
+          fi
+
+  wiki:
+    name: Wiki eşitle
+    if: github.event_name == 'push' && github.ref_type == 'branch'
+    runs-on: ubuntu-24.04
+    continue-on-error: true
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+
+      - name: wiki/ klasörünü GitHub Wiki'ye gönder
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git clone "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" /tmp/wiki 2>/dev/null; then
+            echo "Wiki deposu bulunamadı. Depoda Settings > Features > Wikis'i açıp ilk sayfayı oluşturduktan sonra yeniden çalıştırın."
+            exit 0
+          fi
+          rsync -a --delete --exclude '.git' wiki/ /tmp/wiki/
+          cd /tmp/wiki
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Wiki zaten güncel."
+            exit 0
+          fi
+          git commit -m "Wiki güncellendi (${GITHUB_SHA::7})"
+          git push

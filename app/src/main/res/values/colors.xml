@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Logodaki lacivert-siyah zemin (RedoXColors.Ink900 ile aynı). -->
+    <color name="redox_ink">#FF08080F</color>
+    <color name="redox_ink_deep">#FF04040B</color>
+    <!-- Marka kırmızısı ve altını -->
+    <color name="redox_red">#FFE3213F</color>
+    <color name="redox_gold">#FFF5C542</color>
+</resources>

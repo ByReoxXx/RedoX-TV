@@ -1,0 +1,324 @@
+package com.example.chromecasttv
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CalendarMonth
+import androidx.compose.material.icons.rounded.GridView
+import androidx.compose.material.icons.rounded.LiveTv
+import androidx.compose.material.icons.rounded.NotificationsActive
+import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.Settings
+import androidx.compose.material.icons.rounded.SettingsRemote
+import androidx.compose.material.icons.rounded.SystemUpdate
+import androidx.compose.material.icons.rounded.UploadFile
+import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+/** Ana sayfa: karşılama, devam et, raflar (en çok izlenenler / favorilerde şimdi yayında), hızlı eylemler. */
+@Composable
+fun MobileHomeScreen(
+    viewModel: TvViewModel,
+    state: TvUiState,
+    features: FeatureState,
+    host: RedoXHost,
+    isTablet: Boolean,
+    nav: MobileNav,
+    actions: MChannelActions
+) {
+    val shelves = remember(state, features) { ShelfBuilder.build(state, features) }
+    val lastChannel = state.recentChannels.firstOrNull()
+    val upcoming = remember(features.reminders) {
+        val now = System.currentTimeMillis()
+        features.reminders.filter { it.startMillis > now - 60_000L }.sortedBy { it.startMillis }.take(3)
+    }
+    val cardWidth = if (isTablet) 190.dp else 158.dp
+
+    LazyColumn(
+        contentPadding = PaddingValues(bottom = 28.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        // ------------------------------------------------------------ Karşılama
+        item(key = "hero") {
+            Box(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp, vertical = 6.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(24.dp))
+                    .background(
+                        Brush.linearGradient(
+                            listOf(Color(0xFF2A0A18), RedoXColors.Surface, RedoXColors.Ink900)
+                        )
+                    )
+                    .border(1.dp, RedoXColors.Line.copy(alpha = 0.6f), RoundedCornerShape(24.dp))
+                    .padding(18.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RedoXMark(markSize = if (isTablet) 112.dp else 84.dp)
+                    Spacer(modifier = Modifier.width(14.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = mGreeting(),
+                            color = RedoXColors.TextSecondary,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        RedoXWordmarkImage(width = if (isTablet) 220.dp else 170.dp)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "${state.builtInChannels.size + state.customM3uChannels.size} kanal hazır" +
+                                if (features.epg.hasRealData) " • gerçek rehber açık" else "",
+                            color = RedoXColors.TextSecondary,
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Güncelleme duyurusu
+        val update = features.update
+        if (update != null && update.isNewer) {
+            item(key = "update") {
+                MCard(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Rounded.SystemUpdate,
+                            contentDescription = null,
+                            tint = RedoXColors.Gold,
+                            modifier = Modifier.size(26.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Yeni sürüm: v${update.latestVersion}",
+                                color = RedoXColors.TextPrimary,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = "Kurulu sürüm: v${update.currentVersion}",
+                                color = RedoXColors.TextSecondary,
+                                fontSize = 12.sp
+                            )
+                        }
+                        MGhostButton(text = "Aç", onClick = { host.openUrl(update.htmlUrl) })
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Rehber ipucu
+        if (!features.epg.hasRealData) {
+            item(key = "epg_hint") {
+                MCard(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { nav.push(MobileTab.SETTINGS) }
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Rounded.CalendarMonth,
+                            contentDescription = null,
+                            tint = RedoXColors.Primary,
+                            modifier = Modifier.size(26.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Gerçek yayın rehberini açın",
+                                color = RedoXColors.TextPrimary,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = "Ayarlar > Yayın Rehberi'ne bir XMLTV adresi ekleyin. Uydurma program adı göstermiyoruz; " +
+                                    "rehber olmayan kanallarda \"Canlı yayın\" yazar.",
+                                color = RedoXColors.TextSecondary,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Devam et
+        if (lastChannel != null) {
+            item(key = "resume") {
+                MCard(
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onClick = { viewModel.requestPlayChannel(lastChannel) }
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        ChannelBrandLogoBox(channel = lastChannel, boxSize = 52.dp, fontSize = 12.sp)
+                        Spacer(modifier = Modifier.width(14.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Kaldığın yerden devam et",
+                                color = RedoXColors.TextSecondary,
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                            Text(
+                                text = lastChannel.name,
+                                color = RedoXColors.TextPrimary,
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                            Text(
+                                text = lastChannel.nowTitleOrLive(),
+                                color = RedoXColors.TextSecondary,
+                                fontSize = 12.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        Box(
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(RedoXColors.PrimaryBrush),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.PlayArrow,
+                                contentDescription = "İzle",
+                                tint = Color.White,
+                                modifier = Modifier.size(26.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Hızlı eylemler
+        item(key = "quick") {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item { MChip("Canlı TV", false, { nav.selectRoot(MobileTab.LIVE) }, icon = Icons.Rounded.LiveTv) }
+                item { MChip("Rehber", false, { nav.selectRoot(MobileTab.GUIDE) }, icon = Icons.Rounded.CalendarMonth) }
+                item { MChip("Favoriler", false, { nav.selectRoot(MobileTab.FAVORITES) }, icon = Icons.Rounded.Star) }
+                item { MChip("Ara", false, { nav.push(MobileTab.SEARCH) }, icon = Icons.Rounded.Search) }
+                item { MChip("Kumanda", false, { nav.selectRoot(MobileTab.REMOTE) }, icon = Icons.Rounded.SettingsRemote) }
+                item { MChip("Bölünmüş Ekran", false, { nav.push(MobileTab.MULTI) }, icon = Icons.Rounded.GridView) }
+                item { MChip("Kaynaklar", false, { nav.push(MobileTab.SOURCES) }, icon = Icons.Rounded.UploadFile) }
+                item { MChip("Ayarlar", false, { nav.push(MobileTab.SETTINGS) }, icon = Icons.Rounded.Settings) }
+            }
+        }
+
+        // ------------------------------------------------------------ Yaklaşan hatırlatmalar
+        if (upcoming.isNotEmpty()) {
+            item(key = "reminders") {
+                Column {
+                    MSectionTitle("Yaklaşan hatırlatmalar")
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        upcoming.forEach { reminder ->
+                            MCard(modifier = Modifier.fillMaxWidth()) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.NotificationsActive,
+                                        contentDescription = null,
+                                        tint = RedoXColors.Gold,
+                                        modifier = Modifier.size(22.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Column(modifier = Modifier.weight(1f)) {
+                                        Text(
+                                            text = reminder.title,
+                                            color = RedoXColors.TextPrimary,
+                                            fontSize = 14.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                        Text(
+                                            text = "${reminder.channelName} • ${mFormatDateTime(reminder.startMillis)}",
+                                            color = RedoXColors.TextSecondary,
+                                            fontSize = 12.sp,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Raflar
+        shelves.forEach { shelf ->
+            item(key = "shelf_${shelf.kind}") {
+                Column {
+                    MSectionTitle(shelf.title)
+                    LazyRow(
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        items(shelf.channels.distinctBy { it.id }, key = { "sh_${shelf.kind}_${it.id}" }) { ch ->
+                            MChannelCard(
+                                channel = ch,
+                                isFavorite = state.favoriteIds.contains(ch.id),
+                                onClick = { viewModel.requestPlayChannel(ch) },
+                                onLongClick = { actions.onLongPress(ch) },
+                                modifier = Modifier.width(cardWidth)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (shelves.isEmpty() && lastChannel == null) {
+            item(key = "empty") {
+                MEmptyState(
+                    icon = Icons.Rounded.LiveTv,
+                    title = "İzlemeye başlayın",
+                    message = "Canlı TV sekmesinden bir kanal seçin. İzledikçe burada \"devam et\" ve \"en çok izlediklerin\" raflarını göreceksiniz.",
+                    action = {
+                        MPrimaryButton(text = "Canlı TV'yi aç", onClick = { nav.selectRoot(MobileTab.LIVE) })
+                    }
+                )
+            }
+        }
+    }
+}

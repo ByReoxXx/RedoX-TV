@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RedoX TV 2</string>
+    <string name="notif_channel_reminders">Program hatırlatıcıları</string>
+    <string name="notif_channel_reminders_desc">Hatırlatma eklediğiniz programlar başlamadan önce bildirim gönderilir.</string>
+    <string name="notif_channel_playback">Arka planda oynatma</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Telefon ve tablet: kenardan kenara, durum çubuğu görünür. TV flavor'ı bu stili tam ekran olarak ezer. -->
+    <style name="Theme.RedoX" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/redox_ink</item>
+        <item name="android:colorBackground">@color/redox_ink</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+</resources>
