@@ -889,6 +889,14 @@ fun ChannelShowcaseScreen(
         channels.forEach { ids.add(it.id) }
         recentChannels.filter { ids.contains(it.id) }
     }
+    val chipCategories = remember(categories, favoriteCount, recentInList.size) {
+        buildList {
+            categories.firstOrNull()?.let { add(it) }
+            if (favoriteCount > 0) add(TV_CAT_FAVORITES)
+            if (recentInList.isNotEmpty()) add(TV_CAT_RECENT)
+            addAll(categories.drop(1))
+        }
+    }
     val activeCategory = when {
         selectedCategory == TV_CAT_FAVORITES && favoriteCount == 0 -> "Tümü"
         selectedCategory == TV_CAT_RECENT && recentInList.isEmpty() -> "Tümü"
@@ -923,6 +931,11 @@ fun ChannelShowcaseScreen(
     var bannerHasFocus by remember { mutableStateOf(false) }
     var returnChannelId by remember { mutableStateOf<String?>(null) }
     val okGate = remember { TvOkReleaseGate() }
+    // Geri: liste -> kategori çipleri -> yan menü. Listenin derinlerindeyken kategori değiştirmek için
+    // yukarı yön tuşuna onlarca kez basmak gerekmesin.
+    val chipsState = rememberLazyListState()
+    val chipRequester = remember { FocusRequester() }
+    var gridHasFocus by remember { mutableStateOf(false) }
 
     fun jumpToWatchButton(channel: TvChannel) {
         returnChannelId = channel.id
@@ -946,6 +959,19 @@ fun ChannelShowcaseScreen(
                 try { gridState.scrollToItem(idx) } catch (_: Exception) {}
                 delay(60L)
                 try { cardFocusRequesters[target.id]?.requestFocus() } catch (_: Exception) {}
+            }
+        }
+    }
+
+    BackHandler(enabled = gridHasFocus && chipCategories.size > 1) {
+        scope.launch {
+            try {
+                chipRequester.requestFocus()
+            } catch (_: Exception) {
+                // Seçili çip ekran dışında kaldıysa önce görünür kıl
+                try { chipsState.scrollToItem(chipCategories.indexOf(activeCategory).coerceAtLeast(0)) } catch (_: Exception) {}
+                delay(60L)
+                try { chipRequester.requestFocus() } catch (_: Exception) {}
             }
         }
     }
@@ -1000,16 +1026,9 @@ fun ChannelShowcaseScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        val chipCategories = remember(categories, favoriteCount, recentInList.size) {
-            buildList {
-                categories.firstOrNull()?.let { add(it) }
-                if (favoriteCount > 0) add(TV_CAT_FAVORITES)
-                if (recentInList.isNotEmpty()) add(TV_CAT_RECENT)
-                addAll(categories.drop(1))
-            }
-        }
         if (chipCategories.size > 1) {
             LazyRow(
+                state = chipsState,
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -1040,6 +1059,7 @@ fun ChannelShowcaseScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .height(40.dp)
+                            .then(if (isSelected) Modifier.focusRequester(chipRequester) else Modifier)
                             .tvSurface(
                                 focused = isFocused,
                                 shape = pillShape,
@@ -1109,6 +1129,7 @@ fun ChannelShowcaseScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
+                    .onFocusChanged { gridHasFocus = it.hasFocus }
             ) {
                 itemsIndexed(filtered, key = { idx, ch -> "${ch.id}_$idx" }) { _, channel ->
                     val isBroken = brokenIds.contains(channel.id) || channel.isBroken

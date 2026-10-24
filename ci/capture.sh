@@ -70,9 +70,9 @@ if [ "$KIND" = "tv" ]; then
     done
     shot "${P}-07-geri-liste"
 
-    # kategori çipleri: "Son izlenenler" seçilince odak çipte kalmalı, liste yalnızca izlenenleri göstermeli
-    key KEYCODE_DPAD_UP; sleep 1; keys 12 KEYCODE_DPAD_LEFT; key KEYCODE_DPAD_RIGHT
-    key KEYCODE_DPAD_CENTER; sleep 2
+    # kategori çipleri: Geri, listeden seçili çipe (Tümü) götürür; sağ ok "Son izlenenler"e geçer.
+    # OK ile seçilince odak çipte kalmalı, liste yalnızca izlenenleri göstermeli
+    key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 2
     shot "${P}-07b-son-izlenenler"
 
     # yan menü: Geri, odağı seçili sekmeye (başlangıçta Canlı TV) götürür; aşağı yön tuşuyla istenen sekmeye inilir.
