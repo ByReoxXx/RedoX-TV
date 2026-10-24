@@ -1451,7 +1451,7 @@ private fun PlayerDock(
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape)
-            .background(TvThemeColors.GlassOverlay.copy(alpha = 0.92f))
+            .background(TvThemeColors.GlassOverlay.copy(alpha = 0.96f))   // videodaki yazılar (altyazı) dock'un arkasından görünmesin
             .border(1.dp, Color.White.copy(alpha = 0.11f), shape)
     ) {
         Row(
