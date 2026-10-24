@@ -1,5 +1,6 @@
 # RedoX TV 2 — R8 (kod küçültme) kuralları
-# Not: varsayılan dosya proguard-android.txt olduğundan optimizasyon kapalıdır (-dontoptimize); yalnızca küçültme ve ad kısaltma yapılır.
+# Not: kod küçültme (R8) şu an KAPALI (app/build.gradle.kts: R8 büyük Compose işlevlerinde geçersiz DEX üretiyordu). Bu dosya
+# yeniden açılırsa kullanılmak üzere durur; kapalıyken etkisizdir.
 
 # Çökme kayıtları okunabilir kalsın
 -keepattributes SourceFile,LineNumberTable

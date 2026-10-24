@@ -94,12 +94,11 @@ android {
 
     buildTypes {
         getByName("release") {
-            // Kod ve kaynak küçültme (R8): APK çok küçülür, açılış ve bellek kullanımı düzelir.
-            // Optimizasyon KAPALI (proguard-android.txt = -dontoptimize): açıkken R8, çok büyük Compose işlevlerinde
-            // (M3uPlaylistManagerScreen) geçersiz bayt kodu üretip TV'de VerifyError ile çökertiyordu (emülatörde görüldü).
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            // Kod küçültme (R8) KAPALI: R8 (8.5 ve 8.7 denendi), büyük Compose işlevlerinde (ör. TV M3uPlaylistManagerScreen)
+            // geçersiz DEX üretip uygulamayı VerifyError ile çökertiyor (optimizasyon kapalıyken de; CI emülatöründe görüldü).
+            // Kararlılık APK boyutundan önemli; boyut için material-icons-extended kaldırıldı ve yalnızca tr/en dil kaynakları tutulur.
+            isMinifyEnabled = false
+            isShrinkResources = false
             isDebuggable = false
             val releaseSigning = signingConfigs.getByName("release")
             signingConfig = if (releaseSigning.storeFile != null) {
@@ -107,12 +106,6 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
-        }
-        // CI emülatör önizlemesi hata ayıklama sürümüyle çalışır; sürümle AYNI kod küçültmeyle derlenir ki
-        // R8 kaynaklı bir sorun (ör. yansımayla çağrılan bir sınıfın silinmesi) önizlemede de görülsün.
-        getByName("debug") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
 
