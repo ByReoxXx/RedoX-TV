@@ -14,6 +14,8 @@ Eşleşme sonrası telefon, TV'nin verdiği rastgele bir **erişim anahtarını*
 
 ## 2) Kumanda ekranı
 
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/08-kumanda.jpg" alt="Telefondaki kumanda ekranı" width="280"></p>
+
 - **Yön tuşları + OK, Geri, Menü** (TV'de Menü, kanal kartında `OK` basılı tutmayla aynı kısayoldur; Chromecast kumandasında Menü tuşu olmadığı için uygulama onu şart koşmaz)
 - **Ses −/+** (TV'nin medya sesi; mevcut seviye gösterilir)
 - **Duraklat/oynat, Durdur, Kanal −/+**
