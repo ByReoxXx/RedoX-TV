@@ -168,11 +168,16 @@ if [ "$KIND" = "tv" ]; then
   shot "v-07a-oynatici-bilgi"
   shot "v-07b-oynatici-bilgi"
   sleep 8                                     # çubuk gizlenir (odak videoda), yayın oturur
-  key KEYCODE_DPAD_LEFT; sleep 2              # hızlı kanal çekmecesi
+  key KEYCODE_DPAD_LEFT; sleep 2              # hızlı kanal çekmecesi (odak oynatıcıdayken sol ok)
   shot "v-10-kanal-cekmecesi"
-  key KEYCODE_BACK; sleep 1                   # çekmece kapanır
-  # Çubuk açıkken her tuş süreyi uzatır; ekran görüntüsü ise ~2 sn sürer. Çubuk kapanmışken sağ ok "sonraki yayın kaynağı"
-  # olduğundan, tuş dizileri ekran görüntüsü araya girmeden verilir: önce Seçenekler, sonra odak oynat/duraklata dönülür.
+  key KEYCODE_BACK; sleep 1
+  shot "v-x1-cekmece-geri"                    # tanı: Geri çekmeceyi kapatıyor mu?
+  key KEYCODE_DPAD_RIGHT; sleep 1             # çekmece hâlâ açıksa kapanır (satırda sağ ok çekmeceyi kapatır)
+  sleep 5                                     # çubuk (varsa) gizlenir
+  key KEYCODE_BACK; sleep 3                   # oynatıcıdan çık (klasör ızgarasına dön)
+  # Kontroller ve Seçenekler ayrı, yeni bir oynatmada alınır: çubuk kapalıyken başlanır ve tuşlar ekran görüntüsü araya
+  # girmeden verilir (çubuk kapanınca sağ ok "sonraki yayın kaynağı" olur ve yayın baştan başlar).
+  key KEYCODE_DPAD_CENTER; sleep 10           # "Big Buck Bunny"yi yeniden oynat; çubuk gizlensin
   key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla
   keys 6 KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 1   # "Seçenekler"
   shot "v-09-oynatici-secenekler"
