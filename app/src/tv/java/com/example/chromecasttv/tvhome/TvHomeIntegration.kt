@@ -76,8 +76,12 @@ object TvHomePublisher {
         }
     }
 
+    /**
+     * Android TV ana ekranı posteri başka bir süreçte (TV başlatıcısı) yüklenir; bu yüzden bit eşlem gerekir.
+     * Uygulama logosu vektördür (ic_tv_banner.xml); burada yalnızca kanal görseli olmayan satırlar için PNG yedeği kullanılır.
+     */
     private fun fallbackPoster(context: Context): Uri {
-        return Uri.parse("android.resource://" + context.packageName + "/" + R.drawable.ic_tv_banner)
+        return Uri.parse("android.resource://" + context.packageName + "/" + R.drawable.tv_poster_fallback)
     }
 
     private fun posterFor(context: Context, item: TvHomeItem): Uri {

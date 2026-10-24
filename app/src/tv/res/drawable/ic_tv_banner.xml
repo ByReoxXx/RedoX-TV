@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android TV afişi (320x180dp): vektör zemin + vektör işaret + vektör yazı. Konumlar yüzde olduğundan her boyutta oranı korur. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tv_banner_bg" />
+    <item>
+        <inset
+            android:drawable="@drawable/redox_mark"
+            android:insetLeft="2.19%"
+            android:insetTop="3.89%"
+            android:insetRight="45.94%"
+            android:insetBottom="3.89%" />
+    </item>
+    <item>
+        <inset
+            android:drawable="@drawable/redox_wordmark"
+            android:insetLeft="51.56%"
+            android:insetTop="36.67%"
+            android:insetRight="2.81%"
+            android:insetBottom="46.11%" />
+    </item>
+</layer-list>
