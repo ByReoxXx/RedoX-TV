@@ -19,6 +19,8 @@ import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,6 +43,7 @@ fun RedoXApp(viewModel: TvViewModel, host: RedoXHost) {
 private fun TabletScaffold(env: MobileEnv) {
     val nav = env.nav
     val mini = env.state.pipChannel
+    val radio by RadioHub.state.collectAsState()
 
     BackHandler(enabled = nav.canGoBack || nav.current != MobileTab.HOME) {
         if (!nav.back()) nav.selectRoot(MobileTab.HOME)
@@ -93,6 +96,9 @@ private fun TabletScaffold(env: MobileEnv) {
                         onExpand = { env.viewModel.expandPipToFullScreen() },
                         onClose = { env.viewModel.closePip() }
                     )
+                } else if (radio.isActive && nav.current != MobileTab.RADIO) {
+                    // Radyo çalarken diğer sekmelerde: dokununca Radyo sekmesi (sağdaki oynatıcı paneli) açılır
+                    MobileRadioMiniBar(onExpand = { nav.selectRoot(MobileTab.RADIO) })
                 }
             }
         ) { padding ->

@@ -42,6 +42,12 @@ fun MobileTopBar(env: MobileEnv) {
             }
         },
         actions = {
+            // Rehber alt gezintiden çıktı: Canlı TV'nin üst çubuğundaki takvim simgesinden açılır
+            if (tab == MobileTab.LIVE) {
+                IconButton(onClick = { nav.push(MobileTab.GUIDE) }) {
+                    Icon(RedoXIcons.CalendarMonth, contentDescription = "Rehber")
+                }
+            }
             if (tab != MobileTab.SEARCH) {
                 IconButton(onClick = { nav.push(MobileTab.SEARCH) }) {
                     Icon(RedoXIcons.Search, contentDescription = "Ara")

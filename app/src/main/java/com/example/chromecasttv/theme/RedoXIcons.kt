@@ -709,6 +709,17 @@ object RedoXIcons {
             line("m2 2 20 20")
         }
     }
+
+    /** Radyo (kadranlı alıcı): anten, hoparlör ve ayar çizgileri. "Sensors" (test et) simgesinden bilerek farklıdır. */
+    val Radio: ImageVector by lazy {
+        duo("Radio") {
+            body("M5.6 8.5H18.4a2.6 2.6 0 0 1 2.6 2.6V17.4a2.6 2.6 0 0 1 -2.6 2.6H5.6a2.6 2.6 0 0 1 -2.6 -2.6V11.1a2.6 2.6 0 0 1 2.6 -2.6Z")
+            line("M6.5 8.5L17.5 3.6")
+            line("M11.2 14.2a2.6 2.6 0 1 0 -5.2 0a2.6 2.6 0 1 0 5.2 0Z")
+            line("M14 12.4h4.2")
+            line("M14 16h4.2")
+        }
+    }
 }
 
 private const val STROKE = 1.9f

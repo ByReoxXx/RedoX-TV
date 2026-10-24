@@ -205,7 +205,8 @@ fun MobileHomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item { MChip("Canlı TV", false, { nav.selectRoot(MobileTab.LIVE) }, icon = RedoXIcons.LiveTv) }
-                item { MChip("Rehber", false, { nav.selectRoot(MobileTab.GUIDE) }, icon = RedoXIcons.CalendarMonth) }
+                item { MChip("Radyo", false, { nav.selectRoot(MobileTab.RADIO) }, icon = RedoXIcons.Radio) }
+                item { MChip("Rehber", false, { nav.push(MobileTab.GUIDE) }, icon = RedoXIcons.CalendarMonth) }
                 item { MChip("Favoriler", false, { nav.selectRoot(MobileTab.FAVORITES) }, icon = RedoXIcons.Star) }
                 item { MChip("Ara", false, { nav.push(MobileTab.SEARCH) }, icon = RedoXIcons.Search) }
                 item { MChip("Kumanda", false, { nav.selectRoot(MobileTab.REMOTE) }, icon = RedoXIcons.SettingsRemote) }

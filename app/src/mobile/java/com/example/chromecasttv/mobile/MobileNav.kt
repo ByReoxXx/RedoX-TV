@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 enum class MobileTab(val title: String, val icon: ImageVector) {
     HOME("Ana Sayfa", RedoXIcons.Home),
     LIVE("Canlı TV", RedoXIcons.LiveTv),
+    RADIO("Radyo", RedoXIcons.Radio),
     GUIDE("Rehber", RedoXIcons.CalendarMonth),
     FAVORITES("Favoriler", RedoXIcons.Star),
     REMOTE("Kumanda", RedoXIcons.SettingsRemote),
@@ -19,11 +20,14 @@ enum class MobileTab(val title: String, val icon: ImageVector) {
     SETTINGS("Ayarlar", RedoXIcons.Settings)
 }
 
-/** Telefon alt çubuğundaki kök sekmeler. */
+/**
+ * Telefon alt çubuğundaki kök sekmeler. Radyo'ya yer açmak için Rehber köke bağlı değildir:
+ * Ana Sayfa'daki "Rehber" çipinden ve Canlı TV'nin üst çubuğundaki takvim simgesinden açılır.
+ */
 val PhoneRootTabs: List<MobileTab> = listOf(
     MobileTab.HOME,
     MobileTab.LIVE,
-    MobileTab.GUIDE,
+    MobileTab.RADIO,
     MobileTab.FAVORITES,
     MobileTab.REMOTE
 )

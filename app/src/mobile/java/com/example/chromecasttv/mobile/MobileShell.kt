@@ -67,6 +67,14 @@ fun MobileShell(
         if (!hasPlayback) PlaybackHub.stop()
     }
 
+    // Radyo (demo): liste bir kez yüklenir; bir TV kanalı başlayınca radyo susar
+    val radioContext = LocalContext.current
+    LaunchedEffect(Unit) { RadioHub.ensureLoaded(radioContext) }
+    val radio by RadioHub.state.collectAsState()
+    LaunchedEffect(hasPlayback) {
+        if (hasPlayback) RadioHub.stop()
+    }
+
     MobileMediaSessionLink(active = hasPlayback)
     MobilePlaybackLifecycle(
         host = host,
@@ -91,6 +99,11 @@ fun MobileShell(
                 onMinimize = { viewModel.minimizeToPip() },
                 onClose = { viewModel.closePlayer() }
             )
+        }
+
+        // Telefon: tam ekran radyo oynatıcı (tablette oynatıcı Radyo sekmesindeki panelde)
+        if (radio.playerOpen && !isTablet) {
+            MobileRadioPlayerOverlay()
         }
 
         state.pendingPinChannel?.let { channel ->
@@ -119,6 +132,7 @@ fun MobileContent(env: MobileEnv, modifier: Modifier = Modifier) {
                 MobileTab.LIVE -> MobileLiveScreen(
                     env.viewModel, env.state, env.isTablet, env.nav, env.actions
                 )
+                MobileTab.RADIO -> MobileRadioScreen(isTablet = env.isTablet)
                 MobileTab.GUIDE -> MobileGuideScreen(
                     env.viewModel, env.state, env.features, env.host, env.nav, env.actions
                 )
