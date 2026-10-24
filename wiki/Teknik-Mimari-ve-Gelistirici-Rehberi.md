@@ -28,7 +28,7 @@ app/src/
 │       ├── network/                 HttpSecurity, LocalControlServer, LocalTransferWebServer,
 │       │                            RemoteProtocol/Client/Discovery
 │       ├── player/                  ExoPlayerFactory, PlayerExtras (kalite, gece modu, ölçülen istatistikler)
-│       ├── theme/                   RedoXColors (paletler/AMOLED), TvTheme, RedoXLogo
+│       ├── theme/                   RedoXColors (logodan ölçülen palet, AMOLED), TvTheme, RedoXLogo (vektör logo)
 │       └── viewmodel/TvViewModel.kt üç arayüzün ortak ViewModel'i
 ├── tv/       TV arayüzü (ekranlar, oynatıcı, ortak bileşenler, TV ana ekranı yayıncısı)
 ├── mobile/   telefon+tablet: ekranlar, PlaybackHub, PlaybackService, RemoteHub, MobileShell
@@ -40,6 +40,8 @@ app/src/
 
 - **Tek ViewModel:** `TvViewModel` kanalları, favorileri, kilitleri, rehberi birleştirip `TvUiState` üretir. Gerçek XMLTV rehberi ve kullanıcının verdiği kanal adı/numarası, `combine` içinde kanallara bindirilir (`FeatureOverlays`). `TvChannel.hasRealEpg` arayüzün "Canlı yayın" ya da gerçek program göstermesini belirler.
 - **FeatureHub:** yeni özelliklerin durumunu (`FeatureState`) tek akışta toplar; üç arayüz aynı akışı dinler.
+- **Tasarım dili "Kızıl Halka":** altın halka = odak (`tvSurface`: 3 dp altın çerçeve + ışıma), kırmızı = eylem/canlı yayın, emoji yok, TV'de ≥ 12 sp yazı, mobilde ≥ 44 dp hedef. TV bileşenleri `TvCommonComponents.kt` içindedir: `tvSurface`, `TvIconPill` (odakta etiketi açılır), `TvLiveBadge`, `TvStatPill`, `TvProgressBar`, `TvKeyHint`; mobilde `MobileDesign.kt` (`MChip`, `MPrimaryButton`, `MLiveBadge`, `MChannelRow`, `MChannelCard`).
+- **Vektör logo:** `redox_mark.xml` / `redox_wordmark.xml` / `ic_launcher_*` / `ic_stat_redox.xml` / `ic_tv_banner.xml` birer `VectorDrawable`'dır; PNG yoktur. Logodan üretim aracı depoda yoktur (izleme betikleri geliştirme sırasında kullanıldı); çizim doğrudan XML'de düzenlenebilir.
 - **Tema:** `RedoXThemeState` (paletler, AMOLED, yazı ölçeği) Compose *snapshot state* olduğundan seçim anında her yere yansır. `TvThemeColors` eski adları yeni belirteçlere bağlayan uyumluluk katmanıdır.
 - **Oynatıcı fabrikası:** `createTvExoPlayer` OkHttp veri kaynağını gevşek-TLS'li akış istemcisiyle kurar; uygulamanın geri kalanı katı TLS kullanır (`HttpSecurity`).
 - **Mobil oynatma merkezi (`PlaybackHub`):** tek bir ExoPlayer; tam ekran oynatıcı, mini oynatıcı ve `PlaybackService` (Media3 `MediaSessionService`) aynı örneği kullanır. `MobileShell` oynatma sürerken servise bir `MediaController` ile bağlanır; böylece bildirim/kilit ekranı kontrolleri ve ön plan servisi çalışır.
@@ -57,9 +59,11 @@ gradle :app:assembleTvRelease :app:assembleTabletRelease :app:assemblePhoneRelea
 
 GitHub Actions (`.github/workflows/build.yml`): üç çeşit paralel derlenir, APK'lar `RedoX-TV-2-v<sürüm>-<çeşit>.apk` adıyla Artifacts'a yüklenir; `v*` etiketi veya elle tetikleme ile Release oluşur; `wiki/` klasörü GitHub Wiki'ye eşitlenir. `GITHUB_REPOSITORY` otomatik olarak `BuildConfig.GITHUB_REPO`'ya gömülür (güncelleme denetimi ve kanal paketi senkronu uygulamanın kendi deposuna bakar).
 
+`.github/workflows/ui-preview.yml` ("Arayüz önizleme"): `ui-*` dallarına push'ta veya elle çalışır; telefon, tablet ve Android TV emülatörlerinde `ci/capture.sh` ile uygulamayı açar, gezer ve ekran görüntüsü alır (Artifacts + `shots-<tür>` dalları).
+
 ## Doğrulama durumu (dürüst not)
 
-Bu sürümün kodu **Android derleyicisi olmadan** yazıldı. Kullanılan denetimler: sınır/delimitör dengesi, projedeki fonksiyonların çağrı parametreleri, import ve kaynak (`R.*`) başvurularının kontrolü için yazılmış bir betik ve elle inceleme. Bunlar derlemenin yerini tutmaz; ilk gerçek derleme GitHub Actions'ta olur ve cihaz testi yapılmamıştır. Derleme hatası çıkarsa Actions günlüğündeki `e: file://…` satırları sorunu gösterir.
+Kod GitHub Actions'ta derlenir (üç çeşit); "Arayüz önizleme" iş akışı emülatörde açılışı ve gezintiyi otomatik dener ve ekran görüntüsü üretir. Gerçek TV / telefon / tablet cihazlarında ve gerçek yayınlarla uzun süreli deneme yapılmamıştır. Derleme hatası çıkarsa Actions günlüğündeki `e: file://…` satırları sorunu gösterir.
 
 ## AES-256 şifreli kanal paketi
 

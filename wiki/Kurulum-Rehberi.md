@@ -4,9 +4,9 @@ RedoX TV 2 üç ayrı APK olarak dağıtılır. **Cihazınıza uygun olanı** ku
 
 | APK | Cihaz |
 |---|---|
-| `RedoX-TV-2-v2.0.0-tv.apk` | Android TV, Google TV (Chromecast with Google TV), TV Box, akıllı TV |
-| `RedoX-TV-2-v2.0.0-tablet.apk` | Android tablet |
-| `RedoX-TV-2-v2.0.0-phone.apk` | Android telefon (aynı zamanda TV kumandası) |
+| `RedoX-TV-2-v2.1.0-tv.apk` | Android TV, Google TV (Chromecast with Google TV), TV Box, akıllı TV |
+| `RedoX-TV-2-v2.1.0-tablet.apk` | Android tablet |
+| `RedoX-TV-2-v2.1.0-phone.apk` | Android telefon (aynı zamanda TV kumandası) |
 
 Uygulama eski RedoX TV'den **bağımsızdır** (paket `com.redoxtv.two`); ikisi aynı cihazda yan yana durabilir.
 
@@ -17,7 +17,7 @@ Uygulama eski RedoX TV'den **bağımsızdır** (paket `com.redoxtv.two`); ikisi 
 **Yöntem 1 — adb (bilgisayardan):**
 ```bash
 adb connect <TV-IP>:5555
-adb install -r RedoX-TV-2-v2.0.0-tv.apk
+adb install -r RedoX-TV-2-v2.1.0-tv.apk
 ```
 TV'de *Ayarlar → Cihaz Tercihleri → Hakkında → Derleme* üzerine 7 kez basarak geliştirici seçeneklerini açın, ardından *Ağ üzerinden hata ayıklama*yı etkinleştirin.
 
@@ -39,7 +39,7 @@ Bilgisayara Android Studio kurmanız gerekmez.
 
 1. Yeni bir GitHub deposu oluşturun ve proje dosyalarını yükleyin (`git push` önerilir).
 2. **Actions** sekmesinde *RedoX TV 2 - APK derle* çalışır; bitince **Artifacts** altında `RedoX-TV-2-tv`, `RedoX-TV-2-tablet`, `RedoX-TV-2-phone` indirilebilir.
-3. Release için `v2.0.0` gibi bir etiket itin: `git tag v2.0.0 && git push origin v2.0.0`. APK'lar Releases sayfasına yüklenir.
+3. Release için `v2.1.0` gibi bir etiket itin: `git tag v2.1.0 && git push origin v2.1.0`. APK'lar Releases sayfasına yüklenir.
 
 ### İmza anahtarı (güncellenebilir APK)
 Android yalnızca **aynı anahtarla imzalanmış** güncellemeleri kabul eder. Sabit anahtar için:

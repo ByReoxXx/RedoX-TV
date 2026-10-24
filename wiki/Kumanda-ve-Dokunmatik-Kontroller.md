@@ -8,13 +8,13 @@ Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir; `CH+/CH-` ve `0
 | :--- | :--- | :--- |
 | **Kanal ızgarası** | `OK` | Kanalı tam ekran açar |
 | **Kanal ızgarası** | `OK` basılı tut | Kanalı açmadan ⭐ favori ekler/çıkarır |
-| **Kanal ızgarası** | Üstteki başlıkta **Düzenle** | Kanalın adını/numarasını bu cihazda değiştirir |
+| **Kanal ızgarası** | Üstteki büyük panelde simge düğmeleri (Favori, Kilit, **Düzenle**, Gizle) | Odaklanınca adı açılır; Düzenle kanalın adını/numarasını bu cihazda değiştirir |
 | **Oynatıcı** | `▲` / `▼` | Sonraki / önceki kanal |
 | **Oynatıcı** | `◄` | Hızlı kanal çekmecesi |
 | **Oynatıcı** | `►` | Bir sonraki akış kaynağı (Akış 1 → 2 → 3) |
-| **Oynatıcı** | `OK` / dokunuş | Kontrol çubuğunu açar/gizler (kalite, gece modu, ses/altyazı, uyku, 2x2…) |
+| **Oynatıcı** | `OK` / dokunuş | Bilgi ve kontrol çubuğunu açar (odak oynat/duraklat düğmesinde); düğmeler simgedir, odaktakinin adı çubuğun altında yazar. **…** (Daha fazla): gece modu, küçük pencere, 2x2, kanal no, kanalı gizle, kanaldan çık |
 | **Oynatıcı** | `0` | Önceki izlenen kanala dön |
-| **Oynatıcı** | Kontrol çubuğu **Kanal No** | Sanal numaratör (0-9) |
+| **Oynatıcı** | Kontrol çubuğu **… → Kanal no** | Sanal numaratör (0-9) |
 | **Rehber** | Programa `OK` | Yayındaysa kanalı açar; ileriyse hatırlatma ekler/kaldırır |
 | **Favoriler** | `►` → `▲/▼` → `OK` | Kanalı tutar, taşır, bırakır |
 | **Favoriler** | Üstteki liste düğmeleri | Liste seç / yeni / adını değiştir / sil |

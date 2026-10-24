@@ -1,6 +1,6 @@
 # 🐂 RedoX TV 2 Wiki
 
-**RedoX TV 2**, eski RedoX TV'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür: aynı sadık arayüz düzeni, yeni kırmızı-altın-lacivert görünüm ve yeni özellikler. Üç cihaz sınıfı için **üç ayrı APK** üretir (TV, tablet, telefon); her birinin kendi arayüzü vardır.
+**RedoX TV 2**, eski RedoX TV'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür: aynı sadık arayüz düzeni, logodan ölçülen kızıl-altın-lacivert palet ("Kızıl Halka" tasarım dili), tamamen vektör logo ve yeni özellikler. Üç cihaz sınıfı için **üç ayrı APK** üretir (TV, tablet, telefon); her birinin kendi arayüzü vardır.
 
 > **RedoX = Red + Ox** — "kırmızı boğa". Logoda "RedoX TV" yazar; uygulamanın adı **RedoX TV 2**'dir.
 
@@ -19,6 +19,7 @@
 7. **[🔒 Güvenlik ve Gizlilik](Guvenlik-ve-Gizlilik.md)** — katı TLS, kod/anahtar, yedekleme, tanılama
 8. **[🛠️ Teknik Mimari ve Geliştirici Rehberi](Teknik-Mimari-ve-Gelistirici-Rehberi.md)** — kaynak kümeleri, derleme, CI
 9. **[❓ Sıkça Sorulan Sorular](Sikca-Sorulan-Sorular-SSS.md)** — sorun giderme
+10. **[🎨 Tasarım Dili ve Vektör Logo](Tasarim-Dili-ve-Logo.md)** — logodan ölçülen palet, altın odak halkası, vektör simgeler
 
 ---
 
@@ -37,4 +38,4 @@
 | **Android TV ana ekranı** | Favori Kanallar satırı ve "Devam et" (cihaz destekliyorsa) |
 | **Güvenlik ve bakım** | Katı TLS, PIN'li yerel sunucu, güncelleme denetimi, dosyaya yedek, yerel tanılama günlüğü |
 
-> ⚠️ **Not:** Bu sürümün kodu geliştirme ortamında Android derleyicisinden geçirilmeden hazırlandı; ilk gerçek derleme GitHub Actions'ta yapılır. Ayrıntı için [Teknik Mimari](Teknik-Mimari-ve-Gelistirici-Rehberi.md) sayfasına bakın.
+> ⚠️ **Not:** Kod GitHub Actions'ta derlenir ve emülatörde otomatik gezilip ekran görüntüsü alınır; ancak gerçek TV / telefon / tablet cihazlarında ve gerçek yayınlarla uzun süreli deneme yapılmadı. Sorun görürseniz Issues'a yazın. Ayrıntı için [Teknik Mimari](Teknik-Mimari-ve-Gelistirici-Rehberi.md) sayfasına bakın.
