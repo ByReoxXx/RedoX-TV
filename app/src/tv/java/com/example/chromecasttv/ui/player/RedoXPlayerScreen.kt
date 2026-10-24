@@ -983,7 +983,7 @@ fun RedoXPlayerScreen(
             }
         }
 
-        // ALT İNTERAKTİF OSD: bilgi satırı + program ilerlemesi + oynatma denetimleri
+        // ALT İNTERAKTİF OSD: ortada oynatma denetimleri + bilgi satırı + program ilerlemesi + yayın denetimleri
         // (140ms hafif slide, 3.8 sn hareketsizlikte otomatik gizlenir). Düğmeler yalnızca simgedir;
         // odaktaki düğmenin adı altta tek satırda gösterilir (tüm ekran genişliklerinde taşma olmaz).
         AnimatedVisibility(
@@ -998,25 +998,68 @@ fun RedoXPlayerScreen(
             val isFavorite = favoriteIds.contains(playingChannel.id)
             val compactOsd = isCompactOsd()
             Column(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
+                verticalArrangement = Arrangement.spacedBy(if (compactOsd) 10.dp else 14.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(osdShape)
                     .background(TvThemeColors.GlassOverlay)
                     .border(1.dp, Color.White.copy(alpha = 0.10f), osdShape)
-                    .padding(horizontal = 26.dp, vertical = 18.dp)
+                    .padding(horizontal = 26.dp, vertical = if (compactOsd) 14.dp else 18.dp)
             ) {
-                // ---- üst satır: kanal bilgisi (sol) • oynatma denetimleri (sağ)
+                // ---- üst satır: oynatma denetimleri, ekranın ortasında
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        if (compactOsd) 12.dp else 16.dp,
+                        Alignment.CenterHorizontally
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TvOsdButton(
+                        icon = Icons.Rounded.SkipPrevious,
+                        label = "Önceki kanal",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { onZapChannel(-1) }
+                    )
+                    TvOsdButton(
+                        icon = Icons.Rounded.History,
+                        label = "15 sn geri",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { rewindTimeshift15Sec() }
+                    )
+                    TvOsdButton(
+                        icon = if (isPausedByTimeshift) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                        label = if (isPausedByTimeshift) "Devam et" else "Duraklat",
+                        primary = true,
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { toggleTimeshiftPause() },
+                        modifier = Modifier.focusRequester(primaryActionFocusRequester)
+                    )
+                    TvOsdButton(
+                        icon = Icons.Rounded.FiberManualRecord,
+                        label = "Canlıya dön",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { jumpToLiveEdge() }
+                    )
+                    TvOsdButton(
+                        icon = Icons.Rounded.SkipNext,
+                        label = "Sonraki kanal",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { onZapChannel(+1) }
+                    )
+                }
+
+                // ---- kanal bilgisi
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ChannelBrandLogoBox(
                         channel = playingChannel,
-                        boxSize = 64.dp,
-                        fontSize = 18.sp
+                        boxSize = if (compactOsd) 52.dp else 64.dp,
+                        fontSize = if (compactOsd) 16.sp else 18.sp
                     )
                     Spacer(modifier = Modifier.width(18.dp))
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                        verticalArrangement = Arrangement.spacedBy(if (compactOsd) 4.dp else 6.dp)
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -1043,60 +1086,30 @@ fun RedoXPlayerScreen(
                                 TvStatPill(text = "Gece modu")
                             }
                         }
-                        Text(
-                            text = "${playingChannel.number} · ${playingChannel.name}",
-                            color = TvThemeColors.TextPrimary,
-                            fontSize = 28.sp,
-                            fontWeight = FontWeight.ExtraBold,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = playingChannel.nowNextLine(),
-                            color = TvThemeColors.TextSecondary,
-                            fontSize = 15.sp,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    // oynatma denetimleri üst satırda, bilgi bloğunun sağında
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(if (compactOsd) 8.dp else 12.dp)
-                    ) {
-                        TvOsdButton(
-                            icon = Icons.Rounded.SkipPrevious,
-                            label = "Önceki kanal",
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = { onZapChannel(-1) }
-                        )
-                        TvOsdButton(
-                            icon = Icons.Rounded.History,
-                            label = "15 sn geri",
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = { rewindTimeshift15Sec() }
-                        )
-                        TvOsdButton(
-                            icon = if (isPausedByTimeshift) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
-                            label = if (isPausedByTimeshift) "Devam et" else "Duraklat",
-                            primary = true,
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = { toggleTimeshiftPause() },
-                            modifier = Modifier.focusRequester(primaryActionFocusRequester)
-                        )
-                        TvOsdButton(
-                            icon = Icons.Rounded.FiberManualRecord,
-                            label = "Canlıya dön",
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = { jumpToLiveEdge() }
-                        )
-                        TvOsdButton(
-                            icon = Icons.Rounded.SkipNext,
-                            label = "Sonraki kanal",
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = { onZapChannel(+1) }
-                        )
+                        Row(
+                            verticalAlignment = Alignment.Bottom,
+                            horizontalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            Text(
+                                text = "${playingChannel.number} · ${playingChannel.name}",
+                                color = TvThemeColors.TextPrimary,
+                                fontSize = if (compactOsd) 24.sp else 28.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f, fill = false)
+                            )
+                            Text(
+                                text = playingChannel.nowNextLine(),
+                                color = TvThemeColors.TextSecondary,
+                                fontSize = 15.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .weight(1.6f, fill = false)
+                                    .padding(bottom = 3.dp)
+                            )
+                        }
                     }
                 }
 

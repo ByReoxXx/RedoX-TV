@@ -1313,7 +1313,7 @@ fun FocusedChannelHeroBanner(
                         }
                     } else if (!compact) {
                         Text(
-                            text = "Gerçek yayın rehberi yok; program adı uydurulmaz.",
+                            text = "Bu kanal için rehber bilgisi yok.",
                             color = RedoXColors.TextTertiary,
                             fontSize = 14.sp,
                             maxLines = 1
