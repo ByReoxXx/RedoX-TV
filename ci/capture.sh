@@ -154,7 +154,8 @@ if [ "$KIND" = "tv" ]; then
   key KEYCODE_DPAD_CENTER; sleep 7            # Canlı TV'ye başla
   shot "v-02-canli"
   adb shell input keyevent --longpress KEYCODE_DPAD_CENTER; sleep 2
-  key KEYCODE_DPAD_DOWN; sleep 1
+  key KEYCODE_DPAD_DOWN; sleep 0.5
+  keys 3 KEYCODE_DPAD_LEFT; sleep 1           # odak "Favori" düğmesine
   shot "v-03-kanal-ozellikleri"
   key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1   # düğmelerden karta, çiplere, yan menüye
   key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3                           # Favorilerim
@@ -166,16 +167,21 @@ if [ "$KIND" = "tv" ]; then
   key KEYCODE_DPAD_CENTER; sleep 1.5          # "Big Buck Bunny"yi oynat (alt çubuk + kısayol ipuçları görünür)
   shot "v-07a-oynatici-bilgi"
   shot "v-07b-oynatici-bilgi"
-  sleep 8                                     # çubuk gizlenir, yayın oturur
-  key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla
-  shot "v-08-oynatici-kontroller"
-  keys 6 KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 1   # "Seçenekler"
-  shot "v-09-oynatici-secenekler"
-  key KEYCODE_BACK; sleep 1; sleep 8
+  sleep 8                                     # çubuk gizlenir (odak videoda), yayın oturur
   key KEYCODE_DPAD_LEFT; sleep 2              # hızlı kanal çekmecesi
   shot "v-10-kanal-cekmecesi"
-  key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 3          # çekmeceyi kapat, oynatıcıdan çık
-  key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1   # ızgaradan çiplere, klasör listesine, yan menüye
+  key KEYCODE_BACK; sleep 1                   # çekmece kapanır
+  # Çubuk açıkken her tuş süreyi uzatır; ekran görüntüsü ise ~2 sn sürer. Çubuk kapanmışken sağ ok "sonraki yayın kaynağı"
+  # olduğundan, tuş dizileri ekran görüntüsü araya girmeden verilir: önce Seçenekler, sonra odak oynat/duraklata dönülür.
+  key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla
+  keys 6 KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 1   # "Seçenekler"
+  shot "v-09-oynatici-secenekler"
+  key KEYCODE_BACK; sleep 1                   # menü kapanır; odak "Seçenekler" düğmesinde
+  keys 6 KEYCODE_DPAD_LEFT; sleep 0.5         # odak oynat/duraklatta
+  shot "v-08-oynatici-kontroller"
+  sleep 6                                     # çubuk gizlenir
+  key KEYCODE_BACK; sleep 3                   # oynatıcıdan çık (klasör ızgarasına dön)
+  key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1   # çiplere, klasör listesine, yan menüye
   keys 3 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3    # Kanal Ara
   shot "v-11-ara"
   key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # M3U ve Dosya
