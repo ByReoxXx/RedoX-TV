@@ -124,6 +124,7 @@ private fun RadioListPane(
                     MRadioRow(
                         station = station,
                         playing = playing,
+                        showBars = playing && ui.phase == RadioPhase.PLAYING,
                         favorite = station.id in ui.favoriteIds,
                         onClick = {
                             if (playing && openOnPlayingTap) RadioHub.openPlayer() else RadioHub.play(station.id)
@@ -141,6 +142,7 @@ private fun RadioListPane(
 private fun MRadioRow(
     station: TvChannel,
     playing: Boolean,
+    showBars: Boolean,
     favorite: Boolean,
     onClick: () -> Unit,
     onToggleFavorite: () -> Unit
@@ -175,7 +177,7 @@ private fun MRadioRow(
                 overflow = TextOverflow.Ellipsis
             )
         }
-        if (playing) {
+        if (showBars) {
             RadioEqBars(color = RedoXColors.Primary, height = 18.dp)
             Spacer(modifier = Modifier.width(8.dp))
         }
@@ -217,7 +219,7 @@ fun MobileRadioMiniBar(onExpand: () -> Unit) {
                 if (ui.phase == RadioPhase.PLAYING) RadioEqBars(color = RedoXColors.Primary, height = 13.dp, barWidth = 2.5.dp)
             }
             Text(
-                text = radioStatusText(ui),
+                text = radioStatusText(ui, compact = true),
                 color = if (ui.phase == RadioPhase.FAILOVER || ui.phase == RadioPhase.ERROR) RedoXColors.Danger else RedoXColors.Gold,
                 fontSize = 12.5.sp,
                 fontWeight = FontWeight.SemiBold,
@@ -318,7 +320,8 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
     var sheet by remember { mutableStateOf(RadioSheet.NONE) }
     BackHandler(enabled = sheet != RadioSheet.NONE) { sheet = RadioSheet.NONE }
 
-    val shown = ui.current ?: ui.tuning
+    // Boştayken (tablet paneli) kadrandaki ilk istasyon gösterilir; başlık boş kalmaz
+    val shown = ui.current ?: ui.tuning ?: ui.stations.firstOrNull()
     val tuning = ui.tuningId != null
     val phase = ui.phase
     val dim = if (tuning) 0.42f else 1f
@@ -375,6 +378,8 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
             } else {
                 Spacer(modifier = Modifier.height(18.dp))
             }
+            // Uzun ekranlarda kalan boşluk dört aralığa dağılır (içerik üste yığılmaz); kısa ekranda bu aralıklar 0 olur
+            Spacer(modifier = Modifier.weight(0.4f))
 
             // Rozet satırı
             Row(
@@ -437,6 +442,7 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
                 }
             }
 
+            Spacer(modifier = Modifier.weight(0.5f))
             Spacer(modifier = Modifier.height(12.dp))
 
             // Kadran: sağa/sola kaydır ya da yandaki karoya dokun
@@ -472,7 +478,7 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
                 cornerRadius = 0.dp,
                 nameCurrent = 13.sp,
                 nameSide = 11.5.sp,
-                playingId = ui.currentId,
+                playingId = if (phase == RadioPhase.PLAYING) ui.currentId else null,
                 onTileClick = { offset -> if (offset == 0) RadioHub.onOk() else RadioHub.zap(offset) }
             )
             Text(
@@ -495,6 +501,7 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
                 Spacer(modifier = Modifier.height(40.dp))
             }
 
+            Spacer(modifier = Modifier.weight(0.6f))
             Spacer(modifier = Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
                 MRadioRound(
@@ -522,6 +529,7 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
                     MRadioPill(icon = RedoXIcons.MoreHoriz, label = "Seçenekler") { sheet = RadioSheet.OPTIONS }
                 }
             }
+            Spacer(modifier = Modifier.weight(0.3f))
         }
 
         RadioToast(
@@ -735,6 +743,7 @@ private fun BoxScope.MRadioStationsSheet(ui: RadioUiState, onDismiss: () -> Unit
                 MRadioRow(
                     station = station,
                     playing = playing,
+                    showBars = playing && ui.phase == RadioPhase.PLAYING,
                     favorite = station.id in ui.favoriteIds,
                     onClick = {
                         RadioHub.play(station.id)

@@ -100,13 +100,17 @@ fun radioBadgeText(phase: RadioPhase): String = when (phase) {
     RadioPhase.STOPPED -> "DURDU"
 }
 
-/** Aşamaya göre tek satırlık durum: çalan şarkı, bağlanma, yedek yayın ya da hata. */
-fun radioStatusText(state: RadioUiState): String {
+/** Aşamaya göre tek satırlık durum: çalan şarkı, bağlanma, yedek yayın ya da hata. [compact] dar alanlarda (mini çubuk) yedek yayın metnini kısaltır. */
+fun radioStatusText(state: RadioUiState, compact: Boolean = false): String {
     val station = state.current
     return when (state.phase) {
         RadioPhase.PLAYING, RadioPhase.PAUSED -> state.song?.let { "${it.title} — ${it.artist}" } ?: "Canlı yayın"
         RadioPhase.CONNECTING -> "Yayına bağlanılıyor…"
-        RadioPhase.FAILOVER -> "Yayın kesildi · alternatif yayına geçiliyor (${state.failoverAttempt}/${station?.sources?.size ?: state.failoverAttempt})"
+        RadioPhase.FAILOVER -> {
+            val total = station?.sources?.size ?: state.failoverAttempt
+            if (compact) "Yedek yayına geçiliyor (${state.failoverAttempt}/$total)"
+            else "Yayın kesildi · alternatif yayına geçiliyor (${state.failoverAttempt}/$total)"
+        }
         RadioPhase.ERROR -> "Bu istasyon şu an çalışmıyor"
         RadioPhase.STOPPED -> ""
     }

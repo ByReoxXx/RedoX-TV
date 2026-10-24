@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -90,15 +91,20 @@ private fun TabletScaffold(env: MobileEnv) {
             snackbarHost = { MobileSnackbarHost(env) },
             topBar = { MobileTopBar(env) },
             bottomBar = {
+                // Alt çubuk sistem gezinti/görev çubuğunun altında kalmasın (kalıcı görev çubuklu tabletlerde gizleniyordu)
                 if (mini != null) {
-                    MobileMiniPlayer(
-                        channel = mini,
-                        onExpand = { env.viewModel.expandPipToFullScreen() },
-                        onClose = { env.viewModel.closePip() }
-                    )
+                    Box(modifier = Modifier.navigationBarsPadding()) {
+                        MobileMiniPlayer(
+                            channel = mini,
+                            onExpand = { env.viewModel.expandPipToFullScreen() },
+                            onClose = { env.viewModel.closePip() }
+                        )
+                    }
                 } else if (radio.isActive && nav.current != MobileTab.RADIO) {
                     // Radyo çalarken diğer sekmelerde: dokununca Radyo sekmesi (sağdaki oynatıcı paneli) açılır
-                    MobileRadioMiniBar(onExpand = { nav.selectRoot(MobileTab.RADIO) })
+                    Box(modifier = Modifier.navigationBarsPadding()) {
+                        MobileRadioMiniBar(onExpand = { nav.selectRoot(MobileTab.RADIO) })
+                    }
                 }
             }
         ) { padding ->

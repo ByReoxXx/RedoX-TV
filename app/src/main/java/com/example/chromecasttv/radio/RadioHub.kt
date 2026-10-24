@@ -264,6 +264,8 @@ object RadioHub {
                 s.current?.let { startSongs(it) }
             }
             RadioPhase.ERROR -> s.currentId?.let { play(it) }
+            // Tablet paneli boştayken: kadrandaki (yoksa ilk) istasyonu çalar
+            RadioPhase.STOPPED -> (s.dialStation ?: s.stations.firstOrNull())?.let { play(it.id) }
             else -> Unit
         }
     }

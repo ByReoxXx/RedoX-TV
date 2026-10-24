@@ -1,6 +1,7 @@
 @file:OptIn(
     androidx.tv.material3.ExperimentalTvMaterial3Api::class,
     androidx.compose.foundation.ExperimentalFoundationApi::class,
+    androidx.compose.foundation.layout.ExperimentalLayoutApi::class,
     androidx.compose.ui.ExperimentalComposeUiApi::class
 )
 
@@ -216,6 +217,7 @@ private fun TvRadioChip(
 private fun TvRadioRow(
     station: TvChannel,
     playing: Boolean,
+    eq: Boolean,
     favorite: Boolean,
     requester: FocusRequester,
     onFocused: () -> Unit,
@@ -275,7 +277,7 @@ private fun TvRadioRow(
             )
         }
         when {
-            playing -> RadioEqBars(color = RedoXColors.Primary, height = 16.dp)
+            playing && eq -> RadioEqBars(color = RedoXColors.Primary, height = 16.dp)
             favorite -> Icon(imageVector = RedoXIcons.StarFilled, contentDescription = "Favoride", tint = RedoXColors.Gold, modifier = Modifier.size(18.dp))
             focused -> Icon(imageVector = RedoXIcons.StarBorder, contentDescription = null, tint = RedoXColors.TextTertiary, modifier = Modifier.size(18.dp))
         }
@@ -414,6 +416,7 @@ fun TvRadioScreen(onOpenPlayer: () -> Unit) {
                         TvRadioRow(
                             station = station,
                             playing = station.id == ui.currentId && ui.isActive,
+                            eq = ui.phase == RadioPhase.PLAYING,
                             favorite = station.id in ui.favoriteIds,
                             requester = requester,
                             onFocused = { focusedId = station.id },
@@ -426,12 +429,14 @@ fun TvRadioScreen(onOpenPlayer: () -> Unit) {
                 }
             }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(26.dp),
+            // Dar listede (yüksek yoğunluklu ekran) ipuçları ikinci satıra sarılır, kesilmez
+            FlowRow(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(22.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(32.dp)
+                    .heightIn(min = 32.dp)
+                    .padding(vertical = 4.dp)
             ) {
                 TvKeyHint(key = "OK", label = "Çal")
                 TvKeyHint(key = "OK basılı tut", label = "Favori")
@@ -823,7 +828,7 @@ fun TvRadioPlayerScreen() {
                 cornerRadius = 25.dp * k,
                 nameCurrent = 16.sp * k,
                 nameSide = 13.sp * k,
-                playingId = ui.currentId
+                playingId = if (ui.phase == RadioPhase.PLAYING) ui.currentId else null
             )
 
             Spacer(modifier = Modifier.height(10.dp * k))
@@ -1041,6 +1046,7 @@ private fun BoxScope.TvRadioDrawer(ui: RadioUiState, k: Float, onPlay: (String) 
                 TvRadioRow(
                     station = station,
                     playing = station.id == ui.currentId && ui.isActive,
+                    eq = ui.phase == RadioPhase.PLAYING,
                     favorite = station.id in ui.favoriteIds,
                     requester = requester,
                     onFocused = {},
