@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -622,8 +623,8 @@ fun MobilePlayerScreen(
                     if (channel.hasRealEpg) {
                         MProgressBar(
                             progress = channel.progressForUi(),
-                            color = RedoXColors.Primary,
-                            height = 4.dp
+                            color = RedoXColors.Gold,
+                            height = 5.dp
                         )
                         Spacer(modifier = Modifier.padding(top = 6.dp))
                     }
@@ -911,6 +912,7 @@ fun MobileMiniPlayer(
             .padding(horizontal = 10.dp, vertical = 6.dp)
             .clip(shape)
             .background(RedoXColors.SurfaceHigh)
+            .border(1.dp, RedoXColors.Line, shape)
             .pointerInput(Unit) { detectTapGestures(onTap = { onExpand() }) }
             .padding(horizontal = 10.dp, vertical = 8.dp)
     ) {

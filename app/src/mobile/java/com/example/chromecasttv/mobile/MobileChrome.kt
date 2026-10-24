@@ -26,11 +26,11 @@ fun MobileTopBar(env: MobileEnv) {
     TopAppBar(
         title = {
             if (tab == MobileTab.HOME) {
-                RedoXWordmark(fontSize = 22.sp, showTv = true)
+                RedoXWordmarkImage(width = 116.dp)
             } else {
                 Text(
                     text = tab.title,
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                     maxLines = 1
                 )
@@ -42,7 +42,7 @@ fun MobileTopBar(env: MobileEnv) {
                     Icon(Icons.Rounded.ArrowBack, contentDescription = "Geri")
                 }
             } else {
-                RedoXMark(markSize = 36.dp, modifier = Modifier.padding(start = 12.dp, end = 4.dp))
+                RedoXMark(markSize = 42.dp, modifier = Modifier.padding(start = 12.dp, end = 4.dp))
             }
         },
         actions = {

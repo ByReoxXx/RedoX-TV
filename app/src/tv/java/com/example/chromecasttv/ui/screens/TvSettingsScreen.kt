@@ -96,7 +96,7 @@ fun TvSettingsScreen(
             Text(
                 text = "Renk paleti (logo her zaman kızıl-altın kalır; palet arayüz vurgularını değiştirir)",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp
+                fontSize = 13.sp
             )
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(RedoXPalettes.all, key = { "pal_${it.id}" }) { palette ->
@@ -146,7 +146,7 @@ fun TvSettingsScreen(
             Text(
                 text = "Varsayılan görüntü kalitesi (oynatıcıda da değiştirilebilir)",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp
+                fontSize = 13.sp
             )
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(PlayerQuality.entries.toList(), key = { "q_${it.name}" }) { quality ->
@@ -183,7 +183,7 @@ fun TvSettingsScreen(
                 text = "Uydurma program adı gösterilmez; rehber verisi olmayan kanallarda yalnızca \"Canlı yayın\" yazar. " +
                     "M3U listelerinizdeki XMLTV adresleri de otomatik kullanılır (${state.playlists.count { it.epgXmlUrl.isNotBlank() }} adres).",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp
+                fontSize = 12.sp
             )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
@@ -201,7 +201,7 @@ fun TvSettingsScreen(
                     Text(
                         text = url,
                         color = TvThemeColors.TextPrimary,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
@@ -246,7 +246,7 @@ fun TvSettingsScreen(
                 Text(
                     text = "Yayın Rehberi sekmesinde bir programa OK ile basarak hatırlatma ekleyebilirsiniz.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 10.sp
+                    fontSize = 12.sp
                 )
             }
             features.reminders.sortedBy { it.startMillis }.take(8).forEach { reminder ->
@@ -258,7 +258,7 @@ fun TvSettingsScreen(
                     Text(
                         text = "${formatDateTime(reminder.startMillis)} • ${reminder.channelName} • ${reminder.title}",
                         color = TvThemeColors.TextPrimary,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
@@ -285,7 +285,7 @@ fun TvSettingsScreen(
                 text = "Telefon uygulamasında \"Kumanda\" sekmesinden bu TV'yi seçip kodu girin. Kod yalnızca bu ekranda görünür; " +
                     "yanlış kodla 5 denemeden sonra 60 sn beklenir. Eşleşen telefonlar kodu bir daha sormaz.",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp
+                fontSize = 12.sp
             )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
@@ -383,7 +383,7 @@ fun TvSettingsScreen(
                 Text(
                     text = logText.takeLast(1500).ifBlank { "Günlük boş — kaydedilmiş bir hata yok." },
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 9.sp,
+                    fontSize = 11.sp,
                     fontFamily = FontFamily.Monospace,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -406,12 +406,12 @@ fun TvSettingsScreen(
                 text = "RedoX = Red + Ox: \"kırmızı boğa\". Bu uygulama eski RedoX TV'den bağımsız, ayrı bir uygulamadır; " +
                     "ayarlarınız ve verileriniz paylaşılmaz.",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp
+                fontSize = 13.sp
             )
             Text(
                 text = "Cihaz sınıfı: ${host.deviceKind.uppercase(Locale.ROOT)} • ${Build.MANUFACTURER} ${Build.MODEL} • Android ${Build.VERSION.RELEASE}",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp
+                fontSize = 12.sp
             )
         }
     }
@@ -487,7 +487,7 @@ private fun TvSettingToggleRow(
             Text(
                 text = subtitle,
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -502,7 +502,7 @@ private fun TvSettingToggleRow(
             Text(
                 text = if (checked) "AÇIK" else "KAPALI",
                 color = if (checked) TvThemeColors.AccentEmerald else TvThemeColors.TextSecondary,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.ExtraBold,
                 maxLines = 1
             )
@@ -562,7 +562,7 @@ fun TvChannelEditDialog(
                 Text(
                     text = "Ad ve numara yalnızca bu cihazda değişir; M3U listeniz bozulmaz.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 11.sp
+                    fontSize = 13.sp
                 )
                 TvInputField(
                     label = "Kanal adı",

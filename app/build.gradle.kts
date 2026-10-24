@@ -34,8 +34,8 @@ android {
         applicationId = "com.redoxtv.two"
         minSdk = 28
         targetSdk = 34
-        versionCode = 200
-        versionName = "2.0.0"
+        versionCode = 210
+        versionName = "2.1.0"
         buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV 2\"")
         // Güncelleme denetimi bu depodaki "latest release"e bakar. GitHub Actions'ta depo adı otomatik gelir.
         val githubRepo = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"

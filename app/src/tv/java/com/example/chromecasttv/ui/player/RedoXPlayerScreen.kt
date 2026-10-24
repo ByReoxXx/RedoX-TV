@@ -67,6 +67,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.ContentScale
@@ -206,6 +207,8 @@ fun RedoXPlayerScreen(
     var osdInteractiveFocused by remember { mutableStateOf(false) }
     var showChannelDrawer by remember { mutableStateOf(false) }
     var showVirtualNumpadDialog by remember { mutableStateOf(false) }
+    var showMoreOptions by remember { mutableStateOf(false) }
+    var focusedOsdLabel by remember { mutableStateOf("") }
     val drawerActiveItemRequester = remember { FocusRequester() }
     var osdInteractionTick by remember { mutableIntStateOf(0) }
 
@@ -265,6 +268,13 @@ fun RedoXPlayerScreen(
         }
     }
 
+    LaunchedEffect(showOsd) {
+        if (!showOsd) {
+            showMoreOptions = false
+            focusedOsdLabel = ""
+        }
+    }
+
     LaunchedEffect(autoFailoverBanner) {
         if (autoFailoverBanner != null) {
             delay(3000L)
@@ -305,14 +315,14 @@ fun RedoXPlayerScreen(
             currentSourceIndex = nextIdx
             onSavePreferredSource(playingChannel.id, nextIdx)
             val nextLabel = playingChannel.sources[nextIdx].label
-            autoFailoverBanner = "⚡ Kaynak Hafızaya Kaydedildi (${nextIdx + 1}/${playingChannel.sources.size}): $nextLabel"
+            autoFailoverBanner = "Kaynak kaydedildi (${nextIdx + 1}/${playingChannel.sources.size}): $nextLabel"
             bumpOsdTimer()
         } else {
             exoPlayer.seekToDefaultPosition()
             exoPlayer.prepare()
             exoPlayer.play()
             isPausedByTimeshift = false
-            autoFailoverBanner = "🔄 Yayın Akışı Yenilendi"
+            autoFailoverBanner = "Yayın akışı yenilendi"
             bumpOsdTimer()
         }
     }
@@ -321,11 +331,11 @@ fun RedoXPlayerScreen(
         if (exoPlayer.isPlaying) {
             exoPlayer.pause()
             isPausedByTimeshift = true
-            autoFailoverBanner = "⏸️ Canlı Yayın Duraklatıldı (Timeshift Aktif)"
+            autoFailoverBanner = "Canlı yayın duraklatıldı (tampon açık)"
         } else {
             exoPlayer.play()
             isPausedByTimeshift = false
-            autoFailoverBanner = "▶️ Yayın Devam Ediyor"
+            autoFailoverBanner = "Yayın devam ediyor"
         }
         bumpOsdTimer()
     }
@@ -335,7 +345,7 @@ fun RedoXPlayerScreen(
         exoPlayer.seekTo(targetPos)
         exoPlayer.play()
         isPausedByTimeshift = false
-        autoFailoverBanner = "⏪ Canlı Tampondan 15 Sn Geri Sarıldı"
+        autoFailoverBanner = "15 sn geri sarıldı"
         bumpOsdTimer()
     }
 
@@ -343,7 +353,7 @@ fun RedoXPlayerScreen(
         exoPlayer.seekToDefaultPosition()
         exoPlayer.play()
         isPausedByTimeshift = false
-        autoFailoverBanner = "🔴 Canlı Yayın Noktasına Dönüldü"
+        autoFailoverBanner = "Canlı yayına dönüldü"
         bumpOsdTimer()
     }
 
@@ -351,7 +361,7 @@ fun RedoXPlayerScreen(
         val all = PlayerQuality.entries
         val next = all[(all.indexOf(featurePrefs.defaultQuality) + 1) % all.size]
         onUpdatePrefs { it.copy(defaultQuality = next) }
-        autoFailoverBanner = "🎚️ Kalite: ${next.label}"
+        autoFailoverBanner = "Kalite: ${next.label}"
         bumpOsdTimer()
     }
 
@@ -373,7 +383,7 @@ fun RedoXPlayerScreen(
     fun cycleAudioTrack() {
         val groups = exoPlayer.currentTracks.groups
         if (audioTracks.size <= 1) {
-            autoFailoverBanner = "🔊 Bu yayında tek ses izi bulunuyor"
+            autoFailoverBanner = "Bu yayında tek ses izi var"
             bumpOsdTimer()
             return
         }
@@ -391,7 +401,7 @@ fun RedoXPlayerScreen(
     fun cycleSubtitleTrack() {
         val groups = exoPlayer.currentTracks.groups
         if (subtitleTracks.isEmpty()) {
-            autoFailoverBanner = "💬 Bu yayında altyazı izi bulunmuyor"
+            autoFailoverBanner = "Bu yayında altyazı izi yok"
             bumpOsdTimer()
             return
         }
@@ -469,11 +479,11 @@ fun RedoXPlayerScreen(
                 if (playingChannel.sources.size > 1 && autoTriedCount + 1 < playingChannel.sources.size) {
                     autoTriedCount += 1
                     val nextIdx = (currentSourceIndex + 1) % playingChannel.sources.size
-                    autoFailoverBanner = "⚡ Kaynak yanıt vermedi, Alternatif Akışa (${nextIdx + 1}/${playingChannel.sources.size}) geçildi"
+                    autoFailoverBanner = "Kaynak yanıt vermedi; alternatif akışa (${nextIdx + 1}/${playingChannel.sources.size}) geçildi"
                     currentSourceIndex = nextIdx
                 } else {
                     isBuffering = false
-                    playbackError = "⚠️ Tüm alternatif kaynaklar denendi. 'Alternatif Yayın' butonuyla tekrar deneyebilirsiniz."
+                    playbackError = "Tüm alternatif kaynaklar denendi. Kaynak düğmesiyle tekrar deneyebilirsiniz."
                     onMarkBroken(playingChannel.id)
                 }
             }
@@ -509,7 +519,7 @@ fun RedoXPlayerScreen(
         if (isBuffering && exoPlayer.playbackState != Player.STATE_READY && playingChannel.sources.size > 1 && autoTriedCount + 1 < playingChannel.sources.size) {
             autoTriedCount += 1
             val nextIdx = (currentSourceIndex + 1) % playingChannel.sources.size
-            autoFailoverBanner = "⚡ Yayın gecikti, hızlı Alternatif Akışa (${nextIdx + 1}/${playingChannel.sources.size}) geçildi"
+            autoFailoverBanner = "Yayın gecikti; alternatif akışa (${nextIdx + 1}/${playingChannel.sources.size}) geçildi"
             currentSourceIndex = nextIdx
         }
     }
@@ -565,7 +575,7 @@ fun RedoXPlayerScreen(
                     if (!showChannelDrawer && !osdInteractiveFocused) {
                         when {
                             keyCode == KeyEvent.KEYCODE_0 && typedChannelDigits.isEmpty() && previousChannel != null -> {
-                                autoFailoverBanner = "🔄 Önceki Kanala Dönüldü: ${previousChannel.name}"
+                                autoFailoverBanner = "Önceki kanala dönüldü: ${previousChannel.name}"
                                 onRecallPreviousChannel()
                                 true
                             }
@@ -648,13 +658,13 @@ fun RedoXPlayerScreen(
                     .padding(28.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(TvThemeColors.GlassOverlay)
-                    .border(2.dp, TvThemeColors.BullRedBright, RoundedCornerShape(16.dp))
+                    .border(2.dp, RedoXColors.Gold, RoundedCornerShape(16.dp))
                     .padding(horizontal = 24.dp, vertical = 14.dp)
             ) {
                 Text(
                     text = "CH $typedChannelDigits",
-                    color = TvThemeColors.BullRedBright,
-                    fontSize = 28.sp,
+                    color = RedoXColors.Gold,
+                    fontSize = 32.sp,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
@@ -668,20 +678,20 @@ fun RedoXPlayerScreen(
                     .padding(top = 20.dp)
                     .clip(RoundedCornerShape(50))
                     .background(TvThemeColors.SurfaceElevated)
-                    .border(1.5.dp, TvThemeColors.BullRedBright, RoundedCornerShape(50))
-                    .padding(horizontal = 18.dp, vertical = 8.dp)
+                    .border(1.5.dp, RedoXColors.Gold, RoundedCornerShape(50))
+                    .padding(horizontal = 20.dp, vertical = 9.dp)
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Sensors,
                     contentDescription = null,
-                    tint = TvThemeColors.BullRedBright,
-                    modifier = Modifier.size(16.dp)
+                    tint = RedoXColors.Gold,
+                    modifier = Modifier.size(18.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(9.dp))
                 Text(
                     text = bannerText,
                     color = TvThemeColors.TextPrimary,
-                    fontSize = 12.sp,
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -697,7 +707,7 @@ fun RedoXPlayerScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .padding(top = 64.dp)
+                    .padding(top = 72.dp)
                     .clip(RoundedCornerShape(50))
                     .background(TvThemeColors.SurfaceElevated)
                     .border(1.5.dp, TvThemeColors.FavoriteGold, RoundedCornerShape(50))
@@ -713,7 +723,7 @@ fun RedoXPlayerScreen(
                 Text(
                     text = message,
                     color = TvThemeColors.TextPrimary,
-                    fontSize = 12.sp,
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1
                 )
@@ -740,7 +750,7 @@ fun RedoXPlayerScreen(
                 Text(
                     text = "${playingChannel.name} • ${activeSource.label} (${currentSourceIndex + 1}/${playingChannel.sources.size}) bağlanıyor...",
                     color = TvThemeColors.TextPrimary,
-                    fontSize = 13.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -766,13 +776,13 @@ fun RedoXPlayerScreen(
                 Text(
                     text = err,
                     color = Color.White,
-                    fontSize = 13.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 TvCompactChipButton(
-                    text = "⚡ Alternatif Kaynağı Dene (${currentSourceIndex + 1}/${playingChannel.sources.size})",
+                    text = "Alternatif kaynağı dene (${currentSourceIndex + 1}/${playingChannel.sources.size})",
                     icon = Icons.Rounded.Refresh,
                     onClick = { switchToNextSourceManually() }
                 )
@@ -787,15 +797,16 @@ fun RedoXPlayerScreen(
             modifier = Modifier.align(Alignment.CenterStart)
         ) {
             var selectedDrawerCat by remember { mutableStateOf("Tümü") }
+            val favKey = "__redox_favorites__"
             val drawerCategories = remember(allChannels, favoriteIds) {
-                val list = mutableListOf("Tümü", "⭐ Favoriler")
+                val list = mutableListOf("Tümü", favKey)
                 list.addAll(allChannels.map { it.category }.distinct())
                 list
             }
             val filteredDrawerChannels = remember(allChannels, selectedDrawerCat, favoriteIds) {
                 when (selectedDrawerCat) {
                     "Tümü" -> allChannels
-                    "⭐ Favoriler" -> allChannels.filter { favoriteIds.contains(it.id) }
+                    favKey -> allChannels.filter { favoriteIds.contains(it.id) }
                     else -> allChannels.filter { it.category.equals(selectedDrawerCat, ignoreCase = true) }
                 }
             }
@@ -814,10 +825,10 @@ fun RedoXPlayerScreen(
 
             Column(
                 modifier = Modifier
-                    .width(370.dp)
+                    .width(400.dp)
                     .fillMaxHeight()
                     .background(TvThemeColors.GlassOverlay)
-                    .padding(14.dp)
+                    .padding(16.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -826,15 +837,15 @@ fun RedoXPlayerScreen(
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "Hızlı Kanal Listesi (${filteredDrawerChannels.size})",
-                            color = TvThemeColors.BullRedBright,
-                            fontSize = 14.sp,
+                            text = "Hızlı kanal listesi (${filteredDrawerChannels.size})",
+                            color = TvThemeColors.TextPrimary,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.ExtraBold
                         )
                         Text(
-                            text = "OK: İzle  •  OK Basılı Tut: ⭐ Favori Ekle/Çıkar",
-                            color = TvThemeColors.FavoriteGold,
-                            fontSize = 10.sp,
+                            text = "OK: izle  •  OK basılı tut: favori ekle / çıkar",
+                            color = RedoXColors.Gold,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             maxLines = 1
                         )
@@ -849,27 +860,28 @@ fun RedoXPlayerScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     items(drawerCategories, key = { "dcat_$it" }) { dCat ->
                         val isSel = selectedDrawerCat == dCat
+                        val catLabel = if (dCat == favKey) "Favoriler" else dCat
                         TvCompactChipButton(
-                            text = if (isSel) "✓ $dCat" else dCat,
-                            icon = if (dCat == "⭐ Favoriler") Icons.Rounded.Star else Icons.Rounded.Category,
+                            text = if (isSel) "✓ $catLabel" else catLabel,
+                            icon = if (dCat == favKey) Icons.Rounded.Star else Icons.Rounded.Category,
                             onClick = { selectedDrawerCat = dCat }
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 LazyColumn(
                     state = listState,
-                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp),
                     modifier = Modifier.weight(1f).fillMaxWidth()
                 ) {
                     itemsIndexed(filteredDrawerChannels, key = { idx, ch -> "drawer_${ch.id}_$idx" }) { _, ch ->
@@ -877,7 +889,7 @@ fun RedoXPlayerScreen(
                         val isCurrent = ch.id == playingChannel.id
                         val isFav = favoriteIds.contains(ch.id)
                         val isBroken = brokenIds.contains(ch.id) || ch.isBroken
-                        val itemColor = if (isBroken) TvThemeColors.BrokenRed else TvThemeColors.categoryColor(ch.category)
+                        val itemShape = RoundedCornerShape(12.dp)
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -891,18 +903,12 @@ fun RedoXPlayerScreen(
                                         true
                                     } else false
                                 }
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(
-                                    when {
-                                        itemFocused -> TvThemeColors.BullRedBright
-                                        isCurrent -> itemColor.copy(alpha = 0.35f)
-                                        else -> Color.White.copy(alpha = 0.06f)
-                                    }
-                                )
-                                .border(
-                                    width = if (isCurrent && !itemFocused) 1.5.dp else 0.dp,
-                                    color = if (isCurrent && !itemFocused) TvThemeColors.BullRedBright else Color.Transparent,
-                                    shape = RoundedCornerShape(10.dp)
+                                .tvSurface(
+                                    focused = itemFocused,
+                                    shape = itemShape,
+                                    color = if (isCurrent) RedoXColors.Primary.copy(alpha = 0.16f) else Color.White.copy(alpha = 0.05f),
+                                    idleBorder = if (isCurrent) RedoXColors.Primary.copy(alpha = 0.55f) else Color.Transparent,
+                                    ringWidth = 2.5.dp
                                 )
                                 .onFocusChanged { itemFocused = it.isFocused }
                                 .tvLongPressFavoriteModifier(
@@ -916,9 +922,9 @@ fun RedoXPlayerScreen(
                                         val wasFav = favoriteIds.contains(ch.id)
                                         onToggleFavorite(ch.id)
                                         autoFailoverBanner = if (wasFav) {
-                                            "☆ ${ch.name} favorilerden çıkarıldı"
+                                            "${ch.name} favorilerden çıkarıldı"
                                         } else {
-                                            "⭐ ${ch.name} favorilere eklendi"
+                                            "${ch.name} favorilere eklendi"
                                         }
                                     }
                                 )
@@ -927,38 +933,38 @@ fun RedoXPlayerScreen(
                                     showChannelDrawer = false
                                     try { playerSurfaceFocusRequester.requestFocus() } catch (_: Exception) {}
                                 }
-                                .padding(horizontal = 10.dp, vertical = 7.dp)
+                                .padding(horizontal = 12.dp, vertical = 8.dp)
                         ) {
                             Text(
                                 text = "${ch.number}",
-                                color = if (itemFocused) Color.White else itemColor,
+                                color = if (itemFocused || isCurrent) TvThemeColors.TextPrimary else RedoXColors.TextTertiary,
                                 fontWeight = FontWeight.ExtraBold,
-                                fontSize = 12.sp,
-                                modifier = Modifier.width(30.dp)
+                                fontSize = 14.sp,
+                                modifier = Modifier.width(34.dp)
                             )
-                            ChannelBrandLogoBox(channel = ch, boxSize = 28.dp, fontSize = 8.sp)
-                            Spacer(modifier = Modifier.width(8.dp))
+                            ChannelBrandLogoBox(channel = ch, boxSize = 34.dp, fontSize = 11.sp)
+                            Spacer(modifier = Modifier.width(10.dp))
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = ch.name,
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
+                                    fontSize = 15.sp,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = when {
-                                        isBroken -> "⚠️ ÇALIŞMIYOR"
-                                        itemFocused -> if (isFav) "⭐ Favoride • Uzun Bas: Çıkar" else "OK Basılı Tut: ⭐ Favoriye Ekle"
-                                        else -> "${ch.sources.size} Akış • ${ch.nowTitleOrLive()}"
+                                        isBroken -> "Yanıt vermiyor"
+                                        itemFocused -> if (isFav) "Favoride • basılı tut: çıkar" else "Basılı tut: favoriye ekle"
+                                        else -> "${ch.sources.size} akış • ${ch.nowTitleOrLive()}"
                                     },
                                     color = when {
-                                        itemFocused -> Color.White.copy(alpha = 0.92f)
+                                        itemFocused -> RedoXColors.Gold
                                         isBroken -> TvThemeColors.BrokenRed
                                         else -> TvThemeColors.TextSecondary
                                     },
-                                    fontSize = 10.sp,
+                                    fontSize = 12.sp,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -967,8 +973,8 @@ fun RedoXPlayerScreen(
                             Icon(
                                 imageVector = if (isFav) Icons.Rounded.Star else Icons.Rounded.StarBorder,
                                 contentDescription = null,
-                                tint = if (isFav) TvThemeColors.FavoriteGold else Color.White.copy(alpha = if (itemFocused) 0.7f else 0.25f),
-                                modifier = Modifier.size(15.dp)
+                                tint = if (isFav) RedoXColors.Gold else RedoXColors.TextTertiary,
+                                modifier = Modifier.size(17.dp)
                             )
                         }
                     }
@@ -976,247 +982,196 @@ fun RedoXPlayerScreen(
             }
         }
 
-        // ALT İNTERAKTİF OSD VE HIZLI KONTROL ÇUBUĞU (140ms HAFİF SLIDE + 3.8 SN OTOMATİK GİZLEME)
+        // ALT İNTERAKTİF OSD: bilgi satırı + program ilerlemesi + oynatma denetimleri
+        // (140ms hafif slide, 3.8 sn hareketsizlikte otomatik gizlenir). Düğmeler yalnızca simgedir;
+        // odaktaki düğmenin adı altta tek satırda gösterilir (tüm ekran genişliklerinde taşma olmaz).
         AnimatedVisibility(
             visible = showOsd && !showChannelDrawer,
             enter = slideInVertically(animationSpec = tween(140), initialOffsetY = { it }) + fadeIn(tween(120)),
             exit = slideOutVertically(animationSpec = tween(140), targetOffsetY = { it }) + fadeOut(tween(120)),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(horizontal = 20.dp, vertical = 16.dp)
+                .padding(horizontal = 36.dp, vertical = 24.dp)
         ) {
+            val osdShape = RoundedCornerShape(24.dp)
+            val isFavorite = favoriteIds.contains(playingChannel.id)
             Column(
+                verticalArrangement = Arrangement.spacedBy(14.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(18.dp))
+                    .clip(osdShape)
                     .background(TvThemeColors.GlassOverlay)
-                    .border(1.5.dp, catColor.copy(alpha = 0.55f), RoundedCornerShape(18.dp))
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+                    .border(1.dp, Color.White.copy(alpha = 0.10f), osdShape)
+                    .padding(horizontal = 26.dp, vertical = 18.dp)
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                // ---- bilgi satırı
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     ChannelBrandLogoBox(
                         channel = playingChannel,
-                        boxSize = 48.dp,
-                        fontSize = 11.sp
+                        boxSize = 64.dp,
+                        fontSize = 18.sp
                     )
-
-                    Spacer(modifier = Modifier.width(12.dp))
-
-                    Column(modifier = Modifier.weight(1f)) {
+                    Spacer(modifier = Modifier.width(18.dp))
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(CircleShape)
-                                    .background(TvThemeColors.BullRedBright)
+                            TvLiveBadge(
+                                text = if (isBrokenChannel) "ÇALIŞMIYOR" else "CANLI",
+                                broken = isBrokenChannel
                             )
-                            Text(
-                                text = "${playingChannel.number}. ${playingChannel.name}",
-                                color = TvThemeColors.TextPrimary,
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.ExtraBold,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(5.dp))
-                                    .background(if (isBrokenChannel) TvThemeColors.BrokenRed else TvThemeColors.BullRedPrimary.copy(alpha = 0.25f))
-                                    .padding(horizontal = 7.dp, vertical = 2.dp)
-                            ) {
-                                val statsText = buildString {
-                                    append(if (stats.height > 0) stats.resolutionLabel else videoResolutionBadge)
-                                    if (stats.videoBitrateKbps > 0) {
-                                        append(String.format(Locale.US, " • %.1f Mbps", stats.videoBitrateKbps / 1000f))
-                                    }
-                                    if (stats.bandwidthKbps > 0) {
-                                        append(String.format(Locale.US, " • ağ ~%.1f Mbps", stats.bandwidthKbps / 1000f))
-                                    }
-                                    if (stats.droppedFrames > 0) append(" • ${stats.droppedFrames} kare düştü")
-                                    if (nightActive) append(" • 🌙")
+                            val statsText = buildString {
+                                append(if (stats.height > 0) stats.resolutionLabel else videoResolutionBadge)
+                                if (stats.videoBitrateKbps > 0) {
+                                    append(String.format(Locale.US, " · %.1f Mbps", stats.videoBitrateKbps / 1000f))
                                 }
-                                Text(
-                                    text = statsText,
-                                    color = Color.White,
-                                    fontSize = 10.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    maxLines = 1
+                                if (stats.bandwidthKbps > 0) {
+                                    append(String.format(Locale.US, " · ağ ~%.1f Mbps", stats.bandwidthKbps / 1000f))
+                                }
+                                if (stats.droppedFrames > 0) append(" · ${stats.droppedFrames} kare düştü")
+                            }
+                            TvStatPill(text = statsText)
+                            if (playingChannel.sources.size > 1) {
+                                TvStatPill(
+                                    text = "Akış ${currentSourceIndex + 1}/${playingChannel.sources.size}",
+                                    color = TvThemeColors.TextSecondary
                                 )
                             }
+                            if (nightActive) {
+                                TvStatPill(text = "Gece modu")
+                            }
                         }
-                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = "${playingChannel.number} · ${playingChannel.name}",
+                            color = TvThemeColors.TextPrimary,
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.ExtraBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
                         Text(
                             text = playingChannel.nowNextLine(),
                             color = TvThemeColors.TextSecondary,
-                            fontSize = 11.sp,
+                            fontSize = 15.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-
-                    if (playingChannel.sources.size > 1) {
-                        LazyRow(
-                            horizontalArrangement = Arrangement.spacedBy(6.dp),
-                            modifier = Modifier.width(460.dp)
-                        ) {
-                            itemsIndexed(playingChannel.sources) { idx, src ->
-                                TvCompactChipButton(
-                                    text = if (idx == currentSourceIndex) "✓ Akış ${idx + 1}: ${src.label}" else "Akış ${idx + 1}/${playingChannel.sources.size}",
-                                    icon = Icons.Rounded.Sensors,
-                                    onClick = {
-                                        autoTriedCount = 0
-                                        currentSourceIndex = idx
-                                        onSavePreferredSource(playingChannel.id, idx)
-                                        bumpOsdTimer(focusControls = true)
-                                    }
-                                )
-                            }
-                        }
-                    } else {
-                        Text(
-                            text = "►: Kaynak Değiştir • ◄: Kanal Listesi • OK: Kontroller",
-                            color = TvThemeColors.AccentCyan,
-                            fontSize = 10.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                if (playingChannel.hasRealEpg) {
+                    TvProgressBar(progress = playingChannel.progressForUi(), height = 6.dp)
+                }
 
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                // ---- denetimler: sol (kanallar, favori) • orta (oynatma) • sağ (yayın ayarları)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    item {
-                        TvCompactChipButton(
-                            text = if (playingChannel.sources.size > 1) {
-                                "⚡ Alternatif Yayın (${currentSourceIndex + 1}/${playingChannel.sources.size})"
-                            } else {
-                                "🔄 Yayını Yenile"
-                            },
-                            icon = Icons.Rounded.Refresh,
-                            onClick = { switchToNextSourceManually() },
-                            modifier = Modifier.focusRequester(primaryActionFocusRequester)
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "📺 Kanal Listesi",
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        TvOsdButton(
                             icon = Icons.Rounded.LiveTv,
+                            label = "Kanal listesi",
+                            onFocusLabel = { focusedOsdLabel = it },
                             onClick = {
                                 showChannelDrawer = true
                                 showOsd = false
                             }
                         )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "⏮ Önceki Kanal",
-                            icon = Icons.Rounded.SwapHoriz,
-                            onClick = { onZapChannel(-1) }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "Sonraki Kanal ⏭",
-                            icon = Icons.Rounded.SwapHoriz,
-                            onClick = { onZapChannel(+1) }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "🔢 Kanal No (0-9)",
-                            icon = Icons.Rounded.Tag,
-                            onClick = {
-                                showVirtualNumpadDialog = true
-                            }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "✕ Kanaldan Çık",
-                            icon = Icons.Rounded.Clear,
-                            onClick = onExitPlayer
-                        )
-                    }
-                    if (previousChannel != null) {
-                        item {
-                            TvCompactChipButton(
-                                text = "🔄 Önceki: ${previousChannel.name} (0)",
-                                icon = Icons.Rounded.SwapHoriz,
-                                onClick = { onRecallPreviousChannel() }
-                            )
-                        }
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = if (isPausedByTimeshift) "▶️ Devam Et" else "⏸️ Duraklat",
-                            icon = Icons.Rounded.PlayArrow,
-                            onClick = { toggleTimeshiftPause() }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "⏪ -15 Sn Geri",
-                            icon = Icons.Rounded.History,
-                            onClick = { rewindTimeshift15Sec() }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "🔴 Canlıya Dön",
-                            icon = Icons.Rounded.FiberManualRecord,
-                            onClick = { jumpToLiveEdge() }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "🎚️ Kalite: ${featurePrefs.defaultQuality.label}",
-                            icon = Icons.Rounded.Sensors,
-                            onClick = { cycleQuality() }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = if (featurePrefs.nightMode) "🌙 Gece Modu: AÇIK" else "🌙 Gece Modu: KAPALI",
-                            icon = Icons.Rounded.Bedtime,
-                            onClick = {
-                                onUpdatePrefs { it.copy(nightMode = !it.nightMode) }
-                                bumpOsdTimer(focusControls = true)
-                            }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "📺 Kanal Listesi",
-                            icon = Icons.Rounded.LiveTv,
-                            onClick = {
-                                showChannelDrawer = true
-                                showOsd = false
-                            }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = if (favoriteIds.contains(playingChannel.id)) "⭐ Favoride" else "⭐ Favori Ekle",
-                            icon = if (favoriteIds.contains(playingChannel.id)) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                        TvOsdButton(
+                            icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                            label = if (isFavorite) "Favoriden çıkar" else "Favori ekle",
+                            active = isFavorite,
+                            onFocusLabel = { focusedOsdLabel = it },
                             onClick = {
                                 onToggleFavorite(playingChannel.id)
                                 bumpOsdTimer(focusControls = true)
                             }
                         )
                     }
-                    item {
-                        TvCompactChipButton(
-                            text = "📐 ${scaleMode.label}",
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        TvOsdButton(
+                            icon = Icons.Rounded.SkipPrevious,
+                            label = "Önceki kanal",
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { onZapChannel(-1) }
+                        )
+                        TvOsdButton(
+                            icon = Icons.Rounded.History,
+                            label = "15 sn geri",
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { rewindTimeshift15Sec() }
+                        )
+                        TvOsdButton(
+                            icon = if (isPausedByTimeshift) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                            label = if (isPausedByTimeshift) "Devam et" else "Duraklat",
+                            primary = true,
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { toggleTimeshiftPause() },
+                            modifier = Modifier.focusRequester(primaryActionFocusRequester)
+                        )
+                        TvOsdButton(
+                            icon = Icons.Rounded.FiberManualRecord,
+                            label = "Canlıya dön",
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { jumpToLiveEdge() }
+                        )
+                        TvOsdButton(
+                            icon = Icons.Rounded.SkipNext,
+                            label = "Sonraki kanal",
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { onZapChannel(+1) }
+                        )
+                    }
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        TvOsdButton(
+                            icon = Icons.Rounded.Refresh,
+                            label = if (playingChannel.sources.size > 1) {
+                                "Alternatif yayın (${currentSourceIndex + 1}/${playingChannel.sources.size})"
+                            } else {
+                                "Yayını yenile"
+                            },
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { switchToNextSourceManually() }
+                        )
+                        TvOsdButton(
+                            icon = Icons.Rounded.HighQuality,
+                            label = "Kalite: ${featurePrefs.defaultQuality.label}",
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { cycleQuality() }
+                        )
+                        TvOsdButton(
+                            icon = Icons.Rounded.VolumeUp,
+                            label = activeAudioLabel,
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { cycleAudioTrack() }
+                        )
+                        TvOsdButton(
+                            icon = Icons.Rounded.ClosedCaption,
+                            label = activeSubtitleLabel,
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = { cycleSubtitleTrack() }
+                        )
+                        TvOsdButton(
                             icon = Icons.Rounded.AspectRatio,
+                            label = "Ölçek: ${scaleMode.label}",
+                            onFocusLabel = { focusedOsdLabel = it },
                             onClick = {
                                 val modes = PlayerScaleMode.entries
                                 val nextMode = modes[(modes.indexOf(scaleMode) + 1) % modes.size]
@@ -1225,57 +1180,108 @@ fun RedoXPlayerScreen(
                                 bumpOsdTimer(focusControls = true)
                             }
                         )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "Kanalı Gizle",
-                            icon = Icons.Rounded.DeleteOutline,
-                            onClick = { onHideChannel(playingChannel.id) }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = activeAudioLabel,
-                            icon = Icons.Rounded.MusicNote,
-                            onClick = { cycleAudioTrack() }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = activeSubtitleLabel,
-                            icon = Icons.Rounded.InsertDriveFile,
-                            onClick = { cycleSubtitleTrack() }
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "🖼️ Küçült (PiP)",
-                            icon = Icons.Rounded.SmartDisplay,
-                            onClick = onMinimizeToPip
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "2x2 Ekran",
-                            icon = Icons.Rounded.GridView,
-                            onClick = onOpenMultiView
-                        )
-                    }
-                    item {
-                        TvCompactChipButton(
-                            text = "Gizle",
-                            icon = Icons.Rounded.Clear,
+                        TvOsdButton(
+                            icon = Icons.Rounded.MoreHoriz,
+                            label = if (showMoreOptions) "Daha az" else "Daha fazla",
+                            active = showMoreOptions,
+                            onFocusLabel = { focusedOsdLabel = it },
                             onClick = {
-                                showOsd = false
-                                osdInteractiveFocused = false
-                                try { playerSurfaceFocusRequester.requestFocus() } catch (_: Exception) {}
+                                showMoreOptions = !showMoreOptions
+                                bumpOsdTimer(focusControls = true)
                             }
                         )
                     }
                 }
+
+                // ---- odaktaki düğmenin adı (yoksa kısayol ipucu)
+                Text(
+                    text = if (focusedOsdLabel.isNotEmpty()) {
+                        focusedOsdLabel
+                    } else {
+                        "Sol: kanal listesi  •  Sağ: kaynak değiştir  •  Yukarı / aşağı: kanal  •  OK: kontroller"
+                    },
+                    color = if (focusedOsdLabel.isNotEmpty()) RedoXColors.Gold else RedoXColors.TextTertiary,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1
+                )
+
+                // ---- daha fazla seçenek
+                AnimatedVisibility(visible = showMoreOptions) {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        item {
+                            TvCompactChipButton(
+                                text = if (featurePrefs.nightMode) "Gece modu: Açık" else "Gece modu: Kapalı",
+                                icon = Icons.Rounded.Bedtime,
+                                onClick = {
+                                    onUpdatePrefs { it.copy(nightMode = !it.nightMode) }
+                                    bumpOsdTimer(focusControls = true)
+                                }
+                            )
+                        }
+                        item {
+                            TvCompactChipButton(
+                                text = "Küçük pencere (PiP)",
+                                icon = Icons.Rounded.SmartDisplay,
+                                onClick = onMinimizeToPip
+                            )
+                        }
+                        item {
+                            TvCompactChipButton(
+                                text = "2x2 ekran",
+                                icon = Icons.Rounded.GridView,
+                                onClick = onOpenMultiView
+                            )
+                        }
+                        item {
+                            TvCompactChipButton(
+                                text = "Kanal no (0-9)",
+                                icon = Icons.Rounded.Tag,
+                                onClick = { showVirtualNumpadDialog = true }
+                            )
+                        }
+                        if (previousChannel != null) {
+                            item {
+                                TvCompactChipButton(
+                                    text = "Önceki: ${previousChannel.name} (0)",
+                                    icon = Icons.Rounded.SwapHoriz,
+                                    onClick = { onRecallPreviousChannel() }
+                                )
+                            }
+                        }
+                        item {
+                            TvCompactChipButton(
+                                text = "Kanalı gizle",
+                                icon = Icons.Rounded.VisibilityOff,
+                                onClick = { onHideChannel(playingChannel.id) }
+                            )
+                        }
+                        item {
+                            TvCompactChipButton(
+                                text = "Kanaldan çık",
+                                icon = Icons.Rounded.Clear,
+                                onClick = onExitPlayer
+                            )
+                        }
+                        item {
+                            TvCompactChipButton(
+                                text = "Bilgi çubuğunu gizle",
+                                icon = Icons.Rounded.Clear,
+                                onClick = {
+                                    showOsd = false
+                                    osdInteractiveFocused = false
+                                    try { playerSurfaceFocusRequester.requestFocus() } catch (_: Exception) {}
+                                }
+                            )
+                        }
+                    }
+                }
             }
         }
- 
+
         // CHROMECAST 4K KUMANDASI İÇİN EKRAN ÜSTÜ SANAL NUMARATÖR (0-9) PENCERESİ
         if (showVirtualNumpadDialog) {
             var dialDigits by remember { mutableStateOf("") }
@@ -1312,7 +1318,7 @@ fun RedoXPlayerScreen(
                             .padding(22.dp)
                     ) {
                         Text(
-                            text = "🔢 Kanal Numarası Girin (Chromecast Kumandası)",
+                            text = "Kanal numarası girin",
                             color = TvThemeColors.TextPrimary,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.ExtraBold
@@ -1334,7 +1340,7 @@ fun RedoXPlayerScreen(
                                     fontWeight = FontWeight.ExtraBold
                                 )
                                 Text(
-                                    text = matchedChannel?.let { "✅ ${it.name} (${it.category})" } ?: "Rakamları seçip 'Kanala Git'e basın",
+                                    text = matchedChannel?.let { "${it.name} (${it.category})" } ?: "Rakamları seçip 'Kanala git'e basın",
                                     color = if (matchedChannel != null) TvThemeColors.AccentEmerald else TvThemeColors.TextSecondary,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.SemiBold
@@ -1359,7 +1365,7 @@ fun RedoXPlayerScreen(
                         }
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             TvCompactChipButton(
-                                text = "⌫ Sil",
+                                text = "Sil",
                                 icon = Icons.Rounded.Clear,
                                 onClick = { if (dialDigits.isNotEmpty()) dialDigits = dialDigits.dropLast(1) }
                             )
@@ -1369,14 +1375,14 @@ fun RedoXPlayerScreen(
                                 onClick = { if (dialDigits.length < 4) dialDigits += "0" }
                             )
                             TvCompactChipButton(
-                                text = "✕ Kapat",
+                                text = "Kapat",
                                 icon = Icons.Rounded.Clear,
                                 onClick = { showVirtualNumpadDialog = false }
                             )
                         }
                         if (matchedChannel != null) {
                             TvActionButton(
-                                text = "▶ CH ${matchedChannel.number} — ${matchedChannel.name} Kanalına Git",
+                                text = "CH ${matchedChannel.number} · ${matchedChannel.name} kanalına git",
                                 icon = Icons.Rounded.PlayArrow,
                                 isPrimary = true,
                                 onClick = {
@@ -1390,5 +1396,51 @@ fun RedoXPlayerScreen(
                 }
             }
         }
+    }
+}
+
+/**
+ * OSD denetim düğmesi (yalnızca simge). Odaktayken altın halka + ışıma; adı [onFocusLabel] ile üst bileşene
+ * bildirilir ve OSD'nin altında tek satırda gösterilir. [primary] = büyük, kırmızı oynat/duraklat düğmesi.
+ */
+@Composable
+private fun TvOsdButton(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    onFocusLabel: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    active: Boolean = false,
+    primary: Boolean = false
+) {
+    var focused by remember { mutableStateOf(false) }
+    val shape: Shape = if (primary) CircleShape else RoundedCornerShape(16.dp)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .size(if (primary) 68.dp else 52.dp)
+            .tvSurface(
+                focused = focused,
+                shape = shape,
+                brush = if (primary) RedoXColors.PrimaryBrush else null,
+                ringWidth = 3.dp
+            )
+            .onFocusChanged {
+                focused = it.isFocused || it.hasFocus
+                if (focused) onFocusLabel(label)
+            }
+            .clickable { onClick() }
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = when {
+                primary -> Color.White
+                active -> RedoXColors.Gold
+                focused -> TvThemeColors.TextPrimary
+                else -> TvThemeColors.TextSecondary
+            },
+            modifier = Modifier.size(if (primary) 34.dp else 24.dp)
+        )
     }
 }
