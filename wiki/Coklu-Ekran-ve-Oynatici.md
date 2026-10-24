@@ -16,7 +16,7 @@
 | **480p** | 480p ve en çok ~1,8 Mbps |
 | **Veri Tasarrufu** | 360p ve en çok ~0,9 Mbps |
 
-Telefon/tablette *Mobil veri tasarrufu* açıksa, yalnızca mobil veri kullanılırken kalite otomatik olarak **Veri Tasarrufu**'na düşer (Wi-Fi'de değişmez). Kalite oynatıcıdan (TV: kontrol çubuğundaki **Kalite** simgesi, mobil: ⚙ ayarlar) veya *Ayarlar*'dan seçilir.
+Telefon/tablette *Mobil veri tasarrufu* açıksa, yalnızca mobil veri kullanılırken kalite otomatik olarak **Veri Tasarrufu**'na düşer (Wi-Fi'de değişmez). Kalite oynatıcıdan (TV: **Seçenekler → Kalite**, mobil: ⚙ ayarlar) veya *Ayarlar*'dan seçilir.
 
 ## 📊 Gerçek istatistikler
 
