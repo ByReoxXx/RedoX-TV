@@ -54,7 +54,7 @@ Arayüz paleti doğrudan logodan ölçülmüştür:
 
 **Tasarım dili "Kızıl Halka":** logodaki altın halka arayüzün odak göstergesidir. TV'de odaktaki öğe 3 dp altın çerçeve ve yumuşak altın ışımayla belirir; kırmızı yalnızca eylem ve canlı yayın içindir; emoji yerine simge kullanılır; TV'de en küçük yazı 12 sp, telefon ve tablette dokunma hedefleri en az 44 dp'dir.
 
-Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), AMOLED siyah ve yazı boyutu seçilebilir; logo her zaman kırmızı-altın kalır. README başlığı için bit eşlem görseller: [`docs/brand/`](docs/brand).
+Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), AMOLED siyah ve yazı boyutu seçilebilir; logo her zaman kırmızı-altın kalır. Vektör logo dosyaları (SVG) ve README başlığı görseli: [`docs/brand/`](docs/brand).
 
 ---
 
