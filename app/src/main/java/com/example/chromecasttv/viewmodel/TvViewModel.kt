@@ -717,9 +717,9 @@ class TvViewModel(
         _extraState.value = _extraState.value.copy(autoStartLastChannel = next)
         repository.saveAutoStartLastChannel(next)
         _statusMessage.value = if (next) {
-            "⚡ Açılışta Son İzlenen Kanaldan Başla: AÇIK"
+            "Açılışta son izlenen kanaldan başla: Açık"
         } else {
-            "⚡ Açılışta Son İzlenen Kanaldan Başla: KAPALI (Landing Page Açılır)"
+            "Açılışta son izlenen kanaldan başla: Kapalı (karşılama ekranı açılır)"
         }
     }
 
@@ -733,7 +733,7 @@ class TvViewModel(
             if (_activePlayingChannel.value?.id == channelId) {
                 zapChannel(+1)
             }
-            _statusMessage.value = "👁️ $chName listeden gizlendi (M3U & Ayarlar'dan geri yüklenebilir)."
+            _statusMessage.value = "$chName listeden gizlendi (M3U ve Ayarlar'dan geri yüklenebilir)."
         }
     }
 
@@ -745,14 +745,14 @@ class TvViewModel(
         }
         _extraState.value = _extraState.value.copy(hiddenChannelIds = emptySet())
         repository.saveHiddenChannelIds(emptySet())
-        _statusMessage.value = "👁️ Gizlenen $count kanal listeye geri yüklendi!"
+        _statusMessage.value = "Gizlenen $count kanal listeye geri yüklendi."
     }
 
     fun toggleOnlyShowHealthy() {
         val next = !_extraState.value.onlyShowHealthy
         _extraState.value = _extraState.value.copy(onlyShowHealthy = next)
         _statusMessage.value = if (next) {
-            "🟢 Sadece sağlık testinden geçen aktif kanallar gösteriliyor."
+            "Yalnızca sağlık testinden geçen aktif kanallar gösteriliyor."
         } else {
             "Tüm kanallar gösteriliyor."
         }
@@ -778,7 +778,7 @@ class TvViewModel(
                 isScanningHealth = true,
                 healthScanProgress = "0/${pool.size}"
             )
-            _statusMessage.value = "🩺 Tüm kanallar (${pool.size} kanal) paralel olarak taranıyor..."
+            _statusMessage.value = "Tüm kanallar (${pool.size} kanal) paralel olarak taranıyor..."
 
             val healthy = _extraState.value.healthyChannelIds.toMutableSet()
             val broken = _brokenIds.value.toMutableSet()
@@ -817,7 +817,7 @@ class TvViewModel(
                     _brokenIds.value = broken.toSet()
                 }
                 repository.saveBrokenChannelIds(broken)
-                _statusMessage.value = "✅ Tüm kanallar tarandı (${pool.size}/${pool.size}): 🟢 $okCount Aktif • ⚠️ $failCount Yanıt Vermiyor"
+                _statusMessage.value = "Tüm kanallar tarandı (${pool.size}/${pool.size}): $okCount aktif • $failCount yanıt vermiyor"
             } finally {
                 _extraState.value = _extraState.value.copy(
                     healthyChannelIds = healthy.toSet(),
@@ -832,9 +832,9 @@ class TvViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val savedPath = repository.saveBackupFileToDevice()
             if (savedPath != null) {
-                _statusMessage.value = "💾 Favoriler, M3U ve kanal hafızası yedeklendi: $savedPath"
+                _statusMessage.value = "Favoriler, M3U ve kanal hafızası yedeklendi: $savedPath"
             } else {
-                _statusMessage.value = "⚠️ Yedek dosyası oluşturulamadı."
+                _statusMessage.value = "Yedek dosyası oluşturulamadı."
             }
         }
     }
@@ -844,9 +844,9 @@ class TvViewModel(
             val ok = repository.restoreBackupFileFromDevice()
             if (ok) {
                 applyRestoredPreferences()
-                _statusMessage.value = "♻️ Yedek başarıyla geri yüklendi!"
+                _statusMessage.value = "Yedek başarıyla geri yüklendi."
             } else {
-                _statusMessage.value = "⚠️ Download klasöründe 'redox_tv_backup.txt' bulunamadı."
+                _statusMessage.value = "Download klasöründe 'redox_tv_backup.txt' bulunamadı."
             }
         }
     }
@@ -1032,10 +1032,10 @@ class TvViewModel(
         val updated = _favoriteOrder.value.toMutableList()
         if (updated.contains(channelId)) {
             updated.remove(channelId)
-            _statusMessage.value = "☆ $chName favorilerden çıkarıldı."
+            _statusMessage.value = "$chName favorilerden çıkarıldı."
         } else {
             updated.add(channelId)
-            _statusMessage.value = "⭐ $chName favorilere eklendi (#${updated.size})."
+            _statusMessage.value = "$chName favorilere eklendi (#${updated.size})."
         }
         _favoriteOrder.value = updated
         repository.saveFavoriteOrderList(updated)
@@ -1053,7 +1053,7 @@ class TvViewModel(
         repository.saveFavoriteOrderList(current)
         val all = _builtInChannels.value + _customM3uChannels.value
         val chName = all.find { it.id == channelId }?.name ?: "Kanal"
-        _statusMessage.value = "📌 $chName favori sırası #${targetIdx + 1} konumuna taşındı."
+        _statusMessage.value = "$chName favori sırası #${targetIdx + 1} konumuna taşındı."
     }
 
     fun sortFavoritesBy(mode: String) {
@@ -1074,7 +1074,7 @@ class TvViewModel(
             "NUMBER" -> "Kanal Numarasına Göre"
             else -> "Kategoriye Göre"
         }
-        _statusMessage.value = "⭐ Favoriler $modeLabel otomatik sıralandı."
+        _statusMessage.value = "Favoriler $modeLabel otomatik sıralandı."
     }
 
     fun cycleSleepTimer() {
@@ -1132,7 +1132,7 @@ class TvViewModel(
                 val updated = _playlists.value + imported
                 _playlists.value = updated
                 repository.savePlaylists(updated)
-                _statusMessage.value = "'${imported.name}' Özel M3U Kanalları menüsüne eklendi!"
+                _statusMessage.value = "'${imported.name}' Özel M3U kanallarına eklendi."
                 reloadAllChannelsAndEpg()
             } else {
                 _isLoadingM3u.value = false
@@ -1149,11 +1149,11 @@ class TvViewModel(
                 val updated = _playlists.value + imported
                 _playlists.value = updated
                 repository.savePlaylists(updated)
-                _statusMessage.value = "✅ '${imported.name}' Özel M3U Kanalları menüsüne eklendi!"
+                _statusMessage.value = "'${imported.name}' Özel M3U kanallarına eklendi."
                 reloadAllChannelsAndEpg()
             } else {
                 _isLoadingM3u.value = false
-                _statusMessage.value = "⚠️ '${file.name}' içinde geçerli M3U/M3U8 yayın linki bulunamadı."
+                _statusMessage.value = "'${file.name}' içinde geçerli M3U/M3U8 yayın linki bulunamadı."
             }
         }
     }

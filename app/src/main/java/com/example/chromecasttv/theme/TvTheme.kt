@@ -86,7 +86,7 @@ fun ChannelBrandLogoBox(
             .clip(shape)
             .background(
                 if (hasLogoUrl && !logoLoadFailed) {
-                    Brush.linearGradient(listOf(Color(0xFF22222E), Color(0xFF12121C)))
+                    Brush.linearGradient(listOf(RedoXColors.Ink600, RedoXColors.Ink800))
                 } else {
                     Brush.linearGradient(listOf(primary, secondary))
                 }

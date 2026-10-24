@@ -88,8 +88,7 @@ fun MobileLiveScreen(
                     MChip(
                         text = "$category ($count)",
                         selected = category == selected,
-                        onClick = { viewModel.selectCategory(category) },
-                        icon = RedoXColors.categoryIcon(category)
+                        onClick = { viewModel.selectCategory(category) }
                     )
                 }
             }
