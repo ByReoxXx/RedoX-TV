@@ -43,6 +43,15 @@ if [ "$KIND" = "tv" ]; then
     keys 2 KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_DOWN; sleep 1
     shot "${P}-03-canli-odak"
 
+    # Kumandada Menü tuşu yok: OK'a basılı tutmak odağı üstteki "İzle" düğmesine götürmeli,
+    # aşağı yön tuşu Favori / Kilit / Düzenle / Gizle düğmelerine, Geri ise karta döndürmeli
+    adb shell input keyevent --longpress KEYCODE_DPAD_CENTER; sleep 2
+    shot "${P}-03b-uzun-basis-izle"
+    key KEYCODE_DPAD_DOWN; sleep 1
+    shot "${P}-03c-ozellik-dugmeleri"
+    key KEYCODE_BACK; sleep 2
+    shot "${P}-03d-geri-karta"
+
     key KEYCODE_DPAD_CENTER; sleep 6            # kanalı aç
     shot "${P}-04-oynatici"
     key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla
@@ -52,7 +61,13 @@ if [ "$KIND" = "tv" ]; then
     key KEYCODE_DPAD_LEFT; sleep 2              # hızlı kanal çekmecesi
     shot "${P}-06-cekmece"
     key KEYCODE_BACK; sleep 1                   # çekmeceyi kapat
-    key KEYCODE_BACK; sleep 4                   # oynatıcıdan çık
+    key KEYCODE_BACK; sleep 3                   # bilgi çubuğu açıksa gizler, değilse oynatıcıdan çıkar
+    # Emülatörde akış alternatife geçince bilgi çubuğu kendiliğinden yeniden açılabilir:
+    # liste ekranı (yan menü) görünene kadar Geri (en çok 2 kez daha)
+    for _ in 1 2; do
+      if python3 ci/ui.py has "Favorilerim"; then break; fi
+      key KEYCODE_BACK; sleep 3
+    done
     shot "${P}-07-geri-liste"
 
     # yan menü: Canlı TV, Favorilerim, Özel M3U, Bölünmüş Ekran, Yayın Rehberi, Kanal Ara, M3U ve Dosya, Ayarlar
@@ -69,6 +84,12 @@ if [ "$KIND" = "tv" ]; then
     shot "${P}-12-m3u"
     key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
     shot "${P}-13-ayarlar"
+
+    # Geri: içerikten yan menüye, ikinci basışta çıkış uyarısı (uygulamadan hemen çıkmaz)
+    key KEYCODE_BACK; sleep 2
+    shot "${P}-14-geri-yan-menu"
+    key KEYCODE_BACK; sleep 1
+    shot "${P}-15-cikis-uyarisi"
   done
   adb shell wm density reset || true
 else

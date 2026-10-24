@@ -172,11 +172,12 @@ Keystore dosyasını **asla depoya koymayın** (`.gitignore` zaten engeller) ve 
 
 ## Kumanda ve hareket haritası
 
-**Android TV**
+**Android TV** (Chromecast kumandası gibi yalnızca yön tuşları, `OK` ve `Geri` olan kumandalarla tam çalışır; Menü, kanal ve rakam tuşları gerekmez)
 
 | Ekran | Tuş | İşlev |
 |---|---|---|
-| Kanal ızgarası | `OK` / `OK basılı tut` | İzle / favori ekle-çıkar |
+| Kanal ızgarası | `OK` / `OK basılı tut` | İzle / odağı üstteki panele (İzle, Favori, Kilit, Düzenle, Gizle) götür; `Geri` karta döndürür |
+| Tüm ekranlar | `Geri` | İçerikten yan menüye; yan menüde ikinci basış uygulamadan çıkar |
 | Oynatıcı | `▲ ▼` | Kanal değiştir |
 | Oynatıcı | `◄` / `►` | Kanal çekmecesi / sonraki akış kaynağı |
 | Oynatıcı | `OK` | Kontrol çubuğu (kalite, gece modu, ses/altyazı, uyku, 2x2…) |

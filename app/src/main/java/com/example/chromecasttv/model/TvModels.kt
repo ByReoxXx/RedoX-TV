@@ -238,7 +238,7 @@ data class TrackOption(
 )
 
 enum class MainNavTab(val title: String, val subtitle: String, val icon: ImageVector) {
-    ALL_CHANNELS("Canlı TV", "Kategoriler, kanallar", Icons.Rounded.LiveTv),
+    ALL_CHANNELS("Canlı TV", "Tüm kanallar", Icons.Rounded.LiveTv),
     FAVORITES("Favorilerim", "Sıralanabilir listeler", Icons.Rounded.Star),
     CUSTOM_M3U("Özel M3U", "Eklenen listelerim", Icons.Rounded.FolderOpen),
     MULTI_VIEW("Bölünmüş Ekran", "2'li ve 4'lü izle", Icons.Rounded.GridView),
