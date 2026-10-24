@@ -4,6 +4,8 @@
 
 > **RedoX = Red + Ox** — "kırmızı boğa". Logoda "RedoX TV" yazar; uygulamanın adı **RedoX TV 2**'dir.
 
+**Hızlı bağlantılar:** [GitHub deposu](https://github.com/ByReoxXx/RedoX-TV-2) • [APK'ları indir (Releases)](https://github.com/ByReoxXx/RedoX-TV-2/releases) • [Hata / öneri (Issues)](https://github.com/ByReoxXx/RedoX-TV-2/issues)
+
 ---
 
 ## 📚 İçindekiler
