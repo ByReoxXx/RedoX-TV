@@ -71,6 +71,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -995,6 +996,7 @@ fun RedoXPlayerScreen(
         ) {
             val osdShape = RoundedCornerShape(24.dp)
             val isFavorite = favoriteIds.contains(playingChannel.id)
+            val compactOsd = isCompactOsd()
             Column(
                 verticalArrangement = Arrangement.spacedBy(14.dp),
                 modifier = Modifier
@@ -1004,7 +1006,7 @@ fun RedoXPlayerScreen(
                     .border(1.dp, Color.White.copy(alpha = 0.10f), osdShape)
                     .padding(horizontal = 26.dp, vertical = 18.dp)
             ) {
-                // ---- bilgi satırı
+                // ---- üst satır: kanal bilgisi (sol) • oynatma denetimleri (sağ)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ChannelBrandLogoBox(
                         channel = playingChannel,
@@ -1029,10 +1031,6 @@ fun RedoXPlayerScreen(
                                 if (stats.videoBitrateKbps > 0) {
                                     append(String.format(Locale.US, " · %.1f Mbps", stats.videoBitrateKbps / 1000f))
                                 }
-                                if (stats.bandwidthKbps > 0) {
-                                    append(String.format(Locale.US, " · ağ ~%.1f Mbps", stats.bandwidthKbps / 1000f))
-                                }
-                                if (stats.droppedFrames > 0) append(" · ${stats.droppedFrames} kare düştü")
                             }
                             TvStatPill(text = statsText)
                             if (playingChannel.sources.size > 1) {
@@ -1061,46 +1059,11 @@ fun RedoXPlayerScreen(
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                }
-
-                if (playingChannel.hasRealEpg) {
-                    TvProgressBar(progress = playingChannel.progressForUi(), height = 6.dp)
-                }
-
-                // ---- denetimler: sol (kanallar, favori) • orta (oynatma) • sağ (yayın ayarları)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
+                    Spacer(modifier = Modifier.width(16.dp))
+                    // oynatma denetimleri üst satırda, bilgi bloğunun sağında
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ) {
-                        TvOsdButton(
-                            icon = Icons.Rounded.LiveTv,
-                            label = "Kanal listesi",
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = {
-                                showChannelDrawer = true
-                                showOsd = false
-                            }
-                        )
-                        TvOsdButton(
-                            icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
-                            label = if (isFavorite) "Favoriden çıkar" else "Favori ekle",
-                            active = isFavorite,
-                            onFocusLabel = { focusedOsdLabel = it },
-                            onClick = {
-                                onToggleFavorite(playingChannel.id)
-                                bumpOsdTimer(focusControls = true)
-                            }
-                        )
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(if (compactOsd) 8.dp else 12.dp)
                     ) {
                         TvOsdButton(
                             icon = Icons.Rounded.SkipPrevious,
@@ -1133,6 +1096,42 @@ fun RedoXPlayerScreen(
                             label = "Sonraki kanal",
                             onFocusLabel = { focusedOsdLabel = it },
                             onClick = { onZapChannel(+1) }
+                        )
+                    }
+                }
+
+                if (playingChannel.hasRealEpg) {
+                    TvProgressBar(progress = playingChannel.progressForUi(), height = 6.dp)
+                }
+
+                // ---- alt satır: sol (kanallar, favori) • sağ (yayın ayarları)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        TvOsdButton(
+                            icon = Icons.Rounded.LiveTv,
+                            label = "Kanal listesi",
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = {
+                                showChannelDrawer = true
+                                showOsd = false
+                            }
+                        )
+                        TvOsdButton(
+                            icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                            label = if (isFavorite) "Favoriden çıkar" else "Favori ekle",
+                            active = isFavorite,
+                            onFocusLabel = { focusedOsdLabel = it },
+                            onClick = {
+                                onToggleFavorite(playingChannel.id)
+                                bumpOsdTimer(focusControls = true)
+                            }
                         )
                     }
 
@@ -1193,18 +1192,35 @@ fun RedoXPlayerScreen(
                     }
                 }
 
-                // ---- odaktaki düğmenin adı (yoksa kısayol ipucu)
-                Text(
-                    text = if (focusedOsdLabel.isNotEmpty()) {
-                        focusedOsdLabel
-                    } else {
-                        "Sol: kanal listesi  •  Sağ: kaynak değiştir  •  Yukarı / aşağı: kanal  •  OK: kontroller"
-                    },
-                    color = if (focusedOsdLabel.isNotEmpty()) RedoXColors.Gold else RedoXColors.TextTertiary,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 1
-                )
+                // ---- odaktaki düğmenin adı (yoksa kısayol ipucu) • sağda ölçülen ağ / kare bilgisi
+                val diagText = buildList {
+                    if (stats.bandwidthKbps > 0) add(String.format(Locale.US, "ağ ~%.1f Mbps", stats.bandwidthKbps / 1000f))
+                    if (stats.droppedFrames > 0) add("${stats.droppedFrames} kare düştü")
+                }.joinToString("  •  ")
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = if (focusedOsdLabel.isNotEmpty()) {
+                            focusedOsdLabel
+                        } else {
+                            "Sol: kanal listesi  •  Sağ: kaynak değiştir  •  Yukarı / aşağı: kanal  •  OK: kontroller"
+                        },
+                        color = if (focusedOsdLabel.isNotEmpty()) RedoXColors.Gold else RedoXColors.TextTertiary,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    if (diagText.isNotEmpty()) {
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(
+                            text = diagText,
+                            color = RedoXColors.TextTertiary,
+                            fontSize = 13.sp,
+                            maxLines = 1
+                        )
+                    }
+                }
 
                 // ---- daha fazla seçenek
                 AnimatedVisibility(visible = showMoreOptions) {
@@ -1399,6 +1415,10 @@ fun RedoXPlayerScreen(
     }
 }
 
+/** Dar ekranlarda (< 1100 dp; ör. 4K/1080p'de 960 dp'lik TV arayüzü) OSD düğmeleri biraz küçülür. */
+@Composable
+private fun isCompactOsd(): Boolean = LocalConfiguration.current.screenWidthDp < 1100
+
 /**
  * OSD denetim düğmesi (yalnızca simge). Odaktayken altın halka + ışıma; adı [onFocusLabel] ile üst bileşene
  * bildirilir ve OSD'nin altında tek satırda gösterilir. [primary] = büyük, kırmızı oynat/duraklat düğmesi.
@@ -1414,11 +1434,12 @@ private fun TvOsdButton(
     primary: Boolean = false
 ) {
     var focused by remember { mutableStateOf(false) }
+    val compact = isCompactOsd()
     val shape: Shape = if (primary) CircleShape else RoundedCornerShape(16.dp)
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(if (primary) 68.dp else 52.dp)
+            .size(if (primary) (if (compact) 60.dp else 68.dp) else (if (compact) 46.dp else 52.dp))
             .tvSurface(
                 focused = focused,
                 shape = shape,
@@ -1440,7 +1461,7 @@ private fun TvOsdButton(
                 focused -> TvThemeColors.TextPrimary
                 else -> TvThemeColors.TextSecondary
             },
-            modifier = Modifier.size(if (primary) 34.dp else 24.dp)
+            modifier = Modifier.size(if (primary) (if (compact) 30.dp else 34.dp) else (if (compact) 22.dp else 24.dp))
         )
     }
 }

@@ -14,7 +14,8 @@ Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir. Chromecast with
 | **Oynatıcı** | `▲` / `▼` | Sonraki / önceki kanal |
 | **Oynatıcı** | `◄` | Hızlı kanal çekmecesi |
 | **Oynatıcı** | `►` | Bir sonraki akış kaynağı (Akış 1 → 2 → 3) |
-| **Oynatıcı** | `OK` / dokunuş | Bilgi ve kontrol çubuğunu açar (odak oynat/duraklat düğmesinde); düğmeler simgedir, odaktakinin adı çubuğun altında yazar. **…** (Daha fazla): gece modu, küçük pencere, 2x2, kanal no, kanalı gizle, kanaldan çık |
+| **Oynatıcı** | `OK` / dokunuş | Bilgi ve kontrol çubuğunu açar. Üst satırda kanal bilgisi ve **oynatma düğmeleri** (önceki kanal, 15 sn geri, oynat/duraklat, canlıya dön, sonraki kanal; odak oynat/duraklatta başlar); alt satırda kanal listesi, favori ve yayın ayarları. Düğmeler simgedir, odaktakinin adı çubuğun altında yazar. **…** (Daha fazla): gece modu, küçük pencere, 2x2, kanal no, kanalı gizle, kanaldan çık |
+| **Kanal ızgarası** | Kategori çipleri | Tümü, **Favoriler**, **Son izlenenler** ve kategoriler. Çipe `OK` basınca odak çipte kalır (başka kategoriye geçmek ya da `▼` ile listeye girmek tek tuş) |
 | **Oynatıcı** | `0` | Önceki izlenen kanala dön |
 | **Oynatıcı** | Kontrol çubuğu **… → Kanal no** | Sanal numaratör (0-9) |
 | **Rehber** | Programa `OK` | Yayındaysa kanalı açar; ileriyse hatırlatma ekler/kaldırır |

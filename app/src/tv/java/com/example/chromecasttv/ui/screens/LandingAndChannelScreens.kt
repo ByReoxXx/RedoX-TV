@@ -58,6 +58,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -152,6 +153,7 @@ import android.util.Base64
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -819,6 +821,10 @@ fun RedoXTvRootScreen(
     }
 }
 
+/** Canlı TV kategori çiplerindeki sanal kategoriler (gerçek kategori adlarıyla çakışmasın diye özel anahtar). */
+private const val TV_CAT_FAVORITES = "__redox_tv_favorites__"
+private const val TV_CAT_RECENT = "__redox_tv_recent__"
+
 /**
  * Uzun basışta OK tuşu hâlâ basılıdır: odak "İzle" düğmesine geçince tuş tekrarları ve bırakma olayı
  * düğmeye ulaşıp kanalı açmasın diye, tuş bırakılana kadar OK olaylarını tüketir.
@@ -875,19 +881,37 @@ fun ChannelShowcaseScreen(
     onEditChannel: (TvChannel) -> Unit = {},
     emptyMessage: String = "Bu kategoride kanal bulunamadı."
 ) {
-    val filtered = remember(channels, selectedCategory) {
-        if (selectedCategory == "Tümü") channels
-        else channels.filter { it.category.equals(selectedCategory, ignoreCase = true) }
+    // "Favoriler" ve "Son izlenenler" kategori çiplerinin arasında sanal kategorilerdir. Çip sayıları canlıdır;
+    // Favoriler listesi seçildiği andaki görüntüdür (yıldızı kaldırınca kart listeden birden kaybolmaz).
+    val favoriteCount = remember(channels, favoriteIds) { channels.count { favoriteIds.contains(it.id) } }
+    val recentInList = remember(channels, recentChannels) {
+        val ids = HashSet<String>(channels.size * 2)
+        channels.forEach { ids.add(it.id) }
+        recentChannels.filter { ids.contains(it.id) }
+    }
+    val activeCategory = when {
+        selectedCategory == TV_CAT_FAVORITES && favoriteCount == 0 -> "Tümü"
+        selectedCategory == TV_CAT_RECENT && recentInList.isEmpty() -> "Tümü"
+        else -> selectedCategory
+    }
+    val favoriteSnapshot = remember(activeCategory) { favoriteIds }
+    val filtered = remember(channels, activeCategory, recentInList) {
+        when (activeCategory) {
+            "Tümü" -> channels
+            TV_CAT_FAVORITES -> channels.filter { favoriteSnapshot.contains(it.id) }
+            TV_CAT_RECENT -> recentInList
+            else -> channels.filter { it.category.equals(activeCategory, ignoreCase = true) }
+        }
     }
 
-    var localFocusedChannel by remember(filtered) {
-        val initial = if (lastWatchedChannelId != null) {
-            filtered.find { it.id == lastWatchedChannelId } ?: filtered.firstOrNull()
-        } else {
-            filtered.firstOrNull()
-        }
-        mutableStateOf(initial)
+    // Odaktaki kanalın yalnızca kimliği tutulur; nesne her seferinde güncel listeden alınır. Böylece rehber
+    // (EPG) yenilenip liste yeniden üretildiğinde üstteki panel başka bir kanala sıçramaz.
+    var focusedChannelId by remember(activeCategory) {
+        val initial = filtered.firstOrNull { it.id == lastWatchedChannelId } ?: filtered.firstOrNull()
+        mutableStateOf(initial?.id)
     }
+    val localFocusedChannel: TvChannel? =
+        filtered.firstOrNull { it.id == focusedChannelId } ?: filtered.firstOrNull()
 
     val gridState = rememberLazyGridState()
     val cardFocusRequesters = remember { HashMap<String, FocusRequester>() }
@@ -926,10 +950,12 @@ fun ChannelShowcaseScreen(
         }
     }
 
-    // Kanaldan çıkıp (Geri tuşu) listeye döndüğümüzde sol menü yerine doğrudan son izlenen
-    // kanalın kartına kaydır ve kumanda odağını (Focus) o kanalın üstüne ver!
-    LaunchedEffect(lastWatchedChannelId, filtered.size, selectedCategory) {
-        if (filtered.isNotEmpty()) {
+    // Ekran açılınca ya da kanaldan çıkıp (Geri tuşu) listeye dönünce sol menü yerine doğrudan son izlenen
+    // kanalın kartına kaydır ve kumanda odağını o kanalın üstüne ver. Kategori çipine basınca odak çipte kalır
+    // (bir sonraki kategoriye geçmek ya da aşağı yönle listeye girmek tek tuş); liste yalnızca başa sarılır.
+    var initialFocusDone by remember { mutableStateOf(false) }
+    LaunchedEffect(lastWatchedChannelId, filtered.isNotEmpty()) {
+        if (filtered.isNotEmpty() && !initialFocusDone) {
             val targetId = lastWatchedChannelId ?: localFocusedChannel?.id ?: filtered.first().id
             val targetIdx = filtered.indexOfFirst { it.id == targetId }.coerceAtLeast(0)
             try {
@@ -939,6 +965,12 @@ fun ChannelShowcaseScreen(
             try {
                 cardFocusRequesters[filtered[targetIdx].id]?.requestFocus()
             } catch (_: Exception) {}
+            initialFocusDone = true
+        }
+    }
+    LaunchedEffect(activeCategory) {
+        if (initialFocusDone) {
+            try { gridState.scrollToItem(0) } catch (_: Exception) {}
         }
     }
 
@@ -968,17 +1000,40 @@ fun ChannelShowcaseScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        if (categories.size > 1) {
+        val chipCategories = remember(categories, favoriteCount, recentInList.size) {
+            buildList {
+                categories.firstOrNull()?.let { add(it) }
+                if (favoriteCount > 0) add(TV_CAT_FAVORITES)
+                if (recentInList.isNotEmpty()) add(TV_CAT_RECENT)
+                addAll(categories.drop(1))
+            }
+        }
+        if (chipCategories.size > 1) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
             ) {
-                itemsIndexed(categories, key = { idx, c -> "cat_${c}_$idx" }) { _, category ->
+                itemsIndexed(chipCategories, key = { idx, c -> "cat_${c}_$idx" }) { _, category ->
                     var isFocused by remember { mutableStateOf(false) }
-                    val isSelected = selectedCategory == category
-                    val count = if (category == "Tümü") channels.size else channels.count { it.category.equals(category, ignoreCase = true) }
+                    val isSelected = activeCategory == category
+                    val count = when (category) {
+                        "Tümü" -> channels.size
+                        TV_CAT_FAVORITES -> favoriteCount
+                        TV_CAT_RECENT -> recentInList.size
+                        else -> channels.count { it.category.equals(category, ignoreCase = true) }
+                    }
+                    val label = when (category) {
+                        TV_CAT_FAVORITES -> "Favoriler"
+                        TV_CAT_RECENT -> "Son izlenenler"
+                        else -> category
+                    }
+                    val chipIcon: ImageVector? = when (category) {
+                        TV_CAT_FAVORITES -> Icons.Rounded.Star
+                        TV_CAT_RECENT -> Icons.Rounded.History
+                        else -> null
+                    }
                     val pillShape = RoundedCornerShape(50)
 
                     Row(
@@ -996,8 +1051,17 @@ fun ChannelShowcaseScreen(
                             .clickable { onSelectCategory(category) }
                             .padding(horizontal = 18.dp)
                     ) {
+                        if (chipIcon != null) {
+                            Icon(
+                                imageVector = chipIcon,
+                                contentDescription = null,
+                                tint = RedoXColors.Gold,
+                                modifier = Modifier.size(17.dp)
+                            )
+                            Spacer(modifier = Modifier.width(7.dp))
+                        }
                         Text(
-                            text = category,
+                            text = label,
                             color = if (isSelected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
                             fontSize = 15.sp,
@@ -1056,7 +1120,7 @@ fun ChannelShowcaseScreen(
                         isBroken = isBroken,
                         isHealthy = healthyIds.contains(channel.id),
                         focusRequester = requester,
-                        onFocused = { localFocusedChannel = channel },
+                        onFocused = { focusedChannelId = channel.id },
                         onClick = { onPlayChannel(channel) },
                         onLongClick = { jumpToWatchButton(channel) }
                     )
@@ -1098,6 +1162,12 @@ fun FocusedChannelHeroBanner(
     onFocusInside: (Boolean) -> Unit = {}
 ) {
     val shape = RoundedCornerShape(22.dp)
+    // Odaktaki kanalın marka rengi, logonun arkasında yumuşak bir ışıma olarak görünür (kanal değişince akıcı geçer)
+    val glow by animateColorAsState(
+        targetValue = Color(channel.brandPrimaryColor).copy(alpha = 0.26f),
+        animationSpec = tween(durationMillis = 320),
+        label = "hero_brand_glow"
+    )
 
     BoxWithConstraints(
         modifier = Modifier
@@ -1117,6 +1187,15 @@ fun FocusedChannelHeroBanner(
                         listOf(RedoXColors.SurfaceHigh, RedoXColors.Surface, RedoXColors.WineGlow)
                     )
                 )
+                .drawBehind {
+                    drawRect(
+                        brush = Brush.radialGradient(
+                            colors = listOf(glow, Color.Transparent),
+                            center = Offset(size.height * 0.95f, size.height * 0.5f),
+                            radius = size.width * 0.5f
+                        )
+                    )
+                }
                 .border(1.dp, RedoXColors.Line, shape)
                 .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (compact) 14.dp else 20.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -1311,6 +1390,11 @@ fun TvChannelGridCard(
         label = "grid_card_scale"
     )
     val shape = RoundedCornerShape(14.dp)
+    // Kartın solunda kanalın marka renginden çok hafif bir ton (odakta zemin bir kademe açılır)
+    val cardBase = if (cardFocused) RedoXColors.SurfaceHigh else RedoXColors.Surface
+    val cardBrush = Brush.horizontalGradient(
+        listOf(lerp(cardBase, Color(channel.brandPrimaryColor).copy(alpha = 1f), 0.13f), cardBase)
+    )
 
     Box(
         modifier = Modifier
@@ -1324,6 +1408,7 @@ fun TvChannelGridCard(
             .tvSurface(
                 focused = cardFocused,
                 shape = shape,
+                brush = cardBrush,
                 idleBorder = if (isBroken) RedoXColors.Danger.copy(alpha = 0.6f) else RedoXColors.Line
             )
             .onFocusChanged {
@@ -1368,7 +1453,7 @@ fun TvChannelGridCard(
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (channel.sources.size > 1) "${channel.sources.size} akış" else channel.qualityBadge,
+                        text = channel.qualityBadge,
                         color = RedoXColors.TextTertiary,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
