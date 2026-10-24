@@ -4,6 +4,8 @@ Eski sürümlerde rehber, kategori şablonlarından üretilen **uydurma** progra
 
 ## Rehberi açmak
 
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/14-yayin-rehberi.jpg" alt="Rehber yüklenmediğinde" width="80%"><br><sub>XMLTV adresi eklenmediyse rehber ekranı böyle görünür; program adı uydurulmaz.</sub></p>
+
 1. XMLTV adresini ekleyin:
    - **TV:** *Ayarlar → Yayın Rehberi (EPG) → Adresi Ekle ve Rehberi Yükle*
    - **Telefon/tablet:** *Ayarlar → Yayın rehberi (EPG)*

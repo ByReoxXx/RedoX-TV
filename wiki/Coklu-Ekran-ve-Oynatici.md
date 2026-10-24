@@ -1,5 +1,21 @@
 # 📺 Oynatıcı, Yedek Akış, Kalite ve Çoklu Ekran
 
+## 🎛️ TV oynatıcı çubuğu
+
+TV'de oynatıcı kontrolleri **ekranın yalnızca ~%15'ini** kaplayan tek satırlık bir alt çubukta toplanır; video önde kalır.
+
+<table>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="Oynatıcı çubuğu"><br><sub><b>Çubuk</b> — solda kanal ve program, ortada oynatma düğmeleri, sağda kanal listesi, favori, alternatif yayın ve Seçenekler</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler menüsü"><br><sub><b>Seçenekler</b> — çubuğun üstüne açılır; <code>◄</code> ya da <code>Geri</code> kapatır</sub></td>
+  </tr>
+</table>
+
+- **Kanal değişince** çubuk ve üstte kısayol ipuçları (`OK` Kontroller, `▲ ▼` Kanal, `◄` Kanal listesi, `►` Sonraki kaynak) 3,8 sn görünür.
+- **`OK`** odağı çubuğa alır (oynat/duraklatta başlar); odaktaki düğmenin adı çubuğun üstünde yazar. `Geri` çubuğu gizler.
+- **Seçenekler:** kalite, ses, altyazı, ölçek, gece modu, önceki kanal (`0`), küçük pencere (PiP), 2×2 ekran, kanal numarası (0-9), kanalı gizle, oynatıcıdan çık; altta ölçülen çözünürlük, bit hızı ve ağ tahmini görünür.
+- Sağ üstte saat gösterilir. OLED modunda çubuk saf siyahtır.
+
 ## 🔁 Çoklu kaynak ve otomatik yedek geçişi (Auto-Failover)
 
 - Bir kanalın altında birden fazla akış olabilir (**Akış 1/2/3…**). Ana akış açılmazsa ya da hata verirse oynatıcı kullanıcı müdahalesi olmadan sıradaki kaynağa geçer; yayın uzun süre gelmezse de (TV'de ~2,5 sn, telefon/tablette ~6 sn) yedeğe döner.
@@ -34,6 +50,15 @@ Duraklat/oynat, **15 sn geri sar** (TV) ve **Canlıya dön**. Duraklatma, oynat�
 
 - **Hareketler:** sol kenar parlaklık, sağ kenar ses, yatay kaydırma kanal değiştirme, çift dokunma duraklat/oynat ([ayrıntı](Kumanda-ve-Dokunmatik-Kontroller.md)).
 - **Mini oynatıcı:** `⌄` ile küçültünce yayın (ses) sürer; alttaki çubuktan duraklatır, tam ekrana döner ya da kapatırsınız.
+
+<table>
+  <tr>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/04-oynatici.jpg" alt="Telefon oynatıcı"><br><sub><b>Oynatıcı</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/05-oynatici-kontroller.jpg" alt="Telefon oynatıcı kontrolleri"><br><sub><b>Kontroller</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/06-mini-oynatici.jpg" alt="Mini oynatıcı"><br><sub><b>Mini oynatıcı</b></sub></td>
+  </tr>
+</table>
+
 - **Otomatik PiP:** oynatırken ana ekrana çıkınca küçük pencere (Android 8+; üreticiye göre değişebilir). Elle de başlatılabilir.
 - **Arka planda ses:** uygulamadan çıkınca ya da ekran kapanınca ses sürer; bildirimden ve kilit ekranından denetlenir (Media3 oturumu). Açıkken veri/pil tasarrufu için görüntü kapatılır. Ayarlardan kapatılırsa arka plana geçince yayın duraklar.
 - **Uyku zamanlayıcı:** 30 / 60 / 90 / 120 dk; süre dolunca oynatma kapanır.

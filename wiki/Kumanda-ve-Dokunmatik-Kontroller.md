@@ -4,6 +4,14 @@
 
 Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir. Chromecast with Google TV kumandasında **Menü**, `CH+/CH-` ve `0-9` tuşları yoktur; uygulama hiçbir işlev için bu tuşları şart koşmaz (ekran üstü sanal numaratör ve kanal çekmecesi vardır). Menü ya da Yer imi tuşu olan kumandalarda bu tuşlar, aşağıdaki `OK` basılı tut kısayoluyla aynı işi yapar.
 
+<table>
+  <tr>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/07-oynatici-bilgi.jpg" alt="Kanal değişince"><br><sub><b>Kanal değişince</b> — çubuk ve ipuçları</sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="OK ile kontroller"><br><sub><b><code>OK</code></b> — kontroller açılır</sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> menüsü</sub></td>
+  </tr>
+</table>
+
 | Ekran | Tuş | İşlev |
 | :--- | :--- | :--- |
 | **Kanal ızgarası** | `OK` | Kanalı tam ekran açar |

@@ -21,6 +21,24 @@ keys() { local n="$1"; shift; for _ in $(seq 1 "$n"); do key "$1"; sleep 0.4; do
 tap()  { python3 ci/ui.py tap "$1" || true; }
 launch() { adb shell am start -n "$PKG/$ACTIVITY" >/dev/null; }
 
+# ---- Vitrin (README / wiki görselleri) ---------------------------------------------------------------------------------
+# Temiz bir durum kurar: adlandırılmış üç özel liste (biri telifsiz "Big Buck Bunny" yayını içerir; © Blender Foundation,
+# CC BY 3.0) ve örnek favoriler. Hata ayıklama sürümünde run-as ile yazılır; uygulama kapalıyken çağrılır.
+vitrin_seed() {
+  adb shell am force-stop "$PKG"; sleep 1
+  printf '#EXTM3U\n#EXTINF:-1 group-title="Çizgi Film",Big Buck Bunny\nhttps://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8\n#EXTINF:-1 group-title="Çizgi Film",Çizgi Film 2\nhttps://example.com/cocuk2.m3u8\n' > shots/_a.m3u
+  printf '#EXTM3U\n#EXTINF:-1 group-title="Futbol",Maç Kanalı 1\nhttps://example.com/spor1.m3u8\n#EXTINF:-1 group-title="Futbol",Maç Kanalı 2\nhttps://example.com/spor2.m3u8\n#EXTINF:-1 group-title="Haber",Haber Kanalı\nhttps://example.com/haber.m3u8\n' > shots/_b.m3u
+  printf '#EXTM3U\n#EXTINF:-1 group-title="Kısa Film",Tears of Steel\nhttps://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8\n' > shots/_c.m3u
+  local f
+  for f in a b c; do adb push "shots/_$f.m3u" "/data/local/tmp/redox_$f.m3u" >/dev/null || true; done
+  local dir="/data/data/$PKG"
+  adb shell "run-as $PKG sh -c 'mkdir -p files/imported_playlists shared_prefs && cp /data/local/tmp/redox_a.m3u files/imported_playlists/a.m3u && cp /data/local/tmp/redox_b.m3u files/imported_playlists/b.m3u && cp /data/local/tmp/redox_c.m3u files/imported_playlists/c.m3u'" || true
+  printf "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n<map>\n    <string name=\"custom_m3u_playlists_str\">pl-a|Çocuk ve Aile|$dir/files/imported_playlists/a.m3u||true;;;pl-b|Spor Listem|$dir/files/imported_playlists/b.m3u||true;;;pl-c|Açık Lisanslı Filmler|$dir/files/imported_playlists/c.m3u||true</string>\n    <string name=\"fav_order_csv\">ch_27_trt_1,ch_20_show_tv,ch_3_atv,ch_16_kanal_d,ch_21_star_tv,ch_64_ntv,ch_70_trt_haber,ch_50_trt_spor</string>\n</map>\n" > shots/_prefs.xml
+  adb push shots/_prefs.xml /data/local/tmp/redox_prefs.xml >/dev/null || true
+  adb shell "run-as $PKG sh -c 'cp /data/local/tmp/redox_prefs.xml shared_prefs/redoxtv_clean_prefs_v5.xml'" || true
+  rm -f shots/_a.m3u shots/_b.m3u shots/_c.m3u shots/_prefs.xml
+}
+
 adb install -r -g "$APK" || { echo "kurulum başarısız"; exit 1; }
 adb shell settings put global window_animation_scale 0 || true
 adb shell settings put global transition_animation_scale 0 || true
@@ -127,6 +145,54 @@ if [ "$KIND" = "tv" ]; then
     key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 2         # ızgaradan çiplere, çiplerden klasör listesine
     shot "${P}-18-klasorlere-geri"
   done
+
+  # ---- Vitrin: temiz durum, örnek favoriler, telifsiz demo yayın (README / wiki görselleri) ----
+  adb shell wm density 320 || true
+  vitrin_seed
+  launch; sleep 22
+  shot "v-01-karsilama"
+  key KEYCODE_DPAD_CENTER; sleep 7            # Canlı TV'ye başla
+  shot "v-02-canli"
+  adb shell input keyevent --longpress KEYCODE_DPAD_CENTER; sleep 2
+  key KEYCODE_DPAD_DOWN; sleep 0.5
+  keys 3 KEYCODE_DPAD_LEFT; sleep 1           # odak "Favori" düğmesine
+  shot "v-03-kanal-ozellikleri"
+  key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1   # düğmelerden karta, çiplere, yan menüye
+  key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3                           # Favorilerim
+  shot "v-04-favoriler"
+  key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Özel M3U
+  shot "v-05-ozel-m3u"
+  key KEYCODE_DPAD_CENTER; sleep 3            # ilk klasör: "Çocuk ve Aile"
+  shot "v-06-klasor-ici"
+  key KEYCODE_DPAD_CENTER; sleep 1.5          # "Big Buck Bunny"yi oynat (alt çubuk + kısayol ipuçları görünür)
+  shot "v-07a-oynatici-bilgi"
+  shot "v-07b-oynatici-bilgi"
+  sleep 8                                     # çubuk gizlenir (odak videoda), yayın oturur
+  key KEYCODE_DPAD_LEFT; sleep 2              # hızlı kanal çekmecesi (odak oynatıcıdayken sol ok)
+  shot "v-10-kanal-cekmecesi"
+  key KEYCODE_BACK; sleep 1
+  shot "v-x1-cekmece-geri"                    # tanı: Geri çekmeceyi kapatıyor mu?
+  key KEYCODE_DPAD_RIGHT; sleep 1             # çekmece hâlâ açıksa kapanır (satırda sağ ok çekmeceyi kapatır)
+  sleep 5                                     # çubuk (varsa) gizlenir
+  key KEYCODE_BACK; sleep 3                   # oynatıcıdan çık (klasör ızgarasına dön)
+  # Kontroller ve Seçenekler ayrı, yeni bir oynatmada alınır: çubuk kapalıyken başlanır ve tuşlar ekran görüntüsü araya
+  # girmeden verilir (çubuk kapanınca sağ ok "sonraki yayın kaynağı" olur ve yayın baştan başlar).
+  key KEYCODE_DPAD_CENTER; sleep 10           # "Big Buck Bunny"yi yeniden oynat; çubuk gizlensin
+  key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla
+  keys 6 KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 1   # "Seçenekler"
+  shot "v-09-oynatici-secenekler"
+  key KEYCODE_BACK; sleep 1                   # menü kapanır; odak "Seçenekler" düğmesinde
+  keys 6 KEYCODE_DPAD_LEFT; sleep 0.5         # odak oynat/duraklatta
+  shot "v-08-oynatici-kontroller"
+  sleep 6                                     # çubuk gizlenir
+  key KEYCODE_BACK; sleep 3                   # oynatıcıdan çık (klasör ızgarasına dön)
+  key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1   # çiplere, klasör listesine, yan menüye
+  keys 3 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3    # Kanal Ara
+  shot "v-11-ara"
+  key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # M3U ve Dosya
+  shot "v-12-m3u"
+  key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Ayarlar
+  shot "v-13-ayarlar"
   adb shell wm density reset || true
 else
   adb shell am force-stop "$PKG"; sleep 1
@@ -162,6 +228,20 @@ else
     tap "Bölünmüş Ekran"; sleep 8;    shot "14-bolunmus-ekran"
     tap "Kaynaklar"; sleep 3;         shot "15-kaynaklar"
   fi
+
+  # ---- Vitrin: temiz durum, örnek favoriler, telifsiz demo yayın (README / wiki görselleri) ----
+  vitrin_seed
+  launch; sleep 24
+  shot "v-01-ana-sayfa"
+  tap "Canlı TV"; sleep 5;        shot "v-02-canli"
+  tap "Çocuk ve Aile"; sleep 3;   shot "v-03-klasor"
+  tap "Big Buck Bunny"; sleep 12; shot "v-04-oynatici"
+  adb shell input tap $((SW / 2)) $((SH / 2)); sleep 2; shot "v-05-oynatici-kontroller"
+  key KEYCODE_BACK; sleep 3;      shot "v-06-mini-oynatici"
+  tap "Favoriler"; sleep 3;       shot "v-07-favoriler"
+  tap "Kumanda"; sleep 3;         shot "v-08-kumanda"
+  tap "Ana Sayfa"; sleep 4;       shot "v-09-ana-sayfa-devam"
+  tap "Ayarlar"; sleep 4;         shot "v-10-ayarlar"
 fi
 
 # Emülatördeki Chrome/Widevine kayıtları Google'ın herkese açık "AIza..." sağlama anahtarını URL içinde yazabilir;
