@@ -1110,7 +1110,7 @@ fun RedoXPlayerScreen(
                             k = osdK,
                             options = options,
                             footer = diagText,
-                            maxHeight = (screenHeightDp - 140 * osdK).dp,
+                            maxHeight = (screenHeightDp - 170 * osdK).dp,   // üstteki saati örtmesin
                             firstItemRequester = optionsFirstItemRequester,
                             onClose = {
                                 showMoreOptions = false
@@ -1712,7 +1712,6 @@ private fun PlayerOptionRow(option: PlayerOptionItem, k: Float, isLast: Boolean,
                 focused = focused,
                 shape = shape,
                 color = Color.Transparent,
-                focusedColor = Color.White.copy(alpha = 0.14f),
                 idleBorder = Color.Transparent,
                 ringWidth = 2.5.dp
             )
