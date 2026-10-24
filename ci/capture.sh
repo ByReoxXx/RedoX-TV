@@ -105,8 +105,12 @@ if [ "$KIND" = "tv" ]; then
     if [ "$RADIO" = 1 ]; then
       # Önceki adımlar yayın yüklenme süresine göre kayabilir (çekmece açılmayabilir): durumu sıfırla
       adb shell am force-stop "$PKG"; sleep 2; launch; sleep 22
-      key KEYCODE_DPAD_CENTER; sleep 7                           # karşılamadan Canlı TV'ye
-      key KEYCODE_BACK; sleep 1                                  # yan menüye
+      # yeniden açılışta son kanal oynatıcıda açılır: kanal listesi (yan menü görünür) çıkana kadar Geri (en çok 4)
+      for _ in 1 2 3 4; do
+        if python3 ci/ui.py has "Favorilerim"; then break; fi
+        key KEYCODE_BACK; sleep 3
+      done
+      key KEYCODE_BACK; sleep 1                                  # içerikten yan menüye
       key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3    # Radyo (Canlı TV'nin altında)
       shot "${P}-r01-radyo-liste"
       key KEYCODE_DPAD_CENTER; sleep 3                           # ilk istasyonu çal
