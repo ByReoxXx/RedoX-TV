@@ -103,7 +103,10 @@ if [ "$KIND" = "tv" ]; then
 
     # ---- Radyo (K2 Kadran; yalnız ui-radio dalında): liste, oynatıcı, katmanlar, durumlar ve mini çubuk ----
     if [ "$RADIO" = 1 ]; then
-      key KEYCODE_BACK; sleep 1                                  # çiplerden yan menüye
+      # Önceki adımlar yayın yüklenme süresine göre kayabilir (çekmece açılmayabilir): durumu sıfırla
+      adb shell am force-stop "$PKG"; sleep 2; launch; sleep 22
+      key KEYCODE_DPAD_CENTER; sleep 7                           # karşılamadan Canlı TV'ye
+      key KEYCODE_BACK; sleep 1                                  # yan menüye
       key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3    # Radyo (Canlı TV'nin altında)
       shot "${P}-r01-radyo-liste"
       key KEYCODE_DPAD_CENTER; sleep 3                           # ilk istasyonu çal
