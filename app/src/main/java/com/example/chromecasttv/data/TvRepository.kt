@@ -52,8 +52,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -588,8 +586,6 @@ class TvRepository(private val appContext: Context) {
         isCustomM3u = false
     )
 
-    private val aciptvTurkishM3uUrl = "https://aciptv.acvid.site/m3ulist/testchannel.m3u"
-
 
     @Volatile
     private var cachedStaticChannels: List<TvChannel>? = null
@@ -620,167 +616,17 @@ class TvRepository(private val appContext: Context) {
         return updated
     }
 
-    suspend fun syncRemoteGitHubRepoM3u(): String =
-        DynamicChannelsJsonService.fetchAndCacheRemoteRepoM3u(appContext)
-
     fun getBuiltInChannels(): List<TvChannel> {
-        var base = getStaticBuiltInChannels()
-        val cachedRepoM3u = DynamicChannelsJsonService.loadCachedRepoM3u(appContext)
-        if (cachedRepoM3u.isNotBlank()) {
-            base = mergeTurkishM3uIntoBuiltIn(base, cachedRepoM3u)
-        }
-        val cachedTrM3u = loadCachedAciptvTurkishM3u()
-        return if (cachedTrM3u.isNotBlank()) {
-            mergeTurkishM3uIntoBuiltIn(base, cachedTrM3u)
-        } else {
-            base
-        }
+        deleteLegacyThirdPartyCache()
+        return getStaticBuiltInChannels()
     }
 
-    private fun loadCachedAciptvTurkishM3u(): String {
-        return try {
-            val f = File(appContext.filesDir, "aciptv_turkish_cached.m3u")
-            if (f.exists() && f.length() > 10L) f.readText() else ""
-        } catch (_: Exception) {
-            ""
-        }
-    }
-
-    private fun saveCachedAciptvTurkishM3u(content: String) {
+    /** Eski sürümlerde indirilen üçüncü taraf (ACIPTV) liste önbelleği artık kullanılmaz; varsa silinir. */
+    private fun deleteLegacyThirdPartyCache() {
         try {
-            val f = File(appContext.filesDir, "aciptv_turkish_cached.m3u")
-            f.writeText(content)
-        } catch (_: Exception) {}
-    }
-
-    /**
-     * https://aciptv.acvid.site/m3ulist/testchannel.m3u adresinden yalnızca Türk kanallarını
-     * (group-title="Turkish", .tr tvg-id veya Türkçe grup başlıklarını) akıllıca süzer ve önbelleğe alır.
-     */
-    suspend fun fetchAndCacheAciptvTurkishM3u(): String = withContext(Dispatchers.IO) {
-        try {
-            val listInput = HttpSecurity.openInputStream(
-                urlString = aciptvTurkishM3uUrl,
-                allowLenientFallback = true,
-                userAgent = "RedoXTV/2.0 (Android; Playlist)",
-                connectTimeoutMs = 9000,
-                readTimeoutMs = 12000
-            )
-            val sb = StringBuilder("#EXTM3U\n")
-            var matchedCount = 0
-            listInput.bufferedReader().useLines { lines ->
-                var pendingExtInf: String? = null
-                for (rawLine in lines) {
-                    val line = rawLine.trim()
-                    if (line.startsWith("#EXTINF", ignoreCase = true)) {
-                        val lower = line.lowercase(Locale.US)
-                        val isTurkish = lower.contains("group-title=\"turkish\"") ||
-                            lower.contains("group-title=\"tr") ||
-                            lower.contains("group-title=\"ulusal") ||
-                            lower.contains("group-title=\"haber") ||
-                            lower.contains("group-title=\"spor") ||
-                            lower.contains("group-title=\"yerel") ||
-                            lower.contains(".tr\"") ||
-                            lower.contains(".tr@")
-                        pendingExtInf = if (isTurkish) line else null
-                    } else if (line.isNotEmpty() && !line.startsWith("#")) {
-                        val ext = pendingExtInf
-                        if (ext != null && (line.startsWith("http://") || line.startsWith("https://"))) {
-                            sb.append(ext).append("\n").append(line).append("\n")
-                            matchedCount++
-                        }
-                        pendingExtInf = null
-                    }
-                }
-            }
-            val filtered = sb.toString()
-            if (matchedCount > 0) {
-                saveCachedAciptvTurkishM3u(filtered)
-                filtered
-            } else {
-                loadCachedAciptvTurkishM3u()
-            }
+            File(appContext.filesDir, "aciptv_turkish_cached.m3u").delete()
         } catch (_: Exception) {
-            loadCachedAciptvTurkishM3u()
         }
-    }
-
-    private fun normalizeChannelKey(name: String): String {
-        val cleaned = name
-            .replace(Regex("\\[.*?\\]|\\(.*?\\)"), " ")
-            .replace('İ', 'i').replace('I', 'i').replace('ı', 'i')
-            .lowercase(Locale.getDefault())
-            .replace('ş', 's').replace('ğ', 'g').replace('ü', 'u').replace('ö', 'o').replace('ç', 'c')
-            .replace(Regex("\\b(tv|hd|fhd|sd|tr|turkiye|turk|kanali|kanal|live|backup)\\b"), " ")
-            .replace(Regex("[^a-z0-9]"), "")
-        return cleaned
-    }
-
-    private fun inferTurkishCategory(channelName: String): String {
-        val lower = channelName.lowercase(Locale.getDefault())
-        return when {
-            lower.contains("spor") || lower.contains("tjk") || lower.contains("tay ") || lower.contains("fb ") || lower.contains("gs ") -> "Spor"
-            lower.contains("haber") || lower.contains("ntv") || lower.contains("cnn") || lower.contains("ulke") || lower.contains("ülke") || lower.contains("tele 1") || lower.contains("halk") || lower.contains("sözcü") || lower.contains("sozcu") || lower.contains("ekol") || lower.contains("koza") || lower.contains("tbmm") || lower.contains("meclis") || lower.contains("bloomberg") -> "Haber"
-            lower.contains("cocuk") || lower.contains("çocuk") || lower.contains("baby") || lower.contains("minika") || lower.contains("cartoon") || lower.contains("zarok") -> "Çocuk"
-            lower.contains("kral") || lower.contains("power") || lower.contains("nr1") || lower.contains("dream") || lower.contains("tatlises") || lower.contains("müzik") || lower.contains("muzik") || lower.contains("akustik") -> "Müzik"
-            lower.contains("belgesel") || lower.contains("tarih") || lower.contains("yaban") || lower.contains("çiftçi") || lower.contains("ciftci") || lower.contains("trt 2") -> "Belgesel"
-            lower.contains("diyanet") || lower.contains("semerkand") || lower.contains("lalegül") || lower.contains("lalegul") || lower.contains("kuran") || lower.contains("islam") || lower.contains("ilahi") || lower.contains("sat 7") || lower.contains("hayat") || lower.contains("mihrap") || lower.contains("kudüs") || lower.contains("kudus") -> "Dini"
-            lower.contains("kıbrıs") || lower.contains("kibris") || lower.contains("brt") || lower.contains("ada tv") || lower.contains("sim tv") -> "Kıbrıs"
-            lower.contains("trt ") || lower.contains("atv") || lower.contains("kanal d") || lower.contains("show") || lower.contains("star") || lower.contains("now") || lower.contains("tv8") || lower.contains("kanal 7") || lower.contains("beyaz") || lower.contains("360") || lower.contains("teve2") || lower.contains("tlc") || lower.contains("dmax") || lower.contains("cnbc") || lower.contains("a2") -> "Ulusal"
-            else -> "Yerel"
-        }
-    }
-
-    fun mergeTurkishM3uIntoBuiltIn(baseList: List<TvChannel>, rawTurkishM3u: String): List<TvChannel> {
-        if (rawTurkishM3u.isBlank()) return baseList
-        val parsedTr = M3uAndEpgParser.parseM3uContent(rawTurkishM3u, "ACIPTV TR", baseList.size + 1, false)
-        if (parsedTr.isEmpty()) return baseList
-
-        val mutableList = baseList.toMutableList()
-        val keyToIndex = HashMap<String, Int>(mutableList.size * 2)
-        mutableList.forEachIndexed { index, ch ->
-            val k = normalizeChannelKey(ch.name)
-            if (k.isNotEmpty() && !keyToIndex.containsKey(k)) {
-                keyToIndex[k] = index
-            }
-        }
-
-        for (trCh in parsedTr) {
-            val cleanTitle = trCh.name
-                .replace(Regex("\\s*(\\(\\d+p\\)|\\[Not 24/7\\]|\\[Geo-blocked\\])\\s*", RegexOption.IGNORE_CASE), "")
-                .trim()
-                .ifBlank { trCh.name }
-            val normKey = normalizeChannelKey(cleanTitle)
-            val existingIdx = if (normKey.isNotEmpty()) keyToIndex[normKey] else null
-
-            if (existingIdx != null) {
-                val existing = mutableList[existingIdx]
-                val existingUrls = existing.sources.map { it.url }.toSet()
-                val newSources = trCh.sources.filterNot { existingUrls.contains(it.url) }.mapIndexed { i, src ->
-                    src.copy(label = "ACIPTV Akışı (${existing.sources.size + i + 1})")
-                }
-                val mergedLogo = existing.logoUrl.ifBlank { trCh.logoUrl }
-                if (newSources.isNotEmpty() || mergedLogo != existing.logoUrl) {
-                    mutableList[existingIdx] = existing.copy(
-                        logoUrl = mergedLogo,
-                        sources = existing.sources + newSources
-                    )
-                }
-            } else {
-                val nextNum = mutableList.size + 1
-                val inferredCat = inferTurkishCategory(cleanTitle)
-                val added = trCh.copy(
-                    id = "ch_aciptv_${nextNum}_${normKey.take(14)}",
-                    number = nextNum,
-                    name = cleanTitle,
-                    category = inferredCat,
-                    isCustomM3u = false
-                )
-                keyToIndex[normKey] = mutableList.size
-                mutableList.add(added)
-            }
-        }
-        return mutableList
     }
 
 

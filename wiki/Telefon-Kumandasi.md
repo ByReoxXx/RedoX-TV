@@ -4,7 +4,7 @@ Telefon veya tablet uygulaması, aynı Wi-Fi ağındaki RedoX TV 2 (TV APK'sı) 
 
 ## 1) Eşleştirme
 
-1. TV'de **Ayarlar → Telefon Kumandası & Güvenlik**'e (ya da *M3U & Dosya Yükle → Telefon QR & PIN*'e) girin: TV'nin adresi ve **6 haneli bağlantı kodu** görünür.
+1. TV'de **Ayarlar → Telefon Kumandası & Güvenlik**'e (ya da *M3U ve Dosya → Telefon QR & PIN*'e) girin: TV'nin adresi ve **6 haneli bağlantı kodu** görünür.
 2. Telefonda **Kumanda** sekmesini açın. Uygulama ağda TV'leri otomatik bulur (mDNS/NSD). Bulamazsa **Adresi elle gir** ile TV'nin IP'sini yazın (varsayılan port 8585).
 3. TV'nin yanındaki **Eşleştir** düğmesine basıp ekrandaki kodu girin.
 
@@ -14,7 +14,7 @@ Eşleşme sonrası telefon, TV'nin verdiği rastgele bir **erişim anahtarını*
 
 ## 2) Kumanda ekranı
 
-- **Yön tuşları + OK, Geri, Menü**
+- **Yön tuşları + OK, Geri, Menü** (TV'de Menü, kanal kartında `OK` basılı tutmayla aynı kısayoldur; Chromecast kumandasında Menü tuşu olmadığı için uygulama onu şart koşmaz)
 - **Ses −/+** (TV'nin medya sesi; mevcut seviye gösterilir)
 - **Duraklat/oynat, Durdur, Kanal −/+**
 - **0-9 rakam tuşları**

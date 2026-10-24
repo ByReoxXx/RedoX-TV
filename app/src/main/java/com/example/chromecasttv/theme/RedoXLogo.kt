@@ -32,19 +32,19 @@ import androidx.compose.ui.unit.sp
 // RedoX logosu: kırmızı faset (low-poly) boğa başı + altın halka, parlayan altın gözler, altın burun halkası,
 // kırmızı italik "RedoX" + altın "TV". Ad = Red + Ox ("kırmızı boğa").
 // Logo her yerde "RedoX TV" der; uygulamanın adı (başlatıcı etiketi) "RedoX TV 2"dir.
-// Görseller kullanıcının logosundan üretilmiştir (zemin saydamdır, koyu zeminlerde kenar izi bırakmaz):
-// redox_mark (512), redox_mark_small (192), redox_wordmark (960 px genişlik).
+// Logo tamamen VEKTÖRDÜR (VectorDrawable; PNG yok): redox_mark.xml (boğa + halka) ve redox_wordmark.xml (yazı).
+// Kullanıcının logosundan izlenerek üretildi; her ekran yoğunluğunda ve Android sürümünde keskin kalır,
+// uyarlanabilir/temalı simgeler (ic_launcher_foreground / ic_launcher_monochrome) aynı çizimden gelir.
 // ============================================================================
 
-/** Zemin (karo) olmadan logo: boğa başı + altın halka. Küçük boyutlarda daha keskin olan 192 px'lik kopya kullanılır. */
+/** Zemin (karo) olmadan logo: boğa başı + altın halka (vektör). */
 @Composable
 fun RedoXMark(
     markSize: Dp = 48.dp,
     modifier: Modifier = Modifier
 ) {
-    val resId = if (markSize <= 72.dp) R.drawable.redox_mark_small else R.drawable.redox_mark
     Image(
-        painter = painterResource(resId),
+        painter = painterResource(R.drawable.redox_mark),
         contentDescription = "RedoX",
         contentScale = ContentScale.Fit,
         modifier = modifier.size(markSize)
@@ -62,7 +62,7 @@ fun RedoXEmblem(
         modifier = modifier
             .size(boxSize)
             .clip(shape)
-            .background(Brush.verticalGradient(listOf(Color(0xFF12131F), Color(0xFF04040C))))
+            .background(Brush.verticalGradient(listOf(RedoXColors.Ink800, RedoXColors.Ink950)))
             .border(1.dp, Color.White.copy(alpha = 0.10f), shape),
         contentAlignment = Alignment.Center
     ) {
@@ -70,7 +70,7 @@ fun RedoXEmblem(
     }
 }
 
-/** Logodaki "RedoX TV" yazısı (resim): kırmızı italik "RedoX" + altın "TV", parıltılı. */
+/** Logodaki "RedoX TV" yazısı (vektör): kırmızı italik "RedoX" + altın "TV". */
 @Composable
 fun RedoXWordmarkImage(
     width: Dp = 220.dp,
@@ -82,7 +82,7 @@ fun RedoXWordmarkImage(
         contentScale = ContentScale.Fit,
         modifier = modifier
             .width(width)
-            .aspectRatio(960f / 204f)
+            .aspectRatio(1470f / 312f)
     )
 }
 

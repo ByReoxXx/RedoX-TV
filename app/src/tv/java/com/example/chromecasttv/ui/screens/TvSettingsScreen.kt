@@ -20,19 +20,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Build
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.CheckCircle
-import androidx.compose.material.icons.rounded.Clear
-import androidx.compose.material.icons.rounded.DeleteOutline
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Palette
-import androidx.compose.material.icons.rounded.PlayCircle
-import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.Remove
-import androidx.compose.material.icons.rounded.SettingsRemote
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -92,24 +79,24 @@ fun TvSettingsScreen(
             .padding(end = 4.dp, bottom = 12.dp)
     ) {
         // ------------------------------------------------------------ Görünüm
-        TvSettingsSection(title = "Görünüm", icon = Icons.Rounded.Palette) {
+        TvSettingsSection(title = "Görünüm", icon = RedoXIcons.Palette) {
             Text(
                 text = "Renk paleti (logo her zaman kızıl-altın kalır; palet arayüz vurgularını değiştirir)",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp
+                fontSize = 13.sp
             )
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(RedoXPalettes.all, key = { "pal_${it.id}" }) { palette ->
                     TvCompactChipButton(
                         text = if (palette.id == currentPalette.id) "✓ ${palette.label}" else palette.label,
-                        icon = Icons.Rounded.Palette,
+                        icon = RedoXIcons.Palette,
                         onClick = { RedoXThemeState.updatePalette(context, palette) }
                     )
                 }
             }
             TvSettingToggleRow(
-                title = "AMOLED siyah",
-                subtitle = "Arka planı saf siyah yapar (OLED ekranlarda pil ve kontrast kazancı).",
+                title = "OLED modu (AMOLED siyah)",
+                subtitle = "Arka planı ve oynatıcı çubuğunu saf siyah yapar; OLED ekranlarda siyah pikseller kapalı kalır (kontrast ve pil kazancı).",
                 checked = RedoXThemeState.amoled,
                 onToggle = { RedoXThemeState.updateAmoled(context, !RedoXThemeState.amoled) }
             )
@@ -125,34 +112,34 @@ fun TvSettingsScreen(
                 )
                 TvCompactChipButton(
                     text = "Küçült",
-                    icon = Icons.Rounded.Remove,
+                    icon = RedoXIcons.Remove,
                     onClick = { RedoXThemeState.updateTextScale(context, RedoXThemeState.textScale - 0.05f) }
                 )
                 TvCompactChipButton(
                     text = "Büyüt",
-                    icon = Icons.Rounded.Add,
+                    icon = RedoXIcons.Add,
                     onClick = { RedoXThemeState.updateTextScale(context, RedoXThemeState.textScale + 0.05f) }
                 )
                 TvCompactChipButton(
                     text = "Sıfırla",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { RedoXThemeState.updateTextScale(context, 1f) }
                 )
             }
         }
 
         // ------------------------------------------------------------ Oynatma
-        TvSettingsSection(title = "Oynatma", icon = Icons.Rounded.PlayCircle) {
+        TvSettingsSection(title = "Oynatma", icon = RedoXIcons.PlayCircle) {
             Text(
                 text = "Varsayılan görüntü kalitesi (oynatıcıda da değiştirilebilir)",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp
+                fontSize = 13.sp
             )
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(PlayerQuality.entries.toList(), key = { "q_${it.name}" }) { quality ->
                     TvCompactChipButton(
                         text = if (quality == prefs.defaultQuality) "✓ ${quality.label}" else quality.label,
-                        icon = Icons.Rounded.PlayCircle,
+                        icon = RedoXIcons.PlayCircle,
                         onClick = { hub.updatePrefs { it.copy(defaultQuality = quality) } }
                     )
                 }
@@ -166,7 +153,7 @@ fun TvSettingsScreen(
         }
 
         // ------------------------------------------------------------ Yayın rehberi
-        TvSettingsSection(title = "Yayın Rehberi (EPG)", icon = Icons.Rounded.CalendarMonth) {
+        TvSettingsSection(title = "Yayın Rehberi (EPG)", icon = RedoXIcons.CalendarMonth) {
             Text(
                 text = when {
                     epg.isLoading -> "Rehber güncelleniyor…"
@@ -183,12 +170,12 @@ fun TvSettingsScreen(
                 text = "Uydurma program adı gösterilmez; rehber verisi olmayan kanallarda yalnızca \"Canlı yayın\" yazar. " +
                     "M3U listelerinizdeki XMLTV adresleri de otomatik kullanılır (${state.playlists.count { it.epgXmlUrl.isNotBlank() }} adres).",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp
+                fontSize = 12.sp
             )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
                     text = if (epg.isLoading) "Güncelleniyor…" else "Şimdi Güncelle",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { hub.refreshEpg(true) }
                 )
             }
@@ -201,14 +188,14 @@ fun TvSettingsScreen(
                     Text(
                         text = url,
                         color = TvThemeColors.TextPrimary,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
                     )
                     TvCompactChipButton(
                         text = "Sil",
-                        icon = Icons.Rounded.DeleteOutline,
+                        icon = RedoXIcons.DeleteOutline,
                         onClick = { hub.updatePrefs { p -> p.copy(epgUrls = p.epgUrls.filterNot { it == url }) } }
                     )
                 }
@@ -222,7 +209,7 @@ fun TvSettingsScreen(
             )
             TvActionButton(
                 text = "Adresi Ekle ve Rehberi Yükle",
-                icon = Icons.Rounded.Add,
+                icon = RedoXIcons.Add,
                 isPrimary = true,
                 onClick = {
                     val url = epgUrlInput.trim()
@@ -246,7 +233,7 @@ fun TvSettingsScreen(
                 Text(
                     text = "Yayın Rehberi sekmesinde bir programa OK ile basarak hatırlatma ekleyebilirsiniz.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 10.sp
+                    fontSize = 12.sp
                 )
             }
             features.reminders.sortedBy { it.startMillis }.take(8).forEach { reminder ->
@@ -258,14 +245,14 @@ fun TvSettingsScreen(
                     Text(
                         text = "${formatDateTime(reminder.startMillis)} • ${reminder.channelName} • ${reminder.title}",
                         color = TvThemeColors.TextPrimary,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
                     )
                     TvCompactChipButton(
                         text = "Sil",
-                        icon = Icons.Rounded.DeleteOutline,
+                        icon = RedoXIcons.DeleteOutline,
                         onClick = { hub.removeReminder(reminder) }
                     )
                 }
@@ -273,7 +260,7 @@ fun TvSettingsScreen(
         }
 
         // ------------------------------------------------------------ Telefon kumandası ve güvenlik
-        TvSettingsSection(title = "Telefon Kumandası & Güvenlik", icon = Icons.Rounded.SettingsRemote) {
+        TvSettingsSection(title = "Telefon Kumandası & Güvenlik", icon = RedoXIcons.SettingsRemote) {
             Text(
                 text = if (remote.isRunning) "Adres: http://${remote.ip}:${remote.port}" else "Kumanda sunucusu başlatılıyor…",
                 color = TvThemeColors.AccentCyan,
@@ -285,24 +272,24 @@ fun TvSettingsScreen(
                 text = "Telefon uygulamasında \"Kumanda\" sekmesinden bu TV'yi seçip kodu girin. Kod yalnızca bu ekranda görünür; " +
                     "yanlış kodla 5 denemeden sonra 60 sn beklenir. Eşleşen telefonlar kodu bir daha sormaz.",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp
+                fontSize = 12.sp
             )
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
                     text = "Kodu Yenile",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { viewModel.regenerateRemotePin() }
                 )
                 TvCompactChipButton(
                     text = "Tüm Eşleşmeleri Kaldır (${remote.pairedCount})",
-                    icon = Icons.Rounded.DeleteOutline,
+                    icon = RedoXIcons.DeleteOutline,
                     onClick = { viewModel.revokeRemotePairings() }
                 )
             }
         }
 
         // ------------------------------------------------------------ Bakım
-        TvSettingsSection(title = "Bakım", icon = Icons.Rounded.Build) {
+        TvSettingsSection(title = "Bakım", icon = RedoXIcons.Build) {
             val update = features.update
             Text(
                 text = when {
@@ -317,13 +304,13 @@ fun TvSettingsScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
                     text = "Güncellemeyi Denetle",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { hub.checkForUpdates(true) }
                 )
                 if (update?.isNewer == true) {
                     TvCompactChipButton(
                         text = "Sürüm Sayfasını Aç",
-                        icon = Icons.Rounded.Info,
+                        icon = RedoXIcons.Info,
                         onClick = { host.openUrl(update.htmlUrl) }
                     )
                 }
@@ -337,17 +324,17 @@ fun TvSettingsScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
                     text = "Yedek Al (Download)",
-                    icon = Icons.Rounded.Build,
+                    icon = RedoXIcons.Build,
                     onClick = { viewModel.backupSettingsToDevice() }
                 )
                 TvCompactChipButton(
                     text = "Yedekten Geri Yükle",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { viewModel.restoreSettingsFromDevice() }
                 )
                 TvCompactChipButton(
                     text = "İzleme İstatistiklerini Temizle",
-                    icon = Icons.Rounded.DeleteOutline,
+                    icon = RedoXIcons.DeleteOutline,
                     onClick = {
                         hub.clearWatchStats()
                         viewModel.showStatusMessage("İzleme istatistikleri temizlendi.")
@@ -357,7 +344,7 @@ fun TvSettingsScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TvCompactChipButton(
                     text = if (showLog) "Günlüğü Gizle" else "Tanılama Günlüğünü Göster",
-                    icon = Icons.Rounded.Info,
+                    icon = RedoXIcons.Info,
                     onClick = {
                         showLog = !showLog
                         if (showLog) logText = CrashLogger.readLog(context)
@@ -366,12 +353,12 @@ fun TvSettingsScreen(
                 if (showLog) {
                     TvCompactChipButton(
                         text = "Paylaş",
-                        icon = Icons.Rounded.Add,
+                        icon = RedoXIcons.Add,
                         onClick = { host.shareText(logText.ifBlank { "Günlük boş." }) }
                     )
                     TvCompactChipButton(
                         text = "Günlüğü Temizle",
-                        icon = Icons.Rounded.DeleteOutline,
+                        icon = RedoXIcons.DeleteOutline,
                         onClick = {
                             CrashLogger.clear(context)
                             logText = ""
@@ -383,7 +370,7 @@ fun TvSettingsScreen(
                 Text(
                     text = logText.takeLast(1500).ifBlank { "Günlük boş — kaydedilmiş bir hata yok." },
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 9.sp,
+                    fontSize = 11.sp,
                     fontFamily = FontFamily.Monospace,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -395,7 +382,7 @@ fun TvSettingsScreen(
         }
 
         // ------------------------------------------------------------ Hakkında
-        TvSettingsSection(title = "Hakkında", icon = Icons.Rounded.Info) {
+        TvSettingsSection(title = "Hakkında", icon = RedoXIcons.Info) {
             Text(
                 text = "${BuildConfig.APP_DISPLAY_NAME} • v${BuildConfig.VERSION_NAME}",
                 color = TvThemeColors.TextPrimary,
@@ -406,12 +393,12 @@ fun TvSettingsScreen(
                 text = "RedoX = Red + Ox: \"kırmızı boğa\". Bu uygulama eski RedoX TV'den bağımsız, ayrı bir uygulamadır; " +
                     "ayarlarınız ve verileriniz paylaşılmaz.",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp
+                fontSize = 13.sp
             )
             Text(
                 text = "Cihaz sınıfı: ${host.deviceKind.uppercase(Locale.ROOT)} • ${Build.MANUFACTURER} ${Build.MODEL} • Android ${Build.VERSION.RELEASE}",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp
+                fontSize = 12.sp
             )
         }
     }
@@ -487,7 +474,7 @@ private fun TvSettingToggleRow(
             Text(
                 text = subtitle,
                 color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -502,7 +489,7 @@ private fun TvSettingToggleRow(
             Text(
                 text = if (checked) "AÇIK" else "KAPALI",
                 color = if (checked) TvThemeColors.AccentEmerald else TvThemeColors.TextSecondary,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.ExtraBold,
                 maxLines = 1
             )
@@ -562,7 +549,7 @@ fun TvChannelEditDialog(
                 Text(
                     text = "Ad ve numara yalnızca bu cihazda değişir; M3U listeniz bozulmaz.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 11.sp
+                    fontSize = 13.sp
                 )
                 TvInputField(
                     label = "Kanal adı",
@@ -585,7 +572,7 @@ fun TvChannelEditDialog(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TvActionButton(
                         text = "Kaydet",
-                        icon = Icons.Rounded.CheckCircle,
+                        icon = RedoXIcons.CheckCircle,
                         isPrimary = true,
                         onClick = {
                             onSave(nameInput.trim().ifEmpty { null }, numberInput.toIntOrNull())
@@ -595,14 +582,14 @@ fun TvChannelEditDialog(
                     if (hasOverride) {
                         TvActionButton(
                             text = "Varsayılana Dön",
-                            icon = Icons.Rounded.Refresh,
+                            icon = RedoXIcons.Refresh,
                             isPrimary = false,
                             onClick = onReset
                         )
                     }
                     TvActionButton(
                         text = "İptal",
-                        icon = Icons.Rounded.Clear,
+                        icon = RedoXIcons.Clear,
                         isPrimary = false,
                         onClick = onDismiss
                     )

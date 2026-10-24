@@ -1,8 +1,6 @@
 package com.example.chromecasttv
 
 import android.content.Context
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,8 +12,11 @@ import java.util.Locale
 
 // ============================================================================
 // RedoX "Kızıl & Altın" tasarım sistemi — renk belirteçleri (design tokens)
-// Logo: kırmızı faset boğa + altın halka. Zemin: lacivert-siyah. Tüm cihazlar aynı belirteçleri kullanır.
-// Ad: Red + Ox = RedoX ("kırmızı boğa").
+// Renkler doğrudan kullanıcının logosundan ölçüldü:
+//   Kızıl: #590823 · #96112F · #BD1436 · #F02848 · #FA6465     Altın: #A17844 · #DAA24F · #F3C05D · #FDDE7A
+//   Zemin (lacivert-siyah): #0A0A14 · #161621 · #1F1D2A
+// Tasarım dili "Kızıl Halka": logodaki altın halka = odak/seçim halkası; kırmızı = eylem ve canlı yayın.
+// Tüm cihazlar aynı belirteçleri kullanır. Ad: Red + Ox = RedoX ("kırmızı boğa").
 // ============================================================================
 
 /** Kullanıcının seçebildiği vurgu paleti (logo her zaman kızıl-altın kalır; palet arayüz vurgularını değiştirir). */
@@ -33,12 +34,12 @@ data class RedoXPalette(
 )
 
 object RedoXPalettes {
-    /** Varsayılan: logodaki kızıl + altın. */
+    /** Varsayılan: logodan ölçülen kızıl (#F02848 ... #BD1436) + altın (#F3C05D). */
     val Crimson = RedoXPalette(
         id = "crimson", label = "Kızıl & Altın",
-        primary = Color(0xFFE3213F), primaryBright = Color(0xFFFF4D66), primaryDeep = Color(0xFF8E1030),
-        gradStart = Color(0xFFF73F5B), gradEnd = Color(0xFFC41A3A),
-        secondary = Color(0xFFF5C542),
+        primary = Color(0xFFF02848), primaryBright = Color(0xFFFA6465), primaryDeep = Color(0xFFBD1436),
+        gradStart = Color(0xFFF02848), gradEnd = Color(0xFFBD1436),
+        secondary = Color(0xFFF3C05D),
         onPrimary = Color.White
     )
     val Ocean = RedoXPalette(
@@ -110,21 +111,22 @@ object RedoXThemeState {
 }
 
 object RedoXColors {
-    // Sabit lacivert-siyah tonları (logodaki zemin: ~#08080F)
-    val Ink950 = Color(0xFF04040A)
-    val Ink900 = Color(0xFF08080F)
-    val Ink850 = Color(0xFF0D0D16)
-    val Ink800 = Color(0xFF13131E)
-    val Ink700 = Color(0xFF1C1C2A)
-    val Ink600 = Color(0xFF282838)
-    val Line = Color(0xFF30303F)
+    // Sabit lacivert-siyah tonları (logodaki zemin: #0A0A14, #161621, #1F1D2A)
+    val Ink950 = Color(0xFF05050B)
+    val Ink900 = Color(0xFF0A0A14)
+    val Ink850 = Color(0xFF0F0F1A)
+    val Ink800 = Color(0xFF161621)
+    val Ink700 = Color(0xFF1F1D2A)
+    val Ink600 = Color(0xFF2A2838)
+    val Line = Color(0xFF2E2C3E)
 
     // AMOLED seçeneğine duyarlı yüzeyler
     val Background: Color get() = if (RedoXThemeState.amoled) Color.Black else Ink900
     val Sidebar: Color get() = if (RedoXThemeState.amoled) Color(0xFF040408) else Ink850
     val Surface: Color get() = if (RedoXThemeState.amoled) Color(0xFF0A0A10) else Ink800
     val SurfaceHigh: Color get() = if (RedoXThemeState.amoled) Color(0xFF13131B) else Ink700
-    val Overlay = Color(0xF208080F)
+    /** Oynatıcı çubuğu ve açılır panellerin zemini; OLED modunda saf siyah (siyah pikseller kapalı kalır). */
+    val Overlay: Color get() = if (RedoXThemeState.amoled) Color.Black else Color(0xFF0A0A14)
     val Scrim = Color(0xB3000000)
 
     // Seçili palete bağlı vurgu renkleri
@@ -137,10 +139,22 @@ object RedoXColors {
     val OnPrimary: Color get() = RedoXThemeState.palette.onPrimary
     val PrimaryBrush: Brush get() = Brush.linearGradient(listOf(GradStart, GradEnd))
 
-    // Altın (logodaki halka, burun halkası ve "TV" yazısı)
-    val Gold = Color(0xFFF5C542)
-    val GoldLight = Color(0xFFFFE9A0)
-    val GoldDeep = Color(0xFFC99A2E)
+    // Altın (logodaki halka, burun halkası ve "TV" yazısı): odak halkası, favori yıldızı, ilerleme çubukları
+    val Gold = Color(0xFFF3C05D)
+    val GoldLight = Color(0xFFFDDE7A)
+    val GoldDeep = Color(0xFFDAA24F)
+    val Bronze = Color(0xFFA17844)
+
+    // Logodaki koyu kızıl tonlar: zemin parıltısı ve basılı durumlar
+    val Wine = Color(0xFF590823)
+    val CrimsonDeep = Color(0xFF96112F)
+    /** Hero ve karşılama zeminindeki hafif şarap parıltısı. */
+    val WineGlow = Color(0xFF2A0A18)
+
+    /** TV odak halkası (logodaki altın halka). */
+    val FocusRing = Gold
+    /** Odaktaki öğenin etrafındaki yumuşak altın ışıma. */
+    val FocusGlow = Gold.copy(alpha = 0.42f)
 
     // Yardımcı (kategori / durum) renkleri
     val Aqua = Color(0xFF2BD9C5)
@@ -157,8 +171,8 @@ object RedoXColors {
     val Danger = Color(0xFFFF7A3D)
 
     val TextPrimary = Color(0xFFF5F4F2)
-    val TextSecondary = Color(0xFFB6B8C6)
-    val TextTertiary = Color(0xFF777A8C)
+    val TextSecondary = Color(0xFFB9BAC8)
+    val TextTertiary = Color(0xFF8C8EA3)
 
     fun categoryColor(category: String): Color {
         val lower = category.lowercase(Locale.getDefault())
@@ -181,19 +195,19 @@ object RedoXColors {
     fun categoryIcon(category: String): ImageVector {
         val lower = category.lowercase(Locale.getDefault())
         return when {
-            lower == "tümü" -> Icons.Rounded.GridView
-            lower.contains("ulusal") -> Icons.Rounded.Tv
-            lower.contains("haber") -> Icons.Rounded.Newspaper
-            lower.contains("spor") -> Icons.Rounded.SportsSoccer
-            lower.contains("belgesel") -> Icons.Rounded.Public
-            lower.contains("müzik") || lower.contains("muzik") -> Icons.Rounded.MusicNote
-            lower.contains("sinema") || lower.contains("film") -> Icons.Rounded.Movie
-            lower.contains("çocuk") || lower.contains("cocuk") -> Icons.Rounded.ChildCare
-            lower.contains("dünya") -> Icons.Rounded.Language
-            lower.contains("yerel") -> Icons.Rounded.Public
-            lower.contains("kıbrıs") -> Icons.Rounded.Public
-            lower.contains("dini") -> Icons.Rounded.History
-            else -> Icons.Rounded.LiveTv
+            lower == "tümü" -> RedoXIcons.GridView
+            lower.contains("ulusal") -> RedoXIcons.Tv
+            lower.contains("haber") -> RedoXIcons.Newspaper
+            lower.contains("spor") -> RedoXIcons.SportsSoccer
+            lower.contains("belgesel") -> RedoXIcons.Public
+            lower.contains("müzik") || lower.contains("muzik") -> RedoXIcons.MusicNote
+            lower.contains("sinema") || lower.contains("film") -> RedoXIcons.Movie
+            lower.contains("çocuk") || lower.contains("cocuk") -> RedoXIcons.ChildCare
+            lower.contains("dünya") -> RedoXIcons.Language
+            lower.contains("yerel") -> RedoXIcons.Public
+            lower.contains("kıbrıs") -> RedoXIcons.Public
+            lower.contains("dini") -> RedoXIcons.History
+            else -> RedoXIcons.LiveTv
         }
     }
 }

@@ -16,15 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.DeleteOutline
-import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.NotificationsActive
-import androidx.compose.material.icons.rounded.Palette
-import androidx.compose.material.icons.rounded.Refresh
-import androidx.compose.material.icons.rounded.Remove
-import androidx.compose.material.icons.rounded.SystemUpdate
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -82,13 +73,13 @@ fun MobileSettingsScreen(
                             text = p.label,
                             selected = p.id == palette.id,
                             onClick = { RedoXThemeState.updatePalette(context, p) },
-                            icon = Icons.Rounded.Palette
+                            icon = RedoXIcons.Palette
                         )
                     }
                 }
                 MSettingSwitch(
-                    title = "AMOLED siyah",
-                    subtitle = "Arka planı saf siyah yapar (OLED ekranlarda pil tasarrufu).",
+                    title = "OLED modu (AMOLED siyah)",
+                    subtitle = "Arka planı ve oynatıcı çubuğunu saf siyah yapar (OLED ekranlarda pil tasarrufu).",
                     checked = RedoXThemeState.amoled,
                     onCheckedChange = { RedoXThemeState.updateAmoled(context, it) }
                 )
@@ -100,8 +91,8 @@ fun MobileSettingsScreen(
                         fontWeight = FontWeight.SemiBold,
                         modifier = Modifier.weight(1f)
                     )
-                    MGhostButton("Küçült", { RedoXThemeState.updateTextScale(context, RedoXThemeState.textScale - 0.05f) }, icon = Icons.Rounded.Remove)
-                    MGhostButton("Büyüt", { RedoXThemeState.updateTextScale(context, RedoXThemeState.textScale + 0.05f) }, icon = Icons.Rounded.Add)
+                    MGhostButton("Küçült", { RedoXThemeState.updateTextScale(context, RedoXThemeState.textScale - 0.05f) }, icon = RedoXIcons.Remove)
+                    MGhostButton("Büyüt", { RedoXThemeState.updateTextScale(context, RedoXThemeState.textScale + 0.05f) }, icon = RedoXIcons.Add)
                 }
             }
         }
@@ -180,7 +171,7 @@ fun MobileSettingsScreen(
                 )
                 MGhostButton(
                     text = if (epg.isLoading) "Güncelleniyor…" else "Şimdi güncelle",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { hub.refreshEpg(true) }
                 )
                 prefs.epgUrls.forEach { url ->
@@ -197,7 +188,7 @@ fun MobileSettingsScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         MGhostButton(
                             text = "Sil",
-                            icon = Icons.Rounded.DeleteOutline,
+                            icon = RedoXIcons.DeleteOutline,
                             danger = true,
                             onClick = { hub.updatePrefs { p -> p.copy(epgUrls = p.epgUrls.filterNot { it == url }) } }
                         )
@@ -214,7 +205,7 @@ fun MobileSettingsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 MPrimaryButton(
                     text = "Ekle ve rehberi yükle",
-                    icon = Icons.Rounded.Add,
+                    icon = RedoXIcons.Add,
                     enabled = epgUrlInput.isNotBlank(),
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -257,7 +248,7 @@ fun MobileSettingsScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         MGhostButton(
                             text = "Sil",
-                            icon = Icons.Rounded.DeleteOutline,
+                            icon = RedoXIcons.DeleteOutline,
                             danger = true,
                             onClick = { hub.removeReminder(reminder) }
                         )
@@ -266,7 +257,7 @@ fun MobileSettingsScreen(
                 Spacer(modifier = Modifier.height(10.dp))
                 MGhostButton(
                     text = "Bildirim izni iste",
-                    icon = Icons.Rounded.NotificationsActive,
+                    icon = RedoXIcons.NotificationsActive,
                     onClick = { host.requestNotificationPermission() }
                 )
             }
@@ -298,7 +289,7 @@ fun MobileSettingsScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MGhostButton(
                         text = "Güncellemeyi denetle",
-                        icon = Icons.Rounded.SystemUpdate,
+                        icon = RedoXIcons.SystemUpdate,
                         onClick = { hub.checkForUpdates(true) }
                     )
                     if (update?.isNewer == true) {
@@ -314,7 +305,7 @@ fun MobileSettingsScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MGhostButton(
                         text = "İzleme istatistiklerini temizle",
-                        icon = Icons.Rounded.DeleteOutline,
+                        icon = RedoXIcons.DeleteOutline,
                         danger = true,
                         onClick = {
                             hub.clearWatchStats()
@@ -326,7 +317,7 @@ fun MobileSettingsScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MGhostButton(
                         text = if (showLog) "Günlüğü gizle" else "Tanılama günlüğü",
-                        icon = Icons.Rounded.Info,
+                        icon = RedoXIcons.Info,
                         onClick = {
                             showLog = !showLog
                             if (showLog) logText = CrashLogger.readLog(context)

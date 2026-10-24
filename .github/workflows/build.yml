@@ -13,7 +13,7 @@ name: RedoX TV 2 - APK derle
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main", "master", "ui-*" ]
     tags: [ "v*" ]
   pull_request:
   workflow_dispatch:
@@ -177,7 +177,7 @@ jobs:
 
   wiki:
     name: Wiki eşitle
-    if: github.event_name == 'push' && github.ref_type == 'branch'
+    if: github.event_name == 'push' && github.ref_type == 'branch' && (github.ref_name == 'main' || github.ref_name == 'master')
     runs-on: ubuntu-24.04
     continue-on-error: true
     steps:

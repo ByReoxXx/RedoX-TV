@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 /**
@@ -50,19 +52,30 @@ private fun PhoneScaffold(env: MobileEnv) {
                         onClose = { env.viewModel.closePip() }
                     )
                 }
-                NavigationBar(containerColor = RedoXColors.Sidebar, contentColor = RedoXColors.TextPrimary) {
+                NavigationBar(
+                    containerColor = RedoXColors.Sidebar,
+                    contentColor = RedoXColors.TextPrimary,
+                    tonalElevation = 0.dp
+                ) {
                     PhoneRootTabs.forEach { tab ->
                         NavigationBarItem(
                             selected = nav.current == tab,
                             onClick = { nav.selectRoot(tab) },
                             icon = { Icon(tab.icon, contentDescription = tab.title) },
-                            label = { Text(tab.title, fontSize = 11.sp, maxLines = 1) },
+                            label = {
+                                Text(
+                                    text = tab.title,
+                                    fontSize = 12.sp,
+                                    fontWeight = if (nav.current == tab) FontWeight.Bold else FontWeight.Medium,
+                                    maxLines = 1
+                                )
+                            },
                             colors = NavigationBarItemDefaults.colors(
-                                selectedIconColor = Color.White,
+                                selectedIconColor = RedoXColors.PrimaryBright,
                                 selectedTextColor = RedoXColors.TextPrimary,
-                                indicatorColor = RedoXColors.Primary.copy(alpha = 0.35f),
-                                unselectedIconColor = RedoXColors.TextSecondary,
-                                unselectedTextColor = RedoXColors.TextSecondary
+                                indicatorColor = RedoXColors.Primary.copy(alpha = 0.20f),
+                                unselectedIconColor = RedoXColors.TextTertiary,
+                                unselectedTextColor = RedoXColors.TextTertiary
                             )
                         )
                     }

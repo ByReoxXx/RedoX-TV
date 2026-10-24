@@ -27,7 +27,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -52,12 +62,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -67,9 +76,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -361,7 +372,7 @@ fun MultiViewPlayerCell(
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Icon(
-                    imageVector = if (isAudioActive) Icons.Rounded.VolumeUp else Icons.Rounded.VolumeOff,
+                    imageVector = if (isAudioActive) RedoXIcons.VolumeUp else RedoXIcons.VolumeOff,
                     contentDescription = "Ses Durumu",
                     tint = if (isAudioActive) TvThemeColors.AccentEmerald else TvThemeColors.TextSecondary,
                     modifier = Modifier.size(14.dp)
@@ -370,7 +381,7 @@ fun MultiViewPlayerCell(
                 Text(
                     text = if (isAudioActive) "SES AÇIK" else "SESSİZ",
                     color = if (isAudioActive) TvThemeColors.AccentEmerald else TvThemeColors.TextSecondary,
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1
                 )
@@ -397,33 +408,33 @@ fun MultiViewPlayerCell(
                 if (showSlotMenu) {
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         TvCompactChipButton(
-                            text = if (isAudioActive) "🔇 Sesi Sustur" else "🔊 Sesi Aç",
-                            icon = if (isAudioActive) Icons.Rounded.VolumeOff else Icons.Rounded.VolumeUp,
+                            text = if (isAudioActive) "Sesi sustur" else "Sesi aç",
+                            icon = if (isAudioActive) RedoXIcons.VolumeOff else RedoXIcons.VolumeUp,
                             onClick = { onToggleAudio() },
                             modifier = Modifier.focusRequester(slotFullBtnRequester)
                         )
                         TvCompactChipButton(
-                            text = "📺 Tam Ekran",
-                            icon = Icons.Rounded.SmartDisplay,
+                            text = "Tam ekran",
+                            icon = RedoXIcons.SmartDisplay,
                             onClick = {
                                 showSlotMenu = false
                                 onExpand()
                             }
                         )
                         TvCompactChipButton(
-                            text = "⏭ Kanal+",
-                            icon = Icons.Rounded.SwapHoriz,
+                            text = "Sonraki kanal",
+                            icon = RedoXIcons.SwapHoriz,
                             onClick = { onZapSlot(+1) }
                         )
                         TvCompactChipButton(
-                            text = "⏮ Kanal-",
-                            icon = Icons.Rounded.SwapHoriz,
+                            text = "Önceki kanal",
+                            icon = RedoXIcons.SwapHoriz,
                             onClick = { onZapSlot(-1) }
                         )
                         if (channel.sources.size > 1) {
                             TvCompactChipButton(
-                                text = "🔄 Akış ${currentSourceIdx + 1}/${channel.sources.size}",
-                                icon = Icons.Rounded.Refresh,
+                                text = "Akış ${currentSourceIdx + 1}/${channel.sources.size}",
+                                icon = RedoXIcons.Refresh,
                                 onClick = {
                                     autoTried = 0
                                     currentSourceIdx = (currentSourceIdx + 1) % channel.sources.size
@@ -431,8 +442,8 @@ fun MultiViewPlayerCell(
                             )
                         }
                         TvCompactChipButton(
-                            text = "✕",
-                            icon = Icons.Rounded.Clear,
+                            text = "Kapat",
+                            icon = RedoXIcons.Clear,
                             onClick = {
                                 showSlotMenu = false
                                 try { cellBoxRequester.requestFocus() } catch (_: Exception) {}
@@ -443,7 +454,7 @@ fun MultiViewPlayerCell(
                     Text(
                         text = "OK: Bu Ekranı Yönet (Tam Ekran / Kanal+ / Kanal- / Yedek Akış)",
                         color = TvThemeColors.FavoriteGold,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
@@ -515,13 +526,13 @@ fun FloatingMiniPipPlayer(
             Text(
                 text = "PiP • ${channel.name}",
                 color = TvThemeColors.AccentCyan,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1
             )
             TvCompactChipButton(
                 text = "Kapat",
-                icon = Icons.Rounded.Clear,
+                icon = RedoXIcons.Clear,
                 onClick = onClose
             )
         }
@@ -561,7 +572,7 @@ fun ParentalPinDialog(
                 .padding(20.dp)
         ) {
             Icon(
-                imageVector = Icons.Rounded.Verified,
+                imageVector = RedoXIcons.Verified,
                 contentDescription = null,
                 tint = TvThemeColors.FavoriteGold,
                 modifier = Modifier.size(34.dp)
@@ -606,7 +617,7 @@ fun ParentalPinDialog(
                 Text(
                     text = "Hatalı PIN! Tekrar deneyin.",
                     color = TvThemeColors.LiveRed,
-                    fontSize = 11.sp
+                    fontSize = 13.sp
                 )
             }
 
@@ -616,7 +627,7 @@ fun ParentalPinDialog(
                 items((0..9).toList()) { num ->
                     TvCompactChipButton(
                         text = num.toString(),
-                        icon = Icons.Rounded.SettingsRemote,
+                        icon = RedoXIcons.SettingsRemote,
                         onClick = {
                             if (enteredPin.length < 4) {
                                 enteredPin += num.toString()
@@ -635,10 +646,219 @@ fun ParentalPinDialog(
             Spacer(modifier = Modifier.height(10.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                TvCompactChipButton(text = "Temizle", icon = Icons.Rounded.Clear, onClick = { enteredPin = "" })
-                TvCompactChipButton(text = "İptal", icon = Icons.Rounded.Clear, onClick = onDismiss)
+                TvCompactChipButton(text = "Temizle", icon = RedoXIcons.Clear, onClick = { enteredPin = "" })
+                TvCompactChipButton(text = "İptal", icon = RedoXIcons.Clear, onClick = onDismiss)
             }
         }
+        }
+    }
+}
+
+// ============================================================================
+// "Kızıl Halka" tasarım dili — TV bileşenleri
+// Odak = logodaki altın halka: 3 dp altın çerçeve + yumuşak altın ışıma + hafif büyüme.
+// Seçili (odaksız) öğe = kırmızı dolgu tonu. Tüm TV ekranları bu bileşenleri paylaşır.
+// ============================================================================
+
+/**
+ * Yüzey: odaktayken altın çerçeve (halka) + küçük sabit altın ışıma, yuvarlatılmış kırpma ve zemin.
+ * Efektler bilinçli olarak hafiftir: geçiş animasyonu yoktur (kumandayla gezerken anında yanıt verir),
+ * ışıma küçüktür; böylece zayıf TV işlemcilerinde de akıcı kalır.
+ */
+@Composable
+fun Modifier.tvSurface(
+    focused: Boolean,
+    shape: Shape,
+    color: Color = RedoXColors.Surface,
+    focusedColor: Color = RedoXColors.SurfaceHigh,
+    brush: Brush? = null,
+    idleBorder: Color = RedoXColors.Line,
+    ringWidth: Dp = 3.dp
+): Modifier {
+    val glow = if (focused) {
+        Modifier.shadow(
+            elevation = 6.dp,
+            shape = shape,
+            ambientColor = RedoXColors.Gold,
+            spotColor = RedoXColors.Gold
+        )
+    } else {
+        Modifier
+    }
+    val fill = if (brush != null) {
+        Modifier.background(brush, shape)
+    } else {
+        Modifier.background(if (focused) focusedColor else color, shape)
+    }
+    return this
+        .then(glow)
+        .clip(shape)
+        .then(fill)
+        .border(
+            width = if (focused) ringWidth else 1.dp,
+            color = if (focused) RedoXColors.Gold else idleBorder,
+            shape = shape
+        )
+}
+
+/** "CANLI" rozeti: nokta + yazı. [broken] true ise uyarı rengiyle gösterilir (ör. "ÇALIŞMIYOR"). */
+@Composable
+fun TvLiveBadge(
+    text: String = "CANLI",
+    broken: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .clip(RoundedCornerShape(7.dp))
+            .background(if (broken) RedoXColors.Danger else RedoXColors.Primary)
+            .padding(horizontal = 9.dp, vertical = 3.dp)
+    ) {
+        if (!broken) {
+            Box(
+                modifier = Modifier
+                    .size(6.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+            )
+            Spacer(modifier = Modifier.width(6.dp))
+        }
+        Text(
+            text = text,
+            color = if (broken) Color(0xFF1B0A00) else Color.White,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.ExtraBold,
+            maxLines = 1,
+            softWrap = false
+        )
+    }
+}
+
+/** Küçük bilgi etiketi (çözünürlük, akış sayısı, kilit …). */
+@Composable
+fun TvStatPill(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = RedoXColors.Gold
+) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(7.dp))
+            .background(color.copy(alpha = 0.14f))
+            .padding(horizontal = 9.dp, vertical = 3.dp)
+    ) {
+        Text(
+            text = text,
+            color = color,
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            softWrap = false
+        )
+    }
+}
+
+/** İnce ilerleme çubuğu (şu an yayında olan programın ilerlemesi): altın dolgu. */
+@Composable
+fun TvProgressBar(
+    progress: Float,
+    modifier: Modifier = Modifier,
+    height: Dp = 4.dp,
+    color: Color = RedoXColors.Gold
+) {
+    val p = progress.coerceIn(0f, 1f)
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(height)
+            .clip(RoundedCornerShape(50))
+            .background(Color.White.copy(alpha = 0.12f))
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(p)
+                .background(color)
+        )
+    }
+}
+
+/** Alt ipucu çubuğundaki tuş + açıklama ("OK  İzle"). */
+@Composable
+fun TvKeyHint(key: String, label: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(6.dp))
+                .background(RedoXColors.Ink600)
+                .padding(horizontal = 9.dp, vertical = 2.dp)
+        ) {
+            Text(
+                text = key,
+                color = TvThemeColors.TextPrimary,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                softWrap = false
+            )
+        }
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = label,
+            color = TvThemeColors.TextSecondary,
+            fontSize = 13.sp,
+            maxLines = 1,
+            softWrap = false
+        )
+    }
+}
+
+/**
+ * Yalnızca simgeli düğme: odaklanınca etiketi açılır (kumandayla keşfedilebilir, ekran sade kalır).
+ * [active] true ise simge [activeTint] renginde görünür (ör. favoride yıldız altın).
+ */
+@Composable
+fun TvIconPill(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    active: Boolean = false,
+    activeTint: Color = RedoXColors.Gold
+) {
+    var focused by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val shape = RoundedCornerShape(14.dp)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .height(48.dp)
+            .tvSurface(focused = focused, shape = shape, ringWidth = 2.5.dp)
+            .onFocusChanged { focused = it.isFocused || it.hasFocus }
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
+            .padding(horizontal = 13.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = label,
+            tint = when {
+                active -> activeTint
+                focused -> TvThemeColors.TextPrimary
+                else -> TvThemeColors.TextSecondary
+            },
+            modifier = Modifier.size(22.dp)
+        )
+        AnimatedVisibility(visible = focused) {
+            Text(
+                text = label,
+                color = TvThemeColors.TextPrimary,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+                softWrap = false,
+                modifier = Modifier.padding(start = 9.dp)
+            )
         }
     }
 }
@@ -666,7 +886,7 @@ fun TvTopStatusHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .height(38.dp)
+            .height(52.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -675,89 +895,80 @@ fun TvTopStatusHeader(
             Icon(
                 imageVector = state.selectedTab.icon,
                 contentDescription = null,
-                tint = TvThemeColors.BullRedBright,
-                modifier = Modifier.size(20.dp)
+                tint = RedoXColors.PrimaryBright,
+                modifier = Modifier.size(28.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Text(
                 text = state.selectedTab.title,
                 color = TvThemeColors.TextPrimary,
-                fontSize = 17.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 26.sp,
+                fontWeight = FontWeight.ExtraBold,
                 maxLines = 1,
                 softWrap = false,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.width(10.dp))
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(TvThemeColors.BullRedPrimary.copy(alpha = 0.22f))
-                    .padding(horizontal = 9.dp, vertical = 2.dp)
-            ) {
-                val countText = when (state.selectedTab) {
-                    MainNavTab.FAVORITES -> "${state.favoriteOrderList.size} Favori"
-                    MainNavTab.CUSTOM_M3U -> "${state.customM3uChannels.size} Kanal"
-                    MainNavTab.SETTINGS -> "v${BuildConfig.VERSION_NAME}"
-                    else -> "${state.builtInChannels.size} Kanal"
-                }
-                Text(
-                    text = countText,
-                    color = TvThemeColors.BullRedBright,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    softWrap = false
-                )
+            Spacer(modifier = Modifier.width(12.dp))
+            val countText = when (state.selectedTab) {
+                MainNavTab.FAVORITES -> "${state.favoriteOrderList.size} favori"
+                MainNavTab.CUSTOM_M3U -> "${state.customM3uChannels.size} kanal"
+                MainNavTab.SETTINGS -> "v${BuildConfig.VERSION_NAME}"
+                else -> "${state.builtInChannels.size} kanal"
             }
+            TvStatPill(text = countText, color = RedoXColors.PrimaryBright)
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            TvCompactChipButton(
-                text = when {
-                    state.isScanningHealth -> "🩺 Taranıyor (${state.healthScanProgress})"
-                    state.healthyChannelIds.isNotEmpty() -> "🟢 Aktif (${state.healthyChannelIds.size}/${state.builtInChannels.size + state.customM3uChannels.size})"
-                    else -> "🩺 Tümünü Test Et"
+            val totalChannels = state.builtInChannels.size + state.customM3uChannels.size
+            TvIconPill(
+                icon = RedoXIcons.Sensors,
+                label = when {
+                    state.isScanningHealth -> "Taranıyor (${state.healthScanProgress})"
+                    state.healthyChannelIds.isNotEmpty() -> "Aktif (${state.healthyChannelIds.size}/$totalChannels)"
+                    else -> "Tümünü test et"
                 },
-                icon = Icons.Rounded.Sensors,
-                onClick = onQuickHealthCheckClick
+                onClick = onQuickHealthCheckClick,
+                active = state.healthyChannelIds.isNotEmpty() && !state.isScanningHealth,
+                activeTint = RedoXColors.Mint
             )
-            TvCompactChipButton(
-                text = "2x2 Ekran",
-                icon = Icons.Rounded.GridView,
+            TvIconPill(
+                icon = RedoXIcons.GridView,
+                label = "2x2 ekran",
                 onClick = onQuickMultiViewClick
             )
-            TvCompactChipButton(
-                text = "Ara",
-                icon = Icons.Rounded.Search,
+            TvIconPill(
+                icon = RedoXIcons.Search,
+                label = "Ara",
                 onClick = onQuickSearchClick
             )
-            TvCompactChipButton(
-                text = "M3U / QR",
-                icon = Icons.Rounded.SettingsRemote,
+            TvIconPill(
+                icon = RedoXIcons.SettingsRemote,
+                label = "M3U / QR",
                 onClick = onQuickAddM3uClick
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
+                    .height(48.dp)
+                    .clip(RoundedCornerShape(14.dp))
                     .background(TvThemeColors.SurfaceCard)
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
+                    .border(1.dp, RedoXColors.Line, RoundedCornerShape(14.dp))
+                    .padding(horizontal = 14.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Schedule,
+                    imageVector = RedoXIcons.Schedule,
                     contentDescription = null,
-                    tint = TvThemeColors.BullRedBright,
-                    modifier = Modifier.size(14.dp)
+                    tint = RedoXColors.Gold,
+                    modifier = Modifier.size(18.dp)
                 )
-                Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = currentTimeText,
                     color = TvThemeColors.TextPrimary,
-                    fontSize = 12.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
                     softWrap = false
@@ -770,46 +981,35 @@ fun TvTopStatusHeader(
 @Composable
 fun TvCompactChipButton(
     text: String,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val chipScale by animateFloatAsState(
-        targetValue = if (isFocused) 1.05f else 1f,
-        animationSpec = tween(durationMillis = 125),
-        label = "chip_scale"
-    )
+    val shape = RoundedCornerShape(12.dp)
+    val interactionSource = remember { MutableInteractionSource() }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .graphicsLayer {
-                scaleX = chipScale
-                scaleY = chipScale
-            }
-            .clip(RoundedCornerShape(9.dp))
-            .background(if (isFocused) RedoXColors.PrimaryBrush else SolidColor(TvThemeColors.SurfaceCard))
-            .border(
-                width = if (isFocused) 1.5.dp else 1.dp,
-                color = if (isFocused) Color.White else RedoXColors.Line,
-                shape = RoundedCornerShape(9.dp)
-            )
+            .tvSurface(focused = isFocused, shape = shape, ringWidth = 2.5.dp)
             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-            .clickable { onClick() }
-            .padding(horizontal = 10.dp, vertical = 6.dp)
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
+            .padding(horizontal = 13.dp, vertical = 8.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            tint = if (isFocused) Color.White else TvThemeColors.BullRedBright,
-            modifier = Modifier.size(14.dp)
-        )
-        Spacer(modifier = Modifier.width(5.dp))
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = text,
+                tint = RedoXColors.Gold,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(7.dp))
+        }
         Text(
             text = text,
-            color = Color.White,
-            fontSize = 11.sp,
+            color = if (isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
+            fontSize = 13.sp,
             fontWeight = if (isFocused) FontWeight.Bold else FontWeight.Medium,
             maxLines = 1,
             softWrap = false
@@ -817,6 +1017,13 @@ fun TvCompactChipButton(
     }
 }
 
+/** TV yan menüsünde ana gezintiden ayrılıp altta (ayırıcı çizginin altında) duran sekmeler. */
+private val TvRailFooterTabs = setOf(MainNavTab.M3U_MANAGER, MainNavTab.SETTINGS)
+
+/**
+ * Yan menü: üstte ana gezinti (iki satırlı, sayı rozetli), en altta Kaynaklar (M3U ve Dosya), Ayarlar ve Uyku.
+ * Alçak ekranlarda (ör. 540 dp'lik 1080p Chromecast) boşluklar daralır; böylece liste kaydırmadan sığar.
+ */
 @Composable
 fun TvSideNavigationRail(
     selectedTab: MainNavTab,
@@ -826,14 +1033,23 @@ fun TvSideNavigationRail(
     sleepTimerMinutes: Int?,
     onSelectTab: (MainNavTab) -> Unit,
     onOpenLanding: () -> Unit,
-    onCycleSleepTimer: () -> Unit
+    onCycleSleepTimer: () -> Unit,
+    /** Geri tuşu içerikten buraya döner: seçili sekmenin satırı odağı alır. */
+    selectedItemFocusRequester: FocusRequester? = null,
+    /** Menüdeki bir öğe odağı aldığında / bıraktığında çağrılır. */
+    onFocusInside: (Boolean) -> Unit = {}
 ) {
+    val compact = LocalConfiguration.current.screenHeightDp < 600
+    val mainTabs = MainNavTab.entries.filter { it !in TvRailFooterTabs }
+    val footerTabs = MainNavTab.entries.filter { it in TvRailFooterTabs }
+
     Column(
         modifier = Modifier
-            .width(215.dp)
+            .width(232.dp)
             .fillMaxHeight()
+            .onFocusChanged { onFocusInside(it.hasFocus) }
             .background(TvThemeColors.SidebarGlass)
-            .padding(vertical = 14.dp, horizontal = 10.dp),
+            .padding(vertical = if (compact) 12.dp else 18.dp, horizontal = 12.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState())) {
@@ -841,135 +1057,171 @@ fun TvSideNavigationRail(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .padding(horizontal = 6.dp, vertical = 4.dp)
+                    .padding(horizontal = 4.dp, vertical = 4.dp)
             ) {
-                RedoXEmblem(boxSize = 42.dp)
-                Spacer(modifier = Modifier.width(10.dp))
+                RedoXEmblem(boxSize = if (compact) 40.dp else 46.dp)
+                Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
                         text = "RedoX TV",
                         color = TvThemeColors.TextPrimary,
-                        fontSize = 17.sp,
+                        fontSize = 18.sp,
                         fontWeight = FontWeight.ExtraBold,
                         maxLines = 1
                     )
                     Text(
                         text = "v${BuildConfig.VERSION_NAME} • Android TV",
-                        color = TvThemeColors.BullRedBright,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.SemiBold,
+                        color = RedoXColors.PrimaryBright,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
                         maxLines = 1
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
 
-            MainNavTab.entries.forEach { tab ->
-                var isFocused by remember { mutableStateOf(false) }
-                val isSelected = selectedTab == tab
-
+            mainTabs.forEach { tab ->
+                // Sayı rozeti yalnızca kanal içeren sekmelerde görünür (sıfır rozeti gürültü yapar)
                 val badgeText = when (tab) {
-                    MainNavTab.ALL_CHANNELS -> builtInCount.toString()
-                    MainNavTab.FAVORITES -> favoriteCount.toString()
-                    MainNavTab.CUSTOM_M3U -> customM3uCount.toString()
-                    MainNavTab.MULTI_VIEW -> "2x2"
-                    else -> null
-                }
+                    MainNavTab.ALL_CHANNELS -> builtInCount
+                    MainNavTab.FAVORITES -> favoriteCount
+                    MainNavTab.CUSTOM_M3U -> customM3uCount
+                    else -> 0
+                }.takeIf { it > 0 }?.toString()
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 2.dp)
-                        .clip(RoundedCornerShape(11.dp))
-                        .background(
-                            when {
-                                isFocused -> TvThemeColors.BullRedPrimary.copy(alpha = 0.34f)
-                                isSelected -> TvThemeColors.SurfaceElevated
-                                else -> Color.Transparent
-                            }
-                        )
-                        .border(
-                            width = if (isFocused) 2.dp else if (isSelected) 1.dp else 0.dp,
-                            color = if (isFocused) TvThemeColors.BullRedBright else if (isSelected) TvThemeColors.BullRedPrimary.copy(alpha = 0.5f) else Color.Transparent,
-                            shape = RoundedCornerShape(11.dp)
-                        )
-                        .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-                        .clickable { onSelectTab(tab) }
-                        .padding(horizontal = 10.dp, vertical = 6.dp)
-                ) {
-                    Icon(
-                        imageVector = tab.icon,
-                        contentDescription = tab.title,
-                        tint = if (isSelected || isFocused) TvThemeColors.BullRedBright else TvThemeColors.TextSecondary,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(modifier = Modifier.width(9.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = tab.title,
-                            color = if (isSelected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
-                            fontWeight = if (isSelected || isFocused) FontWeight.Bold else FontWeight.Medium,
-                            fontSize = 12.sp,
-                            maxLines = 1,
-                            softWrap = false
-                        )
-                        Text(
-                            text = tab.subtitle,
-                            color = TvThemeColors.TextSecondary.copy(alpha = 0.75f),
-                            fontSize = 9.sp,
-                            maxLines = 1,
-                            softWrap = false
-                        )
-                    }
-                    if (badgeText != null) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(50))
-                                .background(TvThemeColors.BullRedPrimary.copy(alpha = 0.32f))
-                                .padding(horizontal = 6.dp, vertical = 1.dp)
-                        ) {
-                            Text(
-                                text = badgeText,
-                                color = TvThemeColors.TextPrimary,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 1
-                            )
-                        }
-                    }
-                }
+                TvRailRow(
+                    icon = tab.icon,
+                    title = tab.title,
+                    subtitle = tab.subtitle,
+                    badgeText = badgeText,
+                    selected = selectedTab == tab,
+                    rowHeight = if (compact) 48.dp else 52.dp,
+                    iconSize = 22.dp,
+                    focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
+                    onClick = { onSelectTab(tab) }
+                )
             }
         }
 
-        var sleepFocused by remember { mutableStateOf(false) }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (sleepFocused) TvThemeColors.BullRedBright else TvThemeColors.SurfaceCard)
-                .onFocusChanged { sleepFocused = it.isFocused || it.hasFocus }
-            .clickable { onCycleSleepTimer() }
-                .padding(horizontal = 10.dp, vertical = 7.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.Bedtime,
-                contentDescription = null,
-                tint = if (sleepFocused) Color.White else TvThemeColors.FavoriteGold,
-                modifier = Modifier.size(15.dp)
+        // Alt bölüm: Kaynaklar ve Ayarlar ana gezintiden ayrı, menünün dibinde (tek satırlı, daha alçak satırlar)
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = if (compact) 4.dp else 8.dp)
+                    .height(1.dp)
+                    .background(RedoXColors.Line)
             )
-            Spacer(modifier = Modifier.width(6.dp))
+            footerTabs.forEach { tab ->
+                TvRailRow(
+                    icon = tab.icon,
+                    title = tab.title,
+                    subtitle = null,
+                    badgeText = null,
+                    selected = selectedTab == tab,
+                    rowHeight = if (compact) 40.dp else 44.dp,
+                    iconSize = 20.dp,
+                    focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
+                    onClick = { onSelectTab(tab) }
+                )
+            }
+            TvRailRow(
+                icon = RedoXIcons.Bedtime,
+                title = if (sleepTimerMinutes != null) "Uyku: $sleepTimerMinutes dk" else "Uyku: Kapalı",
+                subtitle = null,
+                badgeText = null,
+                selected = sleepTimerMinutes != null,
+                rowHeight = if (compact) 40.dp else 44.dp,
+                iconSize = 20.dp,
+                focusRequester = null,
+                onClick = onCycleSleepTimer
+            )
+        }
+    }
+}
+
+/** Yan menü satırı: ana gezintide iki satır (ad + açıklama) ve sayı rozeti, alttaki bölümde tek satır. */
+@Composable
+private fun TvRailRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String?,
+    badgeText: String?,
+    selected: Boolean,
+    rowHeight: Dp,
+    iconSize: Dp,
+    focusRequester: FocusRequester?,
+    onClick: () -> Unit
+) {
+    var isFocused by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(14.dp)
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
+            .height(rowHeight)
+            .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier)
+            .tvSurface(
+                focused = isFocused,
+                shape = shape,
+                color = if (selected) RedoXColors.Primary.copy(alpha = 0.16f) else Color.Transparent,
+                idleBorder = Color.Transparent,
+                ringWidth = 2.5.dp
+            )
+            .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
+            .clickable { onClick() }
+            .padding(horizontal = 12.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = title,
+            tint = when {
+                isFocused -> RedoXColors.Gold
+                selected -> RedoXColors.PrimaryBright
+                else -> TvThemeColors.TextSecondary
+            },
+            modifier = Modifier.size(iconSize)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = if (sleepTimerMinutes != null) "Uyku: $sleepTimerMinutes dk" else "Uyku Zamanlayıcı: Kapalı",
-                color = TvThemeColors.TextPrimary,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.SemiBold,
+                text = title,
+                color = if (selected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
+                fontWeight = if (selected || isFocused) FontWeight.Bold else FontWeight.Medium,
+                fontSize = 15.sp,
                 maxLines = 1,
-                softWrap = false
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
             )
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    color = RedoXColors.TextTertiary,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    softWrap = false,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        if (badgeText != null) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(RedoXColors.Ink600)
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+            ) {
+                Text(
+                    text = badgeText,
+                    color = TvThemeColors.TextPrimary,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+            }
         }
     }
 }
@@ -983,46 +1235,32 @@ fun TvActionButton(
     modifier: Modifier = Modifier
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val btnScale by animateFloatAsState(
-        targetValue = if (isFocused) 1.05f else 1f,
-        animationSpec = tween(durationMillis = 125),
-        label = "action_btn_scale"
-    )
+    val shape = RoundedCornerShape(14.dp)
+    val interactionSource = remember { MutableInteractionSource() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .graphicsLayer {
-                scaleX = btnScale
-                scaleY = btnScale
-            }
-            .clip(RoundedCornerShape(10.dp))
-            .background(
-                when {
-                    isFocused -> RedoXColors.PrimaryBrush
-                    isPrimary -> SolidColor(TvThemeColors.BullRedDark)
-                    else -> SolidColor(TvThemeColors.SurfaceCard)
-                }
-            )
-            .border(
-                width = if (isFocused) 2.dp else 1.dp,
-                color = if (isFocused) Color.White else if (isPrimary) TvThemeColors.BullRedBright else RedoXColors.Line,
-                shape = RoundedCornerShape(10.dp)
+            .tvSurface(
+                focused = isFocused,
+                shape = shape,
+                brush = if (isPrimary) RedoXColors.PrimaryBrush else null,
+                ringWidth = 3.dp
             )
             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-            .clickable { onClick() }
-            .padding(horizontal = 12.dp, vertical = 7.dp)
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
+            .padding(horizontal = 20.dp, vertical = 11.dp)
     ) {
         Icon(
             imageVector = icon,
             contentDescription = text,
-            tint = Color.White,
-            modifier = Modifier.size(15.dp)
+            tint = if (isPrimary) Color.White else RedoXColors.Gold,
+            modifier = Modifier.size(20.dp)
         )
-        Spacer(modifier = Modifier.width(5.dp))
+        Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = text,
-            color = Color.White,
-            fontSize = 12.sp,
+            color = if (isPrimary || isFocused) Color.White else TvThemeColors.TextPrimary,
+            fontSize = 15.sp,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
             softWrap = false
@@ -1033,8 +1271,11 @@ fun TvActionButton(
 /**
  * Kumanda OK (DPAD_CENTER / ENTER) tuşuna:
  * - Kısa basıldığında: onShortClick() (Kanalı açar)
- * - Uzun basıldığında (~450ms basılı tutulduğunda) veya MENU/BOOKMARK tuşuna basıldığında:
- *   onLongPress() (Kanalı açmadan doğrudan Favorilere ekler / çıkarır)
+ * - Uzun basıldığında (~450ms basılı tutulduğunda): onLongPress()
+ *   (Canlı TV'de kanal özelliklerine geçer; listelerde kanalı açmadan favoriye ekler / çıkarır)
+ *
+ * Chromecast kumandası gibi yalnızca yön tuşları, OK ve Geri olan kumandalarda uzun basış yeterlidir.
+ * MENU / BOOKMARK tuşu olan kumandalarda aynı eylemi bu tuşlar da tetikler (isteğe bağlı kısayol).
  */
 @Composable
 fun Modifier.tvLongPressFavoriteModifier(
@@ -1128,7 +1369,7 @@ fun Modifier.tvLongPressFavoriteModifier(
  *      upFocusRequester / downFocusRequester ile doğrudan üstteki veya alttaki kutuya geçer!
  * 2. Yazma Modu (isEditing = true):
  *    - Kutu üzerindeyken OK tuşuna basıldığında açılır, Android TV klavyesini çağırır
- *      ve tek tıkla "📋 Panodan Yapıştır", "https://", ".m3u8", "✓ Bitti" çiplerini gösterir.
+ *      ve tek tıkla "Yapıştır", "https://", ".m3u8", "Bitti" çiplerini gösterir.
  */
 @Composable
 fun TvInputField(
@@ -1189,18 +1430,18 @@ fun TvInputField(
             Text(
                 text = label,
                 color = if (boxFocused || isEditing) TvThemeColors.BullRedBright else TvThemeColors.TextSecondary,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 fontWeight = if (boxFocused || isEditing) FontWeight.Bold else FontWeight.Normal,
                 maxLines = 1
             )
             Text(
                 text = when {
-                    isEditing -> "⌨️ Yazma Modu Açık (▼/▲ veya Geri: Kutudan Çık)"
+                    isEditing -> "Yazma modu açık (▼/▲ veya Geri: kutudan çık)"
                     boxFocused -> "OK: Yaz / Düzenle  •  ▲/▼: Diğer Kutuya Geç"
                     else -> ""
                 },
                 color = if (isEditing) TvThemeColors.FavoriteGold else TvThemeColors.AccentCyan,
-                fontSize = 10.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.SemiBold,
                 maxLines = 1
             )
@@ -1263,9 +1504,9 @@ fun TvInputField(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = if (boxFocused) "⌨️ OK: Yaz" else "Düzenle",
+                    text = if (boxFocused) "OK: Yaz" else "Düzenle",
                     color = if (boxFocused) TvThemeColors.FavoriteGold else TvThemeColors.TextSecondary,
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -1340,8 +1581,8 @@ fun TvInputField(
 
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     TvCompactChipButton(
-                        text = "✓ Bitti (Aşağı Geç)",
-                        icon = Icons.Rounded.CheckCircle,
+                        text = "Bitti (aşağı geç)",
+                        icon = RedoXIcons.CheckCircle,
                         onClick = {
                             isEditing = false
                             try {
@@ -1350,28 +1591,28 @@ fun TvInputField(
                         }
                     )
                     TvCompactChipButton(
-                        text = "📋 Yapıştır",
-                        icon = Icons.Rounded.InsertDriveFile,
+                        text = "Yapıştır",
+                        icon = RedoXIcons.InsertDriveFile,
                         onClick = { pasteFromClipboard() }
                     )
                     if (showUrlQuickChips) {
                         TvCompactChipButton(
                             text = "https://",
-                            icon = Icons.Rounded.Public,
+                            icon = RedoXIcons.Public,
                             onClick = {
                                 if (!value.startsWith("http")) onValueChange("https://$value")
                             }
                         )
                         TvCompactChipButton(
                             text = "http://",
-                            icon = Icons.Rounded.Public,
+                            icon = RedoXIcons.Public,
                             onClick = {
                                 if (!value.startsWith("http")) onValueChange("http://$value")
                             }
                         )
                         TvCompactChipButton(
                             text = ".m3u8",
-                            icon = Icons.Rounded.Tag,
+                            icon = RedoXIcons.Tag,
                             onClick = {
                                 if (!value.endsWith(".m3u8")) onValueChange("$value.m3u8")
                             }
@@ -1380,7 +1621,7 @@ fun TvInputField(
                     if (value.isNotEmpty()) {
                         TvCompactChipButton(
                             text = "Temizle",
-                            icon = Icons.Rounded.Clear,
+                            icon = RedoXIcons.Clear,
                             onClick = { onValueChange("") }
                         )
                     }
@@ -1525,14 +1766,14 @@ fun TvBuiltInM3uFilePickerDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Rounded.FolderOpen,
+                            imageVector = RedoXIcons.FolderOpen,
                             contentDescription = null,
                             tint = TvThemeColors.BullRedBright,
                             modifier = Modifier.size(26.dp)
                         )
                         Column {
                             Text(
-                                text = "📂 RedoX TV Dahili M3U Dosya Seçici",
+                                text = "RedoX TV dahili M3U dosya seçici",
                                 color = TvThemeColors.TextPrimary,
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.ExtraBold
@@ -1540,13 +1781,13 @@ fun TvBuiltInM3uFilePickerDialog(
                             Text(
                                 text = "Kumanda (▲/▼ ve OK) veya Dokunmatik ile doğrudan dosya/klasör seçin",
                                 color = TvThemeColors.TextSecondary,
-                                fontSize = 11.sp
+                                fontSize = 13.sp
                             )
                         }
                     }
                     TvCompactChipButton(
-                        text = "✕ Kapat (Geri)",
-                        icon = Icons.Rounded.Clear,
+                        text = "Kapat (Geri)",
+                        icon = RedoXIcons.Clear,
                         onClick = onDismiss
                     )
                 }
@@ -1564,7 +1805,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     ) {
                         Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
                             Text(
-                                text = "🔓 Download Klasöründeki M3U Dosyalarını Görmek İçin İzin Gerekli",
+                                text = "Download klasöründeki M3U dosyalarını görmek için izin gerekli",
                                 color = TvThemeColors.TextPrimary,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
@@ -1572,12 +1813,12 @@ fun TvBuiltInM3uFilePickerDialog(
                             Text(
                                 text = "Android güvenlik kısıtlaması nedeniyle 'Tüm Dosyalara Erişim' iznini bir kez açın.",
                                 color = TvThemeColors.TextSecondary,
-                                fontSize = 11.sp
+                                fontSize = 13.sp
                             )
                         }
                         TvActionButton(
                             text = "İzni Şimdi Aç",
-                            icon = Icons.Rounded.Verified,
+                            icon = RedoXIcons.Verified,
                             isPrimary = true,
                             onClick = { requestStorageAccess() }
                         )
@@ -1587,13 +1828,13 @@ fun TvBuiltInM3uFilePickerDialog(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TvCompactChipButton(
                         text = if (browseMode == 0) "✓ Bulunan M3U'lar (${discoveredM3uFiles.size})" else "Bulunan M3U'lar (${discoveredM3uFiles.size})",
-                        icon = Icons.Rounded.ManageSearch,
+                        icon = RedoXIcons.ManageSearch,
                         onClick = { browseMode = 0 },
                         modifier = Modifier.focusRequester(firstTabFocusRequester)
                     )
                     TvCompactChipButton(
                         text = if (browseMode == 1 && currentDir.absolutePath.contains("Download")) "✓ Download Klasörü" else "Download Klasörü",
-                        icon = Icons.Rounded.CloudDownload,
+                        icon = RedoXIcons.CloudDownload,
                         onClick = {
                             browseMode = 1
                             currentDir = defaultDownloadDir
@@ -1601,7 +1842,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     )
                     TvCompactChipButton(
                         text = if (browseMode == 1 && currentDir.absolutePath == "/sdcard") "✓ Ana Dizin (/sdcard)" else "Ana Dizin (/sdcard)",
-                        icon = Icons.Rounded.Home,
+                        icon = RedoXIcons.Home,
                         onClick = {
                             browseMode = 1
                             currentDir = Environment.getExternalStorageDirectory() ?: File("/sdcard")
@@ -1609,7 +1850,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     )
                     TvCompactChipButton(
                         text = if (browseMode == 1 && currentDir.absolutePath == "/storage") "✓ USB / Depolama" else "USB / Depolama",
-                        icon = Icons.Rounded.Dns,
+                        icon = RedoXIcons.Dns,
                         onClick = {
                             browseMode = 1
                             currentDir = File("/storage")
@@ -1617,7 +1858,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     )
                     TvCompactChipButton(
                         text = "Yenile",
-                        icon = Icons.Rounded.Refresh,
+                        icon = RedoXIcons.Refresh,
                         onClick = { permissionRefreshTrigger += 1 }
                     )
                 }
@@ -1644,8 +1885,8 @@ fun TvBuiltInM3uFilePickerDialog(
                                     fontWeight = FontWeight.Bold
                                 )
                                 TvActionButton(
-                                    text = "📂 Klasör Gezginini Aç (Download Klasörü)",
-                                    icon = Icons.Rounded.FolderOpen,
+                                    text = "Klasör gezginini aç (Download klasörü)",
+                                    icon = RedoXIcons.FolderOpen,
                                     isPrimary = true,
                                     onClick = {
                                         browseMode = 1
@@ -1684,7 +1925,7 @@ fun TvBuiltInM3uFilePickerDialog(
                                 ) {
                                     Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
                                         Text(
-                                            text = "🎵 ${file.name}",
+                                            text = file.name,
                                             color = Color.White,
                                             fontSize = 15.sp,
                                             fontWeight = FontWeight.ExtraBold,
@@ -1694,13 +1935,13 @@ fun TvBuiltInM3uFilePickerDialog(
                                         Text(
                                             text = "${file.parent ?: ""} • ${kbSize} KB",
                                             color = if (rowFocused) TvThemeColors.FavoriteGold else TvThemeColors.TextSecondary,
-                                            fontSize = 11.sp,
+                                            fontSize = 13.sp,
                                             maxLines = 1,
                                             overflow = TextOverflow.Ellipsis
                                         )
                                     }
                                     Text(
-                                        text = if (rowFocused) "▶ OK / DOKUN: YÜKLE" else "✓ Yükle",
+                                        text = if (rowFocused) "OK / dokun: yükle" else "Yükle",
                                         color = if (rowFocused) Color.White else TvThemeColors.AccentEmerald,
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.ExtraBold
@@ -1727,8 +1968,8 @@ fun TvBuiltInM3uFilePickerDialog(
                         val parentFile = currentDir.parentFile
                         if (parentFile != null) {
                             TvCompactChipButton(
-                                text = "⬆️ Üst Klasör (..)",
-                                icon = Icons.Rounded.FolderOpen,
+                                text = "Üst klasör (..)",
+                                icon = RedoXIcons.FolderOpen,
                                 onClick = { currentDir = parentFile }
                             )
                         }
@@ -1765,7 +2006,7 @@ fun TvBuiltInM3uFilePickerDialog(
                             ) {
                                 Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
                                     Text(
-                                        text = if (entry.isDirectory) "📁 ${entry.name}" else "🎵 ${entry.name}",
+                                        text = entry.name,
                                         color = Color.White,
                                         fontSize = 14.sp,
                                         fontWeight = FontWeight.Bold,
@@ -1777,12 +2018,12 @@ fun TvBuiltInM3uFilePickerDialog(
                                         Text(
                                             text = "$kb KB • M3U/Liste Dosyası",
                                             color = if (rowFocused) TvThemeColors.FavoriteGold else TvThemeColors.TextSecondary,
-                                            fontSize = 11.sp
+                                            fontSize = 13.sp
                                         )
                                     }
                                 }
                                 Text(
-                                    text = if (entry.isDirectory) "▶ Klasörü Aç" else "✓ Seç ve Yükle",
+                                    text = if (entry.isDirectory) "Klasörü aç" else "Seç ve yükle",
                                     color = if (rowFocused) Color.White else TvThemeColors.AccentCyan,
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.ExtraBold

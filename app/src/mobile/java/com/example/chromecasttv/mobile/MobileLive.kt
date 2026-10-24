@@ -13,9 +13,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.LiveTv
-import androidx.compose.material.icons.rounded.UploadFile
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,11 +35,23 @@ fun MobileLiveScreen(
     nav: MobileNav,
     actions: MChannelActions
 ) {
-    var showCustom by remember { mutableStateOf(false) }
-    val hasCustom = state.customM3uChannels.isNotEmpty()
-    val useCustom = showCustom && hasCustom
-    val channels = if (useCustom) state.customM3uChannels else state.builtInChannels
-    val categories = if (useCustom) state.customCategories else state.categories
+    // Eklenen her M3U listesi, eklerken verilen adla bir klasör (çip) olarak görünür
+    val folders = remember(state.customM3uChannels, state.playlists) {
+        val counts = LinkedHashMap<String, Int>()
+        state.playlists.forEach { counts[it.name] = 0 }
+        state.customM3uChannels.forEach { counts[it.sourcePlaylistName] = (counts[it.sourcePlaylistName] ?: 0) + 1 }
+        counts.filter { it.value > 0 }.toList()
+    }
+    var selectedFolder by remember { mutableStateOf<String?>(null) }
+    val folder = selectedFolder?.takeIf { name -> folders.any { it.first == name } }
+    val hasCustom = folders.isNotEmpty()
+    val useCustom = folder != null
+    val channels = remember(state.customM3uChannels, state.builtInChannels, folder) {
+        if (folder != null) state.customM3uChannels.filter { it.sourcePlaylistName == folder } else state.builtInChannels
+    }
+    val categories = remember(channels, state.categories, folder) {
+        if (folder != null) listOf("Tümü") + channels.map { it.category }.distinct() else state.categories
+    }
     val selected = if (categories.contains(state.selectedCategory)) state.selectedCategory else "Tümü"
 
     // Liste anahtarları benzersiz olmalı: aynı kimlikli kanallar (nadiren) tekilleştirilir
@@ -62,16 +71,16 @@ fun MobileLiveScreen(
                     MChip(
                         text = "Yerleşik (${state.builtInChannels.size})",
                         selected = !useCustom,
-                        onClick = { showCustom = false; viewModel.selectCategory("Tümü") },
-                        icon = Icons.Rounded.LiveTv
+                        onClick = { selectedFolder = null; viewModel.selectCategory("Tümü") },
+                        icon = RedoXIcons.LiveTv
                     )
                 }
-                item {
+                items(folders, key = { "folder_${it.first}" }) { (name, count) ->
                     MChip(
-                        text = "Özel M3U (${state.customM3uChannels.size})",
-                        selected = useCustom,
-                        onClick = { showCustom = true; viewModel.selectCategory("Tümü") },
-                        icon = Icons.Rounded.UploadFile
+                        text = "$name ($count)",
+                        selected = folder == name,
+                        onClick = { selectedFolder = name; viewModel.selectCategory("Tümü") },
+                        icon = RedoXIcons.FolderOpen
                     )
                 }
             }
@@ -88,8 +97,7 @@ fun MobileLiveScreen(
                     MChip(
                         text = "$category ($count)",
                         selected = category == selected,
-                        onClick = { viewModel.selectCategory(category) },
-                        icon = RedoXColors.categoryIcon(category)
+                        onClick = { viewModel.selectCategory(category) }
                     )
                 }
             }
@@ -97,7 +105,7 @@ fun MobileLiveScreen(
 
         if (filtered.isEmpty()) {
             MEmptyState(
-                icon = Icons.Rounded.LiveTv,
+                icon = RedoXIcons.LiveTv,
                 title = "Bu kategoride kanal yok",
                 message = if (hasCustom || state.playlists.isNotEmpty()) "Başka bir kategori seçin."
                 else "Kaynaklar ekranından M3U listesi veya Xtream hesabı ekleyebilirsiniz.",

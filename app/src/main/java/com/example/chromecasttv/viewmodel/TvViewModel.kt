@@ -52,8 +52,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -305,7 +303,7 @@ class TvViewModel(
         } else visibleCustom
 
         val favSet = favOrder.toSet()
-        val distinctBuiltInCats = listOf("Tümü") + visibleBuiltIn.map { it.category }.distinct()
+        val distinctBuiltInCats = listOf("Tümü") + visibleBuiltIn.map { it.category }.distinct().inPreferredCategoryOrder()
         val distinctCustomCats = listOf("Tümü") + visibleCustom.map { it.category }.distinct()
         val defaultMulti = if (multiList.isNotEmpty()) multiList else visibleBuiltIn.take(4)
 
@@ -368,7 +366,7 @@ class TvViewModel(
         SharingStarted.Eagerly,
         TvUiState(
             builtInChannels = initialBuiltIn,
-            categories = listOf("Tümü") + initialBuiltIn.map { it.category }.distinct(),
+            categories = listOf("Tümü") + initialBuiltIn.map { it.category }.distinct().inPreferredCategoryOrder(),
             favoriteOrderList = _favoriteOrder.value,
             favoriteIds = _favoriteOrder.value.toSet(),
             hiddenChannelIds = _extraState.value.hiddenChannelIds,
@@ -717,9 +715,9 @@ class TvViewModel(
         _extraState.value = _extraState.value.copy(autoStartLastChannel = next)
         repository.saveAutoStartLastChannel(next)
         _statusMessage.value = if (next) {
-            "⚡ Açılışta Son İzlenen Kanaldan Başla: AÇIK"
+            "Açılışta son izlenen kanaldan başla: Açık"
         } else {
-            "⚡ Açılışta Son İzlenen Kanaldan Başla: KAPALI (Landing Page Açılır)"
+            "Açılışta son izlenen kanaldan başla: Kapalı (karşılama ekranı açılır)"
         }
     }
 
@@ -733,7 +731,7 @@ class TvViewModel(
             if (_activePlayingChannel.value?.id == channelId) {
                 zapChannel(+1)
             }
-            _statusMessage.value = "👁️ $chName listeden gizlendi (M3U & Ayarlar'dan geri yüklenebilir)."
+            _statusMessage.value = "$chName listeden gizlendi (M3U ve Ayarlar'dan geri yüklenebilir)."
         }
     }
 
@@ -745,14 +743,14 @@ class TvViewModel(
         }
         _extraState.value = _extraState.value.copy(hiddenChannelIds = emptySet())
         repository.saveHiddenChannelIds(emptySet())
-        _statusMessage.value = "👁️ Gizlenen $count kanal listeye geri yüklendi!"
+        _statusMessage.value = "Gizlenen $count kanal listeye geri yüklendi."
     }
 
     fun toggleOnlyShowHealthy() {
         val next = !_extraState.value.onlyShowHealthy
         _extraState.value = _extraState.value.copy(onlyShowHealthy = next)
         _statusMessage.value = if (next) {
-            "🟢 Sadece sağlık testinden geçen aktif kanallar gösteriliyor."
+            "Yalnızca sağlık testinden geçen aktif kanallar gösteriliyor."
         } else {
             "Tüm kanallar gösteriliyor."
         }
@@ -778,7 +776,7 @@ class TvViewModel(
                 isScanningHealth = true,
                 healthScanProgress = "0/${pool.size}"
             )
-            _statusMessage.value = "🩺 Tüm kanallar (${pool.size} kanal) paralel olarak taranıyor..."
+            _statusMessage.value = "Tüm kanallar (${pool.size} kanal) paralel olarak taranıyor..."
 
             val healthy = _extraState.value.healthyChannelIds.toMutableSet()
             val broken = _brokenIds.value.toMutableSet()
@@ -817,7 +815,7 @@ class TvViewModel(
                     _brokenIds.value = broken.toSet()
                 }
                 repository.saveBrokenChannelIds(broken)
-                _statusMessage.value = "✅ Tüm kanallar tarandı (${pool.size}/${pool.size}): 🟢 $okCount Aktif • ⚠️ $failCount Yanıt Vermiyor"
+                _statusMessage.value = "Tüm kanallar tarandı (${pool.size}/${pool.size}): $okCount aktif • $failCount yanıt vermiyor"
             } finally {
                 _extraState.value = _extraState.value.copy(
                     healthyChannelIds = healthy.toSet(),
@@ -832,9 +830,9 @@ class TvViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val savedPath = repository.saveBackupFileToDevice()
             if (savedPath != null) {
-                _statusMessage.value = "💾 Favoriler, M3U ve kanal hafızası yedeklendi: $savedPath"
+                _statusMessage.value = "Favoriler, M3U ve kanal hafızası yedeklendi: $savedPath"
             } else {
-                _statusMessage.value = "⚠️ Yedek dosyası oluşturulamadı."
+                _statusMessage.value = "Yedek dosyası oluşturulamadı."
             }
         }
     }
@@ -844,9 +842,9 @@ class TvViewModel(
             val ok = repository.restoreBackupFileFromDevice()
             if (ok) {
                 applyRestoredPreferences()
-                _statusMessage.value = "♻️ Yedek başarıyla geri yüklendi!"
+                _statusMessage.value = "Yedek başarıyla geri yüklendi."
             } else {
-                _statusMessage.value = "⚠️ Download klasöründe 'redox_tv_backup.txt' bulunamadı."
+                _statusMessage.value = "Download klasöründe 'redox_tv_backup.txt' bulunamadı."
             }
         }
     }
@@ -1032,10 +1030,10 @@ class TvViewModel(
         val updated = _favoriteOrder.value.toMutableList()
         if (updated.contains(channelId)) {
             updated.remove(channelId)
-            _statusMessage.value = "☆ $chName favorilerden çıkarıldı."
+            _statusMessage.value = "$chName favorilerden çıkarıldı."
         } else {
             updated.add(channelId)
-            _statusMessage.value = "⭐ $chName favorilere eklendi (#${updated.size})."
+            _statusMessage.value = "$chName favorilere eklendi (#${updated.size})."
         }
         _favoriteOrder.value = updated
         repository.saveFavoriteOrderList(updated)
@@ -1053,7 +1051,7 @@ class TvViewModel(
         repository.saveFavoriteOrderList(current)
         val all = _builtInChannels.value + _customM3uChannels.value
         val chName = all.find { it.id == channelId }?.name ?: "Kanal"
-        _statusMessage.value = "📌 $chName favori sırası #${targetIdx + 1} konumuna taşındı."
+        _statusMessage.value = "$chName favori sırası #${targetIdx + 1} konumuna taşındı."
     }
 
     fun sortFavoritesBy(mode: String) {
@@ -1074,7 +1072,7 @@ class TvViewModel(
             "NUMBER" -> "Kanal Numarasına Göre"
             else -> "Kategoriye Göre"
         }
-        _statusMessage.value = "⭐ Favoriler $modeLabel otomatik sıralandı."
+        _statusMessage.value = "Favoriler $modeLabel otomatik sıralandı."
     }
 
     fun cycleSleepTimer() {
@@ -1132,7 +1130,7 @@ class TvViewModel(
                 val updated = _playlists.value + imported
                 _playlists.value = updated
                 repository.savePlaylists(updated)
-                _statusMessage.value = "'${imported.name}' Özel M3U Kanalları menüsüne eklendi!"
+                _statusMessage.value = "'${imported.name}' Özel M3U kanallarına eklendi."
                 reloadAllChannelsAndEpg()
             } else {
                 _isLoadingM3u.value = false
@@ -1149,11 +1147,11 @@ class TvViewModel(
                 val updated = _playlists.value + imported
                 _playlists.value = updated
                 repository.savePlaylists(updated)
-                _statusMessage.value = "✅ '${imported.name}' Özel M3U Kanalları menüsüne eklendi!"
+                _statusMessage.value = "'${imported.name}' Özel M3U kanallarına eklendi."
                 reloadAllChannelsAndEpg()
             } else {
                 _isLoadingM3u.value = false
-                _statusMessage.value = "⚠️ '${file.name}' içinde geçerli M3U/M3U8 yayın linki bulunamadı."
+                _statusMessage.value = "'${file.name}' içinde geçerli M3U/M3U8 yayın linki bulunamadı."
             }
         }
     }
@@ -1255,19 +1253,11 @@ class TvViewModel(
             _builtInChannels.value = builtInList
             _epgMap.value = combinedEpg
 
-            // [1] Arka planda GitHub üzerindeki dinamik `channel/channels.json` ve `channel/channels.m3u` dosyalarını kontrol et
-            // [2] Ardından ACIPTV Türk kanallarını ana listeye ve yedek akışlara birleştir
+            // Arka planda GitHub'daki şifreli kanal paketini (`channel/channels.enc`) kontrol et.
+            // Kanal listesi yalnızca bu paketten gelir; üçüncü taraf listeler birleştirilmez.
             launch(Dispatchers.IO) {
                 val remoteJsonChannels = repository.syncRemoteGitHubChannelsJson()
-                val remoteRepoM3u = repository.syncRemoteGitHubRepoM3u()
-                val baseAfterGitHub = buildList {
-                    val base = remoteJsonChannels ?: repository.getStaticBuiltInChannels()
-                    if (remoteRepoM3u.isNotBlank()) {
-                        addAll(repository.mergeTurkishM3uIntoBuiltIn(base, remoteRepoM3u))
-                    } else {
-                        addAll(base)
-                    }
-                }
+                val baseAfterGitHub = remoteJsonChannels ?: repository.getStaticBuiltInChannels()
                 if (baseAfterGitHub.isNotEmpty()) {
                     val jsonUpdatedList = ArrayList<TvChannel>(baseAfterGitHub.size)
                     for (ch in baseAfterGitHub) {
@@ -1289,28 +1279,6 @@ class TvViewModel(
                     _epgMap.value = combinedEpg.toMap()
                 }
 
-                val remoteTrM3u = repository.fetchAndCacheAciptvTurkishM3u()
-                if (remoteTrM3u.isNotBlank()) {
-                    val mergedBase = repository.mergeTurkishM3uIntoBuiltIn(baseAfterGitHub.ifEmpty { repository.getStaticBuiltInChannels() }, remoteTrM3u)
-                    val refreshedBuiltIn = ArrayList<TvChannel>(mergedBase.size)
-                    for (ch in mergedBase) {
-                        val sched = repository.generateScheduleForChannelFast(ch, baseHourStart, currentHourOfDay, preformattedWindows)
-                        combinedEpg[ch.epgChannelId] = sched
-                        val cur = sched[1]
-                        val nxt = sched[2]
-                        refreshedBuiltIn.add(
-                            ch.copy(
-                                currentProgramTitle = cur.title,
-                                currentProgramTime = cur.timeWindowText,
-                                nextProgramTitle = nxt.title,
-                                currentProgress = cur.progressFraction(now),
-                                isCustomM3u = false
-                            )
-                        )
-                    }
-                    _builtInChannels.value = refreshedBuiltIn
-                    _epgMap.value = combinedEpg.toMap()
-                }
                 features.onChannelsReloaded()
             }
 

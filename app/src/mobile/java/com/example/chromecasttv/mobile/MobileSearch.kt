@@ -9,10 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Clear
-import androidx.compose.material.icons.rounded.Mic
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -50,13 +46,13 @@ fun MobileSearchScreen(
                 Column {
                     if (query.isNotEmpty()) {
                         IconButton(onClick = { viewModel.updateSearchQuery("") }) {
-                            Icon(Icons.Rounded.Clear, contentDescription = "Temizle", tint = RedoXColors.TextSecondary)
+                            Icon(RedoXIcons.Clear, contentDescription = "Temizle", tint = RedoXColors.TextSecondary)
                         }
                     } else {
                         IconButton(
                             onClick = { host.startVoiceSearch { text -> viewModel.updateSearchQuery(text) } }
                         ) {
-                            Icon(Icons.Rounded.Mic, contentDescription = "Sesli ara", tint = RedoXColors.Primary)
+                            Icon(RedoXIcons.Mic, contentDescription = "Sesli ara", tint = RedoXColors.Primary)
                         }
                     }
                 }
@@ -73,14 +69,14 @@ fun MobileSearchScreen(
                     text = tag,
                     selected = query.equals(tag, ignoreCase = true),
                     onClick = { viewModel.updateSearchQuery(tag) },
-                    icon = Icons.Rounded.Search
+                    icon = RedoXIcons.Search
                 )
             }
         }
 
         if (hits.isEmpty()) {
             MEmptyState(
-                icon = Icons.Rounded.Search,
+                icon = RedoXIcons.Search,
                 title = "Sonuç bulunamadı",
                 message = "Farklı bir yazılış deneyin ya da mikrofon düğmesiyle sesli arayın."
             )

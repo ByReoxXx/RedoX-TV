@@ -27,6 +27,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -52,12 +58,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -152,6 +157,7 @@ import android.util.Base64
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.lerp
 import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
@@ -164,7 +170,8 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 // ============================================================================
-// HAFİF VE ANINDA AÇILAN KIRMIZI BOĞA KARŞILAMA EKRANI (LANDING PAGE)
+// KARŞILAMA EKRANI (LANDING PAGE) — "Kızıl Halka" tasarım dili
+// Logo + hızlı eylemler + "devam et" rafı. Küçük ekranlarda (< 660 dp yükseklik) ölçüler küçülür.
 // ============================================================================
 @Composable
 fun RedoXLandingScreen(
@@ -185,17 +192,22 @@ fun RedoXLandingScreen(
         try { primaryFocusRequester.requestFocus() } catch (_: Exception) {}
     }
 
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
+            .background(RedoXColors.Background)
             .background(
                 Brush.radialGradient(
-                    colors = listOf(Color(0xFF2A0A18), RedoXColors.Background, RedoXColors.Ink950),
-                    radius = 1100f
+                    colors = listOf(RedoXColors.Wine.copy(alpha = 0.72f), Color.Transparent),
+                    radius = 1000f
                 )
             )
-            .padding(horizontal = 42.dp, vertical = 28.dp)
+            .padding(horizontal = 56.dp, vertical = 26.dp)
     ) {
+        val compact = maxHeight < 660.dp
+        val markSize = if (compact) 108.dp else 156.dp
+        val wordWidth = if (compact) 232.dp else 300.dp
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
@@ -209,149 +221,143 @@ fun RedoXLandingScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .size(9.dp)
+                            .size(10.dp)
                             .clip(CircleShape)
-                            .background(TvThemeColors.AccentEmerald)
+                            .background(RedoXColors.Mint)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "${state.builtInChannels.size} Canlı Kanal Hazır • Hızlı Başlangıç Modu",
+                        text = "${state.builtInChannels.size + state.customM3uChannels.size} kanal hazır",
                         color = TvThemeColors.TextSecondary,
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.SemiBold
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
                     )
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     TvCompactChipButton(
-                        text = if (state.autoStartLastChannel) "⚡ Otomatik Başlat: AÇIK" else "⚡ Otomatik Başlat: KAPALI",
-                        icon = Icons.Rounded.Bolt,
+                        text = if (state.autoStartLastChannel) "Otomatik başlat: Açık" else "Otomatik başlat: Kapalı",
+                        icon = RedoXIcons.Bolt,
                         onClick = onToggleAutoStart
                     )
                     TvCompactChipButton(
                         text = "Ayarlar",
-                        icon = Icons.Rounded.Settings,
+                        icon = RedoXIcons.Settings,
                         onClick = onOpenSettings
                     )
                     Text(
                         text = "${BuildConfig.APP_DISPLAY_NAME} • v${BuildConfig.VERSION_NAME}",
-                        color = TvThemeColors.BullRedBright,
-                        fontSize = 12.sp,
+                        color = RedoXColors.PrimaryBright,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
             }
 
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                RedoXMark(markSize = 104.dp)
-                Spacer(modifier = Modifier.height(2.dp))
-                RedoXWordmarkImage(width = 240.dp)
-                Spacer(modifier = Modifier.height(2.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.size(markSize)) {
+                    Box(
+                        modifier = Modifier
+                            .requiredSize(markSize * 1.9f)
+                            .background(
+                                Brush.radialGradient(
+                                    listOf(RedoXColors.Gold.copy(alpha = 0.14f), Color.Transparent)
+                                ),
+                                CircleShape
+                            )
+                    )
+                    RedoXMark(markSize = markSize)
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+                RedoXWordmarkImage(width = wordWidth)
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = "KESİNTİSİZ CANLI TELEVİZYON • IPTV OYNATICI",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.4.sp
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                LandingActionCard(
+                    title = "Canlı TV'ye Başla",
+                    subtitle = "${state.builtInChannels.size} kanal",
+                    icon = RedoXIcons.LiveTv,
+                    accentColor = RedoXColors.Gold,
+                    isPrimary = true,
+                    onClick = onStartLiveTv,
+                    compact = compact,
+                    modifier = Modifier.focusRequester(primaryFocusRequester)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                if (lastChannel != null) {
                     LandingActionCard(
-                        title = "Canlı TV'ye Başla",
-                        subtitle = "${state.builtInChannels.size} Ulusal, Spor & Haber",
-                        icon = Icons.Rounded.LiveTv,
-                        accentColor = TvThemeColors.BullRedBright,
-                        isPrimary = true,
-                        onClick = onStartLiveTv,
-                        modifier = Modifier.focusRequester(primaryFocusRequester)
-                    )
-
-                    if (lastChannel != null) {
-                        LandingActionCard(
-                            title = "Hemen İzle: ${lastChannel.name}",
-                            subtitle = "Son İzlenen • CH ${lastChannel.number}",
-                            icon = Icons.Rounded.PlayCircleFilled,
-                            accentColor = TvThemeColors.AccentCyan,
-                            isPrimary = false,
-                            onClick = { onResumeLastChannel(lastChannel) }
-                        )
-                    }
-
-                    LandingActionCard(
-                        title = "Favori Kanallarım",
-                        subtitle = "${state.favoriteOrderList.size} Sıralı Favori Kanal",
-                        icon = Icons.Rounded.Star,
-                        accentColor = TvThemeColors.FavoriteGold,
+                        title = "Hemen İzle",
+                        subtitle = "${lastChannel.name} • CH ${lastChannel.number}",
+                        icon = RedoXIcons.PlayCircleFilled,
+                        accentColor = RedoXColors.Gold,
                         isPrimary = false,
-                        onClick = onOpenFavorites
-                    )
-
-                    LandingActionCard(
-                        title = "2x2 Bölünmüş Ekran",
-                        subtitle = "4 Kanalı Aynı Anda İzle",
-                        icon = Icons.Rounded.GridView,
-                        accentColor = TvThemeColors.AccentEmerald,
-                        isPrimary = false,
-                        onClick = onOpenMultiView
-                    )
-
-                    LandingActionCard(
-                        title = "Özel M3U Yükle",
-                        subtitle = "${state.customM3uChannels.size} Özel Kanal Ekli",
-                        icon = Icons.Rounded.UploadFile,
-                        accentColor = TvThemeColors.AccentIndigo,
-                        isPrimary = false,
-                        onClick = onOpenM3uManager
+                        onClick = { onResumeLastChannel(lastChannel) },
+                        compact = compact
                     )
                 }
+
+                LandingActionCard(
+                    title = "Favori Kanallarım",
+                    subtitle = "${state.favoriteOrderList.size} kanal",
+                    icon = RedoXIcons.Star,
+                    accentColor = RedoXColors.Gold,
+                    isPrimary = false,
+                    onClick = onOpenFavorites,
+                    compact = compact
+                )
+
+                LandingActionCard(
+                    title = "Bölünmüş Ekran",
+                    subtitle = "4 kanalı birlikte izle",
+                    icon = RedoXIcons.GridView,
+                    accentColor = RedoXColors.Gold,
+                    isPrimary = false,
+                    onClick = onOpenMultiView,
+                    compact = compact
+                )
+
+                LandingActionCard(
+                    title = "M3U Yükle",
+                    subtitle = "${state.customM3uChannels.size} özel kanal",
+                    icon = RedoXIcons.UploadFile,
+                    accentColor = RedoXColors.Gold,
+                    isPrimary = false,
+                    onClick = onOpenM3uManager,
+                    compact = compact
+                )
             }
 
             Column(
                 horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(6.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                if (shelves.isEmpty()) {
-                    Text(
-                        text = "Hızlı Kanal Başlat:",
-                        color = TvThemeColors.TextSecondary,
-                        fontSize = 11.sp,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        items(state.builtInChannels.take(10), key = { "landing_ch_${it.id}" }) { ch ->
-                            TvCompactChipButton(
-                                text = "${ch.number}. ${ch.name}",
-                                icon = Icons.Rounded.PlayArrow,
-                                onClick = { onResumeLastChannel(ch) }
-                            )
-                        }
-                    }
-                } else {
-                    shelves.take(2).forEach { shelf ->
-                        Text(
-                            text = shelf.title,
-                            color = TvThemeColors.TextSecondary,
-                            fontSize = 11.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            items(shelf.channels, key = { "shelf_${shelf.kind}_${it.id}" }) { ch ->
-                                TvCompactChipButton(
-                                    text = shelfChipLabel(ch),
-                                    icon = Icons.Rounded.PlayArrow,
-                                    onClick = { onResumeLastChannel(ch) }
-                                )
-                            }
-                        }
+                val shelfTitle = shelves.firstOrNull()?.title ?: "Hızlı kanal başlat"
+                val shelfChannels = (shelves.firstOrNull()?.channels ?: state.builtInChannels)
+                    .distinctBy { it.id }
+                    .take(10)
+                Text(
+                    text = shelfTitle,
+                    color = TvThemeColors.TextSecondary,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                    items(shelfChannels, key = { "landing_shelf_${it.id}" }) { ch ->
+                        LandingShelfCard(channel = ch, onClick = { onResumeLastChannel(ch) })
                     }
                 }
             }
@@ -359,12 +365,47 @@ fun RedoXLandingScreen(
     }
 }
 
-/** Raf düğmesi metni: gerçek rehber varsa "kanal • şu anki program", yoksa "numara. kanal". */
-private fun shelfChipLabel(ch: TvChannel): String {
-    return if (ch.hasRealEpg) {
-        "${ch.name} • ${ch.currentProgramTitle}".take(36)
-    } else {
-        "${ch.number}. ${ch.name}"
+/** Karşılama ekranındaki raf kartı: logo + kanal adı + şu an yayındaki program (+ ilerleme). */
+@Composable
+fun LandingShelfCard(
+    channel: TvChannel,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var isFocused by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(14.dp)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .width(300.dp)
+            .height(72.dp)
+            .tvSurface(focused = isFocused, shape = shape, ringWidth = 2.5.dp)
+            .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
+            .clickable { onClick() }
+            .padding(horizontal = 12.dp)
+    ) {
+        ChannelBrandLogoBox(channel = channel, boxSize = 46.dp, fontSize = 12.sp)
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(3.dp)) {
+            Text(
+                text = channel.name,
+                color = TvThemeColors.TextPrimary,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Text(
+                text = channel.nowTitleOrLive(),
+                color = TvThemeColors.TextSecondary,
+                fontSize = 13.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            if (channel.hasRealEpg) {
+                TvProgressBar(progress = channel.progressForUi())
+            }
+        }
     }
 }
 
@@ -376,7 +417,8 @@ fun LandingActionCard(
     accentColor: Color,
     isPrimary: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    compact: Boolean = false
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val cardScale by animateFloatAsState(
@@ -384,72 +426,61 @@ fun LandingActionCard(
         animationSpec = tween(durationMillis = 140),
         label = "landing_card_scale"
     )
+    val shape = RoundedCornerShape(18.dp)
 
-    Box(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
-            .width(160.dp)
-            .height(122.dp)
+            .width(if (compact) 170.dp else 196.dp)
+            .height(if (compact) 120.dp else 140.dp)
             .graphicsLayer {
                 scaleX = cardScale
                 scaleY = cardScale
             }
-            .clip(RoundedCornerShape(18.dp))
-            .background(
-                when {
-                    isFocused -> accentColor.copy(alpha = 0.32f)
-                    isPrimary -> TvThemeColors.BullRedDark.copy(alpha = 0.50f)
-                    else -> TvThemeColors.SurfaceCard
-                }
-            )
-            .border(
-                width = if (isFocused) 2.5.dp else 1.dp,
-                color = if (isFocused) Color.White else accentColor.copy(alpha = 0.45f),
-                shape = RoundedCornerShape(18.dp)
+            .tvSurface(
+                focused = isFocused,
+                shape = shape,
+                brush = if (isPrimary) RedoXColors.PrimaryBrush else null,
+                ringWidth = 3.dp
             )
             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
             .clickable { onClick() }
+            .padding(14.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
+                .size(if (compact) 40.dp else 48.dp)
+                .clip(CircleShape)
+                .background(if (isPrimary) Color.White.copy(alpha = 0.2f) else accentColor.copy(alpha = 0.16f)),
+            contentAlignment = Alignment.Center
         ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(accentColor.copy(alpha = 0.22f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = title,
-                    tint = accentColor,
-                    modifier = Modifier.size(22.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = title,
-                color = TvThemeColors.TextPrimary,
-                fontSize = 13.sp,
-                fontWeight = FontWeight.ExtraBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = subtitle,
-                color = TvThemeColors.TextSecondary,
-                fontSize = 10.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = if (isPrimary) Color.White else accentColor,
+                modifier = Modifier.size(if (compact) 22.dp else 26.dp)
             )
         }
+        Spacer(modifier = Modifier.height(if (compact) 6.dp else 9.dp))
+        Text(
+            text = title,
+            color = if (isPrimary) Color.White else TvThemeColors.TextPrimary,
+            fontSize = if (compact) 14.sp else 16.sp,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = subtitle,
+            color = if (isPrimary) Color(0xFFFFE3E8) else TvThemeColors.TextSecondary,
+            fontSize = if (compact) 12.sp else 13.sp,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -467,6 +498,32 @@ fun RedoXTvRootScreen(
     var lastWatchedChannelId by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(state.activePlayingChannel?.id) {
         state.activePlayingChannel?.id?.let { lastWatchedChannelId = it }
+    }
+
+    // Kumanda: yalnızca yön tuşları, OK ve Geri olan kumandalarda (Chromecast) Geri bir üst düzeye çıkar:
+    // içerik -> yan menü -> (uyarı görünürken ikinci basış) uygulamadan çık.
+    val railFocusRequester = remember { FocusRequester() }
+    var railHasFocus by remember { mutableStateOf(false) }
+    var exitArmed by remember { mutableStateOf(false) }
+    val onMainScreen = state.activePlayingChannel == null && !state.showLandingScreen
+    BackHandler(enabled = onMainScreen && !railHasFocus) {
+        try { railFocusRequester.requestFocus() } catch (_: Exception) {}
+    }
+    BackHandler(enabled = onMainScreen && railHasFocus && !exitArmed) {
+        exitArmed = true
+        viewModel.showStatusMessage("Çıkmak için Geri'ye tekrar basın")
+    }
+    LaunchedEffect(exitArmed) {
+        if (exitArmed) {
+            delay(3400L)
+            exitArmed = false
+        }
+    }
+    LaunchedEffect(onMainScreen) {
+        if (!onMainScreen) {
+            railHasFocus = false
+            exitArmed = false
+        }
     }
 
     if (state.activePlayingChannel != null) {
@@ -534,14 +591,16 @@ fun RedoXTvRootScreen(
                 sleepTimerMinutes = state.sleepTimerRemainingMinutes,
                 onSelectTab = { viewModel.selectTab(it) },
                 onOpenLanding = { viewModel.openLandingScreen() },
-                onCycleSleepTimer = { viewModel.cycleSleepTimer() }
+                onCycleSleepTimer = { viewModel.cycleSleepTimer() },
+                selectedItemFocusRequester = railFocusRequester,
+                onFocusInside = { railHasFocus = it }
             )
 
             Column(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .padding(horizontal = 20.dp, vertical = 12.dp)
+                    .padding(horizontal = 36.dp, vertical = 20.dp)
             ) {
                 TvTopStatusHeader(
                     state = state,
@@ -551,15 +610,11 @@ fun RedoXTvRootScreen(
                     onQuickAddM3uClick = { viewModel.selectTab(MainNavTab.M3U_MANAGER) }
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
-                // HAFİF VE AKICI 140ms CROSSFADE SEKME GEÇİŞİ
-                Crossfade(
-                    targetState = state.selectedTab,
-                    animationSpec = tween(durationMillis = 140),
-                    modifier = Modifier.weight(1f).fillMaxWidth(),
-                    label = "fast_tab_crossfade"
-                ) { targetTab ->
+                // Sekme geçişi anında yapılır (çapraz solma yok): zayıf TV işlemcilerinde takılmayı önler
+                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    val targetTab = state.selectedTab
                     when (targetTab) {
                         MainNavTab.ALL_CHANNELS -> {
                             ChannelShowcaseScreen(
@@ -601,17 +656,16 @@ fun RedoXTvRootScreen(
                             )
                         }
                         MainNavTab.CUSTOM_M3U -> {
-                            ChannelShowcaseScreen(
-                                title = "Eklenen Özel M3U Kanalları",
+                            // Eklenen her liste, verilen adla bir klasör olarak görünür (OK: aç, Geri: klasörlere dön)
+                            CustomM3uFoldersScreen(
                                 channels = state.customM3uChannels,
-                                categories = state.customCategories,
+                                playlists = state.playlists,
                                 selectedCategory = state.selectedCategory,
                                 favoriteIds = state.favoriteIds,
                                 lockedIds = state.lockedChannelIds,
                                 brokenIds = state.brokenChannelIds,
                                 healthyIds = state.healthyChannelIds,
                                 hiddenCount = state.hiddenChannelIds.size,
-                                recentChannels = emptyList(),
                                 lastWatchedChannelId = lastWatchedChannelId,
                                 onSelectCategory = { viewModel.selectCategory(it) },
                                 onPlayChannel = { viewModel.requestPlayChannel(it) },
@@ -620,7 +674,7 @@ fun RedoXTvRootScreen(
                                 onHideChannel = { viewModel.hideChannel(it) },
                                 onRestoreHidden = { viewModel.restoreAllHiddenChannels() },
                                 onEditChannel = { editingChannel = it },
-                                emptyMessage = "Henüz özel bir M3U listesi eklemediniz. 'M3U & Dosya Yükle' sekmesinden dosya veya link ekleyebilirsiniz."
+                                emptyMessage = "Henüz özel bir M3U listesi eklemediniz. 'M3U ve Dosya' sekmesinden dosya veya link ekleyebilirsiniz."
                             )
                         }
                         MainNavTab.MULTI_VIEW -> {
@@ -745,35 +799,84 @@ fun RedoXTvRootScreen(
         }
 
         state.statusMessage?.let { message ->
+            var toastShown by remember(message) { mutableStateOf(false) }
             LaunchedEffect(message) {
-                delay(3500)
+                toastShown = true
+                delay(3200)
+                toastShown = false
+                delay(300)
                 viewModel.clearStatusMessage()
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            AnimatedVisibility(
+                visible = toastShown,
+                enter = fadeIn(tween(160)) + slideInVertically(tween(220)) { it / 2 },
+                exit = fadeOut(tween(200)) + slideOutVertically(tween(220)) { it / 2 },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(TvThemeColors.SurfaceElevated)
-                    .border(1.5.dp, TvThemeColors.BullRedBright, RoundedCornerShape(12.dp))
-                    .padding(horizontal = 18.dp, vertical = 9.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.NotificationsActive,
-                    contentDescription = null,
-                    tint = TvThemeColors.BullRedBright,
-                    modifier = Modifier.size(17.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = message,
-                    color = TvThemeColors.TextPrimary,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(TvThemeColors.SurfaceElevated)
+                        .border(2.dp, RedoXColors.Gold, RoundedCornerShape(14.dp))
+                        .padding(horizontal = 20.dp, vertical = 11.dp)
+                ) {
+                    Icon(
+                        imageVector = RedoXIcons.NotificationsActive,
+                        contentDescription = null,
+                        tint = RedoXColors.Gold,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = message,
+                        color = TvThemeColors.TextPrimary,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1
+                    )
+                }
             }
+        }
+    }
+}
+
+/** Canlı TV kategori çiplerindeki sanal kategoriler (gerçek kategori adlarıyla çakışmasın diye özel anahtar). */
+private const val TV_CAT_FAVORITES = "__redox_tv_favorites__"
+private const val TV_CAT_RECENT = "__redox_tv_recent__"
+
+/**
+ * Uzun basışta OK tuşu hâlâ basılıdır: odak "İzle" düğmesine geçince tuş tekrarları ve bırakma olayı
+ * düğmeye ulaşıp kanalı açmasın diye, tuş bırakılana kadar OK olaylarını tüketir.
+ */
+private class TvOkReleaseGate {
+    var swallowUntilRelease = false
+
+    /** true dönerse olay tüketilmiştir. */
+    fun consume(event: KeyEvent): Boolean {
+        if (!swallowUntilRelease) return false
+        val code = event.keyCode
+        if (code != KeyEvent.KEYCODE_DPAD_CENTER &&
+            code != KeyEvent.KEYCODE_ENTER &&
+            code != KeyEvent.KEYCODE_NUMPAD_ENTER
+        ) return false
+        return when (event.action) {
+            KeyEvent.ACTION_UP -> {
+                swallowUntilRelease = false
+                true
+            }
+            KeyEvent.ACTION_DOWN -> {
+                if (event.repeatCount == 0) {
+                    // Yeni bir basış: önceki bırakma olayı kaçmış demektir
+                    swallowUntilRelease = false
+                    false
+                } else {
+                    true
+                }
+            }
+            else -> false
         }
     }
 }
@@ -798,29 +901,111 @@ fun ChannelShowcaseScreen(
     onHideChannel: (String) -> Unit = {},
     onRestoreHidden: () -> Unit = {},
     onEditChannel: (TvChannel) -> Unit = {},
-    emptyMessage: String = "Bu kategoride kanal bulunamadı."
+    emptyMessage: String = "Bu kategoride kanal bulunamadı.",
+    /** Bir Özel M3U klasörünün içindeyken klasörün adı: ipucu çubuğunda gösterilir, Geri klasör listesine döner. */
+    folderName: String? = null
 ) {
-    val filtered = remember(channels, selectedCategory) {
-        if (selectedCategory == "Tümü") channels
-        else channels.filter { it.category.equals(selectedCategory, ignoreCase = true) }
+    // "Favoriler" ve "Son izlenenler" kategori çiplerinin arasında sanal kategorilerdir. Çip sayıları canlıdır;
+    // Favoriler listesi seçildiği andaki görüntüdür (yıldızı kaldırınca kart listeden birden kaybolmaz).
+    val favoriteCount = remember(channels, favoriteIds) { channels.count { favoriteIds.contains(it.id) } }
+    val recentInList = remember(channels, recentChannels) {
+        val ids = HashSet<String>(channels.size * 2)
+        channels.forEach { ids.add(it.id) }
+        recentChannels.filter { ids.contains(it.id) }
+    }
+    val chipCategories = remember(categories, favoriteCount, recentInList.size) {
+        buildList {
+            categories.firstOrNull()?.let { add(it) }
+            if (favoriteCount > 0) add(TV_CAT_FAVORITES)
+            if (recentInList.isNotEmpty()) add(TV_CAT_RECENT)
+            addAll(categories.drop(1))
+        }
+    }
+    val activeCategory = when {
+        selectedCategory == TV_CAT_FAVORITES && favoriteCount == 0 -> "Tümü"
+        selectedCategory == TV_CAT_RECENT && recentInList.isEmpty() -> "Tümü"
+        else -> selectedCategory
+    }
+    val favoriteSnapshot = remember(activeCategory) { favoriteIds }
+    val filtered = remember(channels, activeCategory, recentInList) {
+        when (activeCategory) {
+            "Tümü" -> channels
+            TV_CAT_FAVORITES -> channels.filter { favoriteSnapshot.contains(it.id) }
+            TV_CAT_RECENT -> recentInList
+            else -> channels.filter { it.category.equals(activeCategory, ignoreCase = true) }
+        }
     }
 
-    var localFocusedChannel by remember(filtered) {
-        val initial = if (lastWatchedChannelId != null) {
-            filtered.find { it.id == lastWatchedChannelId } ?: filtered.firstOrNull()
-        } else {
-            filtered.firstOrNull()
-        }
-        mutableStateOf(initial)
+    // Odaktaki kanalın yalnızca kimliği tutulur; nesne her seferinde güncel listeden alınır. Böylece rehber
+    // (EPG) yenilenip liste yeniden üretildiğinde üstteki panel başka bir kanala sıçramaz.
+    var focusedChannelId by remember(activeCategory) {
+        val initial = filtered.firstOrNull { it.id == lastWatchedChannelId } ?: filtered.firstOrNull()
+        mutableStateOf(initial?.id)
     }
+    val localFocusedChannel: TvChannel? =
+        filtered.firstOrNull { it.id == focusedChannelId } ?: filtered.firstOrNull()
 
     val gridState = rememberLazyGridState()
     val cardFocusRequesters = remember { HashMap<String, FocusRequester>() }
+    val scope = rememberCoroutineScope()
 
-    // Kanaldan çıkıp (Geri tuşu) listeye döndüğümüzde sol menü yerine doğrudan son izlenen
-    // kanalın kartına kaydır ve kumanda odağını (Focus) o kanalın üstüne ver!
-    LaunchedEffect(lastWatchedChannelId, filtered.size, selectedCategory) {
-        if (filtered.isNotEmpty()) {
+    // Kumanda (Chromecast: yalnızca yön tuşları, OK ve Geri): kanal kartında OK'a basılı tutmak odağı
+    // üstteki afişte "İzle" düğmesine taşır; Favori / Kilit / Düzenle / Gizle düğmeleri hemen yanındadır.
+    val watchButtonRequester = remember { FocusRequester() }
+    var bannerHasFocus by remember { mutableStateOf(false) }
+    var returnChannelId by remember { mutableStateOf<String?>(null) }
+    val okGate = remember { TvOkReleaseGate() }
+    // Geri: liste -> kategori çipleri -> yan menü. Listenin derinlerindeyken kategori değiştirmek için
+    // yukarı yön tuşuna onlarca kez basmak gerekmesin.
+    val chipsState = rememberLazyListState()
+    val chipRequester = remember { FocusRequester() }
+    var gridHasFocus by remember { mutableStateOf(false) }
+
+    fun jumpToWatchButton(channel: TvChannel) {
+        returnChannelId = channel.id
+        okGate.swallowUntilRelease = true
+        try {
+            watchButtonRequester.requestFocus()
+        } catch (_: Exception) {
+            okGate.swallowUntilRelease = false
+        }
+    }
+
+    // Geri: afişteyken uzun basışla çıkılan karta döner (sol menüye ya da uygulamadan çıkışa gitmez).
+    BackHandler(enabled = bannerHasFocus) {
+        val targetId = returnChannelId ?: localFocusedChannel?.id
+        val idx = filtered.indexOfFirst { it.id == targetId }.coerceAtLeast(0)
+        val target = filtered.getOrNull(idx) ?: return@BackHandler
+        scope.launch {
+            try {
+                cardFocusRequesters[target.id]?.requestFocus()
+            } catch (_: Exception) {
+                try { gridState.scrollToItem(idx) } catch (_: Exception) {}
+                delay(60L)
+                try { cardFocusRequesters[target.id]?.requestFocus() } catch (_: Exception) {}
+            }
+        }
+    }
+
+    BackHandler(enabled = gridHasFocus && chipCategories.size > 1) {
+        scope.launch {
+            try {
+                chipRequester.requestFocus()
+            } catch (_: Exception) {
+                // Seçili çip ekran dışında kaldıysa önce görünür kıl
+                try { chipsState.scrollToItem(chipCategories.indexOf(activeCategory).coerceAtLeast(0)) } catch (_: Exception) {}
+                delay(60L)
+                try { chipRequester.requestFocus() } catch (_: Exception) {}
+            }
+        }
+    }
+
+    // Ekran açılınca ya da kanaldan çıkıp (Geri tuşu) listeye dönünce sol menü yerine doğrudan son izlenen
+    // kanalın kartına kaydır ve kumanda odağını o kanalın üstüne ver. Kategori çipine basınca odak çipte kalır
+    // (bir sonraki kategoriye geçmek ya da aşağı yönle listeye girmek tek tuş); liste yalnızca başa sarılır.
+    var initialFocusDone by remember { mutableStateOf(false) }
+    LaunchedEffect(lastWatchedChannelId, filtered.isNotEmpty()) {
+        if (filtered.isNotEmpty() && !initialFocusDone) {
             val targetId = lastWatchedChannelId ?: localFocusedChannel?.id ?: filtered.first().id
             val targetIdx = filtered.indexOfFirst { it.id == targetId }.coerceAtLeast(0)
             try {
@@ -830,10 +1015,20 @@ fun ChannelShowcaseScreen(
             try {
                 cardFocusRequesters[filtered[targetIdx].id]?.requestFocus()
             } catch (_: Exception) {}
+            initialFocusDone = true
+        }
+    }
+    LaunchedEffect(activeCategory) {
+        if (initialFocusDone) {
+            try { gridState.scrollToItem(0) } catch (_: Exception) {}
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .onPreviewKeyEvent { ev -> okGate.consume(ev.nativeKeyEvent) }
+    ) {
         localFocusedChannel?.let { previewChannel ->
             FocusedChannelHeroBanner(
                 channel = previewChannel,
@@ -847,69 +1042,88 @@ fun ChannelShowcaseScreen(
                 onToggleLock = { onToggleLock(previewChannel.id) },
                 onHideChannel = { onHideChannel(previewChannel.id) },
                 onRestoreHidden = onRestoreHidden,
-                onEditChannel = { onEditChannel(previewChannel) }
+                onEditChannel = { onEditChannel(previewChannel) },
+                watchFocusRequester = watchButtonRequester,
+                onFocusInside = { bannerHasFocus = it }
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
-        if (categories.size > 1) {
+        if (chipCategories.size > 1) {
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                state = chipsState,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(34.dp)
+                    .padding(vertical = 4.dp)
             ) {
-                itemsIndexed(categories, key = { idx, c -> "cat_${c}_$idx" }) { _, category ->
+                itemsIndexed(chipCategories, key = { idx, c -> "cat_${c}_$idx" }) { _, category ->
                     var isFocused by remember { mutableStateOf(false) }
-                    val isSelected = selectedCategory == category
-                    val catColor = TvThemeColors.categoryColor(category)
-                    val catIcon = TvThemeColors.categoryIcon(category)
-                    val count = if (category == "Tümü") channels.size else channels.count { it.category.equals(category, ignoreCase = true) }
+                    val isSelected = activeCategory == category
+                    val count = when (category) {
+                        "Tümü" -> channels.size
+                        TV_CAT_FAVORITES -> favoriteCount
+                        TV_CAT_RECENT -> recentInList.size
+                        else -> channels.count { it.category.equals(category, ignoreCase = true) }
+                    }
+                    val label = when (category) {
+                        TV_CAT_FAVORITES -> "Favoriler"
+                        TV_CAT_RECENT -> "Son izlenenler"
+                        else -> category
+                    }
+                    val chipIcon: ImageVector? = when (category) {
+                        TV_CAT_FAVORITES -> RedoXIcons.Star
+                        TV_CAT_RECENT -> RedoXIcons.History
+                        else -> null
+                    }
+                    val pillShape = RoundedCornerShape(50)
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(50))
-                            .background(
-                                when {
-                                    isFocused -> TvThemeColors.BullRedBright
-                                    isSelected -> catColor.copy(alpha = 0.28f)
-                                    else -> TvThemeColors.SurfaceCard
-                                }
-                            )
-                            .border(
-                                width = 1.dp,
-                                color = when {
-                                    isFocused -> Color.White
-                                    isSelected -> catColor
-                                    else -> Color.White.copy(alpha = 0.08f)
-                                },
-                                shape = RoundedCornerShape(50)
+                            .height(40.dp)
+                            .then(if (isSelected) Modifier.focusRequester(chipRequester) else Modifier)
+                            .tvSurface(
+                                focused = isFocused,
+                                shape = pillShape,
+                                color = if (isSelected) RedoXColors.Primary.copy(alpha = 0.18f) else RedoXColors.Surface,
+                                idleBorder = if (isSelected) RedoXColors.Primary else RedoXColors.Line,
+                                ringWidth = 2.5.dp
                             )
                             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
                             .clickable { onSelectCategory(category) }
-                            .padding(horizontal = 12.dp, vertical = 5.dp)
+                            .padding(horizontal = 18.dp)
                     ) {
-                        Icon(
-                            imageVector = catIcon,
-                            contentDescription = category,
-                            tint = if (isFocused) Color.White else catColor,
-                            modifier = Modifier.size(14.dp)
-                        )
-                        Spacer(modifier = Modifier.width(6.dp))
+                        if (chipIcon != null) {
+                            Icon(
+                                imageVector = chipIcon,
+                                contentDescription = null,
+                                tint = RedoXColors.Gold,
+                                modifier = Modifier.size(17.dp)
+                            )
+                            Spacer(modifier = Modifier.width(7.dp))
+                        }
                         Text(
-                            text = "$category ($count)",
-                            color = TvThemeColors.TextPrimary,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 11.sp,
+                            text = label,
+                            color = if (isSelected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                            fontSize = 15.sp,
+                            maxLines = 1,
+                            softWrap = false
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = count.toString(),
+                            color = RedoXColors.TextTertiary,
+                            fontSize = 13.sp,
                             maxLines = 1,
                             softWrap = false
                         )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
         }
 
         if (filtered.isEmpty()) {
@@ -917,14 +1131,14 @@ fun ChannelShowcaseScreen(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(16.dp))
+                    .clip(RoundedCornerShape(18.dp))
                     .background(TvThemeColors.SurfaceCard),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
                     text = emptyMessage,
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 13.sp,
+                    fontSize = 15.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(24.dp)
                 )
@@ -932,12 +1146,14 @@ fun ChannelShowcaseScreen(
         } else {
             LazyVerticalGrid(
                 state = gridState,
-                columns = GridCells.Adaptive(minSize = 190.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                columns = GridCells.Adaptive(minSize = 200.dp),
+                contentPadding = PaddingValues(horizontal = 6.dp, vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp),
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
+                    .onFocusChanged { gridHasFocus = it.hasFocus }
             ) {
                 itemsIndexed(filtered, key = { idx, ch -> "${ch.id}_$idx" }) { _, channel ->
                     val isBroken = brokenIds.contains(channel.id) || channel.isBroken
@@ -949,10 +1165,44 @@ fun ChannelShowcaseScreen(
                         isBroken = isBroken,
                         isHealthy = healthyIds.contains(channel.id),
                         focusRequester = requester,
-                        onFocused = { localFocusedChannel = channel },
+                        onFocused = { focusedChannelId = channel.id },
                         onClick = { onPlayChannel(channel) },
-                        onLongClick = { onToggleFavorite(channel.id) }
+                        onLongClick = { jumpToWatchButton(channel) }
                     )
+                }
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(26.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(32.dp)
+            ) {
+                TvKeyHint(key = "OK", label = "İzle")
+                TvKeyHint(key = "OK basılı tut", label = "Kanal özellikleri")
+                TvKeyHint(key = "Geri", label = if (folderName != null) "Klasörler" else "Yan menü")
+                if (folderName != null) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = RedoXIcons.FolderOpen,
+                            contentDescription = null,
+                            tint = RedoXColors.Gold,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = folderName,
+                            color = TvThemeColors.TextSecondary,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.widthIn(max = 280.dp)
+                        )
+                    }
                 }
             }
         }
@@ -972,167 +1222,213 @@ fun FocusedChannelHeroBanner(
     onToggleLock: () -> Unit,
     onHideChannel: () -> Unit = {},
     onRestoreHidden: () -> Unit = {},
-    onEditChannel: () -> Unit = {}
+    onEditChannel: () -> Unit = {},
+    /** Kanal kartında OK'a basılı tutulunca odağın gideceği "İzle" düğmesi. */
+    watchFocusRequester: FocusRequester? = null,
+    /** Afişteki herhangi bir düğme odağı aldığında / bıraktığında çağrılır. */
+    onFocusInside: (Boolean) -> Unit = {}
 ) {
-    val catColor = if (isBroken) TvThemeColors.BrokenRed else TvThemeColors.categoryColor(channel.category)
+    val shape = RoundedCornerShape(22.dp)
+    // Odaktaki kanalın marka rengi, logonun arkasında hafif ve sabit bir ışıma olarak görünür
+    val glow = Color(channel.brandPrimaryColor).copy(alpha = 0.18f)
 
-    Row(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
-            .height(94.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(
-                Brush.horizontalGradient(
-                    listOf(
-                        TvThemeColors.SurfaceElevated,
-                        catColor.copy(alpha = 0.16f),
-                        TvThemeColors.SurfaceElevated
+            .onFocusChanged { onFocusInside(it.hasFocus) }
+    ) {
+        // Dar alanda (≈ 960 dp genişlikli ekranlarda içerik < 860 dp) ölçüler küçülür, ikincil etiketler gizlenir
+        val compact = maxWidth < 860.dp
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(if (compact) 140.dp else 168.dp)
+                .clip(shape)
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(RedoXColors.SurfaceHigh, RedoXColors.Surface, RedoXColors.WineGlow)
                     )
                 )
-            )
-            .border(1.5.dp, catColor.copy(alpha = 0.55f), RoundedCornerShape(16.dp))
-            .padding(horizontal = 14.dp, vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ChannelBrandLogoBox(
-            channel = channel,
-            boxSize = 62.dp,
-            fontSize = 13.sp
-        )
-
-        Spacer(modifier = Modifier.width(14.dp))
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.Center
+                .drawBehind {
+                    drawRect(
+                        brush = Brush.radialGradient(
+                            colors = listOf(glow, Color.Transparent),
+                            center = Offset(size.height * 0.95f, size.height * 0.5f),
+                            radius = size.width * 0.5f
+                        )
+                    )
+                }
+                .border(1.dp, RedoXColors.Line, shape)
+                .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (compact) 14.dp else 20.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ChannelBrandLogoBox(
+                channel = channel,
+                boxSize = if (compact) 76.dp else 112.dp,
+                fontSize = if (compact) 20.sp else 28.sp
+            )
+
+            Spacer(modifier = Modifier.width(if (compact) 16.dp else 24.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 7.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(if (isBroken) TvThemeColors.BrokenRed else TvThemeColors.LiveRed)
-                        .padding(horizontal = 6.dp, vertical = 1.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
+                    TvLiveBadge(text = if (isBroken) "ÇALIŞMIYOR" else "CANLI", broken = isBroken)
                     Text(
-                        text = if (isBroken) "⚠️ ÇALIŞMIYOR" else "CANLI • CH ${channel.number}",
-                        color = Color.White,
-                        fontSize = 10.sp,
+                        text = "CH ${channel.number}",
+                        color = TvThemeColors.TextSecondary,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         softWrap = false
                     )
-                }
-
-                Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(5.dp))
-                        .background(TvThemeColors.AccentCyan.copy(alpha = 0.18f))
-                        .padding(horizontal = 6.dp, vertical = 1.dp)
-                ) {
-                    Text(
-                        text = "${channel.qualityBadge} • ${channel.sources.size} Akış" + if (channel.hasRealEpg) " • Rehber" else "",
-                        color = TvThemeColors.AccentCyan,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        softWrap = false
-                    )
-                }
-
-                if (isHealthy && !isBroken) {
-                    Text(
-                        text = "🟢 AKTİF AKIŞ",
-                        color = TvThemeColors.AccentEmerald,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.ExtraBold,
-                        maxLines = 1,
-                        softWrap = false
-                    )
-                }
-
-                if (isLocked) {
-                    Text(
-                        text = "🔒 PIN KİLİTLİ",
-                        color = TvThemeColors.FavoriteGold,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        softWrap = false
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(TvThemeColors.categoryColor(channel.category))
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = channel.category,
+                            color = TvThemeColors.TextSecondary,
+                            fontSize = 14.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    if (!compact) {
+                        TvStatPill(
+                            text = "${channel.qualityBadge} · ${channel.sources.size} akış" + if (channel.hasRealEpg) " · rehber" else ""
+                        )
+                        if (isHealthy && !isBroken) {
+                            TvStatPill(text = "Aktif akış", color = RedoXColors.Mint)
+                        }
+                        if (isLocked) {
+                            TvStatPill(text = "PIN kilitli")
+                        }
+                    }
                 }
 
                 Text(
-                    text = "${channel.category} • OK Basılı Tut: ⭐ Favori",
-                    color = TvThemeColors.FavoriteGold,
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.SemiBold,
+                    text = channel.name,
+                    color = TvThemeColors.TextPrimary,
+                    fontSize = if (compact) 26.sp else 32.sp,
+                    fontWeight = FontWeight.ExtraBold,
                     maxLines = 1,
-                    softWrap = false
+                    overflow = TextOverflow.Ellipsis
                 )
+
+                if (isBroken) {
+                    Text(
+                        text = "Bu kanalın akışı şu an yanıt vermiyor. Başka bir akış denemek için İzle'ye basın.",
+                        color = TvThemeColors.BrokenRed,
+                        fontSize = 15.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = channel.nowTitleOrLive(),
+                            color = TvThemeColors.TextPrimary,
+                            fontSize = if (compact) 16.sp else 18.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
+                        if (channel.hasRealEpg) {
+                            Text(
+                                text = channel.currentProgramTime,
+                                color = TvThemeColors.TextSecondary,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                softWrap = false
+                            )
+                        }
+                    }
+                    if (channel.hasRealEpg) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TvProgressBar(
+                                progress = channel.progressForUi(),
+                                height = 6.dp,
+                                modifier = Modifier.width(if (compact) 150.dp else 320.dp)
+                            )
+                            Spacer(modifier = Modifier.width(14.dp))
+                            Text(
+                                text = "Sırada: ${channel.nextProgramTitle}",
+                                color = TvThemeColors.TextSecondary,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    } else if (!compact) {
+                        Text(
+                            text = "Bu kanal için rehber bilgisi yok.",
+                            color = RedoXColors.TextTertiary,
+                            fontSize = 14.sp,
+                            maxLines = 1
+                        )
+                    }
+                }
             }
 
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            Text(
-                text = channel.name,
-                color = TvThemeColors.TextPrimary,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.ExtraBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Text(
-                text = if (isBroken) "⚠️ Bu kanalın akışı şu an yanıt vermiyor - M3U8 bekleniyor."
-                       else channel.nowNextLine(),
-                color = if (isBroken) TvThemeColors.BrokenRed else TvThemeColors.TextSecondary,
-                fontSize = 11.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TvActionButton(
-                text = "İzle",
-                icon = Icons.Rounded.PlayArrow,
-                isPrimary = true,
-                onClick = onWatchClick
-            )
-            TvCompactChipButton(
-                text = if (isFavorite) "Favoride" else "Favori+",
-                icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
-                onClick = onToggleFavorite
-            )
-            TvCompactChipButton(
-                text = if (isLocked) "Kilitli" else "Kilitle",
-                icon = Icons.Rounded.Verified,
-                onClick = onToggleLock
-            )
-            TvCompactChipButton(
-                text = "Düzenle",
-                icon = Icons.Rounded.Edit,
-                onClick = onEditChannel
-            )
-            TvCompactChipButton(
-                text = "Gizle",
-                icon = Icons.Rounded.DeleteOutline,
-                onClick = onHideChannel
-            )
-            if (hiddenCount > 0) {
-                TvCompactChipButton(
-                    text = "Geri Yükle ($hiddenCount)",
-                    icon = Icons.Rounded.Refresh,
-                    onClick = onRestoreHidden
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
+            ) {
+                TvActionButton(
+                    text = "İzle",
+                    icon = RedoXIcons.PlayArrow,
+                    isPrimary = true,
+                    onClick = onWatchClick,
+                    modifier = if (watchFocusRequester != null) Modifier.focusRequester(watchFocusRequester) else Modifier
                 )
+                Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)) {
+                    TvIconPill(
+                        icon = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
+                        label = if (isFavorite) "Favoride" else "Favori ekle",
+                        onClick = onToggleFavorite,
+                        active = isFavorite
+                    )
+                    TvIconPill(
+                        icon = RedoXIcons.Lock,
+                        label = if (isLocked) "Kilitli" else "Kilitle",
+                        onClick = onToggleLock,
+                        active = isLocked
+                    )
+                    TvIconPill(
+                        icon = RedoXIcons.Edit,
+                        label = "Düzenle",
+                        onClick = onEditChannel
+                    )
+                    TvIconPill(
+                        icon = RedoXIcons.VisibilityOff,
+                        label = "Gizle",
+                        onClick = onHideChannel
+                    )
+                    if (hiddenCount > 0) {
+                        TvIconPill(
+                            icon = RedoXIcons.Refresh,
+                            label = "Geri yükle ($hiddenCount)",
+                            onClick = onRestoreHidden
+                        )
+                    }
+                }
             }
         }
     }
@@ -1150,35 +1446,33 @@ fun TvChannelGridCard(
     onClick: () -> Unit,
     onLongClick: () -> Unit = {}
 ) {
-    val catColor = if (isBroken) TvThemeColors.BrokenRed else TvThemeColors.categoryColor(channel.category)
     var cardFocused by remember { mutableStateOf(false) }
     val cardScale by animateFloatAsState(
-        targetValue = if (cardFocused) 1.04f else 1f,
+        targetValue = if (cardFocused) 1.045f else 1f,
         animationSpec = tween(durationMillis = 135),
         label = "grid_card_scale"
     )
-
-    val focusBorderColor = when {
-        isBroken -> TvThemeColors.BrokenRed
-        isFavorite -> TvThemeColors.FavoriteGold
-        else -> TvThemeColors.BullRedBright
-    }
+    val shape = RoundedCornerShape(14.dp)
+    // Kartın solunda kanalın marka renginden çok hafif bir ton (odakta zemin bir kademe açılır)
+    val cardBase = if (cardFocused) RedoXColors.SurfaceHigh else RedoXColors.Surface
+    val cardBrush = Brush.horizontalGradient(
+        listOf(lerp(cardBase, Color(channel.brandPrimaryColor).copy(alpha = 1f), 0.13f), cardBase)
+    )
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(118.dp)
+            .height(124.dp)
             .graphicsLayer {
                 scaleX = cardScale
                 scaleY = cardScale
             }
             .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier)
-            .clip(RoundedCornerShape(14.dp))
-            .background(if (cardFocused) TvThemeColors.SurfaceElevated else TvThemeColors.SurfaceCard)
-            .border(
-                width = if (cardFocused) 2.5.dp else 1.dp,
-                color = if (cardFocused) focusBorderColor else Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(14.dp)
+            .tvSurface(
+                focused = cardFocused,
+                shape = shape,
+                brush = cardBrush,
+                idleBorder = if (isBroken) RedoXColors.Danger.copy(alpha = 0.6f) else RedoXColors.Line
             )
             .onFocusChanged {
                 cardFocused = it.isFocused || it.hasFocus
@@ -1197,7 +1491,7 @@ fun TvChannelGridCard(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(11.dp),
+                .padding(horizontal = 13.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -1208,23 +1502,24 @@ fun TvChannelGridCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(5.dp))
-                            .background(if (isBroken) TvThemeColors.BrokenRed.copy(alpha = 0.25f) else catColor.copy(alpha = 0.22f))
-                            .padding(horizontal = 6.dp, vertical = 1.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(RedoXColors.Ink600)
+                            .padding(horizontal = 7.dp, vertical = 2.dp)
                     ) {
                         Text(
-                            text = if (isBroken) "⚠️ ÇALIŞMIYOR" else "${channel.number}",
-                            color = if (isBroken) TvThemeColors.BrokenRed else catColor,
-                            fontSize = 11.sp,
+                            text = "${channel.number}",
+                            color = TvThemeColors.TextPrimary,
+                            fontSize = 12.sp,
                             fontWeight = FontWeight.ExtraBold,
                             maxLines = 1
                         )
                     }
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = channel.category,
-                        color = TvThemeColors.TextSecondary,
-                        fontSize = 10.sp,
+                        text = channel.qualityBadge,
+                        color = RedoXColors.TextTertiary,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
                         maxLines = 1
                     )
                 }
@@ -1235,32 +1530,33 @@ fun TvChannelGridCard(
                             modifier = Modifier
                                 .size(7.dp)
                                 .clip(CircleShape)
-                                .background(TvThemeColors.AccentEmerald)
+                                .background(RedoXColors.Mint)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(7.dp))
+                    }
+                    if (isBroken) {
+                        Icon(
+                            imageVector = RedoXIcons.WarningAmber,
+                            contentDescription = "Yanıt vermiyor",
+                            tint = RedoXColors.Danger,
+                            modifier = Modifier.size(15.dp)
+                        )
+                        Spacer(modifier = Modifier.width(7.dp))
                     }
                     if (isLocked) {
                         Icon(
-                            imageVector = Icons.Rounded.Verified,
-                            contentDescription = null,
-                            tint = TvThemeColors.FavoriteGold,
-                            modifier = Modifier.size(13.dp)
+                            imageVector = RedoXIcons.Lock,
+                            contentDescription = "PIN kilitli",
+                            tint = RedoXColors.Gold,
+                            modifier = Modifier.size(15.dp)
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
+                        Spacer(modifier = Modifier.width(7.dp))
                     }
-                    Text(
-                        text = if (channel.sources.size > 1) "${channel.sources.size}x" else channel.qualityBadge,
-                        color = TvThemeColors.AccentCyan,
-                        fontSize = 10.sp,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
                     Icon(
-                        imageVector = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
-                        contentDescription = null,
-                        tint = if (isFavorite) TvThemeColors.FavoriteGold else Color.White.copy(alpha = if (cardFocused) 0.55f else 0.22f),
-                        modifier = Modifier.size(14.dp)
+                        imageVector = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
+                        contentDescription = if (isFavorite) "Favoride" else "Favori değil",
+                        tint = if (isFavorite) RedoXColors.Gold else RedoXColors.TextTertiary,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }
@@ -1268,50 +1564,33 @@ fun TvChannelGridCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ChannelBrandLogoBox(
                     channel = channel,
-                    boxSize = 42.dp,
-                    fontSize = 10.sp
+                    boxSize = 46.dp,
+                    fontSize = 12.sp
                 )
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(11.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = channel.name,
                         color = TvThemeColors.TextPrimary,
-                        fontSize = 14.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
-                        text = when {
-                            isBroken -> "⚠️ Yeni M3U8 Akışı Bekleniyor"
-                            cardFocused -> if (isFavorite) "⭐ Favoride • Uzun Bas: Çıkar" else "OK / Dokun: İzle • Uzun Bas: ⭐ Favori"
-                            else -> channel.nowTitleOrLive()
-                        },
-                        color = when {
-                            isBroken -> TvThemeColors.BrokenRed
-                            cardFocused -> TvThemeColors.FavoriteGold
-                            else -> TvThemeColors.TextSecondary
-                        },
-                        fontSize = 10.sp,
+                        text = if (isBroken) "Yanıt vermiyor" else channel.nowTitleOrLive(),
+                        color = if (isBroken) RedoXColors.Danger else TvThemeColors.TextSecondary,
+                        fontSize = 13.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
             }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(3.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(Color.White.copy(alpha = 0.1f))
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth(channel.progressForUi())
-                        .background(catColor)
-                )
+            if (channel.hasRealEpg && !isBroken) {
+                TvProgressBar(progress = channel.progressForUi())
+            } else {
+                Spacer(modifier = Modifier.height(4.dp))
             }
         }
     }
@@ -1343,22 +1622,22 @@ fun ChannelSearchAndNumpadScreen(
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 TvInputField(
-                    label = "Canlı Kanal Adı, Kategori veya Kanal Numarası Yazın (OK Basılı Tut: ⭐ Favori Ekle/Çıkar)",
+                    label = "Kanal adı, kategori, program veya numara yazın (OK basılı tut: favori ekle / çıkar)",
                     value = searchQuery,
-                    placeholder = "Örn: ATV, Show, Kanal D, NTV, beIN, TRT veya 14...",
+                    placeholder = "Örn: haber, spor, belgesel veya 14",
                     onValueChange = onQueryChange
                 )
             }
             TvActionButton(
                 text = "Sesli Ara",
-                icon = Icons.Rounded.Mic,
+                icon = RedoXIcons.Mic,
                 isPrimary = false,
                 onClick = onVoiceSearch
             )
             if (searchQuery.isNotEmpty()) {
                 TvActionButton(
                     text = "Temizle",
-                    icon = Icons.Rounded.Clear,
+                    icon = RedoXIcons.Clear,
                     isPrimary = false,
                     onClick = { onQueryChange("") }
                 )
@@ -1374,15 +1653,14 @@ fun ChannelSearchAndNumpadScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "🔢 Numaratör:",
+                text = "Numaratör:",
                 color = TvThemeColors.FavoriteGold,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.Bold
             )
             (1..9).forEach { digit ->
                 TvCompactChipButton(
                     text = digit.toString(),
-                    icon = Icons.Rounded.Tag,
                     onClick = {
                         val currentDigits = searchQuery.filter { it.isDigit() }
                         onQueryChange((currentDigits + digit.toString()).take(4))
@@ -1391,15 +1669,14 @@ fun ChannelSearchAndNumpadScreen(
             }
             TvCompactChipButton(
                 text = "0",
-                icon = Icons.Rounded.Tag,
                 onClick = {
                     val currentDigits = searchQuery.filter { it.isDigit() }
                     onQueryChange((currentDigits + "0").take(4))
                 }
             )
             TvCompactChipButton(
-                text = "⌫ Sil",
-                icon = Icons.Rounded.Clear,
+                text = "Sil",
+                icon = RedoXIcons.Clear,
                 onClick = {
                     if (searchQuery.isNotEmpty()) onQueryChange(searchQuery.dropLast(1))
                 }
@@ -1409,8 +1686,8 @@ fun ChannelSearchAndNumpadScreen(
             }
             if (exactNumberMatch != null) {
                 TvActionButton(
-                    text = "▶ CH ${exactNumberMatch.number} (${exactNumberMatch.name}) Aç",
-                    icon = Icons.Rounded.PlayArrow,
+                    text = "CH ${exactNumberMatch.number} · ${exactNumberMatch.name} aç",
+                    icon = RedoXIcons.PlayArrow,
                     isPrimary = true,
                     onClick = { onPlayChannel(exactNumberMatch) }
                 )
@@ -1424,7 +1701,6 @@ fun ChannelSearchAndNumpadScreen(
             items(quickTags) { tag ->
                 TvCompactChipButton(
                     text = "#$tag",
-                    icon = Icons.Rounded.Tag,
                     onClick = { onQueryChange(tag) }
                 )
             }

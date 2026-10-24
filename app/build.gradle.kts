@@ -34,8 +34,10 @@ android {
         applicationId = "com.redoxtv.two"
         minSdk = 28
         targetSdk = 34
-        versionCode = 200
-        versionName = "2.0.0"
+        versionCode = 210
+        versionName = "2.1.0"
+        // Arayüz yalnızca Türkçe/İngilizce: kitaplıkların diğer dillerdeki metinleri pakete girmez
+        resourceConfigurations += listOf("tr", "en")
         buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV 2\"")
         // Güncelleme denetimi bu depodaki "latest release"e bakar. GitHub Actions'ta depo adı otomatik gelir.
         val githubRepo = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"
@@ -92,6 +94,9 @@ android {
 
     buildTypes {
         getByName("release") {
+            // Kod küçültme (R8) KAPALI: R8 (8.5 ve 8.7 denendi), büyük Compose işlevlerinde (ör. TV M3uPlaylistManagerScreen)
+            // geçersiz DEX üretip uygulamayı VerifyError ile çökertiyor (optimizasyon kapalıyken de; CI emülatöründe görüldü).
+            // Kararlılık APK boyutundan önemli; boyut için material-icons-extended kaldırıldı ve yalnızca tr/en dil kaynakları tutulur.
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = false
@@ -158,7 +163,6 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.foundation:foundation")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.2")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.2")

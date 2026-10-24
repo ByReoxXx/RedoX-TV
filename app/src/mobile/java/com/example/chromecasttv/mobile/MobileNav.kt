@@ -1,15 +1,5 @@
 package com.example.chromecasttv
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.GridView
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.LiveTv
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.SettingsRemote
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.UploadFile
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -18,15 +8,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /** Telefon ve tabletin ortak hedef ekranları. Telefon ilk beşini alt çubukta, tablet hepsini ray üzerinde gösterir. */
 enum class MobileTab(val title: String, val icon: ImageVector) {
-    HOME("Ana Sayfa", Icons.Rounded.Home),
-    LIVE("Canlı TV", Icons.Rounded.LiveTv),
-    GUIDE("Rehber", Icons.Rounded.CalendarMonth),
-    FAVORITES("Favoriler", Icons.Rounded.Star),
-    REMOTE("Kumanda", Icons.Rounded.SettingsRemote),
-    SEARCH("Ara", Icons.Rounded.Search),
-    MULTI("Bölünmüş Ekran", Icons.Rounded.GridView),
-    SOURCES("Kaynaklar", Icons.Rounded.UploadFile),
-    SETTINGS("Ayarlar", Icons.Rounded.Settings)
+    HOME("Ana Sayfa", RedoXIcons.Home),
+    LIVE("Canlı TV", RedoXIcons.LiveTv),
+    GUIDE("Rehber", RedoXIcons.CalendarMonth),
+    FAVORITES("Favoriler", RedoXIcons.Star),
+    REMOTE("Kumanda", RedoXIcons.SettingsRemote),
+    SEARCH("Ara", RedoXIcons.Search),
+    MULTI("Bölünmüş Ekran", RedoXIcons.GridView),
+    SOURCES("Kaynaklar", RedoXIcons.UploadFile),
+    SETTINGS("Ayarlar", RedoXIcons.Settings)
 }
 
 /** Telefon alt çubuğundaki kök sekmeler. */
@@ -40,6 +30,12 @@ val PhoneRootTabs: List<MobileTab> = listOf(
 
 /** Tablet gezinti rayındaki sekmeler (hepsi köktür). */
 val TabletRailTabs: List<MobileTab> = MobileTab.entries.toList()
+
+/** Rayın dibine sabitlenen yardımcı sekmeler (ana gezintiden ayrı): Kaynaklar ve Ayarlar. */
+val TabletRailFooterTabs: List<MobileTab> = listOf(MobileTab.SOURCES, MobileTab.SETTINGS)
+
+/** Rayın üst bölümündeki ana gezinti sekmeleri. */
+val TabletRailMainTabs: List<MobileTab> = TabletRailTabs.filter { it !in TabletRailFooterTabs }
 
 /**
  * Basit gezinme durumu: bir "geri yığını" tutar. Kök sekme seçimi yığını sıfırlar;

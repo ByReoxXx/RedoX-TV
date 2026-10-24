@@ -1,10 +1,6 @@
 package com.example.chromecasttv
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Snackbar
@@ -26,11 +22,11 @@ fun MobileTopBar(env: MobileEnv) {
     TopAppBar(
         title = {
             if (tab == MobileTab.HOME) {
-                RedoXWordmark(fontSize = 22.sp, showTv = true)
+                RedoXWordmarkImage(width = 116.dp)
             } else {
                 Text(
                     text = tab.title,
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                     maxLines = 1
                 )
@@ -39,21 +35,21 @@ fun MobileTopBar(env: MobileEnv) {
         navigationIcon = {
             if (nav.canGoBack) {
                 IconButton(onClick = { nav.back() }) {
-                    Icon(Icons.Rounded.ArrowBack, contentDescription = "Geri")
+                    Icon(RedoXIcons.ArrowBack, contentDescription = "Geri")
                 }
             } else {
-                RedoXMark(markSize = 36.dp, modifier = Modifier.padding(start = 12.dp, end = 4.dp))
+                RedoXMark(markSize = 42.dp, modifier = Modifier.padding(start = 12.dp, end = 4.dp))
             }
         },
         actions = {
             if (tab != MobileTab.SEARCH) {
                 IconButton(onClick = { nav.push(MobileTab.SEARCH) }) {
-                    Icon(Icons.Rounded.Search, contentDescription = "Ara")
+                    Icon(RedoXIcons.Search, contentDescription = "Ara")
                 }
             }
             if (tab != MobileTab.SETTINGS) {
                 IconButton(onClick = { nav.push(MobileTab.SETTINGS) }) {
-                    Icon(Icons.Rounded.Settings, contentDescription = "Ayarlar")
+                    Icon(RedoXIcons.Settings, contentDescription = "Ayarlar")
                 }
             }
         },

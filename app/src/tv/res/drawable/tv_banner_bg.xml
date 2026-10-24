@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TV afişi zemini: lacivert-siyah, solda kızıl ışıma, altta kızıl→altın çizgi. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="320dp"
+    android:height="180dp"
+    android:viewportWidth="320"
+    android:viewportHeight="180">
+    <path
+        android:fillColor="#FF0A0A14"
+        android:pathData="M0,0h320v180h-320z" />
+    <path android:pathData="M0,0h320v180h-320z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="radial"
+                android:centerX="86"
+                android:centerY="100"
+                android:gradientRadius="150">
+                <item android:color="#40F02848" android:offset="0.0" />
+                <item android:color="#00F02848" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:pathData="M0,177h320v3h-320z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="0"
+                android:startY="0"
+                android:endX="320"
+                android:endY="0">
+                <item android:color="#FFF02848" android:offset="0.0" />
+                <item android:color="#FFF3C05D" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>

@@ -8,5 +8,6 @@
 * **[📺 Oynatıcı & Çoklu Ekran](Coklu-Ekran-ve-Oynatici.md)**
 * **[📲 Telefon = Kumanda](Telefon-Kumandasi.md)**
 * **[🔒 Güvenlik & Gizlilik](Guvenlik-ve-Gizlilik.md)**
+* **[🎨 Tasarım Dili & Logo](Tasarim-Dili-ve-Logo.md)**
 * **[🛠️ Teknik Mimari](Teknik-Mimari-ve-Gelistirici-Rehberi.md)**
 * **[❓ SSS](Sikca-Sorulan-Sorular-SSS.md)**

@@ -52,8 +52,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -249,9 +247,9 @@ fun FavoritesReorderScreen(
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = if (grabbedChannelId != null) {
-                        "📌 TAŞIMA MODU AKTİF: ▲/▼ ile Kaydırın • ►: 5 Sıra Yukarı • OK: Bırak • ◄: Favoriden Çıkar"
+                        "Taşıma modu: ▲/▼ ile kaydırın • ►: 5 sıra yukarı • OK: bırak • ◄: favoriden çıkar"
                     } else {
-                        "⭐ Favori Kanallarınız (${favoriteChannels.size} Kanal) • Kolay Tut & Taşı Sıralama"
+                        "Favori kanallarınız (${favoriteChannels.size} kanal) • tut ve taşı ile sıralayın"
                     },
                     color = if (grabbedChannelId != null) TvThemeColors.FavoriteGold else TvThemeColors.TextPrimary,
                     fontSize = 13.sp,
@@ -261,26 +259,26 @@ fun FavoritesReorderScreen(
                 Text(
                     text = "Kanal üzerinde ► (Sağ) tuşuna basıp tutun, ▲/▼ ile istediğiniz sıraya kaydırıp OK ile bırakın.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 11.sp,
+                    fontSize = 13.sp,
                     maxLines = 1
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 TvCompactChipButton(
-                    text = "🔤 A-Z Sırala",
-                    icon = Icons.Rounded.SwapHoriz,
+                    text = "A-Z sırala",
+                    icon = RedoXIcons.SwapHoriz,
                     onClick = { onSortFavorites("AZ") },
                     modifier = Modifier.focusRequester(headerFocusRequester)
                 )
                 TvCompactChipButton(
-                    text = "🔢 Kanal No",
-                    icon = Icons.Rounded.Tag,
+                    text = "Kanal no",
+                    icon = RedoXIcons.Tag,
                     onClick = { onSortFavorites("NUMBER") }
                 )
                 TvCompactChipButton(
-                    text = "📂 Kategori",
-                    icon = Icons.Rounded.Category,
+                    text = "Kategori",
+                    icon = RedoXIcons.Category,
                     onClick = { onSortFavorites("CATEGORY") }
                 )
             }
@@ -298,9 +296,9 @@ fun FavoritesReorderScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Henüz favori kanal eklemediniz.\nCanlı TV veya Özel M3U listesinde kanalın üstüne uzun basarak (OK Basılı Tut) favorilere ekleyebilirsiniz.",
+                    text = "Henüz favori kanal eklemediniz.\nCanlı TV veya Özel M3U listesinde bir kanalın üstünde OK'a basılı tutun; odak üstteki panele geçer, oradaki yıldız (Favori ekle) düğmesine OK ile basın.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 13.sp,
+                    fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(24.dp)
                 )
@@ -461,7 +459,7 @@ fun FavoritesReorderScreen(
                                 .padding(horizontal = 10.dp, vertical = 6.dp)
                         ) {
                             Text(
-                                text = if (isGrabbed) "📌 #${index + 1}" else "⭐ #${index + 1}",
+                                text = if (isGrabbed) "Taşınıyor #${index + 1}" else "#${index + 1}",
                                 color = if (isGrabbed) Color.Black else TvThemeColors.FavoriteGold,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.ExtraBold
@@ -470,7 +468,7 @@ fun FavoritesReorderScreen(
 
                         Spacer(modifier = Modifier.width(12.dp))
 
-                        ChannelBrandLogoBox(channel = channel, boxSize = 42.dp, fontSize = 10.sp)
+                        ChannelBrandLogoBox(channel = channel, boxSize = 42.dp, fontSize = 12.sp)
 
                         Spacer(modifier = Modifier.width(12.dp))
 
@@ -486,23 +484,23 @@ fun FavoritesReorderScreen(
                                 Text(
                                     text = "(CH ${channel.number} • ${channel.category})",
                                     color = TvThemeColors.AccentCyan,
-                                    fontSize = 11.sp,
+                                    fontSize = 13.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     maxLines = 1
                                 )
                                 if (isBroken) {
                                     Text(
-                                        text = "⚠️ ÇALIŞMIYOR",
+                                        text = "Çalışmıyor",
                                         color = TvThemeColors.BrokenRed,
-                                        fontSize = 10.sp,
+                                        fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold
                                     )
                                 }
                             }
                             Text(
                                 text = when {
-                                    isGrabbed -> "📌 TAŞINIYOR: ▲/▼ ile Sırayı Değiştirin • ►: 5 Sıra Yukarı • OK: Bırak • ◄: Favoriden Çıkar"
-                                    rowFocused -> "OK: İzle  •  ► (Sağ Tuş): 📌 Tut ve Sırasını Değiştir  •  OK Basılı Tut: Favoriden Çıkar"
+                                    isGrabbed -> "Taşınıyor: ▲/▼ ile sırayı değiştirin • ►: 5 sıra yukarı • OK: bırak • ◄: favoriden çıkar"
+                                    rowFocused -> "OK: izle  •  ► (sağ tuş): tut ve sırasını değiştir  •  OK basılı tut: favoriden çıkar"
                                     else -> (if (channel.hasRealEpg) "Şu An: ${channel.currentProgramTitle}" else "Canlı yayın") +
                                         " • ${channel.sources.size} Akış Kaynağı"
                                 },
@@ -511,7 +509,7 @@ fun FavoritesReorderScreen(
                                     rowFocused -> TvThemeColors.AccentCyan
                                     else -> TvThemeColors.TextSecondary
                                 },
-                                fontSize = 11.sp,
+                                fontSize = 13.sp,
                                 fontWeight = if (isGrabbed || rowFocused) FontWeight.Bold else FontWeight.Normal,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis
@@ -531,7 +529,7 @@ fun FavoritesReorderScreen(
                             Text(
                                 text = if (isGrabbed) "▲/▼ TAŞI • OK BIRAK" else "► TUT & SIRALA",
                                 color = if (isGrabbed) Color.Black else TvThemeColors.FavoriteGold,
-                                fontSize = 11.sp,
+                                fontSize = 13.sp,
                                 fontWeight = FontWeight.ExtraBold
                             )
                         }
@@ -578,9 +576,9 @@ fun MultiViewSplitScreen(
                 .padding(bottom = 6.dp)
         ) {
             Text(
-                text = "🔊 Ses için ekrana dokunun veya butonları kullanın • OK: Ekran Kontrol Menüsü • Tam Ekran / Kanal Değiştir",
+                text = "OK: ekran menüsü (ses, tam ekran, kanal değiştir)",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f).padding(end = 8.dp)
@@ -589,8 +587,8 @@ fun MultiViewSplitScreen(
                 repeat(slotCount) { sIdx ->
                     val isAudio = activeAudioSlot == sIdx
                     TvCompactChipButton(
-                        text = "${sIdx + 1}. Ekran ${if (isAudio) "🔊" else "🔇"}",
-                        icon = if (isAudio) Icons.Rounded.VolumeUp else Icons.Rounded.VolumeOff,
+                        text = "${sIdx + 1}. Ekran${if (isAudio) " (ses açık)" else ""}",
+                        icon = if (isAudio) RedoXIcons.VolumeUp else RedoXIcons.VolumeOff,
                         onClick = {
                             activeAudioSlot = if (activeAudioSlot == sIdx) null else sIdx
                         }
@@ -598,7 +596,7 @@ fun MultiViewSplitScreen(
                 }
                 TvCompactChipButton(
                     text = if (state.isMultiViewFourGrid) "Görünüm: 4'lü (2x2)" else "Görünüm: 2'li Yan Yana",
-                    icon = Icons.Rounded.GridView,
+                    icon = RedoXIcons.GridView,
                     onClick = onToggleGridMode
                 )
             }
@@ -797,10 +795,10 @@ fun EpgTimelineGuideScreen(
                     text = when {
                         epgStatus.isLoading -> "Rehber güncelleniyor…"
                         epgStatus.hasRealData -> "Programa OK ile hatırlatma ekleyin; yayındaki programa OK ile geçin."
-                        else -> "Uydurma program adı göstermiyoruz. Ayarlar > Yayın Rehberi'nden bir XMLTV adresi ekleyin."
+                        else -> "Program bilgisi için Ayarlar > Yayın Rehberi'nden bir XMLTV adresi ekleyin."
                     },
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 10.sp,
+                    fontSize = 12.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -809,19 +807,19 @@ fun EpgTimelineGuideScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 TvCompactChipButton(
                     text = if (epgStatus.isLoading) "Güncelleniyor…" else "Rehberi Güncelle",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = onRefreshEpg
                 )
                 if (epgStatus.hasRealData) {
                     TvCompactChipButton(
                         text = if (onlyWithGuide) "Hepsini Göster" else "Yalnız Rehberli",
-                        icon = Icons.Rounded.FilterList,
+                        icon = RedoXIcons.FilterList,
                         onClick = { onlyWithGuide = !onlyWithGuide }
                     )
                 }
                 TvCompactChipButton(
                     text = "Ayarlar",
-                    icon = Icons.Rounded.Settings,
+                    icon = RedoXIcons.Settings,
                     onClick = onOpenSettings
                 )
             }
@@ -870,7 +868,7 @@ fun EpgTimelineGuideScreen(
                             .clickable { onPlayChannel(channel) }
                             .padding(end = 10.dp)
                     ) {
-                        ChannelBrandLogoBox(channel = channel, boxSize = 36.dp, fontSize = 9.sp)
+                        ChannelBrandLogoBox(channel = channel, boxSize = 36.dp, fontSize = 11.sp)
                         Spacer(modifier = Modifier.width(8.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
@@ -882,14 +880,14 @@ fun EpgTimelineGuideScreen(
                                 overflow = TextOverflow.Ellipsis
                             )
                             Text(
-                                text = if (rowFocused) "OK: İzle • Basılı Tut: ⭐ Favori" else "${channel.category} • ${channel.sources.size} Akış",
+                                text = if (rowFocused) "OK: izle • basılı tut: favori" else "${channel.category} • ${channel.sources.size} Akış",
                                 color = if (rowFocused) TvThemeColors.FavoriteGold else catColor,
-                                fontSize = 10.sp,
+                                fontSize = 12.sp,
                                 maxLines = 1
                             )
                         }
                         Icon(
-                            imageVector = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                            imageVector = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                             contentDescription = null,
                             tint = if (isFavorite) TvThemeColors.FavoriteGold else Color.White.copy(alpha = 0.25f),
                             modifier = Modifier.size(14.dp)
@@ -918,7 +916,7 @@ fun EpgTimelineGuideScreen(
                                 Text(
                                     text = "Bu kanal için rehber verisi yok",
                                     color = TvThemeColors.TextSecondary,
-                                    fontSize = 10.sp,
+                                    fontSize = 12.sp,
                                     maxLines = 1
                                 )
                             }
@@ -955,14 +953,14 @@ fun EpgTimelineGuideScreen(
                                         Text(
                                             text = if (isLive) "CANLI • ${prog.timeWindowText}" else prog.timeWindowText,
                                             color = if (isLive) TvThemeColors.AccentCyan else TvThemeColors.TextSecondary,
-                                            fontSize = 10.sp,
+                                            fontSize = 12.sp,
                                             fontWeight = FontWeight.SemiBold,
                                             maxLines = 1
                                         )
                                         if (hasReminder) {
                                             Spacer(modifier = Modifier.width(4.dp))
                                             Icon(
-                                                imageVector = Icons.Rounded.NotificationsActive,
+                                                imageVector = RedoXIcons.NotificationsActive,
                                                 contentDescription = "Hatırlatma ekli",
                                                 tint = TvThemeColors.FavoriteGold,
                                                 modifier = Modifier.size(11.dp)
@@ -985,7 +983,7 @@ fun EpgTimelineGuideScreen(
                                                 else -> "OK: Hatırlat"
                                             },
                                             color = TvThemeColors.FavoriteGold,
-                                            fontSize = 9.sp,
+                                            fontSize = 11.sp,
                                             fontWeight = FontWeight.Bold,
                                             maxLines = 1
                                         )
@@ -1086,7 +1084,7 @@ fun M3uPlaylistManagerScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TvCompactChipButton(
                         text = if (activeSubTab == 0) "✓ Dosya & İçe Aktar" else "Dosya & İçe Aktar",
-                        icon = Icons.Rounded.FolderOpen,
+                        icon = RedoXIcons.FolderOpen,
                         onClick = {
                             activeSubTab = 0
                             focusFirstFieldOfCurrentSubTab()
@@ -1102,7 +1100,7 @@ fun M3uPlaylistManagerScreen(
                     )
                     TvCompactChipButton(
                         text = if (activeSubTab == 1) "✓ Xtream Codes API" else "Xtream Codes API",
-                        icon = Icons.Rounded.Verified,
+                        icon = RedoXIcons.Verified,
                         onClick = {
                             activeSubTab = 1
                             focusFirstFieldOfCurrentSubTab()
@@ -1118,7 +1116,7 @@ fun M3uPlaylistManagerScreen(
                     )
                     TvCompactChipButton(
                         text = if (activeSubTab == 2) "✓ M3U URL" else "M3U URL",
-                        icon = Icons.Rounded.CloudDownload,
+                        icon = RedoXIcons.CloudDownload,
                         onClick = {
                             activeSubTab = 2
                             focusFirstFieldOfCurrentSubTab()
@@ -1134,7 +1132,7 @@ fun M3uPlaylistManagerScreen(
                     )
                     TvCompactChipButton(
                         text = if (activeSubTab == 3) "✓ Telefon QR & PIN" else "Telefon QR & PIN",
-                        icon = Icons.Rounded.SettingsRemote,
+                        icon = RedoXIcons.SettingsRemote,
                         onClick = {
                             activeSubTab = 3
                             onRefreshQrServer()
@@ -1164,14 +1162,14 @@ fun M3uPlaylistManagerScreen(
                         Text(
                             text = "Eklediğiniz M3U dosyalarındaki kanallar sol menüdeki 'Özel M3U Kanalları' sekmesinde listelenir.",
                             color = TvThemeColors.TextSecondary,
-                            fontSize = 11.sp,
+                            fontSize = 13.sp,
                             modifier = Modifier.padding(top = 2.dp, bottom = 10.dp)
                         )
 
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             TvActionButton(
                                 text = "Dosyadan M3U Seç",
-                                icon = Icons.Rounded.FolderOpen,
+                                icon = RedoXIcons.FolderOpen,
                                 isPrimary = true,
                                 onClick = onPickLocalFile,
                                 modifier = Modifier
@@ -1194,7 +1192,7 @@ fun M3uPlaylistManagerScreen(
                             )
                             TvActionButton(
                                 text = "Download Klasörünü Tara",
-                                icon = Icons.Rounded.ManageSearch,
+                                icon = RedoXIcons.ManageSearch,
                                 isPrimary = false,
                                 onClick = onScanDownloadFolder,
                                 modifier = Modifier.onPreviewKeyEvent { ev ->
@@ -1272,8 +1270,8 @@ fun M3uPlaylistManagerScreen(
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                         TvActionButton(
-                            text = "⚡ Xtream Hesabını Bağla ve Kanalları Yükle",
-                            icon = Icons.Rounded.Verified,
+                            text = "Xtream hesabını bağla ve kanalları yükle",
+                            icon = RedoXIcons.Verified,
                             isPrimary = true,
                             onClick = {
                                 if (xtreamServer.isNotBlank() && xtreamUser.isNotBlank()) {
@@ -1342,8 +1340,8 @@ fun M3uPlaylistManagerScreen(
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         TvActionButton(
-                            text = "🚀 M3U URL Kaydet ve Kanalları Yükle",
-                            icon = Icons.Rounded.CloudDownload,
+                            text = "M3U URL'sini kaydet ve kanalları yükle",
+                            icon = RedoXIcons.CloudDownload,
                             isPrimary = true,
                             onClick = {
                                 if (m3uUrlInput.isNotBlank()) {
@@ -1387,7 +1385,7 @@ fun M3uPlaylistManagerScreen(
                                 Text(
                                     text = "Telefon kameranızla QR kodu okutun veya tarayıcıdan şu adrese girin:",
                                     color = TvThemeColors.TextSecondary,
-                                    fontSize = 11.sp
+                                    fontSize = 13.sp
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
@@ -1401,13 +1399,13 @@ fun M3uPlaylistManagerScreen(
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     TvCompactChipButton(
-                                        text = "🔄 QR & Sunucuyu Yenile",
-                                        icon = Icons.Rounded.Refresh,
+                                        text = "QR ve sunucuyu yenile",
+                                        icon = RedoXIcons.Refresh,
                                         onClick = onRefreshQrServer
                                     )
                                     TvCompactChipButton(
                                         text = "Kodu Yenile",
-                                        icon = Icons.Rounded.Lock,
+                                        icon = RedoXIcons.Lock,
                                         onClick = onRegenerateRemotePin
                                     )
                                 }
@@ -1433,7 +1431,7 @@ fun M3uPlaylistManagerScreen(
                             }
                             TvActionButton(
                                 text = "PIN Güncelle",
-                                icon = Icons.Rounded.Verified,
+                                icon = RedoXIcons.Verified,
                                 isPrimary = false,
                                 onClick = {
                                     onUpdatePin(newPinInput)
@@ -1465,33 +1463,33 @@ fun M3uPlaylistManagerScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TvCompactChipButton(
-                        text = "💾 Yedek Al (Download)",
-                        icon = Icons.Rounded.CloudDownload,
+                        text = "Yedek al (Download)",
+                        icon = RedoXIcons.CloudDownload,
                         onClick = onBackupToDevice,
                         modifier = Modifier.focusRequester(bottomBackupFocusRequester)
                     )
                     TvCompactChipButton(
-                        text = "♻️ Yedekten Geri Yükle",
-                        icon = Icons.Rounded.Refresh,
+                        text = "Yedekten geri yükle",
+                        icon = RedoXIcons.Refresh,
                         onClick = onRestoreFromDevice
                     )
                     TvCompactChipButton(
-                        text = if (state.autoStartLastChannel) "⚡ Son Kanaldan Başla: AÇIK" else "⚡ Son Kanaldan Başla: KAPALI",
-                        icon = Icons.Rounded.Bolt,
+                        text = if (state.autoStartLastChannel) "Son kanaldan başla: Açık" else "Son kanaldan başla: Kapalı",
+                        icon = RedoXIcons.Bolt,
                         onClick = onToggleAutoStart
                     )
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TvActionButton(
                         text = if (state.isLoadingM3u) "Yükleniyor..." else "Tüm Kaynakları Yenile",
-                        icon = Icons.Rounded.Refresh,
+                        icon = RedoXIcons.Refresh,
                         isPrimary = false,
                         onClick = onRefreshAll
                     )
                     if (state.hiddenChannelIds.isNotEmpty()) {
                         TvActionButton(
                             text = "Gizlenen Kanalları Geri Yükle (${state.hiddenChannelIds.size})",
-                            icon = Icons.Rounded.CheckCircle,
+                            icon = RedoXIcons.CheckCircle,
                             isPrimary = false,
                             onClick = onRestoreHiddenChannels
                         )
@@ -1523,7 +1521,7 @@ fun M3uPlaylistManagerScreen(
                 QrMatrixVisualBox(seedText = effectiveWebUrl)
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = "📱 Telefondan QR ile M3U Yükle",
+                        text = "Telefondan QR ile M3U yükle",
                         color = TvThemeColors.BullRedBright,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.ExtraBold,
@@ -1532,7 +1530,7 @@ fun M3uPlaylistManagerScreen(
                     Text(
                         text = "Kamerayla QR okutun veya telefondan girin:",
                         color = TvThemeColors.TextSecondary,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         maxLines = 1
                     )
                     Spacer(modifier = Modifier.height(2.dp))
@@ -1546,8 +1544,8 @@ fun M3uPlaylistManagerScreen(
                     RemotePinLine(remoteHost = remoteHost, large = false)
                     Spacer(modifier = Modifier.height(5.dp))
                     TvCompactChipButton(
-                        text = "🔄 QR Yenile",
-                        icon = Icons.Rounded.QrCode2,
+                        text = "QR yenile",
+                        icon = RedoXIcons.QrCode2,
                         onClick = onRefreshQrServer
                     )
                 }
@@ -1571,7 +1569,7 @@ fun M3uPlaylistManagerScreen(
                     Text(
                         text = "Henüz özel liste eklenmedi.\nÜstteki QR kodu telefonunuzla okutarak veya soldan URL/Dosya seçerek hemen ekleyebilirsiniz.",
                         color = TvThemeColors.TextSecondary,
-                        fontSize = 11.sp,
+                        fontSize = 13.sp,
                         textAlign = TextAlign.Center
                     )
                 }
@@ -1597,7 +1595,7 @@ fun M3uPlaylistManagerScreen(
                                 Text(
                                     text = if (item.isLocalFile) "Yerel Dosya" else item.locationOrUrl,
                                     color = TvThemeColors.TextSecondary,
-                                    fontSize = 10.sp,
+                                    fontSize = 12.sp,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
@@ -1605,7 +1603,7 @@ fun M3uPlaylistManagerScreen(
                             Spacer(modifier = Modifier.width(6.dp))
                             TvCompactChipButton(
                                 text = "Sil",
-                                icon = Icons.Rounded.DeleteOutline,
+                                icon = RedoXIcons.DeleteOutline,
                                 onClick = { onRemovePlaylist(item.id) }
                             )
                         }
@@ -1626,7 +1624,7 @@ fun RemotePinLine(remoteHost: RemoteHostState, large: Boolean) {
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Icon(
-            imageVector = Icons.Rounded.Lock,
+            imageVector = RedoXIcons.Lock,
             contentDescription = null,
             tint = TvThemeColors.FavoriteGold,
             modifier = Modifier.size(if (large) 18.dp else 13.dp)
@@ -1673,7 +1671,7 @@ private fun FavoriteListBar(
             Text(
                 text = "Listeler:",
                 color = TvThemeColors.TextSecondary,
-                fontSize = 11.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.Bold
             )
             LazyRow(
@@ -1683,7 +1681,7 @@ private fun FavoriteListBar(
                 items(listNames, key = { "favlist_$it" }) { name ->
                     TvCompactChipButton(
                         text = if (name == activeListName) "✓ $name" else name,
-                        icon = Icons.Rounded.Star,
+                        icon = RedoXIcons.Star,
                         onClick = {
                             mode = 0
                             onSwitchList(name)
@@ -1693,7 +1691,7 @@ private fun FavoriteListBar(
             }
             TvCompactChipButton(
                 text = "Yeni Liste",
-                icon = Icons.Rounded.Add,
+                icon = RedoXIcons.Add,
                 onClick = {
                     nameInput = ""
                     mode = 1
@@ -1702,7 +1700,7 @@ private fun FavoriteListBar(
             if (!isDefault) {
                 TvCompactChipButton(
                     text = "Adını Değiştir",
-                    icon = Icons.Rounded.Edit,
+                    icon = RedoXIcons.Edit,
                     onClick = {
                         nameInput = activeListName
                         mode = 2
@@ -1710,7 +1708,7 @@ private fun FavoriteListBar(
                 )
                 TvCompactChipButton(
                     text = if (mode == 3) "Emin misiniz? OK" else "Listeyi Sil",
-                    icon = Icons.Rounded.DeleteOutline,
+                    icon = RedoXIcons.DeleteOutline,
                     onClick = {
                         if (mode == 3) {
                             mode = 0
@@ -1739,7 +1737,7 @@ private fun FavoriteListBar(
                 }
                 TvActionButton(
                     text = "Kaydet",
-                    icon = Icons.Rounded.CheckCircle,
+                    icon = RedoXIcons.CheckCircle,
                     isPrimary = true,
                     onClick = {
                         val ok = if (mode == 1) onCreateList(nameInput) else onRenameList(activeListName, nameInput)
@@ -1751,7 +1749,7 @@ private fun FavoriteListBar(
                 )
                 TvActionButton(
                     text = "İptal",
-                    icon = Icons.Rounded.Clear,
+                    icon = RedoXIcons.Clear,
                     isPrimary = false,
                     onClick = { mode = 0 }
                 )

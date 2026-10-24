@@ -19,24 +19,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.CloudDownload
-import androidx.compose.material.icons.rounded.DeleteOutline
-import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material.icons.rounded.KeyboardArrowLeft
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.KeyboardArrowUp
-import androidx.compose.material.icons.rounded.Menu
-import androidx.compose.material.icons.rounded.Pause
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.Remove
-import androidx.compose.material.icons.rounded.SettingsRemote
-import androidx.compose.material.icons.rounded.Stop
-import androidx.compose.material.icons.rounded.VolumeDown
-import androidx.compose.material.icons.rounded.VolumeUp
-import androidx.compose.material.icons.rounded.Wifi
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -146,7 +128,7 @@ fun MobileRemoteScreen(
                 if (tv == null) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Rounded.SettingsRemote,
+                            imageVector = RedoXIcons.SettingsRemote,
                             contentDescription = null,
                             tint = RedoXColors.Primary,
                             modifier = Modifier.size(30.dp)
@@ -205,12 +187,12 @@ fun MobileRemoteScreen(
                                 text = p.name,
                                 selected = p.host == tv?.host && p.port == tv?.port,
                                 onClick = { hub.select(p) },
-                                icon = Icons.Rounded.Wifi
+                                icon = RedoXIcons.Wifi
                             )
                             Spacer(modifier = Modifier.weight(1f))
                             MGhostButton(
                                 text = "Kaldır",
-                                icon = Icons.Rounded.DeleteOutline,
+                                icon = RedoXIcons.DeleteOutline,
                                 danger = true,
                                 onClick = { removeTarget = p }
                             )
@@ -242,7 +224,7 @@ fun MobileRemoteScreen(
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
-                MGhostButton(text = "Adresi elle gir", icon = Icons.Rounded.Add, onClick = { manualPair = true })
+                MGhostButton(text = "Adresi elle gir", icon = RedoXIcons.Add, onClick = { manualPair = true })
             }
         }
 
@@ -252,25 +234,25 @@ fun MobileRemoteScreen(
                 MCard(modifier = Modifier.fillMaxWidth()) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                            MRemoteButton(Icons.Rounded.ArrowBack, "Geri") { sendKey("back") }
-                            MRemoteButton(Icons.Rounded.Menu, "Menü") { sendKey("menu") }
+                            MRemoteButton(RedoXIcons.ArrowBack, "Geri") { sendKey("back") }
+                            MRemoteButton(RedoXIcons.Menu, "Menü") { sendKey("menu") }
                         }
                         Spacer(modifier = Modifier.height(14.dp))
-                        MRemoteButton(Icons.Rounded.KeyboardArrowUp, "Yukarı", size = 64.dp) { sendKey("up") }
+                        MRemoteButton(RedoXIcons.KeyboardArrowUp, "Yukarı", size = 64.dp) { sendKey("up") }
                         Spacer(modifier = Modifier.height(8.dp))
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            MRemoteButton(Icons.Rounded.KeyboardArrowLeft, "Sol", size = 64.dp) { sendKey("left") }
+                            MRemoteButton(RedoXIcons.KeyboardArrowLeft, "Sol", size = 64.dp) { sendKey("left") }
                             MRemoteButton(null, "OK", size = 78.dp, primary = true) { sendKey("ok") }
-                            MRemoteButton(Icons.Rounded.KeyboardArrowRight, "Sağ", size = 64.dp) { sendKey("right") }
+                            MRemoteButton(RedoXIcons.KeyboardArrowRight, "Sağ", size = 64.dp) { sendKey("right") }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
-                        MRemoteButton(Icons.Rounded.KeyboardArrowDown, "Aşağı", size = 64.dp) { sendKey("down") }
+                        MRemoteButton(RedoXIcons.KeyboardArrowDown, "Aşağı", size = 64.dp) { sendKey("down") }
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
-                            MRemoteButton(Icons.Rounded.VolumeDown, "Ses −") {
+                            MRemoteButton(RedoXIcons.VolumeDown, "Ses −") {
                                 send { client ->
                                     val snap = client.volume(-1)
                                     if (snap != null) snapshot = snap
@@ -285,7 +267,7 @@ fun MobileRemoteScreen(
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.width(56.dp)
                             )
-                            MRemoteButton(Icons.Rounded.VolumeUp, "Ses +") {
+                            MRemoteButton(RedoXIcons.VolumeUp, "Ses +") {
                                 send { client ->
                                     val snap = client.volume(+1)
                                     if (snap != null) snapshot = snap
@@ -295,10 +277,10 @@ fun MobileRemoteScreen(
                         }
                         Spacer(modifier = Modifier.height(12.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-                            MRemoteButton(Icons.Rounded.Remove, "Kanal −") { send { it.zap(-1) } }
-                            MRemoteButton(Icons.Rounded.Pause, "Duraklat") { send { it.playPause() } }
-                            MRemoteButton(Icons.Rounded.Stop, "Durdur") { send { it.stop() } }
-                            MRemoteButton(Icons.Rounded.Add, "Kanal +") { send { it.zap(+1) } }
+                            MRemoteButton(RedoXIcons.Remove, "Kanal −") { send { it.zap(-1) } }
+                            MRemoteButton(RedoXIcons.Pause, "Duraklat") { send { it.playPause() } }
+                            MRemoteButton(RedoXIcons.Stop, "Durdur") { send { it.stop() } }
+                            MRemoteButton(RedoXIcons.Add, "Kanal +") { send { it.zap(+1) } }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         listOf(listOf("1", "2", "3"), listOf("4", "5", "6"), listOf("7", "8", "9")).forEach { row ->
@@ -325,7 +307,7 @@ fun MobileRemoteScreen(
                         Spacer(modifier = Modifier.height(10.dp))
                         MGhostButton(
                             text = "TV kanallarını yükle",
-                            icon = Icons.Rounded.CloudDownload,
+                            icon = RedoXIcons.CloudDownload,
                             onClick = {
                                 val tv = active
                                 if (tv != null) {
@@ -374,7 +356,7 @@ fun MobileRemoteScreen(
                                 Text(ch.name, color = RedoXColors.TextPrimary, fontWeight = FontWeight.SemiBold, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                                 Text(ch.category, color = RedoXColors.TextSecondary, fontSize = 11.sp, maxLines = 1)
                             }
-                            Icon(Icons.Rounded.PlayArrow, contentDescription = "TV'de aç", tint = RedoXColors.Primary)
+                            Icon(RedoXIcons.PlayArrow, contentDescription = "TV'de aç", tint = RedoXColors.Primary)
                         }
                     }
                 }

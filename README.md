@@ -4,11 +4,11 @@
 
 # RedoX TV 2 — TV, Tablet ve Telefon için Canlı TV / IPTV Oynatıcı
 
-![Platform](https://img.shields.io/badge/Platform-Android%20TV%20%7C%20Tablet%20%7C%20Telefon-E3213F?style=for-the-badge&logo=android&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Android%20TV%20%7C%20Tablet%20%7C%20Telefon-F02848?style=for-the-badge&logo=android&logoColor=white)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.0-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)
 ![Compose](https://img.shields.io/badge/Jetpack%20Compose-TV%20%26%20Mobil-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
-![Media3](https://img.shields.io/badge/Media3-ExoPlayer-F5C542?style=for-the-badge)
-![Sürüm](https://img.shields.io/badge/S%C3%BCr%C3%BCm-2.0.0-08080F?style=for-the-badge)
+![Media3](https://img.shields.io/badge/Media3-ExoPlayer-F3C05D?style=for-the-badge)
+![Sürüm](https://img.shields.io/badge/S%C3%BCr%C3%BCm-2.1.0-0A0A14?style=for-the-badge)
 
 **[⬇️ APK'ları indir (Releases)](https://github.com/ByReoxXx/RedoX-TV-2/releases)** • [Hata / öneri (Issues)](https://github.com/ByReoxXx/RedoX-TV-2/issues) • [Wiki](wiki/Home.md)
 
@@ -16,9 +16,9 @@
 
 | APK | Cihaz | Arayüz | Paket kimliği |
 |---|---|---|---|
-| `RedoX-TV-2-v2.0.0-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz | `com.redoxtv.two` |
-| `RedoX-TV-2-v2.0.0-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran | `com.redoxtv.two.tablet` |
-| `RedoX-TV-2-v2.0.0-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** | `com.redoxtv.two.phone` |
+| `RedoX-TV-2-v2.1.0-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz | `com.redoxtv.two` |
+| `RedoX-TV-2-v2.1.0-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran | `com.redoxtv.two.tablet` |
+| `RedoX-TV-2-v2.1.0-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** | `com.redoxtv.two.phone` |
 
 > **Eski RedoX TV ile bağımsızdır.** Paket kimliği, bağlantı şeması (`redoxtv2://`), ağ servisi (`_redoxtv2._tcp`) ve verileri farklıdır; eski uygulamayla **yan yana kurulabilir**, ayarlar ve favoriler paylaşılmaz.
 
@@ -40,15 +40,21 @@
 
 ## Ad ve logo
 
-**RedoX = Red + Ox** — "kırmızı boğa". Logo, kırmızı faset (low-poly) boğa başı, altın halka, altın burun halkası ve parlayan gözlerden oluşur; "RedoX" kırmızı italik, "TV" altın yazılır. Arayüz paleti logodan türetilmiştir:
+**RedoX = Red + Ox** — "kırmızı boğa". Logo, kırmızı faset (low-poly) boğa başı, altın halka, altın burun halkası ve parlayan gözlerden oluşur; "RedoX" kırmızı italik, "TV" altın yazılır.
+
+**Logo tamamen vektördür.** Uygulama simgesi (uyarlanabilir ön plan ve Android 13+ temalı tek renkli simge), bildirim simgesi, Android TV afişi ve uygulama içindeki işaret/yazı birer `VectorDrawable`'dır (`app/src/main/res/drawable/redox_mark.xml`, `redox_wordmark.xml`, `ic_launcher_foreground.xml`, `ic_launcher_monochrome.xml`, `ic_stat_redox.xml`; TV: `app/src/tv/res/drawable/ic_tv_banner.xml`). PNG yoktur; her ekran yoğunluğunda ve Android sürümünde (üst sürümlerdeki temalı simgeler dahil) keskin kalır. Tek istisna: Android TV ana ekranının başka bir süreçte yüklediği "poster" yedeği (`tv_poster_fallback.png`) bit eşlemdir.
+
+Arayüz paleti doğrudan logodan ölçülmüştür:
 
 | Renk | Değer | Kullanım |
 |---|---|---|
-| Kırmızı | `#E3213F` | Vurgular, canlı rozeti, odak halkaları |
-| Altın | `#F5C542` | Favoriler, "TV" yazısı, kilit/uyarı |
-| Lacivert-siyah | `#08080F` | Zemin (isteğe bağlı saf siyah AMOLED) |
+| Kızıl (şarap → mercan) | `#590823` `#96112F` `#BD1436` `#F02848` `#FA6465` | Eylemler, canlı rozeti, seçili öğeler; düğmelerde `#F02848` → `#BD1436` gradyanı |
+| Altın | `#A17844` `#DAA24F` `#F3C05D` `#FDDE7A` | **Odak halkası**, favori yıldızı, ilerleme çubukları, "TV" yazısı |
+| Lacivert-siyah | `#0A0A14` `#161621` `#1F1D2A` | Zemin, kart, yükseltilmiş yüzey (isteğe bağlı OLED modu: saf siyah) |
 
-Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), AMOLED siyah ve yazı boyutu seçilebilir; logo her zaman kırmızı-altın kalır. Logo dosyaları: [`docs/brand/`](docs/brand).
+**Tasarım dili "Kızıl Halka":** logodaki altın halka arayüzün odak göstergesidir. TV'de odaktaki öğe 3 dp altın çerçeve ve yumuşak altın ışımayla belirir; kırmızı yalnızca eylem ve canlı yayın içindir; emoji yerine simge kullanılır; TV'de en küçük yazı 12 sp, telefon ve tablette dokunma hedefleri en az 44 dp'dir.
+
+Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), OLED modu (saf siyah) ve yazı boyutu seçilebilir; logo her zaman kırmızı-altın kalır. Vektör logo dosyaları (SVG) ve README başlığı görseli: [`docs/brand/`](docs/brand).
 
 ---
 
@@ -60,7 +66,7 @@ Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), AMOLED siyah ve yazı bo
 - **Arama.** Kanal adı, kategori, numara ve **gerçek program adları** içinde; küçük yazım hatalarını tolere eder; sesli arama.
 - **Akıllı raflar.** "İzlemeye devam et", "En çok izlediklerin", "Favorilerinde şimdi yayında".
 - **Çoklu favori listeleri.** İstediğiniz kadar liste (Çocuklar, Spor…); sıralama, yeniden adlandırma, silme. **Kanal adı / numarası düzenleme** (yalnızca bu cihazda, geri alınabilir).
-- **Tema seçenekleri.** Palet, AMOLED siyah, yazı boyutu.
+- **Tema seçenekleri.** Palet, OLED modu (saf siyah), yazı boyutu.
 - **Güvenlik ve bakım.** Katı TLS, PIN'li yerel sunucu, güncelleme denetimi, dosyaya yedekleme, yerel tanılama günlüğü ([Güvenlik](#güvenlik)).
 - Eski sürümden gelenler: çoklu kaynak ve otomatik yedek akış geçişi, canlı yayında duraklatma, ebeveyn PIN kilidi, kanal gizleme, M3U / Xtream / dosya yükleme, 2'li ve 4'lü bölünmüş ekran, uyku zamanlayıcı.
 
@@ -96,11 +102,15 @@ Bilgisayarınıza Android Studio / JDK / SDK kurmanız **gerekmez**; derleme Git
    (Web arayüzüyle sürükle-bırak da olur; gizli `.github` klasörünün dahil olduğundan emin olun. Tek seferde en fazla 100 dosya yüklenebildiği için birkaç parçaya bölmeniz gerekebilir.)
 3. Depoda **Actions** sekmesine girin. İlk push derlemeyi kendiliğinden başlatır (gerekirse "RedoX TV 2 - APK derle" → *Run workflow*).
 4. Bitince çalışmanın sayfasında **Artifacts** altında üç APK görünür: `RedoX-TV-2-tv`, `RedoX-TV-2-tablet`, `RedoX-TV-2-phone`.
-5. **Release yayınlamak için:** `git tag v2.0.0 && git push origin v2.0.0` (ya da *Run workflow* → `release` işaretli). APK'lar Releases sayfasına yüklenir; uygulamadaki "güncelleme denetimi" bu sayfaya bakar.
+5. **Release yayınlamak için:** `git tag v2.1.0 && git push origin v2.1.0` (ya da *Run workflow* → `release` işaretli). APK'lar Releases sayfasına yüklenir; uygulamadaki "güncelleme denetimi" bu sayfaya bakar.
 
 Workflow, `wiki/` klasörünü de GitHub Wiki'ye eşitler (depoda Wiki'yi açıp ilk sayfayı oluşturduysanız).
 
 > Güncelleme denetimi ve kanal paketi senkronu, uygulamanın **kendi** deposuna bakar: GitHub Actions'ta derlerseniz depo adı otomatik gömülür; yerelde derlerseniz `ByReoxXx/RedoX-TV-2` varsayılan olur (`GITHUB_REPOSITORY` ortam değişkeniyle değiştirilebilir).
+
+### Arayüz önizleme (emülatör ekran görüntüleri)
+
+`ui-*` dallarına yaptığınız her push'ta (ya da *Actions → "RedoX TV 2 - Arayüz önizleme" → Run workflow* ile) telefon, tablet ve Android TV emülatörlerinde uygulama açılır, gezilir ve ekran görüntüleri alınır (`ci/capture.sh`). Görüntüler çalışmanın **Artifacts** bölümüne ve deponun `shots-phone` / `shots-tablet` / `shots-tv` dallarına yüklenir. Cihazınız olmadan arayüzü görmenin ve ilk açılışta çökme olup olmadığını denetlemenin en kolay yoludur.
 
 ---
 
@@ -132,9 +142,9 @@ Keystore dosyasını **asla depoya koymayın** (`.gitignore` zaten engeller) ve 
 - **Android TV / Google TV:** APK'yı USB bellekle ya da `adb` ile kurun:
   ```bash
   adb connect <TV-IP>:5555
-  adb install -r RedoX-TV-2-v2.0.0-tv.apk
+  adb install -r RedoX-TV-2-v2.1.0-tv.apk
   ```
-- İlk açılışta TV'de **Ayarlar → Yayın Rehberi**'nden XMLTV adresi, **M3U & Dosya Yükle**'den kendi listenizi ekleyebilirsiniz. Telefonla kumanda için telefonda **Kumanda** sekmesini açın; TV ekranındaki 6 haneli kodu girin.
+- İlk açılışta TV'de **Ayarlar → Yayın Rehberi**'nden XMLTV adresi, **M3U ve Dosya**'den kendi listenizi ekleyebilirsiniz. Telefonla kumanda için telefonda **Kumanda** sekmesini açın; TV ekranındaki 6 haneli kodu girin.
 
 ---
 
@@ -162,14 +172,16 @@ Keystore dosyasını **asla depoya koymayın** (`.gitignore` zaten engeller) ve 
 
 ## Kumanda ve hareket haritası
 
-**Android TV**
+**Android TV** (Chromecast kumandası gibi yalnızca yön tuşları, `OK` ve `Geri` olan kumandalarla tam çalışır; Menü, kanal ve rakam tuşları gerekmez)
 
 | Ekran | Tuş | İşlev |
 |---|---|---|
-| Kanal ızgarası | `OK` / `OK basılı tut` | İzle / favori ekle-çıkar |
+| Kanal ızgarası | `OK` / `OK basılı tut` | İzle / odağı üstteki panele (İzle, Favori, Kilit, Düzenle, Gizle) götür; `Geri` karta döndürür |
+| Özel M3U | `OK` / `Geri` | Eklediğiniz listenin adındaki klasörü aç / klasör listesine dön (kategori çiplerindeyken) |
+| Tüm ekranlar | `Geri` | Bir üst düzeye: listeden kategori çiplerine, çiplerden yan menüye; yan menüde ikinci basış uygulamadan çıkar |
 | Oynatıcı | `▲ ▼` | Kanal değiştir |
 | Oynatıcı | `◄` / `►` | Kanal çekmecesi / sonraki akış kaynağı |
-| Oynatıcı | `OK` | Kontrol çubuğu (kalite, gece modu, ses/altyazı, uyku, 2x2…) |
+| Oynatıcı | `OK` | Alt çubuk (ekranın ~%15'i): solda kanal ve program, ortada oynatma düğmeleri (önceki/sonraki kanal, 15 sn geri, oynat/duraklat, canlıya dön), sağda kanal listesi, favori, alternatif yayın ve **Seçenekler** (kalite, ses/altyazı, ölçek, gece modu, küçük pencere, 2×2, kanal no, kanalı gizle, çık) |
 | Oynatıcı | `0` | Önceki kanal |
 | Rehber | Programa `OK` | Yayındaysa izle; ileriyse hatırlatma ekle/kaldır |
 | Favoriler | `►` → `▲/▼` → `OK` | Tut ve taşı |

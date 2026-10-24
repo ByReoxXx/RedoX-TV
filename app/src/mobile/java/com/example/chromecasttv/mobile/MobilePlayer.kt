@@ -7,6 +7,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -31,21 +32,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Bedtime
-import androidx.compose.material.icons.rounded.Cast
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material.icons.rounded.FiberManualRecord
-import androidx.compose.material.icons.rounded.LiveTv
-import androidx.compose.material.icons.rounded.Pause
-import androidx.compose.material.icons.rounded.PictureInPictureAlt
-import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material.icons.rounded.SkipNext
-import androidx.compose.material.icons.rounded.SkipPrevious
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.StarBorder
-import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -545,7 +531,7 @@ fun MobilePlayerScreen(
                         .padding(horizontal = 8.dp, vertical = 6.dp)
                 ) {
                     IconButton(onClick = onMinimize) {
-                        Icon(Icons.Rounded.ExpandMore, contentDescription = "Küçült", tint = Color.White)
+                        Icon(RedoXIcons.ExpandMore, contentDescription = "Küçült", tint = Color.White)
                     }
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
@@ -566,17 +552,17 @@ fun MobilePlayerScreen(
                     }
                     if (activeTv != null) {
                         IconButton(onClick = { castToTv() }) {
-                            Icon(Icons.Rounded.Cast, contentDescription = "TV'de oynat", tint = Color.White)
+                            Icon(RedoXIcons.Cast, contentDescription = "TV'de oynat", tint = Color.White)
                         }
                     }
                     IconButton(onClick = { host.enterPip() }) {
-                        Icon(Icons.Rounded.PictureInPictureAlt, contentDescription = "Küçük pencere", tint = Color.White)
+                        Icon(RedoXIcons.PictureInPictureAlt, contentDescription = "Küçük pencere", tint = Color.White)
                     }
                     IconButton(onClick = { panel = MPlayerPanel.SETTINGS }) {
-                        Icon(Icons.Rounded.Tune, contentDescription = "Oynatma ayarları", tint = Color.White)
+                        Icon(RedoXIcons.Tune, contentDescription = "Oynatma ayarları", tint = Color.White)
                     }
                     IconButton(onClick = onClose) {
-                        Icon(Icons.Rounded.Close, contentDescription = "Kapat", tint = Color.White)
+                        Icon(RedoXIcons.Close, contentDescription = "Kapat", tint = Color.White)
                     }
                 }
 
@@ -587,7 +573,7 @@ fun MobilePlayerScreen(
                     modifier = Modifier.align(Alignment.Center)
                 ) {
                     IconButton(onClick = { zap(-1) }, modifier = Modifier.size(54.dp)) {
-                        Icon(Icons.Rounded.SkipPrevious, contentDescription = "Önceki kanal", tint = Color.White, modifier = Modifier.size(34.dp))
+                        Icon(RedoXIcons.SkipPrevious, contentDescription = "Önceki kanal", tint = Color.White, modifier = Modifier.size(34.dp))
                     }
                     Box(
                         modifier = Modifier
@@ -598,14 +584,14 @@ fun MobilePlayerScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
-                            imageVector = if (isPlaying) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                            imageVector = if (isPlaying) RedoXIcons.Pause else RedoXIcons.PlayArrow,
                             contentDescription = if (isPlaying) "Duraklat" else "Oynat",
                             tint = Color.White,
                             modifier = Modifier.size(if (isTablet) 48.dp else 42.dp)
                         )
                     }
                     IconButton(onClick = { zap(+1) }, modifier = Modifier.size(54.dp)) {
-                        Icon(Icons.Rounded.SkipNext, contentDescription = "Sonraki kanal", tint = Color.White, modifier = Modifier.size(34.dp))
+                        Icon(RedoXIcons.SkipNext, contentDescription = "Sonraki kanal", tint = Color.White, modifier = Modifier.size(34.dp))
                     }
                 }
 
@@ -622,8 +608,8 @@ fun MobilePlayerScreen(
                     if (channel.hasRealEpg) {
                         MProgressBar(
                             progress = channel.progressForUi(),
-                            color = RedoXColors.Primary,
-                            height = 4.dp
+                            color = RedoXColors.Gold,
+                            height = 5.dp
                         )
                         Spacer(modifier = Modifier.padding(top = 6.dp))
                     }
@@ -655,7 +641,7 @@ fun MobilePlayerScreen(
                                 text = "Kanallar",
                                 selected = false,
                                 onClick = { panel = MPlayerPanel.CHANNELS },
-                                icon = Icons.Rounded.LiveTv
+                                icon = RedoXIcons.LiveTv
                             )
                         }
                         item {
@@ -664,7 +650,7 @@ fun MobilePlayerScreen(
                                 text = if (fav) "Favoride" else "Favori",
                                 selected = fav,
                                 onClick = { viewModel.toggleFavorite(channel.id) },
-                                icon = if (fav) Icons.Rounded.Star else Icons.Rounded.StarBorder
+                                icon = if (fav) RedoXIcons.StarFilled else RedoXIcons.StarBorder
                             )
                         }
                         item {
@@ -672,7 +658,7 @@ fun MobilePlayerScreen(
                                 text = "Canlıya dön",
                                 selected = false,
                                 onClick = { goLive() },
-                                icon = Icons.Rounded.FiberManualRecord
+                                icon = RedoXIcons.FiberManualRecord
                             )
                         }
                         if (channel.sources.size > 1) {
@@ -693,7 +679,7 @@ fun MobilePlayerScreen(
                                 text = if (remaining != null) "Uyku: $remaining dk" else "Uyku zamanlayıcı",
                                 selected = remaining != null,
                                 onClick = { viewModel.cycleSleepTimer() },
-                                icon = Icons.Rounded.Bedtime
+                                icon = RedoXIcons.Bedtime
                             )
                         }
                     }
@@ -911,6 +897,7 @@ fun MobileMiniPlayer(
             .padding(horizontal = 10.dp, vertical = 6.dp)
             .clip(shape)
             .background(RedoXColors.SurfaceHigh)
+            .border(1.dp, RedoXColors.Line, shape)
             .pointerInput(Unit) { detectTapGestures(onTap = { onExpand() }) }
             .padding(horizontal = 10.dp, vertical = 8.dp)
     ) {
@@ -935,13 +922,13 @@ fun MobileMiniPlayer(
         }
         IconButton(onClick = { if (player.isPlaying) player.pause() else player.play() }) {
             Icon(
-                imageVector = if (playing) Icons.Rounded.Pause else Icons.Rounded.PlayArrow,
+                imageVector = if (playing) RedoXIcons.Pause else RedoXIcons.PlayArrow,
                 contentDescription = if (playing) "Duraklat" else "Oynat",
                 tint = RedoXColors.TextPrimary
             )
         }
         IconButton(onClick = onClose) {
-            Icon(Icons.Rounded.Close, contentDescription = "Kapat", tint = RedoXColors.TextSecondary)
+            Icon(RedoXIcons.Close, contentDescription = "Kapat", tint = RedoXColors.TextSecondary)
         }
     }
 }

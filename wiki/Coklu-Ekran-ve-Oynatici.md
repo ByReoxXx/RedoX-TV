@@ -16,7 +16,7 @@
 | **480p** | 480p ve en çok ~1,8 Mbps |
 | **Veri Tasarrufu** | 360p ve en çok ~0,9 Mbps |
 
-Telefon/tablette *Mobil veri tasarrufu* açıksa, yalnızca mobil veri kullanılırken kalite otomatik olarak **Veri Tasarrufu**'na düşer (Wi-Fi'de değişmez). Kalite oynatıcıdan (TV: kontrol çubuğundaki **Kalite**, mobil: ⚙ ayarlar) veya *Ayarlar*'dan seçilir.
+Telefon/tablette *Mobil veri tasarrufu* açıksa, yalnızca mobil veri kullanılırken kalite otomatik olarak **Veri Tasarrufu**'na düşer (Wi-Fi'de değişmez). Kalite oynatıcıdan (TV: **Seçenekler → Kalite**, mobil: ⚙ ayarlar) veya *Ayarlar*'dan seçilir.
 
 ## 📊 Gerçek istatistikler
 
@@ -24,7 +24,7 @@ Oynatıcı bilgi alanı **ölçülen** değerleri gösterir: çözünürlük (ö
 
 ## 🌙 Gece modu
 
-Konuşmaları belirginleştirir, ani yüksek sesleri baskılar (Android'in `LoudnessEnhancer` efektiyle; ses seviyesi düşürülüp kazanç artırılır). Desteklemeyen cihazlarda etkisizdir ve uygulama bundan etkilenmez. Bilgi çubuğunda etkinse 🌙 simgesi görünür.
+Konuşmaları belirginleştirir, ani yüksek sesleri baskılar (Android'in `LoudnessEnhancer` efektiyle; ses seviyesi düşürülüp kazanç artırılır). Desteklemeyen cihazlarda etkisizdir ve uygulama bundan etkilenmez. Bilgi çubuğunda etkinse "Gece modu" etiketi görünür.
 
 ## ⏯️ Canlı yayında duraklatma
 
@@ -50,5 +50,5 @@ Duraklat/oynat, **15 sn geri sar** (TV) ve **Canlıya dön**. Duraklatma, oynat�
 
 - **Çoklu favori listeleri:** "Favoriler" her zaman vardır (silinemez/adı değişmez); istediğiniz kadar ek liste (Çocuklar, Spor…) oluşturabilir, adlandırabilir, silebilirsiniz. Sıralama: TV'de **tut & taşı**, telefonda ↑/↓; ayrıca A-Z / kanal no / kategori ile otomatik sıralama.
 - **PIN korumalı ebeveyn kilidi:** kanallar 4 haneli PIN ile kilitlenir (TV: kanal başlığında **Kilitle**; mobil: uzun basıp **PIN ile kilitle**). Kilitli kanal PIN girilmeden açılmaz ve **TV'ye gönderilemez**. PIN ekranda gösterilmez, yedeğe yazılmaz.
-- **Gizle / geri getir:** istenmeyen kanallar listeden gizlenir, *Kaynaklar* (mobil) veya *M3U & Dosya Yükle* (TV) ekranından geri getirilir.
+- **Gizle / geri getir:** istenmeyen kanallar listeden gizlenir, *Kaynaklar* (mobil) veya *M3U ve Dosya* (TV) ekranından geri getirilir.
 - **Kanal adı / numarası düzenleme:** yalnızca bu cihazda uygulanır, M3U listesi değişmez; **Varsayılana dön** ile geri alınır.
