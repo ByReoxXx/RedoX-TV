@@ -62,8 +62,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,6 +80,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -1067,6 +1066,13 @@ fun TvCompactChipButton(
     }
 }
 
+/** TV yan menüsünde ana gezintiden ayrılıp altta (ayırıcı çizginin altında) duran sekmeler. */
+private val TvRailFooterTabs = setOf(MainNavTab.M3U_MANAGER, MainNavTab.SETTINGS)
+
+/**
+ * Yan menü: üstte ana gezinti (iki satırlı, sayı rozetli), en altta Kaynaklar (M3U ve Dosya), Ayarlar ve Uyku.
+ * Alçak ekranlarda (ör. 540 dp'lik 1080p Chromecast) boşluklar daralır; böylece liste kaydırmadan sığar.
+ */
 @Composable
 fun TvSideNavigationRail(
     selectedTab: MainNavTab,
@@ -1082,13 +1088,17 @@ fun TvSideNavigationRail(
     /** Menüdeki bir öğe odağı aldığında / bıraktığında çağrılır. */
     onFocusInside: (Boolean) -> Unit = {}
 ) {
+    val compact = LocalConfiguration.current.screenHeightDp < 600
+    val mainTabs = MainNavTab.entries.filter { it !in TvRailFooterTabs }
+    val footerTabs = MainNavTab.entries.filter { it in TvRailFooterTabs }
+
     Column(
         modifier = Modifier
             .width(232.dp)
             .fillMaxHeight()
             .onFocusChanged { onFocusInside(it.hasFocus) }
             .background(TvThemeColors.SidebarGlass)
-            .padding(vertical = 18.dp, horizontal = 12.dp),
+            .padding(vertical = if (compact) 12.dp else 18.dp, horizontal = 12.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column(modifier = Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState())) {
@@ -1098,7 +1108,7 @@ fun TvSideNavigationRail(
                     .fillMaxWidth()
                     .padding(horizontal = 4.dp, vertical = 4.dp)
             ) {
-                RedoXEmblem(boxSize = 46.dp)
+                RedoXEmblem(boxSize = if (compact) 40.dp else 46.dp)
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
@@ -1118,13 +1128,9 @@ fun TvSideNavigationRail(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(if (compact) 8.dp else 16.dp))
 
-            MainNavTab.entries.forEach { tab ->
-                var isFocused by remember { mutableStateOf(false) }
-                val isSelected = selectedTab == tab
-                val shape = RoundedCornerShape(14.dp)
-
+            mainTabs.forEach { tab ->
                 // Sayı rozeti yalnızca kanal içeren sekmelerde görünür (sıfır rozeti gürültü yapar)
                 val badgeText = when (tab) {
                     MainNavTab.ALL_CHANNELS -> builtInCount
@@ -1133,107 +1139,138 @@ fun TvSideNavigationRail(
                     else -> 0
                 }.takeIf { it > 0 }?.toString()
 
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 2.dp)
-                        .height(52.dp)
-                        .then(
-                            if (isSelected && selectedItemFocusRequester != null) {
-                                Modifier.focusRequester(selectedItemFocusRequester)
-                            } else {
-                                Modifier
-                            }
-                        )
-                        .tvSurface(
-                            focused = isFocused,
-                            shape = shape,
-                            color = if (isSelected) RedoXColors.Primary.copy(alpha = 0.16f) else Color.Transparent,
-                            idleBorder = Color.Transparent,
-                            ringWidth = 2.5.dp
-                        )
-                        .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-                        .clickable { onSelectTab(tab) }
-                        .padding(horizontal = 12.dp)
-                ) {
-                    Icon(
-                        imageVector = tab.icon,
-                        contentDescription = tab.title,
-                        tint = when {
-                            isFocused -> RedoXColors.Gold
-                            isSelected -> RedoXColors.PrimaryBright
-                            else -> TvThemeColors.TextSecondary
-                        },
-                        modifier = Modifier.size(22.dp)
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = tab.title,
-                            color = if (isSelected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
-                            fontWeight = if (isSelected || isFocused) FontWeight.Bold else FontWeight.Medium,
-                            fontSize = 15.sp,
-                            maxLines = 1,
-                            softWrap = false,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                        Text(
-                            text = tab.subtitle,
-                            color = RedoXColors.TextTertiary,
-                            fontSize = 12.sp,
-                            maxLines = 1,
-                            softWrap = false,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
-                    if (badgeText != null) {
-                        Box(
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(50))
-                                .background(RedoXColors.Ink600)
-                                .padding(horizontal = 8.dp, vertical = 2.dp)
-                        ) {
-                            Text(
-                                text = badgeText,
-                                color = TvThemeColors.TextPrimary,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Bold,
-                                maxLines = 1
-                            )
-                        }
-                    }
-                }
+                TvRailRow(
+                    icon = tab.icon,
+                    title = tab.title,
+                    subtitle = tab.subtitle,
+                    badgeText = badgeText,
+                    selected = selectedTab == tab,
+                    rowHeight = if (compact) 48.dp else 52.dp,
+                    iconSize = 22.dp,
+                    focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
+                    onClick = { onSelectTab(tab) }
+                )
             }
         }
 
-        var sleepFocused by remember { mutableStateOf(false) }
-        val sleepShape = RoundedCornerShape(12.dp)
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(44.dp)
-                .tvSurface(focused = sleepFocused, shape = sleepShape, ringWidth = 2.5.dp)
-                .onFocusChanged { sleepFocused = it.isFocused || it.hasFocus }
-                .clickable { onCycleSleepTimer() }
-                .padding(horizontal = 12.dp)
-        ) {
-            Icon(
-                imageVector = RedoXIcons.Bedtime,
-                contentDescription = null,
-                tint = RedoXColors.Gold,
-                modifier = Modifier.size(18.dp)
+        // Alt bölüm: Kaynaklar ve Ayarlar ana gezintiden ayrı, menünün dibinde (tek satırlı, daha alçak satırlar)
+        Column {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = if (compact) 4.dp else 8.dp)
+                    .height(1.dp)
+                    .background(RedoXColors.Line)
             )
-            Spacer(modifier = Modifier.width(8.dp))
+            footerTabs.forEach { tab ->
+                TvRailRow(
+                    icon = tab.icon,
+                    title = tab.title,
+                    subtitle = null,
+                    badgeText = null,
+                    selected = selectedTab == tab,
+                    rowHeight = if (compact) 40.dp else 44.dp,
+                    iconSize = 20.dp,
+                    focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
+                    onClick = { onSelectTab(tab) }
+                )
+            }
+            TvRailRow(
+                icon = RedoXIcons.Bedtime,
+                title = if (sleepTimerMinutes != null) "Uyku: $sleepTimerMinutes dk" else "Uyku: Kapalı",
+                subtitle = null,
+                badgeText = null,
+                selected = sleepTimerMinutes != null,
+                rowHeight = if (compact) 40.dp else 44.dp,
+                iconSize = 20.dp,
+                focusRequester = null,
+                onClick = onCycleSleepTimer
+            )
+        }
+    }
+}
+
+/** Yan menü satırı: ana gezintide iki satır (ad + açıklama) ve sayı rozeti, alttaki bölümde tek satır. */
+@Composable
+private fun TvRailRow(
+    icon: ImageVector,
+    title: String,
+    subtitle: String?,
+    badgeText: String?,
+    selected: Boolean,
+    rowHeight: Dp,
+    iconSize: Dp,
+    focusRequester: FocusRequester?,
+    onClick: () -> Unit
+) {
+    var isFocused by remember { mutableStateOf(false) }
+    val shape = RoundedCornerShape(14.dp)
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 2.dp)
+            .height(rowHeight)
+            .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier)
+            .tvSurface(
+                focused = isFocused,
+                shape = shape,
+                color = if (selected) RedoXColors.Primary.copy(alpha = 0.16f) else Color.Transparent,
+                idleBorder = Color.Transparent,
+                ringWidth = 2.5.dp
+            )
+            .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
+            .clickable { onClick() }
+            .padding(horizontal = 12.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = title,
+            tint = when {
+                isFocused -> RedoXColors.Gold
+                selected -> RedoXColors.PrimaryBright
+                else -> TvThemeColors.TextSecondary
+            },
+            modifier = Modifier.size(iconSize)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = if (sleepTimerMinutes != null) "Uyku: $sleepTimerMinutes dk" else "Uyku: Kapalı",
-                color = TvThemeColors.TextSecondary,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Medium,
+                text = title,
+                color = if (selected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
+                fontWeight = if (selected || isFocused) FontWeight.Bold else FontWeight.Medium,
+                fontSize = 15.sp,
                 maxLines = 1,
-                softWrap = false
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
             )
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    color = RedoXColors.TextTertiary,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    softWrap = false,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+        if (badgeText != null) {
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(RedoXColors.Ink600)
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+            ) {
+                Text(
+                    text = badgeText,
+                    color = TvThemeColors.TextPrimary,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1
+                )
+            }
         }
     }
 }
