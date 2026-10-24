@@ -181,7 +181,7 @@ Keystore dosyasını **asla depoya koymayın** (`.gitignore` zaten engeller) ve 
 | Tüm ekranlar | `Geri` | Bir üst düzeye: listeden kategori çiplerine, çiplerden yan menüye; yan menüde ikinci basış uygulamadan çıkar |
 | Oynatıcı | `▲ ▼` | Kanal değiştir |
 | Oynatıcı | `◄` / `►` | Kanal çekmecesi / sonraki akış kaynağı |
-| Oynatıcı | `OK` | Kontrol çubuğu: kanal bilgisi, altında ortada oynatma düğmeleri (önceki/sonraki kanal, 15 sn geri, oynat/duraklat, canlıya dön); en altta kanal listesi, favori, kalite, ses/altyazı, ölçek, gece modu, 2x2… |
+| Oynatıcı | `OK` | Alt çubuk (ekranın ~%15'i): solda kanal ve program, ortada oynatma düğmeleri (önceki/sonraki kanal, 15 sn geri, oynat/duraklat, canlıya dön), sağda kanal listesi, favori, alternatif yayın ve **Seçenekler** (kalite, ses/altyazı, ölçek, gece modu, küçük pencere, 2×2, kanal no, kanalı gizle, çık) |
 | Oynatıcı | `0` | Önceki kanal |
 | Rehber | Programa `OK` | Yayındaysa izle; ileriyse hatırlatma ekle/kaldır |
 | Favoriler | `►` → `▲/▼` → `OK` | Tut ve taşı |
