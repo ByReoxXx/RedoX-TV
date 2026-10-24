@@ -17,23 +17,19 @@ Metin–zemin oranları: ana metin 16,3:1, ikincil 9,3:1, üçüncül 5,5:1, alt
 
 ## Odak halkası (TV)
 
-- Odaktaki öğe: **3 dp altın çerçeve + yumuşak altın ışıma + hafif büyüme** (`tvSurface`).
+- Odaktaki öğe: **3 dp altın çerçeve + küçük sabit altın ışıma** (`tvSurface`); geçiş animasyonu, büyüme ve basma küçülmesi yoktur, odak anında yanıt verir.
 - Seçili ama odakta olmayan öğe (ör. yan menüdeki sekme): kırmızı dolgu tonu.
 - Yan menü iki bölümlüdür: üstte ana gezinti (Canlı TV, Favorilerim, Özel M3U, Bölünmüş Ekran, Yayın Rehberi, Kanal Ara), ince bir çizginin altında menünün dibinde **Kaynaklar** (TV'de "M3U ve Dosya"), **Ayarlar** ve TV'de Uyku zamanlayıcısı. Tablette de Kaynaklar ve Ayarlar rayın dibinde durur. Alçak ekranlarda (540 dp'lik 1080p TV) boşluklar daralır, menü kaydırmadan sığar.
 - Yalnızca simgeli düğmeler (`TvIconPill`): odaklanınca adı yanında açılır; oynatıcıda odaktaki düğmenin adı kontrol çubuğunun altında tek satırda gösterilir.
 - Kısayol ipuçları (`OK`, `OK basılı tut`, `Geri`) kanal ızgarasının altında sabit bir çubukta durur; kartların içindeki yazı odakla değişmez. İpuçları yalnızca yön tuşları, `OK` ve `Geri` olan kumandaya göre yazılır.
 
-## Hareket (hafif animasyonlar)
+## Hareket (sade ve hafif)
 
-Hareket yalnızca durumu anlatmak içindir; hepsi kısa ve sakindir (80–500 ms), GPU katmanında çalışır.
+Efektler bilinçli olarak az tutulur: zayıf TV işlemcilerinde akıcılık ve pil için sürekli (sonsuz) animasyon yoktur.
 
-- **Odak geçişi (TV):** halka, ışıma ve zemin 130 ms'de yumuşakça açılıp kapanır; kumandayla gezerken sıçrama olmaz.
-- **Basma geri bildirimi:** OK tuşuna ya da dokunuşa basılıyken düğme, kart ve çip %3–5 küçülür, bırakınca geri yaylanır.
-- **Canlı göstergesi:** "CANLI" rozetindeki nokta saniyede bir yavaşça nabız atar; çalan kanalın ekolayzer çubukları hafifçe oynar.
-- **İlerleme çubukları:** program ilerlemesi değişince akıcı uzar.
-- **Karşılama:** içerik yukarı kayarak belirir, logonun arkasında yavaş bir altın ışıma nefes alır.
-- **Uyarılar:** alttan kayarak girer, süre dolunca kayarak çıkar.
-- Sekme geçişleri 140 ms çapraz solmadır; oynatıcı çubuğu ve çekmece kayarak açılır.
+- **Odak (TV):** altın halka ve küçük sabit ışıma anında belirir; kumandayla gezerken gecikme olmaz.
+- **CANLI rozeti, ekolayzer, karşılama ışıması, ilerleme çubukları:** sabit (nabız, nefes alma, akıcı uzama yok).
+- **Sekmeler:** anında değişir (çapraz solma yok). Oynatıcı çubuğu ve çekmece kısa solma/kayma ile açılır, uyarılar alttan kayarak girer.
 
 ## Yazı ve boyutlar
 

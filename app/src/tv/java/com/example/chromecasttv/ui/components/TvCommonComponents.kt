@@ -661,8 +661,9 @@ fun ParentalPinDialog(
 // ============================================================================
 
 /**
- * Yüzey: odaktayken altın ışıma, yuvarlatılmış kırpma, zemin ve çerçeve (odakta altın halka).
- * Odağa girerken / çıkarken halka, ışıma ve zemin 130 ms'de yumuşakça açılıp kapanır (kumandayla gezerken sıçramaz).
+ * Yüzey: odaktayken altın çerçeve (halka) + küçük sabit altın ışıma, yuvarlatılmış kırpma ve zemin.
+ * Efektler bilinçli olarak hafiftir: geçiş animasyonu yoktur (kumandayla gezerken anında yanıt verir),
+ * ışıma küçüktür; böylece zayıf TV işlemcilerinde de akıcı kalır.
  */
 @Composable
 fun Modifier.tvSurface(
@@ -674,55 +675,30 @@ fun Modifier.tvSurface(
     idleBorder: Color = RedoXColors.Line,
     ringWidth: Dp = 3.dp
 ): Modifier {
-    val ring by animateFloatAsState(
-        targetValue = if (focused) 1f else 0f,
-        animationSpec = tween(durationMillis = 130),
-        label = "tv_surface_ring"
-    )
-    val fillColor by animateColorAsState(
-        targetValue = if (focused) focusedColor else color,
-        animationSpec = tween(durationMillis = 130),
-        label = "tv_surface_fill"
-    )
-    val surfaceShape = shape
+    val glow = if (focused) {
+        Modifier.shadow(
+            elevation = 6.dp,
+            shape = shape,
+            ambientColor = RedoXColors.Gold,
+            spotColor = RedoXColors.Gold
+        )
+    } else {
+        Modifier
+    }
     val fill = if (brush != null) {
         Modifier.background(brush, shape)
     } else {
-        Modifier.background(fillColor, shape)
+        Modifier.background(if (focused) focusedColor else color, shape)
     }
     return this
-        .graphicsLayer {
-            shadowElevation = if (ring > 0.01f) 20.dp.toPx() * ring else 0f
-            this.shape = surfaceShape
-            clip = false
-            ambientShadowColor = RedoXColors.Gold
-            spotShadowColor = RedoXColors.Gold
-        }
+        .then(glow)
         .clip(shape)
         .then(fill)
         .border(
-            width = lerp(1.dp, ringWidth, ring),
-            color = lerp(idleBorder, RedoXColors.Gold, ring),
+            width = if (focused) ringWidth else 1.dp,
+            color = if (focused) RedoXColors.Gold else idleBorder,
             shape = shape
         )
-}
-
-/** OK tuşuna / dokunuşa basılıyken öğe hafifçe küçülür, bırakınca geri yaylanır. */
-@Composable
-fun Modifier.tvPressScale(
-    interactionSource: MutableInteractionSource,
-    pressedScale: Float = 0.95f
-): Modifier {
-    val pressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) pressedScale else 1f,
-        animationSpec = tween(durationMillis = 80),
-        label = "tv_press_scale"
-    )
-    return this.graphicsLayer {
-        scaleX = scale
-        scaleY = scale
-    }
 }
 
 /** "CANLI" rozeti: nokta + yazı. [broken] true ise uyarı rengiyle gösterilir (ör. "ÇALIŞMIYOR"). */
@@ -740,19 +716,9 @@ fun TvLiveBadge(
             .padding(horizontal = 9.dp, vertical = 3.dp)
     ) {
         if (!broken) {
-            val pulse by rememberInfiniteTransition(label = "live_pulse").animateFloat(
-                initialValue = 1f,
-                targetValue = 0.35f,
-                animationSpec = infiniteRepeatable(
-                    animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
-                    repeatMode = RepeatMode.Reverse
-                ),
-                label = "live_pulse_alpha"
-            )
             Box(
                 modifier = Modifier
                     .size(6.dp)
-                    .graphicsLayer { alpha = pulse }
                     .clip(CircleShape)
                     .background(Color.White)
             )
@@ -801,11 +767,7 @@ fun TvProgressBar(
     height: Dp = 4.dp,
     color: Color = RedoXColors.Gold
 ) {
-    val p by animateFloatAsState(
-        targetValue = progress.coerceIn(0f, 1f),
-        animationSpec = tween(durationMillis = 500),
-        label = "tv_progress"
-    )
+    val p = progress.coerceIn(0f, 1f)
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -871,7 +833,6 @@ fun TvIconPill(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .tvPressScale(interactionSource)
             .height(48.dp)
             .tvSurface(focused = focused, shape = shape, ringWidth = 2.5.dp)
             .onFocusChanged { focused = it.isFocused || it.hasFocus }
@@ -1025,22 +986,12 @@ fun TvCompactChipButton(
     modifier: Modifier = Modifier
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val chipScale by animateFloatAsState(
-        targetValue = if (isFocused) 1.05f else 1f,
-        animationSpec = tween(durationMillis = 125),
-        label = "chip_scale"
-    )
     val shape = RoundedCornerShape(12.dp)
     val interactionSource = remember { MutableInteractionSource() }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .tvPressScale(interactionSource)
-            .graphicsLayer {
-                scaleX = chipScale
-                scaleY = chipScale
-            }
             .tvSurface(focused = isFocused, shape = shape, ringWidth = 2.5.dp)
             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
             .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
@@ -1284,21 +1235,11 @@ fun TvActionButton(
     modifier: Modifier = Modifier
 ) {
     var isFocused by remember { mutableStateOf(false) }
-    val btnScale by animateFloatAsState(
-        targetValue = if (isFocused) 1.05f else 1f,
-        animationSpec = tween(durationMillis = 125),
-        label = "action_btn_scale"
-    )
     val shape = RoundedCornerShape(14.dp)
     val interactionSource = remember { MutableInteractionSource() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .tvPressScale(interactionSource)
-            .graphicsLayer {
-                scaleX = btnScale
-                scaleY = btnScale
-            }
             .tvSurface(
                 focused = isFocused,
                 shape = shape,

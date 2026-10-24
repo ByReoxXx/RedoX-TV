@@ -204,7 +204,6 @@ private fun TvFolderCard(folder: TvM3uFolder, modifier: Modifier, onClick: () ->
         modifier = modifier
             .fillMaxWidth()
             .height(124.dp)
-            .tvPressScale(interaction)
             .tvSurface(focused = focused, shape = shape)
             .onFocusChanged { focused = it.isFocused || it.hasFocus }
             .clickable(interactionSource = interaction, indication = LocalIndication.current) { onClick() }

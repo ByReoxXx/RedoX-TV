@@ -62,24 +62,6 @@ import androidx.compose.ui.unit.sp
 // Tüm renkler RedoXColors'tan okunur; palet/AMOLED seçimi anında yansır.
 // ============================================================================
 
-/** Dokunulunca (basılıyken) öğe hafifçe küçülür, bırakınca geri yaylanır. */
-@Composable
-fun Modifier.pressScale(
-    interactionSource: MutableInteractionSource,
-    pressedScale: Float = 0.97f
-): Modifier {
-    val pressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) pressedScale else 1f,
-        animationSpec = tween(durationMillis = 90),
-        label = "press_scale"
-    )
-    return this.graphicsLayer {
-        scaleX = scale
-        scaleY = scale
-    }
-}
-
 /** Bölüm başlığı (+ isteğe bağlı sağ eylem). */
 @Composable
 fun MSectionTitle(
@@ -170,7 +152,6 @@ fun MCard(
     val interaction = remember { MutableInteractionSource() }
     Column(
         modifier = modifier
-            .pressScale(interaction, 0.98f)
             .clip(shape)
             .background(RedoXColors.Surface)
             .border(1.dp, RedoXColors.Line.copy(alpha = 0.7f), shape)
@@ -212,7 +193,6 @@ fun MChip(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .pressScale(interaction)
             .defaultMinSize(minHeight = 44.dp)
             .clip(shape)
             .background(if (selected) RedoXColors.Primary.copy(alpha = 0.18f) else RedoXColors.Surface)
@@ -259,7 +239,6 @@ fun MPrimaryButton(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
-            .pressScale(interaction)
             .defaultMinSize(minHeight = 48.dp)
             .clip(shape)
             .background(if (enabled) RedoXColors.PrimaryBrush else SolidColor(RedoXColors.SurfaceHigh))
@@ -353,11 +332,7 @@ fun MProgressBar(
     color: Color = RedoXColors.Gold,
     height: Dp = 4.dp
 ) {
-    val clamped by animateFloatAsState(
-        targetValue = progress.coerceIn(0f, 1f),
-        animationSpec = tween(durationMillis = 500),
-        label = "progress"
-    )
+    val clamped = progress.coerceIn(0f, 1f)
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -377,15 +352,6 @@ fun MProgressBar(
 /** "CANLI" rozeti: beyaz nokta + yazı, kızıl zemin. */
 @Composable
 fun MLiveBadge(modifier: Modifier = Modifier) {
-    val pulse by rememberInfiniteTransition(label = "live_pulse").animateFloat(
-        initialValue = 1f,
-        targetValue = 0.35f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "live_pulse_alpha"
-    )
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -396,7 +362,6 @@ fun MLiveBadge(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .size(5.dp)
-                .graphicsLayer { alpha = pulse }
                 .clip(CircleShape)
                 .background(Color.White)
         )
@@ -411,39 +376,20 @@ fun MLiveBadge(modifier: Modifier = Modifier) {
     }
 }
 
-/** Çalan kanalı belirten küçük "ekolayzer" çubukları (hafifçe oynar). */
+/** Çalan kanalı belirten küçük "ekolayzer" çubukları (sabit; sürekli animasyon pil ve işlemci harcar). */
 @Composable
 fun MEqualizer(
     modifier: Modifier = Modifier,
     color: Color = RedoXColors.PrimaryBright
 ) {
-    val transition = rememberInfiniteTransition(label = "equalizer")
-    val a by transition.animateFloat(
-        initialValue = 0.35f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(520, easing = FastOutSlowInEasing), RepeatMode.Reverse),
-        label = "eq_a"
-    )
-    val b by transition.animateFloat(
-        initialValue = 1f,
-        targetValue = 0.4f,
-        animationSpec = infiniteRepeatable(tween(430, easing = FastOutSlowInEasing), RepeatMode.Reverse),
-        label = "eq_b"
-    )
-    val c by transition.animateFloat(
-        initialValue = 0.5f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(610, easing = FastOutSlowInEasing), RepeatMode.Reverse),
-        label = "eq_c"
-    )
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier.height(12.dp)
     ) {
-        EqualizerBar(scale = { a }, color = color)
-        EqualizerBar(scale = { b }, color = color)
-        EqualizerBar(scale = { c }, color = color)
+        EqualizerBar(scale = { 0.55f }, color = color)
+        EqualizerBar(scale = { 1f }, color = color)
+        EqualizerBar(scale = { 0.75f }, color = color)
     }
 }
 
@@ -481,7 +427,6 @@ fun MChannelRow(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .pressScale(interaction)
             .fillMaxWidth()
             .defaultMinSize(minHeight = 72.dp)
             .clip(shape)
@@ -583,7 +528,6 @@ fun MChannelCard(
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
-            .pressScale(interaction)
             .height(150.dp)
             .clip(shape)
             .background(RedoXColors.Surface)

@@ -1453,7 +1453,6 @@ private fun TvOsdButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .tvPressScale(interactionSource)
             .size(if (primary) (if (compact) 60.dp else 68.dp) else (if (compact) 46.dp else 52.dp))
             .tvSurface(
                 focused = focused,

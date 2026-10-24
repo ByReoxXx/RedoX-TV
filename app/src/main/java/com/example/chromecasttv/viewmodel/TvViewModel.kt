@@ -1253,19 +1253,11 @@ class TvViewModel(
             _builtInChannels.value = builtInList
             _epgMap.value = combinedEpg
 
-            // [1] Arka planda GitHub üzerindeki dinamik `channel/channels.json` ve `channel/channels.m3u` dosyalarını kontrol et
-            // [2] Ardından ACIPTV Türk kanallarını ana listeye ve yedek akışlara birleştir
+            // Arka planda GitHub'daki şifreli kanal paketini (`channel/channels.enc`) kontrol et.
+            // Kanal listesi yalnızca bu paketten gelir; üçüncü taraf listeler birleştirilmez.
             launch(Dispatchers.IO) {
                 val remoteJsonChannels = repository.syncRemoteGitHubChannelsJson()
-                val remoteRepoM3u = repository.syncRemoteGitHubRepoM3u()
-                val baseAfterGitHub = buildList {
-                    val base = remoteJsonChannels ?: repository.getStaticBuiltInChannels()
-                    if (remoteRepoM3u.isNotBlank()) {
-                        addAll(repository.mergeTurkishM3uIntoBuiltIn(base, remoteRepoM3u))
-                    } else {
-                        addAll(base)
-                    }
-                }
+                val baseAfterGitHub = remoteJsonChannels ?: repository.getStaticBuiltInChannels()
                 if (baseAfterGitHub.isNotEmpty()) {
                     val jsonUpdatedList = ArrayList<TvChannel>(baseAfterGitHub.size)
                     for (ch in baseAfterGitHub) {
@@ -1287,28 +1279,6 @@ class TvViewModel(
                     _epgMap.value = combinedEpg.toMap()
                 }
 
-                val remoteTrM3u = repository.fetchAndCacheAciptvTurkishM3u()
-                if (remoteTrM3u.isNotBlank()) {
-                    val mergedBase = repository.mergeTurkishM3uIntoBuiltIn(baseAfterGitHub.ifEmpty { repository.getStaticBuiltInChannels() }, remoteTrM3u)
-                    val refreshedBuiltIn = ArrayList<TvChannel>(mergedBase.size)
-                    for (ch in mergedBase) {
-                        val sched = repository.generateScheduleForChannelFast(ch, baseHourStart, currentHourOfDay, preformattedWindows)
-                        combinedEpg[ch.epgChannelId] = sched
-                        val cur = sched[1]
-                        val nxt = sched[2]
-                        refreshedBuiltIn.add(
-                            ch.copy(
-                                currentProgramTitle = cur.title,
-                                currentProgramTime = cur.timeWindowText,
-                                nextProgramTitle = nxt.title,
-                                currentProgress = cur.progressFraction(now),
-                                isCustomM3u = false
-                            )
-                        )
-                    }
-                    _builtInChannels.value = refreshedBuiltIn
-                    _epgMap.value = combinedEpg.toMap()
-                }
                 features.onChannelsReloaded()
             }
 

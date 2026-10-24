@@ -192,21 +192,6 @@ fun RedoXLandingScreen(
         try { primaryFocusRequester.requestFocus() } catch (_: Exception) {}
     }
 
-    // Giriş: içerik hafifçe yukarı kayarak belirir; logonun arkasında yavaş bir altın ışıma nefes alır
-    val entrance = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
-        entrance.animateTo(1f, tween(durationMillis = 420, easing = FastOutSlowInEasing))
-    }
-    val glowPulse by rememberInfiniteTransition(label = "landing_glow").animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 2600, easing = FastOutSlowInEasing),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "landing_glow_pulse"
-    )
-
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -226,12 +211,7 @@ fun RedoXLandingScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxSize()
-                .graphicsLayer {
-                    alpha = entrance.value
-                    translationY = (1f - entrance.value) * 20.dp.toPx()
-                }
+            modifier = Modifier.fillMaxSize()
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -281,10 +261,9 @@ fun RedoXLandingScreen(
                     Box(
                         modifier = Modifier
                             .requiredSize(markSize * 1.9f)
-                            .graphicsLayer { alpha = 0.30f + 0.70f * glowPulse }
                             .background(
                                 Brush.radialGradient(
-                                    listOf(RedoXColors.Gold.copy(alpha = 0.22f), Color.Transparent)
+                                    listOf(RedoXColors.Gold.copy(alpha = 0.14f), Color.Transparent)
                                 ),
                                 CircleShape
                             )
@@ -633,13 +612,9 @@ fun RedoXTvRootScreen(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                // HAFİF VE AKICI 140ms CROSSFADE SEKME GEÇİŞİ
-                Crossfade(
-                    targetState = state.selectedTab,
-                    animationSpec = tween(durationMillis = 140),
-                    modifier = Modifier.weight(1f).fillMaxWidth(),
-                    label = "fast_tab_crossfade"
-                ) { targetTab ->
+                // Sekme geçişi anında yapılır (çapraz solma yok): zayıf TV işlemcilerinde takılmayı önler
+                Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
+                    val targetTab = state.selectedTab
                     when (targetTab) {
                         MainNavTab.ALL_CHANNELS -> {
                             ChannelShowcaseScreen(
@@ -1254,12 +1229,8 @@ fun FocusedChannelHeroBanner(
     onFocusInside: (Boolean) -> Unit = {}
 ) {
     val shape = RoundedCornerShape(22.dp)
-    // Odaktaki kanalın marka rengi, logonun arkasında yumuşak bir ışıma olarak görünür (kanal değişince akıcı geçer)
-    val glow by animateColorAsState(
-        targetValue = Color(channel.brandPrimaryColor).copy(alpha = 0.26f),
-        animationSpec = tween(durationMillis = 320),
-        label = "hero_brand_glow"
-    )
+    // Odaktaki kanalın marka rengi, logonun arkasında hafif ve sabit bir ışıma olarak görünür
+    val glow = Color(channel.brandPrimaryColor).copy(alpha = 0.18f)
 
     BoxWithConstraints(
         modifier = Modifier
