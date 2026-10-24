@@ -289,6 +289,7 @@ else
       tap "Yavaş bağlanan"; sleep 2;   shot "r09-oynatici-baglaniyor"     # çalan satıra dokun: oynatıcıda durum
       key KEYCODE_BACK; sleep 2
     fi
+    tap "Gerçek yayın"; sleep 15;      shot "r11-gercek-yayin"            # gerçek ses hattı: bağlanır, "Çalıyor" + ICY şarkı bilgisi
     tap "Canlı TV"; sleep 4;           shot "r10-mini-cubuk"
   fi
 

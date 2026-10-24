@@ -2,6 +2,9 @@ package com.example.chromecasttv
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,8 +33,10 @@ object RadioRepository {
             emptyList()
         }
         // Şifreli liste yoksa (ör. herkese açık ekran görüntüsü derlemeleri) uydurma örnek istasyonlar kullanılır
-        val base = real.ifEmpty { sampleStations() }
-        return base + demoStations(base.size + 1)
+        // Demo istasyonlar yalnız örnek listede (ekran görüntüsü derlemeleri); gerçek listede gerçek ses çalınır
+        if (real.isNotEmpty()) return real
+        val sample = sampleStations()
+        return sample + demoStations(sample.size + 1)
     }
 
     /** Uydurma örnek istasyonlar (gerçek yayın ya da gerçek marka değil): yalnızca arayüzü denemek içindir. */
@@ -109,19 +114,32 @@ object RadioRepository {
                 "demo_failover", startNumber + 1, "Demo · Yedek yayına geçen", "YEDEK", 0xFF9A3412, 0xFFF97316,
                 listOf("Ana Yayın (MP3 128 kbps)", "Alternatif Akış 2 (AAC 64 kbps)", "Alternatif Akış 3 (HLS)")
             ),
-            demo("demo_dead", startNumber + 2, "Demo · Çalışmayan", "YOK", 0xFF991B1B, 0xFFEF4444, listOf("Ana Yayın (MP3 128 kbps)"))
+            demo("demo_dead", startNumber + 2, "Demo · Çalışmayan", "YOK", 0xFF991B1B, 0xFFEF4444, listOf("Ana Yayın (MP3 128 kbps)")),
+            // Gerçek ses hattını emülatörde sınamak için: demo:// değil, gerçek (kişisel dinleme için serbest) SomaFM akışı
+            TvChannel(
+                id = "demo_live", number = startNumber + 3, name = "Demo · Gerçek yayın", shortLogoText = "CANLI",
+                brandPrimaryColor = 0xFF155E75, brandSecondaryColor = 0xFF06B6D4, category = "Demo", logoUrl = "",
+                sources = listOf(
+                    StreamSource("Ana Yayın (MP3 128 kbps)", "https://ice1.somafm.com/groovesalad-128-mp3", StreamType.PROGRESSIVE),
+                    StreamSource("Alternatif Akış 2 (MP3 128 kbps)", "https://ice2.somafm.com/groovesalad-128-mp3", StreamType.PROGRESSIVE)
+                ),
+                qualityBadge = "RADYO"
+            )
         )
     }
 }
 
 /**
- * Radyo denetleyicisi (şimdilik DEMO): gerçek ses çalmaz; bağlanma, çalma, duraklatma, yedek yayına geçiş,
- * hata, uyku zamanlayıcısı ve "çalan şarkı" bilgisini örnek veriyle canlandırır. Arayüz yalnızca bu nesneyle konuşur;
- * gerçek oynatıcı bağlandığında aynı işlevler korunur.
+ * Radyo denetleyicisi: arayüz yalnızca bu nesneyle konuşur. Şifreli listedeki gerçek istasyonlar [RadioPlayer] ile
+ * çalınır (bağlanma, çalma, duraklatma, kaynak yedekleme, ICY şarkı bilgisi, uyku zamanlayıcısı). `demo://` adresli
+ * örnek istasyonlar (yalnız herkese açık ekran görüntüsü derlemelerinde) gerçek ses yerine örnek veriyle canlandırılır.
  */
 object RadioHub {
     /** Kadranda gezindikten sonra yeni istasyonun çalmaya başlama gecikmesi. */
     const val TUNE_DELAY_MS = 700L
+
+    /** Bir yayın bu sürede çalmaya başlamazsa sıradaki kaynağa geçilir. */
+    private const val CONNECT_TIMEOUT_MS = 15_000L
 
     private const val PREFS = "redox_radio_demo"
     private const val KEY_FAVS = "favorites"
@@ -140,6 +158,9 @@ object RadioHub {
     private var sleepJob: Job? = null
     private var toastJob: Job? = null
     private var sleepChoice: Int? = null
+    private var appContext: Context? = null
+    private var attemptJob: Job? = null
+    private var listenerAttached = false
 
     private val sleepOptions = listOf<Int?>(null, 30, 60, 90, 120)
 
@@ -156,6 +177,7 @@ object RadioHub {
         if (started) return
         started = true
         val app = context.applicationContext
+        appContext = app
         prefs = app.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         scope.launch {
             val list = withContext(Dispatchers.IO) { RadioRepository.load(app) }
@@ -208,12 +230,18 @@ object RadioHub {
         tuneJob?.cancel()
         connectJob?.cancel()
         songJob?.cancel()
+        attemptJob?.cancel()
         _state.update {
             it.copy(
                 currentId = id, tuningId = null, phase = RadioPhase.CONNECTING, sourceIndex = 0, failoverAttempt = 0,
                 song = null, playerOpen = it.playerOpen || openPlayer
             )
         }
+        if (!isDemo(station)) {
+            realPlay(station, 0, failover = false)
+            return
+        }
+        RadioPlayer.stop()
         connectJob = scope.launch {
             val behavior = demoBehavior(station)
             delay(behavior.connectMs)
@@ -229,6 +257,97 @@ object RadioHub {
             _state.update { it.copy(phase = RadioPhase.PLAYING) }
             startSongs(station)
         }
+    }
+
+    // ------------------------------------------------------------------ gerçek ses
+    private fun isDemo(station: TvChannel): Boolean = station.sources.firstOrNull()?.url?.startsWith("demo://") == true
+
+    /** [index]. yayını çalar. [failover] true ise "yedek yayına geçiliyor" aşaması gösterilir. */
+    private fun realPlay(station: TvChannel, index: Int, failover: Boolean) {
+        val ctx = appContext ?: return
+        val source = station.sources.getOrNull(index)
+        if (source == null) {
+            _state.update { it.copy(phase = RadioPhase.ERROR, song = null) }
+            return
+        }
+        attachListener(ctx)
+        _state.update {
+            it.copy(
+                sourceIndex = index, song = null,
+                phase = if (failover) RadioPhase.FAILOVER else RadioPhase.CONNECTING,
+                failoverAttempt = if (failover) index + 1 else 0
+            )
+        }
+        RadioPlayer.play(ctx, source.url, station.name, radioSubtitle(station, index), station.logoUrl.takeIf { it.startsWith("http") })
+        attemptJob?.cancel()
+        attemptJob = scope.launch {
+            delay(CONNECT_TIMEOUT_MS)
+            onSourceFailed()
+        }
+    }
+
+    private fun markPlaying() {
+        attemptJob?.cancel()
+        _state.update { if (it.phase == RadioPhase.CONNECTING || it.phase == RadioPhase.FAILOVER) it.copy(phase = RadioPhase.PLAYING) else it }
+    }
+
+    /** Geçerli yayın çalmadı ya da koptu: sıradaki kaynağa geçer; kaynak kalmadıysa hata gösterir. */
+    private fun onSourceFailed() {
+        val s = _state.value
+        val station = s.current ?: return
+        if (s.phase == RadioPhase.STOPPED || s.phase == RadioPhase.ERROR || s.phase == RadioPhase.PAUSED || isDemo(station)) return
+        val next = s.sourceIndex + 1
+        if (next < station.sources.size) {
+            realPlay(station, next, failover = true)
+        } else {
+            attemptJob?.cancel()
+            RadioPlayer.stop()
+            _state.update { it.copy(phase = RadioPhase.ERROR, song = null) }
+        }
+    }
+
+    /** Oynatıcı olaylarını duruma çevirir (bir kez bağlanır). */
+    private fun attachListener(ctx: Context) {
+        if (listenerAttached) return
+        listenerAttached = true
+        RadioPlayer.player(ctx).addListener(object : Player.Listener {
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                val p = RadioPlayer.peek() ?: return
+                when (playbackState) {
+                    Player.STATE_READY -> if (p.playWhenReady) markPlaying()
+                    Player.STATE_ENDED -> onSourceFailed()
+                    else -> Unit
+                }
+            }
+
+            override fun onPlayerError(error: PlaybackException) {
+                onSourceFailed()
+            }
+
+            override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {
+                // Dışarıdan duraklatma/sürdürme (ses odağı kaybı, kulaklık çıkarıldı, bildirim düğmesi)
+                val s = _state.value
+                val station = s.current ?: return
+                if (isDemo(station)) return
+                val p = RadioPlayer.peek() ?: return
+                if (!playWhenReady && s.phase == RadioPhase.PLAYING) {
+                    _state.update { it.copy(phase = RadioPhase.PAUSED) }
+                } else if (playWhenReady && s.phase == RadioPhase.PAUSED && p.playbackState == Player.STATE_READY) {
+                    _state.update { it.copy(phase = RadioPhase.PLAYING) }
+                }
+            }
+
+            override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+                val s = _state.value
+                val station = s.current ?: return
+                if (isDemo(station)) return
+                val text = mediaMetadata.title?.toString()?.trim().orEmpty()
+                if (text.isEmpty() || text == station.name) return
+                val sep = text.indexOf(" - ")
+                val song = if (sep > 0) RadioSong(artist = text.substring(0, sep).trim(), title = text.substring(sep + 3).trim()) else RadioSong(artist = "", title = text)
+                _state.update { it.copy(song = song) }
+            }
+        })
     }
 
     private class DemoBehavior(val connectMs: Long, val failFirst: Boolean, val dead: Boolean)
@@ -254,14 +373,22 @@ object RadioHub {
 
     fun togglePause() {
         val s = _state.value
+        val real = s.current?.let { !isDemo(it) } == true
         when (s.phase) {
             RadioPhase.PLAYING -> {
                 songJob?.cancel()
+                if (real) RadioPlayer.peek()?.pause()
                 _state.update { it.copy(phase = RadioPhase.PAUSED) }
             }
             RadioPhase.PAUSED -> {
-                _state.update { it.copy(phase = RadioPhase.PLAYING) }
-                s.current?.let { startSongs(it) }
+                val station = s.current
+                if (real && station != null) {
+                    // Canlı yayında duraklatma sonrası en güncel ana dönmek için yayın yeniden hazırlanır
+                    realPlay(station, s.sourceIndex, failover = false)
+                } else {
+                    _state.update { it.copy(phase = RadioPhase.PLAYING) }
+                    station?.let { startSongs(it) }
+                }
             }
             RadioPhase.ERROR -> s.currentId?.let { play(it) }
             // Tablet paneli boştayken: kadrandaki (yoksa ilk) istasyonu çalar
@@ -320,6 +447,10 @@ object RadioHub {
         }
         connectJob?.cancel()
         songJob?.cancel()
+        if (!isDemo(station)) {
+            realPlay(station, (s.sourceIndex + 1) % n, failover = false)
+            return
+        }
         _state.update { it.copy(sourceIndex = (it.sourceIndex + 1) % n, phase = RadioPhase.CONNECTING) }
         connectJob = scope.launch {
             delay(900L)
@@ -335,6 +466,10 @@ object RadioHub {
         if (index !in station.sources.indices || index == s.sourceIndex) return
         connectJob?.cancel()
         songJob?.cancel()
+        if (!isDemo(station)) {
+            realPlay(station, index, failover = false)
+            return
+        }
         _state.update { it.copy(sourceIndex = index, phase = RadioPhase.CONNECTING) }
         connectJob = scope.launch {
             delay(900L)
@@ -384,6 +519,8 @@ object RadioHub {
         connectJob?.cancel()
         songJob?.cancel()
         sleepJob?.cancel()
+        attemptJob?.cancel()
+        RadioPlayer.stop()
         sleepChoice = null
         _state.update {
             it.copy(

@@ -74,8 +74,16 @@ fun MobileShell(
     LaunchedEffect(hasPlayback) {
         if (hasPlayback) RadioHub.stop()
     }
+    // Radyo başlayınca açık TV oynatıcısı ve mini pencere kapanır (iki ses birden çalmaz)
+    LaunchedEffect(radio.isActive) {
+        if (radio.isActive && hasPlayback) {
+            viewModel.closePlayer()
+            viewModel.closePip()
+        }
+    }
 
     MobileMediaSessionLink(active = hasPlayback)
+    MobileRadioSessionLink(active = radio.isActive)
     MobilePlaybackLifecycle(
         host = host,
         prefs = features.prefs,
@@ -154,6 +162,32 @@ fun MobileContent(env: MobileEnv, modifier: Modifier = Modifier) {
                 MobileTab.SETTINGS -> MobileSettingsScreen(
                     env.viewModel, env.state, env.features, env.host
                 )
+            }
+        }
+    }
+}
+
+/** Radyo çalarken [RadioService]'e bağlanır (bildirim, kilit ekranı kontrolleri, arka planda ses); radyo bitince bağlantı bırakılır. */
+@Composable
+fun MobileRadioSessionLink(active: Boolean) {
+    val context = LocalContext.current
+    DisposableEffect(active) {
+        val future = if (active) {
+            try {
+                val token = SessionToken(context, ComponentName(context, RadioService::class.java))
+                MediaController.Builder(context, token).buildAsync()
+            } catch (_: Exception) {
+                null
+            }
+        } else {
+            null
+        }
+        onDispose {
+            if (future != null) {
+                try {
+                    MediaController.releaseFuture(future)
+                } catch (_: Exception) {
+                }
             }
         }
     }

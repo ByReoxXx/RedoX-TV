@@ -87,6 +87,9 @@ fun radioFormatText(station: TvChannel, sourceIndex: Int): String {
 /** Alt başlık: "Pop · MP3 128 kbps". */
 fun radioSubtitle(station: TvChannel, sourceIndex: Int): String = "${station.category} · ${radioFormatText(station, sourceIndex)}"
 
+/** `demo://` adresli örnek istasyon mu (yalnız ekran görüntüsü derlemelerinde; gerçek ses çalmaz). */
+fun radioIsDemo(station: TvChannel): Boolean = station.sources.firstOrNull()?.url?.startsWith("demo://") == true
+
 /** Uyku zamanlayıcısı için görünen metin. */
 fun radioSleepText(minutes: Int?): String = if (minutes == null) "Kapalı" else "$minutes dk"
 
@@ -104,7 +107,7 @@ fun radioBadgeText(phase: RadioPhase): String = when (phase) {
 fun radioStatusText(state: RadioUiState, compact: Boolean = false): String {
     val station = state.current
     return when (state.phase) {
-        RadioPhase.PLAYING, RadioPhase.PAUSED -> state.song?.let { "${it.title} — ${it.artist}" } ?: "Canlı yayın"
+        RadioPhase.PLAYING, RadioPhase.PAUSED -> state.song?.let { if (it.artist.isBlank()) it.title else "${it.title} — ${it.artist}" } ?: "Canlı yayın"
         RadioPhase.CONNECTING -> "Yayına bağlanılıyor…"
         RadioPhase.FAILOVER -> {
             val total = station?.sources?.size ?: state.failoverAttempt

@@ -405,7 +405,7 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
                     .alpha(dim)
             )
             Text(
-                text = (shown?.let { radioSubtitle(it, ui.sourceIndex) } ?: "") + " · demo",
+                text = (shown?.let { radioSubtitle(it, ui.sourceIndex) } ?: "") + (if (shown != null && radioIsDemo(shown)) " · demo" else ""),
                 color = RedoXColors.TextSecondary,
                 fontSize = 13.sp,
                 modifier = Modifier.alpha(dim)
@@ -709,12 +709,14 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit)
             }
         }
         MRadioSheetItem(icon = RedoXIcons.Close, label = "Radyoyu kapat", danger = true) { RadioHub.stop() }
-        Text(
-            text = "Örnek veri: gerçek ses çalmıyor.",
-            color = RedoXColors.TextTertiary,
-            fontSize = 12.sp,
-            modifier = Modifier.padding(top = 4.dp)
-        )
+        if (ui.current?.let { radioIsDemo(it) } == true) {
+            Text(
+                text = "Örnek veri: gerçek ses çalmıyor.",
+                color = RedoXColors.TextTertiary,
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
     }
 }
 

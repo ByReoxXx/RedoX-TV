@@ -764,7 +764,7 @@ fun TvRadioPlayerScreen() {
                 if (phase == RadioPhase.PLAYING) RadioEqBars(color = RedoXColors.PrimaryBright, height = 16.dp * k, barWidth = 3.dp * k)
                 if (shown != null) {
                     Text(
-                        text = radioSubtitle(shown, ui.sourceIndex) + " · demo",
+                        text = radioSubtitle(shown, ui.sourceIndex) + (if (radioIsDemo(shown)) " · demo" else ""),
                         color = TvThemeColors.TextSecondary,
                         fontSize = 14.sp * k,
                         fontWeight = FontWeight.SemiBold,
@@ -1173,7 +1173,7 @@ private fun BoxScope.TvRadioOptions(ui: RadioUiState, k: Float, onClose: () -> U
         Box(modifier = Modifier.fillMaxWidth().height(1.dp).padding(horizontal = 8.dp).background(Color.White.copy(alpha = 0.10f)))
         TvRadioOptionRow(icon = RedoXIcons.Close, label = "Radyoyu kapat", danger = true) { RadioHub.stop() }
         Text(
-            text = (station?.let { radioFormatText(it, ui.sourceIndex) } ?: "") + "  ·  demo (gerçek ses çalmıyor)",
+            text = (station?.let { radioFormatText(it, ui.sourceIndex) } ?: "") + (if (station?.let { radioIsDemo(it) } == true) "  ·  demo (gerçek ses çalmıyor)" else ""),
             color = RedoXColors.TextTertiary,
             fontSize = 12.sp,
             modifier = Modifier.padding(start = 12.dp, top = 6.dp, bottom = 2.dp)
