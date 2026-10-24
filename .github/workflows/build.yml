@@ -169,6 +169,9 @@ jobs:
 
           Eski RedoX TV'den bağımsız, ayrı bir uygulamadır (paket: \`com.redoxtv.two\`); ikisi yan yana kurulabilir.
           EOF
+          # Sürüme özel "Yenilikler" metni varsa (ör. .github/release-notes/v2.1.0.md) notlara eklenir
+          NOTES_FILE=".github/release-notes/${TAG}.md"
+          if [ -f "${NOTES_FILE}" ]; then { echo; cat "${NOTES_FILE}"; } >> release-notes.md; fi
           if gh release view "${TAG}" >/dev/null 2>&1; then
             gh release upload "${TAG}" dist/*.apk --clobber
           else
