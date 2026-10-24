@@ -298,9 +298,9 @@ fun FavoritesReorderScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "Henüz favori kanal eklemediniz.\nCanlı TV veya Özel M3U listesinde kanalın üstüne uzun basarak (OK Basılı Tut) favorilere ekleyebilirsiniz.",
+                    text = "Henüz favori kanal eklemediniz.\nCanlı TV veya Özel M3U listesinde bir kanalın üstünde OK'a basılı tutun; odak üstteki panele geçer, oradaki yıldız (Favori ekle) düğmesine OK ile basın.",
                     color = TvThemeColors.TextSecondary,
-                    fontSize = 13.sp,
+                    fontSize = 14.sp,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(24.dp)
                 )

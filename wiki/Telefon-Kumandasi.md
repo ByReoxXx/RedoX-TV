@@ -14,7 +14,7 @@ Eşleşme sonrası telefon, TV'nin verdiği rastgele bir **erişim anahtarını*
 
 ## 2) Kumanda ekranı
 
-- **Yön tuşları + OK, Geri, Menü**
+- **Yön tuşları + OK, Geri, Menü** (TV'de Menü, kanal kartında `OK` basılı tutmayla aynı kısayoldur; Chromecast kumandasında Menü tuşu olmadığı için uygulama onu şart koşmaz)
 - **Ses −/+** (TV'nin medya sesi; mevcut seviye gösterilir)
 - **Duraklat/oynat, Durdur, Kanal −/+**
 - **0-9 rakam tuşları**

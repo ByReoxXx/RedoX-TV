@@ -2,13 +2,15 @@
 
 ## 📺 Android TV kumanda haritası
 
-Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir; `CH+/CH-` ve `0-9` tuşu olmayan minimal kumandalar (Chromecast with Google TV) için ekran üstü sanal numaratör vardır.
+Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir. Chromecast with Google TV kumandasında **Menü**, `CH+/CH-` ve `0-9` tuşları yoktur; uygulama hiçbir işlev için bu tuşları şart koşmaz (ekran üstü sanal numaratör ve kanal çekmecesi vardır). Menü ya da Yer imi tuşu olan kumandalarda bu tuşlar, aşağıdaki `OK` basılı tut kısayoluyla aynı işi yapar.
 
 | Ekran | Tuş | İşlev |
 | :--- | :--- | :--- |
 | **Kanal ızgarası** | `OK` | Kanalı tam ekran açar |
-| **Kanal ızgarası** | `OK` basılı tut | Kanalı açmadan ⭐ favori ekler/çıkarır |
-| **Kanal ızgarası** | Üstteki büyük panelde simge düğmeleri (Favori, Kilit, **Düzenle**, Gizle) | Odaklanınca adı açılır; Düzenle kanalın adını/numarasını bu cihazda değiştirir |
+| **Kanal ızgarası** | `OK` basılı tut | Odak üstteki büyük paneldeki **İzle** düğmesine gider (kanal özellikleri) |
+| **Kanal ızgarası** | Üstteki panelde `▼` / `◄ ►` | Simge düğmeleri: Favori, Kilit, **Düzenle**, Gizle; odaklanınca adı açılır. Düzenle kanalın adını/numarasını bu cihazda değiştirir |
+| **Kanal ızgarası** | `Geri` (panelden) | Odak, `OK` basılı tutulan karta döner |
+| **Tüm ekranlar** | `Geri` | İçerikten yan menüye çıkar; yan menüdeyken 2,5 sn içinde ikinci `Geri` uygulamadan çıkar |
 | **Oynatıcı** | `▲` / `▼` | Sonraki / önceki kanal |
 | **Oynatıcı** | `◄` | Hızlı kanal çekmecesi |
 | **Oynatıcı** | `►` | Bir sonraki akış kaynağı (Akış 1 → 2 → 3) |

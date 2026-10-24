@@ -104,18 +104,20 @@ fun MobileHomeScreen(
                 )
             }
         } else {
-            item(key = "hero") {
-                Box(
+            item(key = "welcome") {
+                val shape = RoundedCornerShape(24.dp)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(14.dp),
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
-                        .clip(RoundedCornerShape(24.dp))
+                        .clip(shape)
                         .background(
                             Brush.linearGradient(
                                 listOf(RedoXColors.WineGlow, RedoXColors.SurfaceHigh, RedoXColors.Surface)
                             )
                         )
-                        .border(1.dp, RedoXColors.Line, RoundedCornerShape(24.dp))
+                        .border(1.dp, RedoXColors.Line, shape)
                         .padding(18.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -132,6 +134,12 @@ fun MobileHomeScreen(
                             )
                         }
                     }
+                    MPrimaryButton(
+                        text = "Canlı TV'yi aç",
+                        onClick = { nav.selectRoot(MobileTab.LIVE) },
+                        icon = Icons.Rounded.LiveTv,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
         }
@@ -309,19 +317,6 @@ fun MobileHomeScreen(
                         }
                     }
                 }
-            }
-        }
-
-        if (shelves.isEmpty() && lastChannel == null) {
-            item(key = "empty") {
-                MEmptyState(
-                    icon = Icons.Rounded.LiveTv,
-                    title = "İzlemeye başlayın",
-                    message = "Canlı TV sekmesinden bir kanal seçin. İzledikçe burada \"devam et\" ve \"en çok izlediklerin\" raflarını göreceksiniz.",
-                    action = {
-                        MPrimaryButton(text = "Canlı TV'yi aç", onClick = { nav.selectRoot(MobileTab.LIVE) })
-                    }
-                )
             }
         }
     }

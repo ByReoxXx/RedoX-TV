@@ -1018,12 +1018,17 @@ fun TvSideNavigationRail(
     sleepTimerMinutes: Int?,
     onSelectTab: (MainNavTab) -> Unit,
     onOpenLanding: () -> Unit,
-    onCycleSleepTimer: () -> Unit
+    onCycleSleepTimer: () -> Unit,
+    /** Geri tuşu içerikten buraya döner: seçili sekmenin satırı odağı alır. */
+    selectedItemFocusRequester: FocusRequester? = null,
+    /** Menüdeki bir öğe odağı aldığında / bıraktığında çağrılır. */
+    onFocusInside: (Boolean) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .width(232.dp)
             .fillMaxHeight()
+            .onFocusChanged { onFocusInside(it.hasFocus) }
             .background(TvThemeColors.SidebarGlass)
             .padding(vertical = 18.dp, horizontal = 12.dp),
         verticalArrangement = Arrangement.SpaceBetween
@@ -1075,6 +1080,13 @@ fun TvSideNavigationRail(
                         .fillMaxWidth()
                         .padding(vertical = 2.dp)
                         .height(52.dp)
+                        .then(
+                            if (isSelected && selectedItemFocusRequester != null) {
+                                Modifier.focusRequester(selectedItemFocusRequester)
+                            } else {
+                                Modifier
+                            }
+                        )
                         .tvSurface(
                             focused = isFocused,
                             shape = shape,
@@ -1220,8 +1232,11 @@ fun TvActionButton(
 /**
  * Kumanda OK (DPAD_CENTER / ENTER) tuşuna:
  * - Kısa basıldığında: onShortClick() (Kanalı açar)
- * - Uzun basıldığında (~450ms basılı tutulduğunda) veya MENU/BOOKMARK tuşuna basıldığında:
- *   onLongPress() (Kanalı açmadan doğrudan Favorilere ekler / çıkarır)
+ * - Uzun basıldığında (~450ms basılı tutulduğunda): onLongPress()
+ *   (Canlı TV'de kanal özelliklerine geçer; listelerde kanalı açmadan favoriye ekler / çıkarır)
+ *
+ * Chromecast kumandası gibi yalnızca yön tuşları, OK ve Geri olan kumandalarda uzun basış yeterlidir.
+ * MENU / BOOKMARK tuşu olan kumandalarda aynı eylemi bu tuşlar da tetikler (isteğe bağlı kısayol).
  */
 @Composable
 fun Modifier.tvLongPressFavoriteModifier(

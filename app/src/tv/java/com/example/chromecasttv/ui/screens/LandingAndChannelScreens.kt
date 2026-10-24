@@ -482,6 +482,32 @@ fun RedoXTvRootScreen(
         state.activePlayingChannel?.id?.let { lastWatchedChannelId = it }
     }
 
+    // Kumanda: yalnızca yön tuşları, OK ve Geri olan kumandalarda (Chromecast) Geri bir üst düzeye çıkar:
+    // içerik -> yan menü -> (2,5 sn içinde ikinci basış) uygulamadan çık.
+    val railFocusRequester = remember { FocusRequester() }
+    var railHasFocus by remember { mutableStateOf(false) }
+    var exitArmed by remember { mutableStateOf(false) }
+    val onMainScreen = state.activePlayingChannel == null && !state.showLandingScreen
+    BackHandler(enabled = onMainScreen && !railHasFocus) {
+        try { railFocusRequester.requestFocus() } catch (_: Exception) {}
+    }
+    BackHandler(enabled = onMainScreen && railHasFocus && !exitArmed) {
+        exitArmed = true
+        viewModel.showStatusMessage("Çıkmak için Geri'ye tekrar basın")
+    }
+    LaunchedEffect(exitArmed) {
+        if (exitArmed) {
+            delay(2500L)
+            exitArmed = false
+        }
+    }
+    LaunchedEffect(onMainScreen) {
+        if (!onMainScreen) {
+            railHasFocus = false
+            exitArmed = false
+        }
+    }
+
     if (state.activePlayingChannel != null) {
         RedoXPlayerScreen(
             playingChannel = state.activePlayingChannel!!,
@@ -547,7 +573,9 @@ fun RedoXTvRootScreen(
                 sleepTimerMinutes = state.sleepTimerRemainingMinutes,
                 onSelectTab = { viewModel.selectTab(it) },
                 onOpenLanding = { viewModel.openLandingScreen() },
-                onCycleSleepTimer = { viewModel.cycleSleepTimer() }
+                onCycleSleepTimer = { viewModel.cycleSleepTimer() },
+                selectedItemFocusRequester = railFocusRequester,
+                onFocusInside = { railHasFocus = it }
             )
 
             Column(
@@ -791,6 +819,40 @@ fun RedoXTvRootScreen(
     }
 }
 
+/**
+ * Uzun basışta OK tuşu hâlâ basılıdır: odak "İzle" düğmesine geçince tuş tekrarları ve bırakma olayı
+ * düğmeye ulaşıp kanalı açmasın diye, tuş bırakılana kadar OK olaylarını tüketir.
+ */
+private class TvOkReleaseGate {
+    var swallowUntilRelease = false
+
+    /** true dönerse olay tüketilmiştir. */
+    fun consume(event: KeyEvent): Boolean {
+        if (!swallowUntilRelease) return false
+        val code = event.keyCode
+        if (code != KeyEvent.KEYCODE_DPAD_CENTER &&
+            code != KeyEvent.KEYCODE_ENTER &&
+            code != KeyEvent.KEYCODE_NUMPAD_ENTER
+        ) return false
+        return when (event.action) {
+            KeyEvent.ACTION_UP -> {
+                swallowUntilRelease = false
+                true
+            }
+            KeyEvent.ACTION_DOWN -> {
+                if (event.repeatCount == 0) {
+                    // Yeni bir basış: önceki bırakma olayı kaçmış demektir
+                    swallowUntilRelease = false
+                    false
+                } else {
+                    true
+                }
+            }
+            else -> false
+        }
+    }
+}
+
 @Composable
 fun ChannelShowcaseScreen(
     title: String,
@@ -829,6 +891,40 @@ fun ChannelShowcaseScreen(
 
     val gridState = rememberLazyGridState()
     val cardFocusRequesters = remember { HashMap<String, FocusRequester>() }
+    val scope = rememberCoroutineScope()
+
+    // Kumanda (Chromecast: yalnızca yön tuşları, OK ve Geri): kanal kartında OK'a basılı tutmak odağı
+    // üstteki afişte "İzle" düğmesine taşır; Favori / Kilit / Düzenle / Gizle düğmeleri hemen yanındadır.
+    val watchButtonRequester = remember { FocusRequester() }
+    var bannerHasFocus by remember { mutableStateOf(false) }
+    var returnChannelId by remember { mutableStateOf<String?>(null) }
+    val okGate = remember { TvOkReleaseGate() }
+
+    fun jumpToWatchButton(channel: TvChannel) {
+        returnChannelId = channel.id
+        okGate.swallowUntilRelease = true
+        try {
+            watchButtonRequester.requestFocus()
+        } catch (_: Exception) {
+            okGate.swallowUntilRelease = false
+        }
+    }
+
+    // Geri: afişteyken uzun basışla çıkılan karta döner (sol menüye ya da uygulamadan çıkışa gitmez).
+    BackHandler(enabled = bannerHasFocus) {
+        val targetId = returnChannelId ?: localFocusedChannel?.id
+        val idx = filtered.indexOfFirst { it.id == targetId }.coerceAtLeast(0)
+        val target = filtered.getOrNull(idx) ?: return@BackHandler
+        scope.launch {
+            try {
+                cardFocusRequesters[target.id]?.requestFocus()
+            } catch (_: Exception) {
+                try { gridState.scrollToItem(idx) } catch (_: Exception) {}
+                delay(60L)
+                try { cardFocusRequesters[target.id]?.requestFocus() } catch (_: Exception) {}
+            }
+        }
+    }
 
     // Kanaldan çıkıp (Geri tuşu) listeye döndüğümüzde sol menü yerine doğrudan son izlenen
     // kanalın kartına kaydır ve kumanda odağını (Focus) o kanalın üstüne ver!
@@ -846,7 +942,11 @@ fun ChannelShowcaseScreen(
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .onPreviewKeyEvent { ev -> okGate.consume(ev.nativeKeyEvent) }
+    ) {
         localFocusedChannel?.let { previewChannel ->
             FocusedChannelHeroBanner(
                 channel = previewChannel,
@@ -860,7 +960,9 @@ fun ChannelShowcaseScreen(
                 onToggleLock = { onToggleLock(previewChannel.id) },
                 onHideChannel = { onHideChannel(previewChannel.id) },
                 onRestoreHidden = onRestoreHidden,
-                onEditChannel = { onEditChannel(previewChannel) }
+                onEditChannel = { onEditChannel(previewChannel) },
+                watchFocusRequester = watchButtonRequester,
+                onFocusInside = { bannerHasFocus = it }
             )
         }
 
@@ -956,7 +1058,7 @@ fun ChannelShowcaseScreen(
                         focusRequester = requester,
                         onFocused = { localFocusedChannel = channel },
                         onClick = { onPlayChannel(channel) },
-                        onLongClick = { onToggleFavorite(channel.id) }
+                        onLongClick = { jumpToWatchButton(channel) }
                     )
                 }
             }
@@ -969,8 +1071,8 @@ fun ChannelShowcaseScreen(
                     .height(32.dp)
             ) {
                 TvKeyHint(key = "OK", label = "İzle")
-                TvKeyHint(key = "OK basılı tut", label = "Favori ekle / çıkar")
-                TvKeyHint(key = "◀", label = "Yan menü")
+                TvKeyHint(key = "OK basılı tut", label = "Kanal özellikleri")
+                TvKeyHint(key = "Geri", label = "Yan menü")
             }
         }
     }
@@ -989,11 +1091,19 @@ fun FocusedChannelHeroBanner(
     onToggleLock: () -> Unit,
     onHideChannel: () -> Unit = {},
     onRestoreHidden: () -> Unit = {},
-    onEditChannel: () -> Unit = {}
+    onEditChannel: () -> Unit = {},
+    /** Kanal kartında OK'a basılı tutulunca odağın gideceği "İzle" düğmesi. */
+    watchFocusRequester: FocusRequester? = null,
+    /** Afişteki herhangi bir düğme odağı aldığında / bıraktığında çağrılır. */
+    onFocusInside: (Boolean) -> Unit = {}
 ) {
     val shape = RoundedCornerShape(22.dp)
 
-    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged { onFocusInside(it.hasFocus) }
+    ) {
         // Dar alanda (≈ 960 dp genişlikli ekranlarda içerik < 860 dp) ölçüler küçülür, ikincil etiketler gizlenir
         val compact = maxWidth < 860.dp
 
@@ -1143,7 +1253,8 @@ fun FocusedChannelHeroBanner(
                     text = "İzle",
                     icon = Icons.Rounded.PlayArrow,
                     isPrimary = true,
-                    onClick = onWatchClick
+                    onClick = onWatchClick,
+                    modifier = if (watchFocusRequester != null) Modifier.focusRequester(watchFocusRequester) else Modifier
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)) {
                     TvIconPill(
