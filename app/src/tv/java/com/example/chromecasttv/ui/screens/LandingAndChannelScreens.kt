@@ -681,17 +681,16 @@ fun RedoXTvRootScreen(
                             )
                         }
                         MainNavTab.CUSTOM_M3U -> {
-                            ChannelShowcaseScreen(
-                                title = "Eklenen Özel M3U Kanalları",
+                            // Eklenen her liste, verilen adla bir klasör olarak görünür (OK: aç, Geri: klasörlere dön)
+                            CustomM3uFoldersScreen(
                                 channels = state.customM3uChannels,
-                                categories = state.customCategories,
+                                playlists = state.playlists,
                                 selectedCategory = state.selectedCategory,
                                 favoriteIds = state.favoriteIds,
                                 lockedIds = state.lockedChannelIds,
                                 brokenIds = state.brokenChannelIds,
                                 healthyIds = state.healthyChannelIds,
                                 hiddenCount = state.hiddenChannelIds.size,
-                                recentChannels = emptyList(),
                                 lastWatchedChannelId = lastWatchedChannelId,
                                 onSelectCategory = { viewModel.selectCategory(it) },
                                 onPlayChannel = { viewModel.requestPlayChannel(it) },
@@ -927,7 +926,9 @@ fun ChannelShowcaseScreen(
     onHideChannel: (String) -> Unit = {},
     onRestoreHidden: () -> Unit = {},
     onEditChannel: (TvChannel) -> Unit = {},
-    emptyMessage: String = "Bu kategoride kanal bulunamadı."
+    emptyMessage: String = "Bu kategoride kanal bulunamadı.",
+    /** Bir Özel M3U klasörünün içindeyken klasörün adı: ipucu çubuğunda gösterilir, Geri klasör listesine döner. */
+    folderName: String? = null
 ) {
     // "Favoriler" ve "Son izlenenler" kategori çiplerinin arasında sanal kategorilerdir. Çip sayıları canlıdır;
     // Favoriler listesi seçildiği andaki görüntüdür (yıldızı kaldırınca kart listeden birden kaybolmaz).
@@ -1205,7 +1206,29 @@ fun ChannelShowcaseScreen(
             ) {
                 TvKeyHint(key = "OK", label = "İzle")
                 TvKeyHint(key = "OK basılı tut", label = "Kanal özellikleri")
-                TvKeyHint(key = "Geri", label = "Yan menü")
+                TvKeyHint(key = "Geri", label = if (folderName != null) "Klasörler" else "Yan menü")
+                if (folderName != null) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        Icon(
+                            imageVector = RedoXIcons.FolderOpen,
+                            contentDescription = null,
+                            tint = RedoXColors.Gold,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Text(
+                            text = folderName,
+                            color = TvThemeColors.TextSecondary,
+                            fontSize = 13.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.widthIn(max = 280.dp)
+                        )
+                    }
+                }
             }
         }
     }
