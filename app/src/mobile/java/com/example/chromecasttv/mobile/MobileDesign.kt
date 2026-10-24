@@ -428,7 +428,7 @@ fun MChannelRow(
                 if (isLocked) {
                     Spacer(modifier = Modifier.width(6.dp))
                     Icon(
-                        imageVector = Icons.Rounded.Lock,
+                        imageVector = RedoXIcons.Lock,
                         contentDescription = "PIN kilitli",
                         tint = RedoXColors.Gold,
                         modifier = Modifier.size(14.dp)
@@ -437,7 +437,7 @@ fun MChannelRow(
                 if (isBroken) {
                     Spacer(modifier = Modifier.width(6.dp))
                     Icon(
-                        imageVector = Icons.Rounded.WarningAmber,
+                        imageVector = RedoXIcons.WarningAmber,
                         contentDescription = "Yanıt vermiyor",
                         tint = RedoXColors.Danger,
                         modifier = Modifier.size(14.dp)
@@ -465,7 +465,7 @@ fun MChannelRow(
             trailing()
         } else {
             Icon(
-                imageVector = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                imageVector = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                 contentDescription = if (isFavorite) "Favoride" else "Favori değil",
                 tint = if (isFavorite) RedoXColors.Gold else RedoXColors.TextTertiary,
                 modifier = Modifier.size(24.dp)
@@ -503,7 +503,7 @@ fun MChannelCard(
             ChannelBrandLogoBox(channel = channel, boxSize = 44.dp, fontSize = 12.sp)
             if (isFavorite) {
                 Icon(
-                    imageVector = Icons.Rounded.Star,
+                    imageVector = RedoXIcons.StarFilled,
                     contentDescription = "Favoride",
                     tint = RedoXColors.Gold,
                     modifier = Modifier.size(20.dp)

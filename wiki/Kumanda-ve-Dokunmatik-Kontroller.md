@@ -10,11 +10,11 @@ Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir. Chromecast with
 | **Kanal ızgarası** | `OK` basılı tut | Odak üstteki büyük paneldeki **İzle** düğmesine gider (kanal özellikleri) |
 | **Kanal ızgarası** | Üstteki panelde `▼` / `◄ ►` | Simge düğmeleri: Favori, Kilit, **Düzenle**, Gizle; odaklanınca adı açılır. Düzenle kanalın adını/numarasını bu cihazda değiştirir |
 | **Kanal ızgarası** | `Geri` (panelden) | Odak, `OK` basılı tutulan karta döner |
-| **Tüm ekranlar** | `Geri` | İçerikten yan menüye çıkar; yan menüdeyken 2,5 sn içinde ikinci `Geri` uygulamadan çıkar |
+| **Tüm ekranlar** | `Geri` | Bir üst düzeye çıkar: Canlı TV'de listeden kategori çiplerine, çiplerden (ve diğer ekranlardan) yan menüye; yan menüdeyken uyarı görünürken ikinci `Geri` uygulamadan çıkar |
 | **Oynatıcı** | `▲` / `▼` | Sonraki / önceki kanal |
 | **Oynatıcı** | `◄` | Hızlı kanal çekmecesi |
 | **Oynatıcı** | `►` | Bir sonraki akış kaynağı (Akış 1 → 2 → 3) |
-| **Oynatıcı** | `OK` / dokunuş | Bilgi ve kontrol çubuğunu açar. Üst satırda kanal bilgisi ve **oynatma düğmeleri** (önceki kanal, 15 sn geri, oynat/duraklat, canlıya dön, sonraki kanal; odak oynat/duraklatta başlar); alt satırda kanal listesi, favori ve yayın ayarları. Düğmeler simgedir, odaktakinin adı çubuğun altında yazar. **…** (Daha fazla): gece modu, küçük pencere, 2x2, kanal no, kanalı gizle, kanaldan çık |
+| **Oynatıcı** | `OK` / dokunuş | Bilgi ve kontrol çubuğunu açar. Üstte kanal bilgisi, altında ortada **oynatma düğmeleri** (önceki kanal, 15 sn geri, oynat/duraklat, canlıya dön, sonraki kanal; odak oynat/duraklatta başlar), en altta kanal listesi, favori ve yayın ayarları. Düğmeler simgedir, odaktakinin adı çubuğun altında yazar. **…** (Daha fazla): gece modu, küçük pencere, 2x2, kanal no, kanalı gizle, kanaldan çık |
 | **Kanal ızgarası** | Kategori çipleri | Tümü, **Favoriler**, **Son izlenenler** ve kategoriler. Çipe `OK` basınca odak çipte kalır (başka kategoriye geçmek ya da `▼` ile listeye girmek tek tuş) |
 | **Oynatıcı** | `0` | Önceki izlenen kanala dön |
 | **Oynatıcı** | Kontrol çubuğu **… → Kanal no** | Sanal numaratör (0-9) |

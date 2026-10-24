@@ -196,19 +196,19 @@ object RedoXColors {
     fun categoryIcon(category: String): ImageVector {
         val lower = category.lowercase(Locale.getDefault())
         return when {
-            lower == "tümü" -> Icons.Rounded.GridView
-            lower.contains("ulusal") -> Icons.Rounded.Tv
-            lower.contains("haber") -> Icons.Rounded.Newspaper
-            lower.contains("spor") -> Icons.Rounded.SportsSoccer
-            lower.contains("belgesel") -> Icons.Rounded.Public
-            lower.contains("müzik") || lower.contains("muzik") -> Icons.Rounded.MusicNote
-            lower.contains("sinema") || lower.contains("film") -> Icons.Rounded.Movie
-            lower.contains("çocuk") || lower.contains("cocuk") -> Icons.Rounded.ChildCare
-            lower.contains("dünya") -> Icons.Rounded.Language
-            lower.contains("yerel") -> Icons.Rounded.Public
-            lower.contains("kıbrıs") -> Icons.Rounded.Public
-            lower.contains("dini") -> Icons.Rounded.History
-            else -> Icons.Rounded.LiveTv
+            lower == "tümü" -> RedoXIcons.GridView
+            lower.contains("ulusal") -> RedoXIcons.Tv
+            lower.contains("haber") -> RedoXIcons.Newspaper
+            lower.contains("spor") -> RedoXIcons.SportsSoccer
+            lower.contains("belgesel") -> RedoXIcons.Public
+            lower.contains("müzik") || lower.contains("muzik") -> RedoXIcons.MusicNote
+            lower.contains("sinema") || lower.contains("film") -> RedoXIcons.Movie
+            lower.contains("çocuk") || lower.contains("cocuk") -> RedoXIcons.ChildCare
+            lower.contains("dünya") -> RedoXIcons.Language
+            lower.contains("yerel") -> RedoXIcons.Public
+            lower.contains("kıbrıs") -> RedoXIcons.Public
+            lower.contains("dini") -> RedoXIcons.History
+            else -> RedoXIcons.LiveTv
         }
     }
 }

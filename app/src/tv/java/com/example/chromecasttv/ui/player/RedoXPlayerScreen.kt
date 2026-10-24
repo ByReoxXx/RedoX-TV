@@ -683,7 +683,7 @@ fun RedoXPlayerScreen(
                     .padding(horizontal = 20.dp, vertical = 9.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Sensors,
+                    imageVector = RedoXIcons.Sensors,
                     contentDescription = null,
                     tint = RedoXColors.Gold,
                     modifier = Modifier.size(18.dp)
@@ -715,7 +715,7 @@ fun RedoXPlayerScreen(
                     .padding(horizontal = 18.dp, vertical = 8.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.NotificationsActive,
+                    imageVector = RedoXIcons.NotificationsActive,
                     contentDescription = null,
                     tint = TvThemeColors.FavoriteGold,
                     modifier = Modifier.size(16.dp)
@@ -742,7 +742,7 @@ fun RedoXPlayerScreen(
                     .padding(horizontal = 20.dp, vertical = 12.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Sensors,
+                    imageVector = RedoXIcons.Sensors,
                     contentDescription = null,
                     tint = TvThemeColors.BullRedBright,
                     modifier = Modifier.size(20.dp)
@@ -768,7 +768,7 @@ fun RedoXPlayerScreen(
                     .padding(20.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.WifiOff,
+                    imageVector = RedoXIcons.WifiOff,
                     contentDescription = null,
                     tint = TvThemeColors.BrokenRed,
                     modifier = Modifier.size(34.dp)
@@ -784,7 +784,7 @@ fun RedoXPlayerScreen(
                 Spacer(modifier = Modifier.height(10.dp))
                 TvCompactChipButton(
                     text = "Alternatif kaynağı dene (${currentSourceIndex + 1}/${playingChannel.sources.size})",
-                    icon = Icons.Rounded.Refresh,
+                    icon = RedoXIcons.Refresh,
                     onClick = { switchToNextSourceManually() }
                 )
             }
@@ -853,7 +853,7 @@ fun RedoXPlayerScreen(
                     }
                     TvCompactChipButton(
                         text = "Kapat",
-                        icon = Icons.Rounded.Clear,
+                        icon = RedoXIcons.Clear,
                         onClick = {
                             showChannelDrawer = false
                             try { playerSurfaceFocusRequester.requestFocus() } catch (_: Exception) {}
@@ -872,7 +872,7 @@ fun RedoXPlayerScreen(
                         val catLabel = if (dCat == favKey) "Favoriler" else dCat
                         TvCompactChipButton(
                             text = if (isSel) "✓ $catLabel" else catLabel,
-                            icon = if (dCat == favKey) Icons.Rounded.Star else Icons.Rounded.Category,
+                            icon = if (dCat == favKey) RedoXIcons.Star else RedoXIcons.Category,
                             onClick = { selectedDrawerCat = dCat }
                         )
                     }
@@ -972,7 +972,7 @@ fun RedoXPlayerScreen(
                             }
                             Spacer(modifier = Modifier.width(6.dp))
                             Icon(
-                                imageVector = if (isFav) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                                imageVector = if (isFav) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                                 contentDescription = null,
                                 tint = if (isFav) RedoXColors.Gold else RedoXColors.TextTertiary,
                                 modifier = Modifier.size(17.dp)
@@ -1080,19 +1080,19 @@ fun RedoXPlayerScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     TvOsdButton(
-                        icon = Icons.Rounded.SkipPrevious,
+                        icon = RedoXIcons.SkipPrevious,
                         label = "Önceki kanal",
                         onFocusLabel = { focusedOsdLabel = it },
                         onClick = { onZapChannel(-1) }
                     )
                     TvOsdButton(
-                        icon = Icons.Rounded.History,
+                        icon = RedoXIcons.History,
                         label = "15 sn geri",
                         onFocusLabel = { focusedOsdLabel = it },
                         onClick = { rewindTimeshift15Sec() }
                     )
                     TvOsdButton(
-                        icon = if (isPausedByTimeshift) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                        icon = if (isPausedByTimeshift) RedoXIcons.PlayArrow else RedoXIcons.Pause,
                         label = if (isPausedByTimeshift) "Devam et" else "Duraklat",
                         primary = true,
                         onFocusLabel = { focusedOsdLabel = it },
@@ -1100,13 +1100,13 @@ fun RedoXPlayerScreen(
                         modifier = Modifier.focusRequester(primaryActionFocusRequester)
                     )
                     TvOsdButton(
-                        icon = Icons.Rounded.FiberManualRecord,
+                        icon = RedoXIcons.FiberManualRecord,
                         label = "Canlıya dön",
                         onFocusLabel = { focusedOsdLabel = it },
                         onClick = { jumpToLiveEdge() }
                     )
                     TvOsdButton(
-                        icon = Icons.Rounded.SkipNext,
+                        icon = RedoXIcons.SkipNext,
                         label = "Sonraki kanal",
                         onFocusLabel = { focusedOsdLabel = it },
                         onClick = { onZapChannel(+1) }
@@ -1128,7 +1128,7 @@ fun RedoXPlayerScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         TvOsdButton(
-                            icon = Icons.Rounded.LiveTv,
+                            icon = RedoXIcons.LiveTv,
                             label = "Kanal listesi",
                             onFocusLabel = { focusedOsdLabel = it },
                             onClick = {
@@ -1137,7 +1137,7 @@ fun RedoXPlayerScreen(
                             }
                         )
                         TvOsdButton(
-                            icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                            icon = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                             label = if (isFavorite) "Favoriden çıkar" else "Favori ekle",
                             active = isFavorite,
                             onFocusLabel = { focusedOsdLabel = it },
@@ -1153,7 +1153,7 @@ fun RedoXPlayerScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         TvOsdButton(
-                            icon = Icons.Rounded.Refresh,
+                            icon = RedoXIcons.Refresh,
                             label = if (playingChannel.sources.size > 1) {
                                 "Alternatif yayın (${currentSourceIndex + 1}/${playingChannel.sources.size})"
                             } else {
@@ -1163,25 +1163,25 @@ fun RedoXPlayerScreen(
                             onClick = { switchToNextSourceManually() }
                         )
                         TvOsdButton(
-                            icon = Icons.Rounded.HighQuality,
+                            icon = RedoXIcons.HighQuality,
                             label = "Kalite: ${featurePrefs.defaultQuality.label}",
                             onFocusLabel = { focusedOsdLabel = it },
                             onClick = { cycleQuality() }
                         )
                         TvOsdButton(
-                            icon = Icons.Rounded.VolumeUp,
+                            icon = RedoXIcons.VolumeUp,
                             label = activeAudioLabel,
                             onFocusLabel = { focusedOsdLabel = it },
                             onClick = { cycleAudioTrack() }
                         )
                         TvOsdButton(
-                            icon = Icons.Rounded.ClosedCaption,
+                            icon = RedoXIcons.ClosedCaption,
                             label = activeSubtitleLabel,
                             onFocusLabel = { focusedOsdLabel = it },
                             onClick = { cycleSubtitleTrack() }
                         )
                         TvOsdButton(
-                            icon = Icons.Rounded.AspectRatio,
+                            icon = RedoXIcons.AspectRatio,
                             label = "Ölçek: ${scaleMode.label}",
                             onFocusLabel = { focusedOsdLabel = it },
                             onClick = {
@@ -1193,7 +1193,7 @@ fun RedoXPlayerScreen(
                             }
                         )
                         TvOsdButton(
-                            icon = Icons.Rounded.MoreHoriz,
+                            icon = RedoXIcons.MoreHoriz,
                             label = if (showMoreOptions) "Daha az" else "Daha fazla",
                             active = showMoreOptions,
                             onFocusLabel = { focusedOsdLabel = it },
@@ -1244,7 +1244,7 @@ fun RedoXPlayerScreen(
                         item {
                             TvCompactChipButton(
                                 text = if (featurePrefs.nightMode) "Gece modu: Açık" else "Gece modu: Kapalı",
-                                icon = Icons.Rounded.Bedtime,
+                                icon = RedoXIcons.Bedtime,
                                 onClick = {
                                     onUpdatePrefs { it.copy(nightMode = !it.nightMode) }
                                     bumpOsdTimer(focusControls = true)
@@ -1254,21 +1254,21 @@ fun RedoXPlayerScreen(
                         item {
                             TvCompactChipButton(
                                 text = "Küçük pencere (PiP)",
-                                icon = Icons.Rounded.SmartDisplay,
+                                icon = RedoXIcons.SmartDisplay,
                                 onClick = onMinimizeToPip
                             )
                         }
                         item {
                             TvCompactChipButton(
                                 text = "2x2 ekran",
-                                icon = Icons.Rounded.GridView,
+                                icon = RedoXIcons.GridView,
                                 onClick = onOpenMultiView
                             )
                         }
                         item {
                             TvCompactChipButton(
                                 text = "Kanal no (0-9)",
-                                icon = Icons.Rounded.Tag,
+                                icon = RedoXIcons.Tag,
                                 onClick = { showVirtualNumpadDialog = true }
                             )
                         }
@@ -1276,7 +1276,7 @@ fun RedoXPlayerScreen(
                             item {
                                 TvCompactChipButton(
                                     text = "Önceki: ${previousChannel.name} (0)",
-                                    icon = Icons.Rounded.SwapHoriz,
+                                    icon = RedoXIcons.SwapHoriz,
                                     onClick = { onRecallPreviousChannel() }
                                 )
                             }
@@ -1284,21 +1284,21 @@ fun RedoXPlayerScreen(
                         item {
                             TvCompactChipButton(
                                 text = "Kanalı gizle",
-                                icon = Icons.Rounded.VisibilityOff,
+                                icon = RedoXIcons.VisibilityOff,
                                 onClick = { onHideChannel(playingChannel.id) }
                             )
                         }
                         item {
                             TvCompactChipButton(
                                 text = "Kanaldan çık",
-                                icon = Icons.Rounded.Clear,
+                                icon = RedoXIcons.Clear,
                                 onClick = onExitPlayer
                             )
                         }
                         item {
                             TvCompactChipButton(
                                 text = "Bilgi çubuğunu gizle",
-                                icon = Icons.Rounded.Clear,
+                                icon = RedoXIcons.Clear,
                                 onClick = {
                                     showOsd = false
                                     osdInteractiveFocused = false
@@ -1383,7 +1383,7 @@ fun RedoXPlayerScreen(
                                 rowNums.forEachIndexed { cIdx, num ->
                                     TvCompactChipButton(
                                         text = "   $num   ",
-                                        icon = Icons.Rounded.Tag,
+                                        icon = RedoXIcons.Tag,
                                         onClick = {
                                             if (dialDigits.length < 4) dialDigits += num.toString()
                                         },
@@ -1395,24 +1395,24 @@ fun RedoXPlayerScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             TvCompactChipButton(
                                 text = "Sil",
-                                icon = Icons.Rounded.Clear,
+                                icon = RedoXIcons.Clear,
                                 onClick = { if (dialDigits.isNotEmpty()) dialDigits = dialDigits.dropLast(1) }
                             )
                             TvCompactChipButton(
                                 text = "   0   ",
-                                icon = Icons.Rounded.Tag,
+                                icon = RedoXIcons.Tag,
                                 onClick = { if (dialDigits.length < 4) dialDigits += "0" }
                             )
                             TvCompactChipButton(
                                 text = "Kapat",
-                                icon = Icons.Rounded.Clear,
+                                icon = RedoXIcons.Clear,
                                 onClick = { showVirtualNumpadDialog = false }
                             )
                         }
                         if (matchedChannel != null) {
                             TvActionButton(
                                 text = "CH ${matchedChannel.number} · ${matchedChannel.name} kanalına git",
-                                icon = Icons.Rounded.PlayArrow,
+                                icon = RedoXIcons.PlayArrow,
                                 isPrimary = true,
                                 onClick = {
                                     showVirtualNumpadDialog = false

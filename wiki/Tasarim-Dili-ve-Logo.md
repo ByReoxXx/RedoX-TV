@@ -26,7 +26,7 @@ Metin–zemin oranları: ana metin 16,3:1, ikincil 9,3:1, üçüncül 5,5:1, alt
 
 - TV: başlık 26–32 sp, kanal adı 16–18 sp, açıklama 13–15 sp, en küçük 12 sp (eski 9–10 sp'lik yazılar kaldırıldı).
 - Telefon/tablet: başlık 22–32 sp, gövde 14–16 sp, en küçük 12 sp; dokunma hedefleri ≥ 44 dp.
-- Emoji yok; simgeler Material "rounded" kümesindendir.
+- Emoji yok. Simgeler uygulamaya özel **"Çift ton" setidir** (`RedoXIcons`): 24'lük ızgarada 1,9 birimlik yuvarlak uçlu çizgi ve kapalı gövdelerde simge renginin %22'si kadar yumuşak dolgu. Oynat, duraklat, durdur ve açık favori yıldızı dolu çizilir. Renk her yerde `tint` ile verilir (boşta gri, odakta altın, seçili kırmızı), böylece tek bir çizim her duruma uyar.
 
 ## Vektör logo
 

@@ -18,15 +18,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 
 /** Telefon ve tabletin ortak hedef ekranları. Telefon ilk beşini alt çubukta, tablet hepsini ray üzerinde gösterir. */
 enum class MobileTab(val title: String, val icon: ImageVector) {
-    HOME("Ana Sayfa", Icons.Rounded.Home),
-    LIVE("Canlı TV", Icons.Rounded.LiveTv),
-    GUIDE("Rehber", Icons.Rounded.CalendarMonth),
-    FAVORITES("Favoriler", Icons.Rounded.Star),
-    REMOTE("Kumanda", Icons.Rounded.SettingsRemote),
-    SEARCH("Ara", Icons.Rounded.Search),
-    MULTI("Bölünmüş Ekran", Icons.Rounded.GridView),
-    SOURCES("Kaynaklar", Icons.Rounded.UploadFile),
-    SETTINGS("Ayarlar", Icons.Rounded.Settings)
+    HOME("Ana Sayfa", RedoXIcons.Home),
+    LIVE("Canlı TV", RedoXIcons.LiveTv),
+    GUIDE("Rehber", RedoXIcons.CalendarMonth),
+    FAVORITES("Favoriler", RedoXIcons.Star),
+    REMOTE("Kumanda", RedoXIcons.SettingsRemote),
+    SEARCH("Ara", RedoXIcons.Search),
+    MULTI("Bölünmüş Ekran", RedoXIcons.GridView),
+    SOURCES("Kaynaklar", RedoXIcons.UploadFile),
+    SETTINGS("Ayarlar", RedoXIcons.Settings)
 }
 
 /** Telefon alt çubuğundaki kök sekmeler. */

@@ -363,7 +363,7 @@ fun MultiViewPlayerCell(
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Icon(
-                    imageVector = if (isAudioActive) Icons.Rounded.VolumeUp else Icons.Rounded.VolumeOff,
+                    imageVector = if (isAudioActive) RedoXIcons.VolumeUp else RedoXIcons.VolumeOff,
                     contentDescription = "Ses Durumu",
                     tint = if (isAudioActive) TvThemeColors.AccentEmerald else TvThemeColors.TextSecondary,
                     modifier = Modifier.size(14.dp)
@@ -400,13 +400,13 @@ fun MultiViewPlayerCell(
                     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                         TvCompactChipButton(
                             text = if (isAudioActive) "Sesi sustur" else "Sesi aç",
-                            icon = if (isAudioActive) Icons.Rounded.VolumeOff else Icons.Rounded.VolumeUp,
+                            icon = if (isAudioActive) RedoXIcons.VolumeOff else RedoXIcons.VolumeUp,
                             onClick = { onToggleAudio() },
                             modifier = Modifier.focusRequester(slotFullBtnRequester)
                         )
                         TvCompactChipButton(
                             text = "Tam ekran",
-                            icon = Icons.Rounded.SmartDisplay,
+                            icon = RedoXIcons.SmartDisplay,
                             onClick = {
                                 showSlotMenu = false
                                 onExpand()
@@ -414,18 +414,18 @@ fun MultiViewPlayerCell(
                         )
                         TvCompactChipButton(
                             text = "Sonraki kanal",
-                            icon = Icons.Rounded.SwapHoriz,
+                            icon = RedoXIcons.SwapHoriz,
                             onClick = { onZapSlot(+1) }
                         )
                         TvCompactChipButton(
                             text = "Önceki kanal",
-                            icon = Icons.Rounded.SwapHoriz,
+                            icon = RedoXIcons.SwapHoriz,
                             onClick = { onZapSlot(-1) }
                         )
                         if (channel.sources.size > 1) {
                             TvCompactChipButton(
                                 text = "Akış ${currentSourceIdx + 1}/${channel.sources.size}",
-                                icon = Icons.Rounded.Refresh,
+                                icon = RedoXIcons.Refresh,
                                 onClick = {
                                     autoTried = 0
                                     currentSourceIdx = (currentSourceIdx + 1) % channel.sources.size
@@ -434,7 +434,7 @@ fun MultiViewPlayerCell(
                         }
                         TvCompactChipButton(
                             text = "Kapat",
-                            icon = Icons.Rounded.Clear,
+                            icon = RedoXIcons.Clear,
                             onClick = {
                                 showSlotMenu = false
                                 try { cellBoxRequester.requestFocus() } catch (_: Exception) {}
@@ -523,7 +523,7 @@ fun FloatingMiniPipPlayer(
             )
             TvCompactChipButton(
                 text = "Kapat",
-                icon = Icons.Rounded.Clear,
+                icon = RedoXIcons.Clear,
                 onClick = onClose
             )
         }
@@ -563,7 +563,7 @@ fun ParentalPinDialog(
                 .padding(20.dp)
         ) {
             Icon(
-                imageVector = Icons.Rounded.Verified,
+                imageVector = RedoXIcons.Verified,
                 contentDescription = null,
                 tint = TvThemeColors.FavoriteGold,
                 modifier = Modifier.size(34.dp)
@@ -618,7 +618,7 @@ fun ParentalPinDialog(
                 items((0..9).toList()) { num ->
                     TvCompactChipButton(
                         text = num.toString(),
-                        icon = Icons.Rounded.SettingsRemote,
+                        icon = RedoXIcons.SettingsRemote,
                         onClick = {
                             if (enteredPin.length < 4) {
                                 enteredPin += num.toString()
@@ -637,8 +637,8 @@ fun ParentalPinDialog(
             Spacer(modifier = Modifier.height(10.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                TvCompactChipButton(text = "Temizle", icon = Icons.Rounded.Clear, onClick = { enteredPin = "" })
-                TvCompactChipButton(text = "İptal", icon = Icons.Rounded.Clear, onClick = onDismiss)
+                TvCompactChipButton(text = "Temizle", icon = RedoXIcons.Clear, onClick = { enteredPin = "" })
+                TvCompactChipButton(text = "İptal", icon = RedoXIcons.Clear, onClick = onDismiss)
             }
         }
         }
@@ -910,7 +910,7 @@ fun TvTopStatusHeader(
         ) {
             val totalChannels = state.builtInChannels.size + state.customM3uChannels.size
             TvIconPill(
-                icon = Icons.Rounded.Sensors,
+                icon = RedoXIcons.Sensors,
                 label = when {
                     state.isScanningHealth -> "Taranıyor (${state.healthScanProgress})"
                     state.healthyChannelIds.isNotEmpty() -> "Aktif (${state.healthyChannelIds.size}/$totalChannels)"
@@ -921,17 +921,17 @@ fun TvTopStatusHeader(
                 activeTint = RedoXColors.Mint
             )
             TvIconPill(
-                icon = Icons.Rounded.GridView,
+                icon = RedoXIcons.GridView,
                 label = "2x2 ekran",
                 onClick = onQuickMultiViewClick
             )
             TvIconPill(
-                icon = Icons.Rounded.Search,
+                icon = RedoXIcons.Search,
                 label = "Ara",
                 onClick = onQuickSearchClick
             )
             TvIconPill(
-                icon = Icons.Rounded.SettingsRemote,
+                icon = RedoXIcons.SettingsRemote,
                 label = "M3U / QR",
                 onClick = onQuickAddM3uClick
             )
@@ -945,7 +945,7 @@ fun TvTopStatusHeader(
                     .padding(horizontal = 14.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Schedule,
+                    imageVector = RedoXIcons.Schedule,
                     contentDescription = null,
                     tint = RedoXColors.Gold,
                     modifier = Modifier.size(18.dp)
@@ -967,7 +967,7 @@ fun TvTopStatusHeader(
 @Composable
 fun TvCompactChipButton(
     text: String,
-    icon: ImageVector,
+    icon: ImageVector? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -991,13 +991,15 @@ fun TvCompactChipButton(
             .clickable { onClick() }
             .padding(horizontal = 13.dp, vertical = 8.dp)
     ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            tint = RedoXColors.Gold,
-            modifier = Modifier.size(16.dp)
-        )
-        Spacer(modifier = Modifier.width(7.dp))
+        if (icon != null) {
+            Icon(
+                imageVector = icon,
+                contentDescription = text,
+                tint = RedoXColors.Gold,
+                modifier = Modifier.size(16.dp)
+            )
+            Spacer(modifier = Modifier.width(7.dp))
+        }
         Text(
             text = text,
             color = if (isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
@@ -1162,7 +1164,7 @@ fun TvSideNavigationRail(
                 .padding(horizontal = 12.dp)
         ) {
             Icon(
-                imageVector = Icons.Rounded.Bedtime,
+                imageVector = RedoXIcons.Bedtime,
                 contentDescription = null,
                 tint = RedoXColors.Gold,
                 modifier = Modifier.size(18.dp)
@@ -1544,7 +1546,7 @@ fun TvInputField(
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     TvCompactChipButton(
                         text = "Bitti (aşağı geç)",
-                        icon = Icons.Rounded.CheckCircle,
+                        icon = RedoXIcons.CheckCircle,
                         onClick = {
                             isEditing = false
                             try {
@@ -1554,27 +1556,27 @@ fun TvInputField(
                     )
                     TvCompactChipButton(
                         text = "Yapıştır",
-                        icon = Icons.Rounded.InsertDriveFile,
+                        icon = RedoXIcons.InsertDriveFile,
                         onClick = { pasteFromClipboard() }
                     )
                     if (showUrlQuickChips) {
                         TvCompactChipButton(
                             text = "https://",
-                            icon = Icons.Rounded.Public,
+                            icon = RedoXIcons.Public,
                             onClick = {
                                 if (!value.startsWith("http")) onValueChange("https://$value")
                             }
                         )
                         TvCompactChipButton(
                             text = "http://",
-                            icon = Icons.Rounded.Public,
+                            icon = RedoXIcons.Public,
                             onClick = {
                                 if (!value.startsWith("http")) onValueChange("http://$value")
                             }
                         )
                         TvCompactChipButton(
                             text = ".m3u8",
-                            icon = Icons.Rounded.Tag,
+                            icon = RedoXIcons.Tag,
                             onClick = {
                                 if (!value.endsWith(".m3u8")) onValueChange("$value.m3u8")
                             }
@@ -1583,7 +1585,7 @@ fun TvInputField(
                     if (value.isNotEmpty()) {
                         TvCompactChipButton(
                             text = "Temizle",
-                            icon = Icons.Rounded.Clear,
+                            icon = RedoXIcons.Clear,
                             onClick = { onValueChange("") }
                         )
                     }
@@ -1728,7 +1730,7 @@ fun TvBuiltInM3uFilePickerDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Icon(
-                            imageVector = Icons.Rounded.FolderOpen,
+                            imageVector = RedoXIcons.FolderOpen,
                             contentDescription = null,
                             tint = TvThemeColors.BullRedBright,
                             modifier = Modifier.size(26.dp)
@@ -1749,7 +1751,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     }
                     TvCompactChipButton(
                         text = "Kapat (Geri)",
-                        icon = Icons.Rounded.Clear,
+                        icon = RedoXIcons.Clear,
                         onClick = onDismiss
                     )
                 }
@@ -1780,7 +1782,7 @@ fun TvBuiltInM3uFilePickerDialog(
                         }
                         TvActionButton(
                             text = "İzni Şimdi Aç",
-                            icon = Icons.Rounded.Verified,
+                            icon = RedoXIcons.Verified,
                             isPrimary = true,
                             onClick = { requestStorageAccess() }
                         )
@@ -1790,13 +1792,13 @@ fun TvBuiltInM3uFilePickerDialog(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TvCompactChipButton(
                         text = if (browseMode == 0) "✓ Bulunan M3U'lar (${discoveredM3uFiles.size})" else "Bulunan M3U'lar (${discoveredM3uFiles.size})",
-                        icon = Icons.Rounded.ManageSearch,
+                        icon = RedoXIcons.ManageSearch,
                         onClick = { browseMode = 0 },
                         modifier = Modifier.focusRequester(firstTabFocusRequester)
                     )
                     TvCompactChipButton(
                         text = if (browseMode == 1 && currentDir.absolutePath.contains("Download")) "✓ Download Klasörü" else "Download Klasörü",
-                        icon = Icons.Rounded.CloudDownload,
+                        icon = RedoXIcons.CloudDownload,
                         onClick = {
                             browseMode = 1
                             currentDir = defaultDownloadDir
@@ -1804,7 +1806,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     )
                     TvCompactChipButton(
                         text = if (browseMode == 1 && currentDir.absolutePath == "/sdcard") "✓ Ana Dizin (/sdcard)" else "Ana Dizin (/sdcard)",
-                        icon = Icons.Rounded.Home,
+                        icon = RedoXIcons.Home,
                         onClick = {
                             browseMode = 1
                             currentDir = Environment.getExternalStorageDirectory() ?: File("/sdcard")
@@ -1812,7 +1814,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     )
                     TvCompactChipButton(
                         text = if (browseMode == 1 && currentDir.absolutePath == "/storage") "✓ USB / Depolama" else "USB / Depolama",
-                        icon = Icons.Rounded.Dns,
+                        icon = RedoXIcons.Dns,
                         onClick = {
                             browseMode = 1
                             currentDir = File("/storage")
@@ -1820,7 +1822,7 @@ fun TvBuiltInM3uFilePickerDialog(
                     )
                     TvCompactChipButton(
                         text = "Yenile",
-                        icon = Icons.Rounded.Refresh,
+                        icon = RedoXIcons.Refresh,
                         onClick = { permissionRefreshTrigger += 1 }
                     )
                 }
@@ -1848,7 +1850,7 @@ fun TvBuiltInM3uFilePickerDialog(
                                 )
                                 TvActionButton(
                                     text = "Klasör gezginini aç (Download klasörü)",
-                                    icon = Icons.Rounded.FolderOpen,
+                                    icon = RedoXIcons.FolderOpen,
                                     isPrimary = true,
                                     onClick = {
                                         browseMode = 1
@@ -1931,7 +1933,7 @@ fun TvBuiltInM3uFilePickerDialog(
                         if (parentFile != null) {
                             TvCompactChipButton(
                                 text = "Üst klasör (..)",
-                                icon = Icons.Rounded.FolderOpen,
+                                icon = RedoXIcons.FolderOpen,
                                 onClick = { currentDir = parentFile }
                             )
                         }

@@ -117,7 +117,7 @@ fun MobileSourcesScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 MPrimaryButton(
                     text = "Ekle ve kanalları yükle",
-                    icon = Icons.Rounded.CloudDownload,
+                    icon = RedoXIcons.CloudDownload,
                     enabled = m3uUrl.isNotBlank(),
                     onClick = {
                         viewModel.addRemoteM3uPlaylist(m3uName, m3uUrl, m3uEpg)
@@ -141,7 +141,7 @@ fun MobileSourcesScreen(
                 Spacer(modifier = Modifier.height(12.dp))
                 MPrimaryButton(
                     text = "Hesabı bağla",
-                    icon = Icons.Rounded.Verified,
+                    icon = RedoXIcons.Verified,
                     enabled = xtServer.isNotBlank() && xtUser.isNotBlank(),
                     onClick = {
                         viewModel.addXtreamCodesAccount(xtName, xtServer, xtUser, xtPass)
@@ -163,7 +163,7 @@ fun MobileSourcesScreen(
                 Spacer(modifier = Modifier.height(10.dp))
                 MGhostButton(
                     text = "Dosya seç",
-                    icon = Icons.Rounded.FolderOpen,
+                    icon = RedoXIcons.FolderOpen,
                     onClick = { importLauncher.launch(arrayOf("*/*")) }
                 )
             }
@@ -181,7 +181,7 @@ fun MobileSourcesScreen(
                     )
                     MGhostButton(
                         text = if (state.isLoadingM3u) "Yükleniyor…" else "Yenile",
-                        icon = Icons.Rounded.Refresh,
+                        icon = RedoXIcons.Refresh,
                         onClick = { viewModel.reloadAllChannelsAndEpg() }
                     )
                 }
@@ -212,7 +212,7 @@ fun MobileSourcesScreen(
                         Spacer(modifier = Modifier.width(8.dp))
                         MGhostButton(
                             text = "Sil",
-                            icon = Icons.Rounded.DeleteOutline,
+                            icon = RedoXIcons.DeleteOutline,
                             onClick = { deleteTarget = playlist },
                             danger = true
                         )
@@ -222,7 +222,7 @@ fun MobileSourcesScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                     MGhostButton(
                         text = "Gizlenen ${state.hiddenChannelIds.size} kanalı geri getir",
-                        icon = Icons.Rounded.VisibilityOff,
+                        icon = RedoXIcons.VisibilityOff,
                         onClick = { viewModel.restoreAllHiddenChannels() }
                     )
                 }
@@ -242,12 +242,12 @@ fun MobileSourcesScreen(
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MGhostButton(
                         text = "Yedeği kaydet",
-                        icon = Icons.Rounded.Save,
+                        icon = RedoXIcons.Save,
                         onClick = { saveBackupLauncher.launch("redox_tv2_yedek.txt") }
                     )
                     MGhostButton(
                         text = "Yedekten yükle",
-                        icon = Icons.Rounded.Refresh,
+                        icon = RedoXIcons.Refresh,
                         onClick = { openBackupLauncher.launch(arrayOf("*/*")) }
                     )
                 }

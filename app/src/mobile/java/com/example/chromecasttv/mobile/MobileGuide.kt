@@ -79,7 +79,7 @@ fun MobileGuideScreen(
             MCard(modifier = Modifier.fillMaxWidth()) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Rounded.CalendarMonth,
+                        imageVector = RedoXIcons.CalendarMonth,
                         contentDescription = null,
                         tint = if (epg.hasRealData) RedoXColors.Mint else RedoXColors.Gold,
                         modifier = Modifier.size(26.dp)
@@ -109,13 +109,13 @@ fun MobileGuideScreen(
                     MGhostButton(
                         text = if (epg.isLoading) "Güncelleniyor…" else "Rehberi güncelle",
                         onClick = { viewModel.features.refreshEpg(true) },
-                        icon = Icons.Rounded.Refresh
+                        icon = RedoXIcons.Refresh
                     )
                     if (!epg.hasRealData) {
                         MGhostButton(
                             text = "Ayarlar",
                             onClick = { nav.push(MobileTab.SETTINGS) },
-                            icon = Icons.Rounded.Settings
+                            icon = RedoXIcons.Settings
                         )
                     } else {
                         MGhostButton(
@@ -211,7 +211,7 @@ fun MobileGuideScreen(
                                     if (hasReminder) {
                                         Spacer(modifier = Modifier.width(4.dp))
                                         Icon(
-                                            imageVector = Icons.Rounded.NotificationsActive,
+                                            imageVector = RedoXIcons.NotificationsActive,
                                             contentDescription = "Hatırlatma ekli",
                                             tint = RedoXColors.Gold,
                                             modifier = Modifier.size(13.dp)

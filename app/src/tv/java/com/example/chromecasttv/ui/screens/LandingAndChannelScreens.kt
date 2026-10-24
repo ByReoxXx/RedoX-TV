@@ -235,12 +235,12 @@ fun RedoXLandingScreen(
                 ) {
                     TvCompactChipButton(
                         text = if (state.autoStartLastChannel) "Otomatik başlat: Açık" else "Otomatik başlat: Kapalı",
-                        icon = Icons.Rounded.Bolt,
+                        icon = RedoXIcons.Bolt,
                         onClick = onToggleAutoStart
                     )
                     TvCompactChipButton(
                         text = "Ayarlar",
-                        icon = Icons.Rounded.Settings,
+                        icon = RedoXIcons.Settings,
                         onClick = onOpenSettings
                     )
                     Text(
@@ -273,7 +273,7 @@ fun RedoXLandingScreen(
                 LandingActionCard(
                     title = "Canlı TV'ye Başla",
                     subtitle = "${state.builtInChannels.size} kanal",
-                    icon = Icons.Rounded.LiveTv,
+                    icon = RedoXIcons.LiveTv,
                     accentColor = RedoXColors.Gold,
                     isPrimary = true,
                     onClick = onStartLiveTv,
@@ -285,7 +285,7 @@ fun RedoXLandingScreen(
                     LandingActionCard(
                         title = "Hemen İzle",
                         subtitle = "${lastChannel.name} • CH ${lastChannel.number}",
-                        icon = Icons.Rounded.PlayCircleFilled,
+                        icon = RedoXIcons.PlayCircleFilled,
                         accentColor = RedoXColors.Gold,
                         isPrimary = false,
                         onClick = { onResumeLastChannel(lastChannel) },
@@ -296,7 +296,7 @@ fun RedoXLandingScreen(
                 LandingActionCard(
                     title = "Favori Kanallarım",
                     subtitle = "${state.favoriteOrderList.size} kanal",
-                    icon = Icons.Rounded.Star,
+                    icon = RedoXIcons.Star,
                     accentColor = RedoXColors.Gold,
                     isPrimary = false,
                     onClick = onOpenFavorites,
@@ -306,7 +306,7 @@ fun RedoXLandingScreen(
                 LandingActionCard(
                     title = "Bölünmüş Ekran",
                     subtitle = "4 kanalı birlikte izle",
-                    icon = Icons.Rounded.GridView,
+                    icon = RedoXIcons.GridView,
                     accentColor = RedoXColors.Gold,
                     isPrimary = false,
                     onClick = onOpenMultiView,
@@ -316,7 +316,7 @@ fun RedoXLandingScreen(
                 LandingActionCard(
                     title = "M3U Yükle",
                     subtitle = "${state.customM3uChannels.size} özel kanal",
-                    icon = Icons.Rounded.UploadFile,
+                    icon = RedoXIcons.UploadFile,
                     accentColor = RedoXColors.Gold,
                     isPrimary = false,
                     onClick = onOpenM3uManager,
@@ -485,7 +485,7 @@ fun RedoXTvRootScreen(
     }
 
     // Kumanda: yalnızca yön tuşları, OK ve Geri olan kumandalarda (Chromecast) Geri bir üst düzeye çıkar:
-    // içerik -> yan menü -> (2,5 sn içinde ikinci basış) uygulamadan çık.
+    // içerik -> yan menü -> (uyarı görünürken ikinci basış) uygulamadan çık.
     val railFocusRequester = remember { FocusRequester() }
     var railHasFocus by remember { mutableStateOf(false) }
     var exitArmed by remember { mutableStateOf(false) }
@@ -499,7 +499,7 @@ fun RedoXTvRootScreen(
     }
     LaunchedEffect(exitArmed) {
         if (exitArmed) {
-            delay(2500L)
+            delay(3400L)
             exitArmed = false
         }
     }
@@ -803,7 +803,7 @@ fun RedoXTvRootScreen(
                     .padding(horizontal = 20.dp, vertical = 11.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.NotificationsActive,
+                    imageVector = RedoXIcons.NotificationsActive,
                     contentDescription = null,
                     tint = RedoXColors.Gold,
                     modifier = Modifier.size(20.dp)
@@ -1049,8 +1049,8 @@ fun ChannelShowcaseScreen(
                         else -> category
                     }
                     val chipIcon: ImageVector? = when (category) {
-                        TV_CAT_FAVORITES -> Icons.Rounded.Star
-                        TV_CAT_RECENT -> Icons.Rounded.History
+                        TV_CAT_FAVORITES -> RedoXIcons.Star
+                        TV_CAT_RECENT -> RedoXIcons.History
                         else -> null
                     }
                     val pillShape = RoundedCornerShape(50)
@@ -1351,37 +1351,37 @@ fun FocusedChannelHeroBanner(
             ) {
                 TvActionButton(
                     text = "İzle",
-                    icon = Icons.Rounded.PlayArrow,
+                    icon = RedoXIcons.PlayArrow,
                     isPrimary = true,
                     onClick = onWatchClick,
                     modifier = if (watchFocusRequester != null) Modifier.focusRequester(watchFocusRequester) else Modifier
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)) {
                     TvIconPill(
-                        icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                        icon = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                         label = if (isFavorite) "Favoride" else "Favori ekle",
                         onClick = onToggleFavorite,
                         active = isFavorite
                     )
                     TvIconPill(
-                        icon = Icons.Rounded.Lock,
+                        icon = RedoXIcons.Lock,
                         label = if (isLocked) "Kilitli" else "Kilitle",
                         onClick = onToggleLock,
                         active = isLocked
                     )
                     TvIconPill(
-                        icon = Icons.Rounded.Edit,
+                        icon = RedoXIcons.Edit,
                         label = "Düzenle",
                         onClick = onEditChannel
                     )
                     TvIconPill(
-                        icon = Icons.Rounded.VisibilityOff,
+                        icon = RedoXIcons.VisibilityOff,
                         label = "Gizle",
                         onClick = onHideChannel
                     )
                     if (hiddenCount > 0) {
                         TvIconPill(
-                            icon = Icons.Rounded.Refresh,
+                            icon = RedoXIcons.Refresh,
                             label = "Geri yükle ($hiddenCount)",
                             onClick = onRestoreHidden
                         )
@@ -1494,7 +1494,7 @@ fun TvChannelGridCard(
                     }
                     if (isBroken) {
                         Icon(
-                            imageVector = Icons.Rounded.WarningAmber,
+                            imageVector = RedoXIcons.WarningAmber,
                             contentDescription = "Yanıt vermiyor",
                             tint = RedoXColors.Danger,
                             modifier = Modifier.size(15.dp)
@@ -1503,7 +1503,7 @@ fun TvChannelGridCard(
                     }
                     if (isLocked) {
                         Icon(
-                            imageVector = Icons.Rounded.Lock,
+                            imageVector = RedoXIcons.Lock,
                             contentDescription = "PIN kilitli",
                             tint = RedoXColors.Gold,
                             modifier = Modifier.size(15.dp)
@@ -1511,7 +1511,7 @@ fun TvChannelGridCard(
                         Spacer(modifier = Modifier.width(7.dp))
                     }
                     Icon(
-                        imageVector = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                        imageVector = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                         contentDescription = if (isFavorite) "Favoride" else "Favori değil",
                         tint = if (isFavorite) RedoXColors.Gold else RedoXColors.TextTertiary,
                         modifier = Modifier.size(16.dp)
@@ -1588,14 +1588,14 @@ fun ChannelSearchAndNumpadScreen(
             }
             TvActionButton(
                 text = "Sesli Ara",
-                icon = Icons.Rounded.Mic,
+                icon = RedoXIcons.Mic,
                 isPrimary = false,
                 onClick = onVoiceSearch
             )
             if (searchQuery.isNotEmpty()) {
                 TvActionButton(
                     text = "Temizle",
-                    icon = Icons.Rounded.Clear,
+                    icon = RedoXIcons.Clear,
                     isPrimary = false,
                     onClick = { onQueryChange("") }
                 )
@@ -1619,7 +1619,6 @@ fun ChannelSearchAndNumpadScreen(
             (1..9).forEach { digit ->
                 TvCompactChipButton(
                     text = digit.toString(),
-                    icon = Icons.Rounded.Tag,
                     onClick = {
                         val currentDigits = searchQuery.filter { it.isDigit() }
                         onQueryChange((currentDigits + digit.toString()).take(4))
@@ -1628,7 +1627,6 @@ fun ChannelSearchAndNumpadScreen(
             }
             TvCompactChipButton(
                 text = "0",
-                icon = Icons.Rounded.Tag,
                 onClick = {
                     val currentDigits = searchQuery.filter { it.isDigit() }
                     onQueryChange((currentDigits + "0").take(4))
@@ -1636,7 +1634,7 @@ fun ChannelSearchAndNumpadScreen(
             )
             TvCompactChipButton(
                 text = "Sil",
-                icon = Icons.Rounded.Clear,
+                icon = RedoXIcons.Clear,
                 onClick = {
                     if (searchQuery.isNotEmpty()) onQueryChange(searchQuery.dropLast(1))
                 }
@@ -1647,7 +1645,7 @@ fun ChannelSearchAndNumpadScreen(
             if (exactNumberMatch != null) {
                 TvActionButton(
                     text = "CH ${exactNumberMatch.number} · ${exactNumberMatch.name} aç",
-                    icon = Icons.Rounded.PlayArrow,
+                    icon = RedoXIcons.PlayArrow,
                     isPrimary = true,
                     onClick = { onPlayChannel(exactNumberMatch) }
                 )
@@ -1661,7 +1659,6 @@ fun ChannelSearchAndNumpadScreen(
             items(quickTags) { tag ->
                 TvCompactChipButton(
                     text = "#$tag",
-                    icon = Icons.Rounded.Tag,
                     onClick = { onQueryChange(tag) }
                 )
             }

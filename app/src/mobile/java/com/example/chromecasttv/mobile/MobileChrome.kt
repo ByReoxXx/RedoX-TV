@@ -39,7 +39,7 @@ fun MobileTopBar(env: MobileEnv) {
         navigationIcon = {
             if (nav.canGoBack) {
                 IconButton(onClick = { nav.back() }) {
-                    Icon(Icons.Rounded.ArrowBack, contentDescription = "Geri")
+                    Icon(RedoXIcons.ArrowBack, contentDescription = "Geri")
                 }
             } else {
                 RedoXMark(markSize = 42.dp, modifier = Modifier.padding(start = 12.dp, end = 4.dp))
@@ -48,12 +48,12 @@ fun MobileTopBar(env: MobileEnv) {
         actions = {
             if (tab != MobileTab.SEARCH) {
                 IconButton(onClick = { nav.push(MobileTab.SEARCH) }) {
-                    Icon(Icons.Rounded.Search, contentDescription = "Ara")
+                    Icon(RedoXIcons.Search, contentDescription = "Ara")
                 }
             }
             if (tab != MobileTab.SETTINGS) {
                 IconButton(onClick = { nav.push(MobileTab.SETTINGS) }) {
-                    Icon(Icons.Rounded.Settings, contentDescription = "Ayarlar")
+                    Icon(RedoXIcons.Settings, contentDescription = "Ayarlar")
                 }
             }
         },
