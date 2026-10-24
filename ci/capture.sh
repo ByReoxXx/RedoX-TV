@@ -15,6 +15,10 @@ ACTIVITY="com.example.chromecasttv.MainActivity"
 APK="$(ls app/build/outputs/apk/"$KIND"/debug/*.apk | head -n1)"
 echo "APK: $APK  paket: $PKG"
 
+# Radyo (yalnız ui-radio dalı): TV yan menüsüne "Radyo" satırı eklenir; sıralı tuş adımları buna göre kayar
+RADIO=0
+[ "${GITHUB_REF_NAME:-}" = "ui-radio" ] && RADIO=1
+
 shot() { adb exec-out screencap -p > "shots/${KIND}-$1.png" && echo "görüntü: $1"; }
 key()  { adb shell input keyevent "$1"; }
 keys() { local n="$1"; shift; for _ in $(seq 1 "$n"); do key "$1"; sleep 0.4; done; }
@@ -97,6 +101,33 @@ if [ "$KIND" = "tv" ]; then
     key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 2
     shot "${P}-07b-son-izlenenler"
 
+    # ---- Radyo (K2 Kadran; yalnız ui-radio dalında): liste, oynatıcı, katmanlar, durumlar ve mini çubuk ----
+    if [ "$RADIO" = 1 ]; then
+      key KEYCODE_BACK; sleep 1                                  # çiplerden yan menüye
+      key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3    # Radyo (Canlı TV'nin altında)
+      shot "${P}-r01-radyo-liste"
+      key KEYCODE_DPAD_CENTER; sleep 3                           # ilk istasyonu çal
+      shot "${P}-r02-radyo-calan"
+      key KEYCODE_DPAD_CENTER; sleep 2                           # çalan satıra yeniden OK: tam ekran oynatıcı
+      shot "${P}-r03-oynatici"
+      adb shell input keyevent --longpress KEYCODE_DPAD_CENTER; sleep 2    # Seçenekler
+      shot "${P}-r04-secenekler"
+      key KEYCODE_BACK; sleep 1
+      key KEYCODE_DPAD_UP; sleep 2                               # istasyon çekmecesi
+      shot "${P}-r05-cekmece"
+      key KEYCODE_BACK; sleep 1
+      key KEYCODE_DPAD_LEFT; shot "${P}-r06-gezinirken"          # kadran: 0,7 sn içinde alınır; liste başından sola sarınca son (demo) istasyona gider
+      sleep 3.5; shot "${P}-r07-calismiyor"
+      key KEYCODE_DPAD_LEFT; sleep 3.5; shot "${P}-r08-yedek-yayin"
+      key KEYCODE_DPAD_LEFT; sleep 3; shot "${P}-r09-baglaniyor"
+      keys 3 KEYCODE_DPAD_RIGHT; sleep 3                         # başa sar: ilk istasyon çalar
+      key KEYCODE_BACK; sleep 2                                  # oynatıcıdan radyo listesine (ses sürer)
+      shot "${P}-r10-liste-calan"
+      key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_UP; key KEYCODE_DPAD_CENTER; sleep 3   # Canlı TV: ince mini çubuk
+      shot "${P}-r11-mini-cubuk"
+      key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Radyo'ya dön (içerik odakta)
+    fi
+
     # yan menü: Geri, odağı seçili sekmeye (başlangıçta Canlı TV) götürür; aşağı yön tuşuyla istenen sekmeye inilir.
     # Sıra: Canlı TV, Favorilerim, Özel M3U, Bölünmüş Ekran, Yayın Rehberi, Kanal Ara, M3U ve Dosya, Ayarlar.
     # Sekme açılınca odak içeriğe geçer; bir sonraki sekme için yine Geri ile başlanır.
@@ -138,7 +169,7 @@ if [ "$KIND" = "tv" ]; then
     launch; sleep 22
     key KEYCODE_DPAD_CENTER; sleep 7            # Canlı TV'ye başla
     key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1         # ızgaradan çiplere, çiplerden yan menüye
-    keys 2 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Özel M3U
+    keys $((2 + RADIO)) KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Özel M3U
     shot "${P}-16-klasorler"
     key KEYCODE_DPAD_CENTER; sleep 3            # klasörü aç
     shot "${P}-17-klasor-ici"
@@ -158,7 +189,7 @@ if [ "$KIND" = "tv" ]; then
   keys 3 KEYCODE_DPAD_LEFT; sleep 1           # odak "Favori" düğmesine
   shot "v-03-kanal-ozellikleri"
   key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1   # düğmelerden karta, çiplere, yan menüye
-  key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3                           # Favorilerim
+  keys $((1 + RADIO)) KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3           # Favorilerim
   shot "v-04-favoriler"
   key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Özel M3U
   shot "v-05-ozel-m3u"
@@ -227,6 +258,31 @@ else
     tap "Ara"; sleep 3;               shot "13-ara"
     tap "Bölünmüş Ekran"; sleep 8;    shot "14-bolunmus-ekran"
     tap "Kaynaklar"; sleep 3;         shot "15-kaynaklar"
+  fi
+
+  # ---- Radyo (K2 Kadran; yalnız ui-radio dalında): liste, oynatıcı, sayfalar, durumlar ve mini çubuk ----
+  if [ "$RADIO" = 1 ]; then
+    adb shell am force-stop "$PKG"; sleep 1
+    launch; sleep 24
+    tap "Radyo"; sleep 4;              shot "r01-radyo-liste"
+    tap "Yıldız Pop"; sleep 3;         shot "r02-radyo-calan"             # istasyonu çal (telefonda mini çubuk, tablette sağ panel)
+    if [ "$KIND" = "phone" ]; then
+      tap "Yıldız Pop"; sleep 2;       shot "r03-oynatici"                # çalan satıra dokun: tam ekran oynatıcı
+    fi
+    tap "Seçenekler"; sleep 2;         shot "r04-secenekler"
+    key KEYCODE_BACK; sleep 1                                             # sayfayı kapat
+    tap "İstasyonlar"; sleep 2;        shot "r05-istasyonlar"
+    key KEYCODE_BACK; sleep 1
+    if [ "$KIND" = "phone" ]; then key KEYCODE_BACK; sleep 2; fi          # tam ekran oynatıcıyı kapat (ses sürer)
+    tap "Demo ("; sleep 2                                                 # Demo kategorisi: durumları denemek için üç istasyon
+    tap "Çalışmayan"; sleep 4;         shot "r06-calismiyor"
+    tap "Yedek yayına"; sleep 3;       shot "r07-yedek-yayin"
+    tap "Yavaş bağlanan"; sleep 3;     shot "r08-baglaniyor"
+    if [ "$KIND" = "phone" ]; then
+      tap "Yavaş bağlanan"; sleep 2;   shot "r09-oynatici-baglaniyor"     # çalan satıra dokun: oynatıcıda durum
+      key KEYCODE_BACK; sleep 2
+    fi
+    tap "Canlı TV"; sleep 4;           shot "r10-mini-cubuk"
   fi
 
   # ---- Vitrin: temiz durum, örnek favoriler, telifsiz demo yayın (README / wiki görselleri) ----

@@ -29,7 +29,52 @@ object RadioRepository {
         } catch (_: Throwable) {
             emptyList()
         }
-        return real + demoStations(real.size + 1)
+        // Şifreli liste yoksa (ör. herkese açık ekran görüntüsü derlemeleri) uydurma örnek istasyonlar kullanılır
+        val base = real.ifEmpty { sampleStations() }
+        return base + demoStations(base.size + 1)
+    }
+
+    /** Uydurma örnek istasyonlar (gerçek yayın ya da gerçek marka değil): yalnızca arayüzü denemek içindir. */
+    private fun sampleStations(): List<TvChannel> {
+        val palette = listOf(
+            0xFF1E3A8A to 0xFF3B82F6, 0xFF991B1B to 0xFFEF4444, 0xFF065F46 to 0xFF10B981, 0xFF5B21B6 to 0xFF8B5CF6,
+            0xFF9A3412 to 0xFFF97316, 0xFF155E75 to 0xFF06B6D4, 0xFF831843 to 0xFFEC4899, 0xFF3F6212 to 0xFF84CC16
+        )
+        val entries = listOf(
+            "Yıldız Pop" to "Pop", "Mavi Dalga" to "Pop", "Kıyı Hit" to "Pop", "Neşeli Pazar" to "Pop",
+            "Gökyüzü Müzik" to "Pop", "Akşam Sefası" to "Pop", "Turuncu Hit" to "Pop", "Şehir Işıkları" to "Pop",
+            "Anadolu Türküleri" to "Türkü & Halk", "Çınar Halk" to "Türkü & Halk", "Ova Radyo" to "Türkü & Halk",
+            "Bozlak Saati" to "Türkü & Halk", "Yayla Sesleri" to "Türkü & Halk",
+            "Gece Arabesk" to "Arabesk & Fantezi", "Yalnız Yürek" to "Arabesk & Fantezi", "Kader Hattı" to "Arabesk & Fantezi",
+            "Altın Plak" to "Nostalji", "Eski Kasetler" to "Nostalji", "Seksenler Bahçesi" to "Nostalji", "Doksan Durağı" to "Nostalji",
+            "Kaya Rock" to "Rock & Alternatif", "Alternatif Dalga" to "Rock & Alternatif", "Asi Gitar" to "Rock & Alternatif",
+            "Kulüp Ritim" to "Dans & Elektronik", "Derin Ev" to "Dans & Elektronik", "Gece Dansı" to "Dans & Elektronik",
+            "Nağme Salonu" to "Klasik & Sanat", "Saz ve Söz" to "Klasik & Sanat", "Klasik Köşe" to "Klasik & Sanat",
+            "Gündem Radyo" to "Haber & Spor", "Spor Hattı" to "Haber & Spor", "Trafik ve Haber" to "Haber & Spor",
+            "Huzur Radyo" to "Dini", "İlahi Saatler" to "Dini",
+            "Ege Rüzgârı" to "Yerel", "Karadeniz Esintisi" to "Yerel"
+        )
+        return entries.mapIndexed { i, (name, category) ->
+            val colors = palette[i % palette.size]
+            val initials = name.split(' ').mapNotNull { it.firstOrNull() }.take(3).joinToString("").uppercase()
+            val labels = buildList {
+                add("Ana Yayın (MP3 128 kbps)")
+                if (i % 3 == 0) add("Alternatif Akış 2 (AAC 64 kbps)")
+                if (i % 5 == 0) add("Alternatif Akış 3 (HLS)")
+            }
+            TvChannel(
+                id = "sample_${i + 1}",
+                number = i + 1,
+                name = name,
+                shortLogoText = initials,
+                brandPrimaryColor = colors.first,
+                brandSecondaryColor = colors.second,
+                category = category,
+                logoUrl = "",
+                sources = labels.mapIndexed { s, label -> StreamSource(label, "demo://sample_${i + 1}/$s", StreamType.PROGRESSIVE) },
+                qualityBadge = "RADYO"
+            )
+        }
     }
 
     /** Şifreli içeriği çözer ve `radios` dizisini kanal modeline çevirir (rozet: RADYO). */
@@ -178,7 +223,7 @@ object RadioHub {
             }
             if (behavior.failFirst) {
                 _state.update { it.copy(phase = RadioPhase.FAILOVER, failoverAttempt = 2) }
-                delay(2800L)
+                delay(6000L)
                 _state.update { it.copy(sourceIndex = 1) }
             }
             _state.update { it.copy(phase = RadioPhase.PLAYING) }

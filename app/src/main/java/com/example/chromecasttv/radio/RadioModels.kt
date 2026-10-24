@@ -58,8 +58,10 @@ private val RadioCategoryOrder = listOf(
 /** Kategori çipleri: Tümü, Favoriler, sonra sabit sırayla türler (listede bulunanlar). */
 fun radioCategories(stations: List<TvChannel>): List<String> {
     val present = stations.map { it.category }.toSet()
-    val ordered = RadioCategoryOrder.filter { it in present } + present.filter { it !in RadioCategoryOrder }.sorted()
-    return listOf(RADIO_CAT_ALL, RADIO_CAT_FAVORITES) + ordered
+    val ordered = RadioCategoryOrder.filter { it in present && it != "Demo" } + present.filter { it !in RadioCategoryOrder }.sorted()
+    // "Demo" (aşama denemesi için üç örnek istasyon) üçüncü çiptir: kaydırmadan erişilir
+    val demo = if ("Demo" in present) listOf("Demo") else emptyList()
+    return listOf(RADIO_CAT_ALL, RADIO_CAT_FAVORITES) + demo + ordered
 }
 
 fun radioCategoryCount(stations: List<TvChannel>, favoriteIds: Set<String>, category: String): Int = when (category) {
