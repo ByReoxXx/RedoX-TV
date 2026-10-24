@@ -78,8 +78,8 @@ fun MobileSettingsScreen(
                     }
                 }
                 MSettingSwitch(
-                    title = "AMOLED siyah",
-                    subtitle = "Arka planı saf siyah yapar (OLED ekranlarda pil tasarrufu).",
+                    title = "OLED modu (AMOLED siyah)",
+                    subtitle = "Arka planı ve oynatıcı çubuğunu saf siyah yapar (OLED ekranlarda pil tasarrufu).",
                     checked = RedoXThemeState.amoled,
                     onCheckedChange = { RedoXThemeState.updateAmoled(context, it) }
                 )
