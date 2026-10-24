@@ -27,7 +27,17 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.unit.lerp
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -651,7 +661,10 @@ fun ParentalPinDialog(
 // Seçili (odaksız) öğe = kırmızı dolgu tonu. Tüm TV ekranları bu bileşenleri paylaşır.
 // ============================================================================
 
-/** Yüzey: odaktayken altın ışıma, yuvarlatılmış kırpma, zemin ve çerçeve (odakta altın halka). */
+/**
+ * Yüzey: odaktayken altın ışıma, yuvarlatılmış kırpma, zemin ve çerçeve (odakta altın halka).
+ * Odağa girerken / çıkarken halka, ışıma ve zemin 130 ms'de yumuşakça açılıp kapanır (kumandayla gezerken sıçramaz).
+ */
 @Composable
 fun Modifier.tvSurface(
     focused: Boolean,
@@ -662,30 +675,55 @@ fun Modifier.tvSurface(
     idleBorder: Color = RedoXColors.Line,
     ringWidth: Dp = 3.dp
 ): Modifier {
-    val glow = if (focused) {
-        Modifier.shadow(
-            elevation = 20.dp,
-            shape = shape,
-            ambientColor = RedoXColors.Gold,
-            spotColor = RedoXColors.Gold
-        )
-    } else {
-        Modifier
-    }
+    val ring by animateFloatAsState(
+        targetValue = if (focused) 1f else 0f,
+        animationSpec = tween(durationMillis = 130),
+        label = "tv_surface_ring"
+    )
+    val fillColor by animateColorAsState(
+        targetValue = if (focused) focusedColor else color,
+        animationSpec = tween(durationMillis = 130),
+        label = "tv_surface_fill"
+    )
+    val surfaceShape = shape
     val fill = if (brush != null) {
         Modifier.background(brush, shape)
     } else {
-        Modifier.background(if (focused) focusedColor else color, shape)
+        Modifier.background(fillColor, shape)
     }
     return this
-        .then(glow)
+        .graphicsLayer {
+            shadowElevation = if (ring > 0.01f) 20.dp.toPx() * ring else 0f
+            this.shape = surfaceShape
+            clip = false
+            ambientShadowColor = RedoXColors.Gold
+            spotShadowColor = RedoXColors.Gold
+        }
         .clip(shape)
         .then(fill)
         .border(
-            width = if (focused) ringWidth else 1.dp,
-            color = if (focused) RedoXColors.Gold else idleBorder,
+            width = lerp(1.dp, ringWidth, ring),
+            color = lerp(idleBorder, RedoXColors.Gold, ring),
             shape = shape
         )
+}
+
+/** OK tuşuna / dokunuşa basılıyken öğe hafifçe küçülür, bırakınca geri yaylanır. */
+@Composable
+fun Modifier.tvPressScale(
+    interactionSource: MutableInteractionSource,
+    pressedScale: Float = 0.95f
+): Modifier {
+    val pressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) pressedScale else 1f,
+        animationSpec = tween(durationMillis = 80),
+        label = "tv_press_scale"
+    )
+    return this.graphicsLayer {
+        scaleX = scale
+        scaleY = scale
+    }
 }
 
 /** "CANLI" rozeti: nokta + yazı. [broken] true ise uyarı rengiyle gösterilir (ör. "ÇALIŞMIYOR"). */
@@ -703,9 +741,19 @@ fun TvLiveBadge(
             .padding(horizontal = 9.dp, vertical = 3.dp)
     ) {
         if (!broken) {
+            val pulse by rememberInfiniteTransition(label = "live_pulse").animateFloat(
+                initialValue = 1f,
+                targetValue = 0.35f,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
+                    repeatMode = RepeatMode.Reverse
+                ),
+                label = "live_pulse_alpha"
+            )
             Box(
                 modifier = Modifier
                     .size(6.dp)
+                    .graphicsLayer { alpha = pulse }
                     .clip(CircleShape)
                     .background(Color.White)
             )
@@ -754,7 +802,11 @@ fun TvProgressBar(
     height: Dp = 4.dp,
     color: Color = RedoXColors.Gold
 ) {
-    val p = progress.coerceIn(0f, 1f)
+    val p by animateFloatAsState(
+        targetValue = progress.coerceIn(0f, 1f),
+        animationSpec = tween(durationMillis = 500),
+        label = "tv_progress"
+    )
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -815,14 +867,16 @@ fun TvIconPill(
     activeTint: Color = RedoXColors.Gold
 ) {
     var focused by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
     val shape = RoundedCornerShape(14.dp)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .tvPressScale(interactionSource)
             .height(48.dp)
             .tvSurface(focused = focused, shape = shape, ringWidth = 2.5.dp)
             .onFocusChanged { focused = it.isFocused || it.hasFocus }
-            .clickable { onClick() }
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
             .padding(horizontal = 13.dp)
     ) {
         Icon(
@@ -978,17 +1032,19 @@ fun TvCompactChipButton(
         label = "chip_scale"
     )
     val shape = RoundedCornerShape(12.dp)
+    val interactionSource = remember { MutableInteractionSource() }
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .tvPressScale(interactionSource)
             .graphicsLayer {
                 scaleX = chipScale
                 scaleY = chipScale
             }
             .tvSurface(focused = isFocused, shape = shape, ringWidth = 2.5.dp)
             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-            .clickable { onClick() }
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
             .padding(horizontal = 13.dp, vertical = 8.dp)
     ) {
         if (icon != null) {
@@ -1197,9 +1253,11 @@ fun TvActionButton(
         label = "action_btn_scale"
     )
     val shape = RoundedCornerShape(14.dp)
+    val interactionSource = remember { MutableInteractionSource() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .tvPressScale(interactionSource)
             .graphicsLayer {
                 scaleX = btnScale
                 scaleY = btnScale
@@ -1211,7 +1269,7 @@ fun TvActionButton(
                 ringWidth = 3.dp
             )
             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
-            .clickable { onClick() }
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
             .padding(horizontal = 20.dp, vertical = 11.dp)
     ) {
         Icon(

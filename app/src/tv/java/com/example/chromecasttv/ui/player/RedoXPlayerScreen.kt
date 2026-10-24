@@ -28,6 +28,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -1448,10 +1450,12 @@ private fun TvOsdButton(
 ) {
     var focused by remember { mutableStateOf(false) }
     val compact = isCompactOsd()
+    val interactionSource = remember { MutableInteractionSource() }
     val shape: Shape = if (primary) CircleShape else RoundedCornerShape(16.dp)
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
+            .tvPressScale(interactionSource)
             .size(if (primary) (if (compact) 60.dp else 68.dp) else (if (compact) 46.dp else 52.dp))
             .tvSurface(
                 focused = focused,
@@ -1463,7 +1467,7 @@ private fun TvOsdButton(
                 focused = it.isFocused || it.hasFocus
                 if (focused) onFocusLabel(label)
             }
-            .clickable { onClick() }
+            .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
     ) {
         Icon(
             imageVector = icon,
