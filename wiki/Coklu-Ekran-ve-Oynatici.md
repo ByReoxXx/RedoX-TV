@@ -50,5 +50,5 @@ Duraklat/oynat, **15 sn geri sar** (TV) ve **Canlıya dön**. Duraklatma, oynat�
 
 - **Çoklu favori listeleri:** "Favoriler" her zaman vardır (silinemez/adı değişmez); istediğiniz kadar ek liste (Çocuklar, Spor…) oluşturabilir, adlandırabilir, silebilirsiniz. Sıralama: TV'de **tut & taşı**, telefonda ↑/↓; ayrıca A-Z / kanal no / kategori ile otomatik sıralama.
 - **PIN korumalı ebeveyn kilidi:** kanallar 4 haneli PIN ile kilitlenir (TV: kanal başlığında **Kilitle**; mobil: uzun basıp **PIN ile kilitle**). Kilitli kanal PIN girilmeden açılmaz ve **TV'ye gönderilemez**. PIN ekranda gösterilmez, yedeğe yazılmaz.
-- **Gizle / geri getir:** istenmeyen kanallar listeden gizlenir, *Kaynaklar* (mobil) veya *M3U & Dosya Yükle* (TV) ekranından geri getirilir.
+- **Gizle / geri getir:** istenmeyen kanallar listeden gizlenir, *Kaynaklar* (mobil) veya *M3U ve Dosya* (TV) ekranından geri getirilir.
 - **Kanal adı / numarası düzenleme:** yalnızca bu cihazda uygulanır, M3U listesi değişmez; **Varsayılana dön** ile geri alınır.

@@ -1066,7 +1066,6 @@ fun TvSideNavigationRail(
                     MainNavTab.ALL_CHANNELS -> builtInCount.toString()
                     MainNavTab.FAVORITES -> favoriteCount.toString()
                     MainNavTab.CUSTOM_M3U -> customM3uCount.toString()
-                    MainNavTab.MULTI_VIEW -> "2x2"
                     else -> null
                 }
 
@@ -1157,7 +1156,7 @@ fun TvSideNavigationRail(
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = if (sleepTimerMinutes != null) "Uyku: $sleepTimerMinutes dk" else "Uyku zamanlayıcı: Kapalı",
+                text = if (sleepTimerMinutes != null) "Uyku: $sleepTimerMinutes dk" else "Uyku: Kapalı",
                 color = TvThemeColors.TextSecondary,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Medium,

@@ -53,5 +53,5 @@ Depo *Settings → Secrets and variables → Actions* bölümüne ekleyin: `REDO
 
 ## ✅ İlk açılış
 
-1. **TV:** *Ayarlar → Yayın Rehberi*'ne XMLTV adresi, *M3U & Dosya Yükle*'ye kendi listenizi ekleyin ([rehber](M3U-Xtream-ve-QR-Yukleme.md)).
+1. **TV:** *Ayarlar → Yayın Rehberi*'ne XMLTV adresi, *M3U ve Dosya*'ye kendi listenizi ekleyin ([rehber](M3U-Xtream-ve-QR-Yukleme.md)).
 2. **Telefon:** *Kumanda* sekmesini açın, TV'yi seçin, TV ekranındaki 6 haneli kodu girin ([rehber](Telefon-Kumandasi.md)).

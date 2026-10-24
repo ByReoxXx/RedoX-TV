@@ -144,7 +144,7 @@ Keystore dosyasını **asla depoya koymayın** (`.gitignore` zaten engeller) ve 
   adb connect <TV-IP>:5555
   adb install -r RedoX-TV-2-v2.1.0-tv.apk
   ```
-- İlk açılışta TV'de **Ayarlar → Yayın Rehberi**'nden XMLTV adresi, **M3U & Dosya Yükle**'den kendi listenizi ekleyebilirsiniz. Telefonla kumanda için telefonda **Kumanda** sekmesini açın; TV ekranındaki 6 haneli kodu girin.
+- İlk açılışta TV'de **Ayarlar → Yayın Rehberi**'nden XMLTV adresi, **M3U ve Dosya**'den kendi listenizi ekleyebilirsiniz. Telefonla kumanda için telefonda **Kumanda** sekmesini açın; TV ekranındaki 6 haneli kodu girin.
 
 ---
 
