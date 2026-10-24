@@ -1,4 +1,5 @@
 # RedoX TV 2 — R8 (kod küçültme) kuralları
+# Not: varsayılan dosya proguard-android.txt olduğundan optimizasyon kapalıdır (-dontoptimize); yalnızca küçültme ve ad kısaltma yapılır.
 
 # Çökme kayıtları okunabilir kalsın
 -keepattributes SourceFile,LineNumberTable
