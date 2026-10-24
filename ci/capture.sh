@@ -70,19 +70,26 @@ if [ "$KIND" = "tv" ]; then
     done
     shot "${P}-07-geri-liste"
 
-    # yan menü: Canlı TV, Favorilerim, Özel M3U, Bölünmüş Ekran, Yayın Rehberi, Kanal Ara, M3U ve Dosya, Ayarlar
-    keys 6 KEYCODE_DPAD_LEFT; keys 9 KEYCODE_DPAD_UP
+    # kategori çipleri: "Son izlenenler" seçilince odak çipte kalmalı, liste yalnızca izlenenleri göstermeli
+    key KEYCODE_DPAD_UP; sleep 1; keys 12 KEYCODE_DPAD_LEFT; key KEYCODE_DPAD_RIGHT
+    key KEYCODE_DPAD_CENTER; sleep 2
+    shot "${P}-07b-son-izlenenler"
+
+    # yan menü: Geri, odağı seçili sekmeye (başlangıçta Canlı TV) götürür; aşağı yön tuşuyla istenen sekmeye inilir.
+    # Sıra: Canlı TV, Favorilerim, Özel M3U, Bölünmüş Ekran, Yayın Rehberi, Kanal Ara, M3U ve Dosya, Ayarlar.
+    # Sekme açılınca odak içeriğe geçer; bir sonraki sekme için yine Geri ile başlanır.
+    key KEYCODE_BACK; sleep 1
     key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
     shot "${P}-08-favoriler"
-    keys 2 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 8
+    key KEYCODE_BACK; sleep 1; keys 2 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 8
     shot "${P}-09-bolunmus-ekran"
-    key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 4
+    key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 4
     shot "${P}-10-rehber"
-    key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
+    key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
     shot "${P}-11-ara"
-    key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
+    key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
     shot "${P}-12-m3u"
-    key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
+    key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
     shot "${P}-13-ayarlar"
 
     # Geri: içerikten yan menüye, ikinci basışta çıkış uyarısı (uygulamadan hemen çıkmaz)

@@ -1067,12 +1067,13 @@ fun TvSideNavigationRail(
                 val isSelected = selectedTab == tab
                 val shape = RoundedCornerShape(14.dp)
 
+                // Sayı rozeti yalnızca kanal içeren sekmelerde görünür (sıfır rozeti gürültü yapar)
                 val badgeText = when (tab) {
-                    MainNavTab.ALL_CHANNELS -> builtInCount.toString()
-                    MainNavTab.FAVORITES -> favoriteCount.toString()
-                    MainNavTab.CUSTOM_M3U -> customM3uCount.toString()
-                    else -> null
-                }
+                    MainNavTab.ALL_CHANNELS -> builtInCount
+                    MainNavTab.FAVORITES -> favoriteCount
+                    MainNavTab.CUSTOM_M3U -> customM3uCount
+                    else -> 0
+                }.takeIf { it > 0 }?.toString()
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
