@@ -1,15 +1,5 @@
 package com.example.chromecasttv
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.GridView
-import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.LiveTv
-import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.rounded.SettingsRemote
-import androidx.compose.material.icons.rounded.Star
-import androidx.compose.material.icons.rounded.UploadFile
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +30,12 @@ val PhoneRootTabs: List<MobileTab> = listOf(
 
 /** Tablet gezinti rayındaki sekmeler (hepsi köktür). */
 val TabletRailTabs: List<MobileTab> = MobileTab.entries.toList()
+
+/** Rayın dibine sabitlenen yardımcı sekmeler (ana gezintiden ayrı): Kaynaklar ve Ayarlar. */
+val TabletRailFooterTabs: List<MobileTab> = listOf(MobileTab.SOURCES, MobileTab.SETTINGS)
+
+/** Rayın üst bölümündeki ana gezinti sekmeleri. */
+val TabletRailMainTabs: List<MobileTab> = TabletRailTabs.filter { it !in TabletRailFooterTabs }
 
 /**
  * Basit gezinme durumu: bir "geri yığını" tutar. Kök sekme seçimi yığını sıfırlar;

@@ -19,6 +19,7 @@ Metin–zemin oranları: ana metin 16,3:1, ikincil 9,3:1, üçüncül 5,5:1, alt
 
 - Odaktaki öğe: **3 dp altın çerçeve + yumuşak altın ışıma + hafif büyüme** (`tvSurface`).
 - Seçili ama odakta olmayan öğe (ör. yan menüdeki sekme): kırmızı dolgu tonu.
+- Yan menü iki bölümlüdür: üstte ana gezinti (Canlı TV, Favorilerim, Özel M3U, Bölünmüş Ekran, Yayın Rehberi, Kanal Ara), ince bir çizginin altında menünün dibinde **Kaynaklar** (TV'de "M3U ve Dosya"), **Ayarlar** ve TV'de Uyku zamanlayıcısı. Tablette de Kaynaklar ve Ayarlar rayın dibinde durur. Alçak ekranlarda (540 dp'lik 1080p TV) boşluklar daralır, menü kaydırmadan sığar.
 - Yalnızca simgeli düğmeler (`TvIconPill`): odaklanınca adı yanında açılır; oynatıcıda odaktaki düğmenin adı kontrol çubuğunun altında tek satırda gösterilir.
 - Kısayol ipuçları (`OK`, `OK basılı tut`, `Geri`) kanal ızgarasının altında sabit bir çubukta durur; kartların içindeki yazı odakla değişmez. İpuçları yalnızca yön tuşları, `OK` ve `Geri` olan kumandaya göre yazılır.
 

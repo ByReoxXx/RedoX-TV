@@ -92,7 +92,9 @@ if [ "$KIND" = "tv" ]; then
     key KEYCODE_BACK; sleep 1; key KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3
     shot "${P}-13-ayarlar"
 
-    # Geri: içerikten yan menüye, ikinci basışta çıkış uyarısı (uygulamadan hemen çıkmaz)
+    # Geri: içerikten yan menüye, ikinci basışta çıkış uyarısı (uygulamadan hemen çıkmaz).
+    # Ayarlar açılınca odak yan menüde kalır: önce sağ ok içeriğe geçer, sonra Geri yan menüye döndürür.
+    key KEYCODE_DPAD_RIGHT; sleep 1
     key KEYCODE_BACK; sleep 2
     shot "${P}-14-geri-yan-menu"
     key KEYCODE_BACK; sleep 1
@@ -135,5 +137,9 @@ else
   fi
 fi
 
-adb logcat -d | grep -E "chromecasttv|redoxtv|AndroidRuntime: (FATAL|Shutting)|FATAL|ANR" | tail -n 400 > "shots/${KIND}-logcat.txt" || true
+# Emülatördeki Chrome/Widevine kayıtları Google'ın herkese açık "AIza..." sağlama anahtarını URL içinde yazabilir;
+# depoya gönderilen dosyada GitHub'ın gizli anahtar uyarısı çıkmasın diye anahtar ve "key=" değerleri gizlenir.
+adb logcat -d | grep -E "chromecasttv|redoxtv|AndroidRuntime: (FATAL|Shutting)|FATAL|ANR" \
+  | sed -E 's/AIza[0-9A-Za-z_-]{35}/GIZLENDI/g; s/([?&]key=)[^& "]+/\1GIZLENDI/g' \
+  | tail -n 400 > "shots/${KIND}-logcat.txt" || true
 echo "tamam: $(ls shots | wc -l) dosya"
