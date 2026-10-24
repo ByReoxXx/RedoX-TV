@@ -698,6 +698,7 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit)
             label = if (fav) "Favorilerden çıkar" else "Favorilere ekle"
         ) { station?.let { RadioHub.toggleFavorite(it.id) } }
         MRadioSheetItem(icon = RedoXIcons.MusicNote, label = if (ui.spectrumOn) "Ses dalgasını kapat" else "Ses dalgasını aç") { RadioHub.toggleSpectrum() }
+        MRadioSheetItem(icon = RedoXIcons.VolumeUp, label = if (ui.staticOn) "Radyo cızırtısını kapat" else "Radyo cızırtısını aç") { RadioHub.toggleStatic() }
         MRadioSheetItem(icon = RedoXIcons.VisibilityOff, label = "İstasyonu gizle") {
             station?.let { RadioHub.hide(it.id) }
             onDismiss()

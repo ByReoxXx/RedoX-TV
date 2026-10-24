@@ -39,6 +39,8 @@ data class RadioUiState(
     val sleepChoice: Int? = null,
     val playerOpen: Boolean = false,
     val spectrumOn: Boolean = true,
+    /** İstasyon değişirken yayın açılana kadar nostaljik radyo cızırtısı çalınsın mı. */
+    val staticOn: Boolean = true,
     val toast: String? = null
 ) {
     val current: TvChannel? get() = currentId?.let { id -> stations.firstOrNull { it.id == id } }

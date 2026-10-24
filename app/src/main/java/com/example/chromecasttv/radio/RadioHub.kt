@@ -144,6 +144,7 @@ object RadioHub {
     private const val PREFS = "redox_radio_demo"
     private const val KEY_FAVS = "favorites"
     private const val KEY_HIDDEN = "hidden"
+    private const val KEY_STATIC = "static_noise"
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val _state = MutableStateFlow(RadioUiState())
@@ -184,8 +185,9 @@ object RadioHub {
             all = list
             val favs = prefs?.getStringSet(KEY_FAVS, emptySet())?.toSet() ?: emptySet()
             val hidden = prefs?.getStringSet(KEY_HIDDEN, emptySet())?.toSet() ?: emptySet()
+            val staticOn = prefs?.getBoolean(KEY_STATIC, true) ?: true
             _state.update {
-                it.copy(loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden)
+                it.copy(loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden, staticOn = staticOn)
             }
         }
     }
@@ -279,6 +281,7 @@ object RadioHub {
             )
         }
         RadioPlayer.play(ctx, source.url, station.name, radioSubtitle(station, index), station.logoUrl.takeIf { it.startsWith("http") })
+        if (_state.value.staticOn) RadioStatic.start()      // yayın açılana kadar nostaljik cızırtı
         attemptJob?.cancel()
         attemptJob = scope.launch {
             delay(CONNECT_TIMEOUT_MS)
@@ -288,6 +291,7 @@ object RadioHub {
 
     private fun markPlaying() {
         attemptJob?.cancel()
+        RadioStatic.stop()
         _state.update { if (it.phase == RadioPhase.CONNECTING || it.phase == RadioPhase.FAILOVER) it.copy(phase = RadioPhase.PLAYING) else it }
     }
 
@@ -301,6 +305,7 @@ object RadioHub {
             realPlay(station, next, failover = true)
         } else {
             attemptJob?.cancel()
+            RadioStatic.stop()
             RadioPlayer.stop()
             _state.update { it.copy(phase = RadioPhase.ERROR, song = null) }
         }
@@ -482,6 +487,15 @@ object RadioHub {
         _state.update { it.copy(spectrumOn = !it.spectrumOn) }
     }
 
+    /** İstasyon değişirken çalan radyo cızırtısını açar/kapatır (kalıcı). */
+    fun toggleStatic() {
+        val on = !_state.value.staticOn
+        _state.update { it.copy(staticOn = on) }
+        prefs?.edit()?.putBoolean(KEY_STATIC, on)?.apply()
+        if (!on) RadioStatic.stop()
+        toast(if (on) "Radyo cızırtısı açık" else "Radyo cızırtısı kapalı")
+    }
+
     // ------------------------------------------------------------------ uyku zamanlayıcısı
     fun cycleSleep() {
         val idx = sleepOptions.indexOf(sleepChoice)
@@ -520,6 +534,7 @@ object RadioHub {
         songJob?.cancel()
         sleepJob?.cancel()
         attemptJob?.cancel()
+        RadioStatic.stop()
         RadioPlayer.stop()
         sleepChoice = null
         _state.update {
