@@ -66,7 +66,7 @@ fun MobileMultiViewScreen(
     }
     if (pool.isEmpty()) {
         MEmptyState(
-            icon = Icons.Rounded.GridView,
+            icon = RedoXIcons.GridView,
             title = "Kanal yok",
             message = "Bölünmüş ekran için önce kanal listesi yüklenmeli."
         )
@@ -97,7 +97,7 @@ fun MobileMultiViewScreen(
                 text = if (four) "4'lü (2x2)" else "2'li",
                 selected = true,
                 onClick = { viewModel.toggleMultiViewMode() },
-                icon = Icons.Rounded.GridView
+                icon = RedoXIcons.GridView
             )
         }
 
@@ -278,7 +278,7 @@ private fun MMultiCell(
                 modifier = Modifier.weight(1f)
             )
             Icon(
-                imageVector = if (audioActive) Icons.Rounded.VolumeUp else Icons.Rounded.VolumeOff,
+                imageVector = if (audioActive) RedoXIcons.VolumeUp else RedoXIcons.VolumeOff,
                 contentDescription = if (audioActive) "Ses açık" else "Sessiz",
                 tint = if (audioActive) RedoXColors.Mint else RedoXColors.TextSecondary,
                 modifier = Modifier.size(16.dp)
@@ -308,13 +308,13 @@ private fun MMultiCell(
                 .background(Color.Black.copy(alpha = 0.55f))
         ) {
             IconButton(onClick = { onZap(-1) }, modifier = Modifier.size(36.dp)) {
-                Icon(Icons.Rounded.SkipPrevious, contentDescription = "Önceki kanal", tint = Color.White)
+                Icon(RedoXIcons.SkipPrevious, contentDescription = "Önceki kanal", tint = Color.White)
             }
             IconButton(onClick = { onZap(+1) }, modifier = Modifier.size(36.dp)) {
-                Icon(Icons.Rounded.SkipNext, contentDescription = "Sonraki kanal", tint = Color.White)
+                Icon(RedoXIcons.SkipNext, contentDescription = "Sonraki kanal", tint = Color.White)
             }
             IconButton(onClick = onExpand, modifier = Modifier.size(36.dp)) {
-                Icon(Icons.Rounded.Fullscreen, contentDescription = "Tam ekran", tint = Color.White)
+                Icon(RedoXIcons.Fullscreen, contentDescription = "Tam ekran", tint = Color.White)
             }
         }
     }

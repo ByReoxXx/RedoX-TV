@@ -332,23 +332,23 @@ fun MChannelActionSheet(
                 }
             }
             Spacer(modifier = Modifier.height(6.dp))
-            MSheetAction(Icons.Rounded.PlayArrow, "İzle") { onDismiss(); onPlay() }
+            MSheetAction(RedoXIcons.PlayArrow, "İzle") { onDismiss(); onPlay() }
             MSheetAction(
-                icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                icon = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                 text = if (isFavorite) "Favorilerden çıkar" else "Favorilere ekle",
                 onClick = { onDismiss(); onToggleFavorite() },
                 tint = RedoXColors.Gold
             )
             MSheetAction(
-                icon = if (isLocked) Icons.Rounded.LockOpen else Icons.Rounded.Lock,
+                icon = if (isLocked) RedoXIcons.LockOpen else RedoXIcons.Lock,
                 text = if (isLocked) "PIN kilidini kaldır" else "PIN ile kilitle",
                 onClick = { onDismiss(); onToggleLock() }
             )
-            MSheetAction(Icons.Rounded.Edit, "Adını / numarasını düzenle") { onDismiss(); onEdit() }
-            MSheetAction(Icons.Rounded.VisibilityOff, "Listeden gizle") { onDismiss(); onHide() }
+            MSheetAction(RedoXIcons.Edit, "Adını / numarasını düzenle") { onDismiss(); onEdit() }
+            MSheetAction(RedoXIcons.VisibilityOff, "Listeden gizle") { onDismiss(); onHide() }
             if (castTvName != null) {
                 MSheetAction(
-                    icon = Icons.Rounded.Cast,
+                    icon = RedoXIcons.Cast,
                     text = if (isLocked) "Kilitli kanal TV'ye gönderilemez" else "TV'de oynat ($castTvName)",
                     onClick = { onDismiss(); onCast() },
                     enabled = !isLocked,

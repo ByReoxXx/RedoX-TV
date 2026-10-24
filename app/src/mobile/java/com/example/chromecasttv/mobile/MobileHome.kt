@@ -137,7 +137,7 @@ fun MobileHomeScreen(
                     MPrimaryButton(
                         text = "Canlı TV'yi aç",
                         onClick = { nav.selectRoot(MobileTab.LIVE) },
-                        icon = Icons.Rounded.LiveTv,
+                        icon = RedoXIcons.LiveTv,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -151,7 +151,7 @@ fun MobileHomeScreen(
                 MCard(modifier = Modifier.padding(horizontal = 16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Rounded.SystemUpdate,
+                            imageVector = RedoXIcons.SystemUpdate,
                             contentDescription = null,
                             tint = RedoXColors.Gold,
                             modifier = Modifier.size(26.dp)
@@ -185,7 +185,7 @@ fun MobileHomeScreen(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Rounded.CalendarMonth,
+                            imageVector = RedoXIcons.CalendarMonth,
                             contentDescription = null,
                             tint = RedoXColors.PrimaryBright,
                             modifier = Modifier.size(26.dp)
@@ -216,14 +216,14 @@ fun MobileHomeScreen(
                 contentPadding = PaddingValues(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                item { MChip("Canlı TV", false, { nav.selectRoot(MobileTab.LIVE) }, icon = Icons.Rounded.LiveTv) }
-                item { MChip("Rehber", false, { nav.selectRoot(MobileTab.GUIDE) }, icon = Icons.Rounded.CalendarMonth) }
-                item { MChip("Favoriler", false, { nav.selectRoot(MobileTab.FAVORITES) }, icon = Icons.Rounded.Star) }
-                item { MChip("Ara", false, { nav.push(MobileTab.SEARCH) }, icon = Icons.Rounded.Search) }
-                item { MChip("Kumanda", false, { nav.selectRoot(MobileTab.REMOTE) }, icon = Icons.Rounded.SettingsRemote) }
-                item { MChip("Bölünmüş Ekran", false, { nav.push(MobileTab.MULTI) }, icon = Icons.Rounded.GridView) }
-                item { MChip("Kaynaklar", false, { nav.push(MobileTab.SOURCES) }, icon = Icons.Rounded.UploadFile) }
-                item { MChip("Ayarlar", false, { nav.push(MobileTab.SETTINGS) }, icon = Icons.Rounded.Settings) }
+                item { MChip("Canlı TV", false, { nav.selectRoot(MobileTab.LIVE) }, icon = RedoXIcons.LiveTv) }
+                item { MChip("Rehber", false, { nav.selectRoot(MobileTab.GUIDE) }, icon = RedoXIcons.CalendarMonth) }
+                item { MChip("Favoriler", false, { nav.selectRoot(MobileTab.FAVORITES) }, icon = RedoXIcons.Star) }
+                item { MChip("Ara", false, { nav.push(MobileTab.SEARCH) }, icon = RedoXIcons.Search) }
+                item { MChip("Kumanda", false, { nav.selectRoot(MobileTab.REMOTE) }, icon = RedoXIcons.SettingsRemote) }
+                item { MChip("Bölünmüş Ekran", false, { nav.push(MobileTab.MULTI) }, icon = RedoXIcons.GridView) }
+                item { MChip("Kaynaklar", false, { nav.push(MobileTab.SOURCES) }, icon = RedoXIcons.UploadFile) }
+                item { MChip("Ayarlar", false, { nav.push(MobileTab.SETTINGS) }, icon = RedoXIcons.Settings) }
             }
         }
 
@@ -288,7 +288,7 @@ fun MobileHomeScreen(
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
-                                            imageVector = Icons.Rounded.NotificationsActive,
+                                            imageVector = RedoXIcons.NotificationsActive,
                                             contentDescription = null,
                                             tint = RedoXColors.Gold,
                                             modifier = Modifier.size(22.dp)
@@ -391,7 +391,7 @@ private fun MResumeHero(
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.PlayArrow,
+                    imageVector = RedoXIcons.PlayArrow,
                     contentDescription = "İzle",
                     tint = Color.White,
                     modifier = Modifier.size(if (isTablet) 34.dp else 28.dp)

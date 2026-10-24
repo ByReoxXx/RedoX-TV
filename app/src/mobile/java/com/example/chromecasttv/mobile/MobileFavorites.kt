@@ -66,7 +66,7 @@ fun MobileFavoritesScreen(
                             text = name,
                             selected = name == activeList,
                             onClick = { viewModel.features.switchFavoriteList(name) },
-                            icon = Icons.Rounded.Star
+                            icon = RedoXIcons.Star
                         )
                     }
                     item {
@@ -74,7 +74,7 @@ fun MobileFavoritesScreen(
                             text = "Yeni liste",
                             selected = false,
                             onClick = { dialog = 1 },
-                            icon = Icons.Rounded.Add
+                            icon = RedoXIcons.Add
                         )
                     }
                 }
@@ -83,8 +83,8 @@ fun MobileFavoritesScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (!isDefault) {
-                        MGhostButton(text = "Adını değiştir", onClick = { dialog = 2 }, icon = Icons.Rounded.Edit)
-                        MGhostButton(text = "Listeyi sil", onClick = { dialog = 3 }, icon = Icons.Rounded.DeleteOutline, danger = true)
+                        MGhostButton(text = "Adını değiştir", onClick = { dialog = 2 }, icon = RedoXIcons.Edit)
+                        MGhostButton(text = "Listeyi sil", onClick = { dialog = 3 }, icon = RedoXIcons.DeleteOutline, danger = true)
                     }
                 }
                 if (favorites.size > 1) {
@@ -101,7 +101,7 @@ fun MobileFavoritesScreen(
         if (favorites.isEmpty()) {
             item(key = "empty") {
                 MEmptyState(
-                    icon = Icons.Rounded.Star,
+                    icon = RedoXIcons.Star,
                     title = "\"$activeList\" listesi boş",
                     message = "Canlı TV'de bir kanala uzun basıp \"Favorilere ekle\"yi seçin.",
                     action = {
@@ -128,7 +128,7 @@ fun MobileFavoritesScreen(
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Rounded.ArrowUpward,
+                                    imageVector = RedoXIcons.ArrowUpward,
                                     contentDescription = "Yukarı taşı",
                                     tint = if (index > 0) RedoXColors.TextSecondary else RedoXColors.TextTertiary
                                 )
@@ -139,7 +139,7 @@ fun MobileFavoritesScreen(
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Rounded.ArrowDownward,
+                                    imageVector = RedoXIcons.ArrowDownward,
                                     contentDescription = "Aşağı taşı",
                                     tint = if (index < favorites.lastIndex) RedoXColors.TextSecondary else RedoXColors.TextTertiary
                                 )
@@ -149,7 +149,7 @@ fun MobileFavoritesScreen(
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Rounded.Close,
+                                    imageVector = RedoXIcons.Close,
                                     contentDescription = "Favoriden çıkar",
                                     tint = RedoXColors.Danger
                                 )

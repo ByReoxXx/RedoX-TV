@@ -63,7 +63,7 @@ fun MobileLiveScreen(
                         text = "Yerleşik (${state.builtInChannels.size})",
                         selected = !useCustom,
                         onClick = { showCustom = false; viewModel.selectCategory("Tümü") },
-                        icon = Icons.Rounded.LiveTv
+                        icon = RedoXIcons.LiveTv
                     )
                 }
                 item {
@@ -71,7 +71,7 @@ fun MobileLiveScreen(
                         text = "Özel M3U (${state.customM3uChannels.size})",
                         selected = useCustom,
                         onClick = { showCustom = true; viewModel.selectCategory("Tümü") },
-                        icon = Icons.Rounded.UploadFile
+                        icon = RedoXIcons.UploadFile
                     )
                 }
             }
@@ -96,7 +96,7 @@ fun MobileLiveScreen(
 
         if (filtered.isEmpty()) {
             MEmptyState(
-                icon = Icons.Rounded.LiveTv,
+                icon = RedoXIcons.LiveTv,
                 title = "Bu kategoride kanal yok",
                 message = if (hasCustom || state.playlists.isNotEmpty()) "Başka bir kategori seçin."
                 else "Kaynaklar ekranından M3U listesi veya Xtream hesabı ekleyebilirsiniz.",
