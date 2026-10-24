@@ -177,6 +177,7 @@ Keystore dosyasını **asla depoya koymayın** (`.gitignore` zaten engeller) ve 
 | Ekran | Tuş | İşlev |
 |---|---|---|
 | Kanal ızgarası | `OK` / `OK basılı tut` | İzle / odağı üstteki panele (İzle, Favori, Kilit, Düzenle, Gizle) götür; `Geri` karta döndürür |
+| Özel M3U | `OK` / `Geri` | Eklediğiniz listenin adındaki klasörü aç / klasör listesine dön (kategori çiplerindeyken) |
 | Tüm ekranlar | `Geri` | Bir üst düzeye: listeden kategori çiplerine, çiplerden yan menüye; yan menüde ikinci basış uygulamadan çıkar |
 | Oynatıcı | `▲ ▼` | Kanal değiştir |
 | Oynatıcı | `◄` / `►` | Kanal çekmecesi / sonraki akış kaynağı |

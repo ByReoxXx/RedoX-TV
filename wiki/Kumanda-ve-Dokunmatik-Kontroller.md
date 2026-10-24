@@ -10,6 +10,7 @@ Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir. Chromecast with
 | **Kanal ızgarası** | `OK` basılı tut | Odak üstteki büyük paneldeki **İzle** düğmesine gider (kanal özellikleri) |
 | **Kanal ızgarası** | Üstteki panelde `▼` / `◄ ►` | Simge düğmeleri: Favori, Kilit, **Düzenle**, Gizle; odaklanınca adı açılır. Düzenle kanalın adını/numarasını bu cihazda değiştirir |
 | **Kanal ızgarası** | `Geri` (panelden) | Odak, `OK` basılı tutulan karta döner |
+| **Özel M3U** | `OK` / `Geri` | Klasörü (eklediğiniz listenin adı) açar / klasör listesine döner (çiplerdeyken) |
 | **Tüm ekranlar** | `Geri` | Bir üst düzeye çıkar: Canlı TV'de listeden kategori çiplerine, çiplerden (ve diğer ekranlardan) yan menüye; yan menüdeyken uyarı görünürken ikinci `Geri` uygulamadan çıkar |
 | **Oynatıcı** | `▲` / `▼` | Sonraki / önceki kanal |
 | **Oynatıcı** | `◄` | Hızlı kanal çekmecesi |
