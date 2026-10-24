@@ -20,6 +20,13 @@ fun TvChannel.nowNextLine(): String {
 
 fun TvChannel.progressForUi(): Float = if (hasRealEpg) currentProgress.coerceIn(0f, 1f) else 0f
 
+/** Yerleşik listenin kategori çipleri bu sırada görünür (kanal sırası Türksat listesine göre karışık olsa da). */
+private val PreferredCategoryOrder = listOf("Ulusal", "Haber", "Spor", "Belgesel", "Müzik", "Çocuk", "Dini", "Kıbrıs", "Dünya", "Yerel")
+
+/** Bilinen kategoriler yukarıdaki sırayla, tanınmayanlar (ör. özel M3U grupları) karşılaşma sırasıyla sona eklenir. */
+fun List<String>.inPreferredCategoryOrder(): List<String> =
+    PreferredCategoryOrder.filter { it in this } + filter { it !in PreferredCategoryOrder }
+
 enum class ShelfKind { CONTINUE, MOST_WATCHED, FAVORITES }
 
 @Immutable
