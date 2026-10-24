@@ -52,11 +52,15 @@ if [ "$KIND" = "tv" ]; then
     key KEYCODE_BACK; sleep 2
     shot "${P}-03d-geri-karta"
 
-    key KEYCODE_DPAD_CENTER; sleep 6            # kanalı aç
+    key KEYCODE_DPAD_CENTER; sleep 2            # kanalı aç
+    shot "${P}-04a-oynatici-bilgi"              # alt çubuk + kısayol ipuçları (odak videoda)
+    sleep 4
     shot "${P}-04-oynatici"
-    key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla
-    keys 3 KEYCODE_DPAD_RIGHT; sleep 1
+    key KEYCODE_DPAD_CENTER; sleep 1            # kontrolleri odakla (odak oynat/duraklatta)
     shot "${P}-05-oynatici-kontroller"
+    keys 6 KEYCODE_DPAD_RIGHT; key KEYCODE_DPAD_CENTER; sleep 1   # "Seçenekler" düğmesine git, menüyü aç
+    shot "${P}-05b-oynatici-secenekler"
+    key KEYCODE_BACK; sleep 1                   # menüyü kapat (odak "Seçenekler" düğmesine döner)
     sleep 8                                     # çubuk kendiliğinden gizlenir
     key KEYCODE_DPAD_LEFT; sleep 2              # hızlı kanal çekmecesi
     shot "${P}-06-cekmece"

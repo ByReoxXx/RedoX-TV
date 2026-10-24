@@ -303,7 +303,7 @@ class TvViewModel(
         } else visibleCustom
 
         val favSet = favOrder.toSet()
-        val distinctBuiltInCats = listOf("Tümü") + visibleBuiltIn.map { it.category }.distinct()
+        val distinctBuiltInCats = listOf("Tümü") + visibleBuiltIn.map { it.category }.distinct().inPreferredCategoryOrder()
         val distinctCustomCats = listOf("Tümü") + visibleCustom.map { it.category }.distinct()
         val defaultMulti = if (multiList.isNotEmpty()) multiList else visibleBuiltIn.take(4)
 
@@ -366,7 +366,7 @@ class TvViewModel(
         SharingStarted.Eagerly,
         TvUiState(
             builtInChannels = initialBuiltIn,
-            categories = listOf("Tümü") + initialBuiltIn.map { it.category }.distinct(),
+            categories = listOf("Tümü") + initialBuiltIn.map { it.category }.distinct().inPreferredCategoryOrder(),
             favoriteOrderList = _favoriteOrder.value,
             favoriteIds = _favoriteOrder.value.toSet(),
             hiddenChannelIds = _extraState.value.hiddenChannelIds,

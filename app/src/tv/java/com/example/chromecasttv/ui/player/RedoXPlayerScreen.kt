@@ -828,7 +828,7 @@ fun RedoXPlayerScreen(
             val favKey = "__redox_favorites__"
             val drawerCategories = remember(allChannels, favoriteIds) {
                 val list = mutableListOf("Tümü", favKey)
-                list.addAll(allChannels.map { it.category }.distinct())
+                list.addAll(allChannels.map { it.category }.distinct().inPreferredCategoryOrder())
                 list
             }
             val filteredDrawerChannels = remember(allChannels, selectedDrawerCat, favoriteIds) {
@@ -1460,7 +1460,14 @@ private fun PlayerDock(
                 .padding(start = (18 * k).dp, end = (16 * k).dp, top = (8 * k).dp, bottom = (12 * k).dp)
         ) {
             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
-                PlayerDockChannel(channel = channel, broken = broken, resolution = resolution, k = k)
+                PlayerDockChannel(
+                    channel = channel,
+                    broken = broken,
+                    resolution = resolution,
+                    sourceIndex = sourceIndex,
+                    sourceCount = sourceCount,
+                    k = k
+                )
             }
 
             Row(
@@ -1531,9 +1538,16 @@ private fun PlayerDock(
     }
 }
 
-/** Dock'un sol bölgesi: logo + numara rozeti, kanal adı + CANLI, program (veya çözünürlük). */
+/** Dock'un sol bölgesi: logo + numara rozeti; kanal adı; CANLI rozeti + program (rehber yoksa çözünürlük ve akış sırası). */
 @Composable
-private fun PlayerDockChannel(channel: TvChannel, broken: Boolean, resolution: String, k: Float) {
+private fun PlayerDockChannel(
+    channel: TvChannel,
+    broken: Boolean,
+    resolution: String,
+    sourceIndex: Int,
+    sourceCount: Int,
+    k: Float
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box {
             ChannelBrandLogoBox(channel = channel, boxSize = (44 * k).dp, fontSize = (14 * k).sp)
@@ -1559,25 +1573,20 @@ private fun PlayerDockChannel(channel: TvChannel, broken: Boolean, resolution: S
         }
         Spacer(modifier = Modifier.width((12 * k).dp))
         Column(verticalArrangement = Arrangement.spacedBy((2 * k).dp)) {
+            // Ad tam genişliği kullanır (uzun yerel kanal adları kesilmesin); CANLI rozeti ikinci satırda durur
+            Text(
+                text = channel.name,
+                color = TvThemeColors.TextPrimary,
+                fontSize = (19 * k).sp,
+                fontWeight = FontWeight.ExtraBold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy((8 * k).dp)
             ) {
-                Text(
-                    text = channel.name,
-                    color = TvThemeColors.TextPrimary,
-                    fontSize = (19 * k).sp,
-                    fontWeight = FontWeight.ExtraBold,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f, fill = false)
-                )
                 TvLiveBadge(text = if (broken) "ÇALIŞMIYOR" else "CANLI", broken = broken)
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy((8 * k).dp)
-            ) {
                 if (channel.hasRealEpg) {
                     Text(
                         text = channel.currentProgramTitle,
@@ -1597,7 +1606,7 @@ private fun PlayerDockChannel(channel: TvChannel, broken: Boolean, resolution: S
                     )
                 } else {
                     Text(
-                        text = "Canlı yayın  ·  $resolution",
+                        text = if (sourceCount > 1) "$resolution  ·  Akış ${sourceIndex + 1}/$sourceCount" else resolution,
                         color = TvThemeColors.TextSecondary,
                         fontSize = (13 * k).sp,
                         maxLines = 1,
