@@ -22,6 +22,18 @@ Metin–zemin oranları: ana metin 16,3:1, ikincil 9,3:1, üçüncül 5,5:1, alt
 - Yalnızca simgeli düğmeler (`TvIconPill`): odaklanınca adı yanında açılır; oynatıcıda odaktaki düğmenin adı kontrol çubuğunun altında tek satırda gösterilir.
 - Kısayol ipuçları (`OK`, `OK basılı tut`, `Geri`) kanal ızgarasının altında sabit bir çubukta durur; kartların içindeki yazı odakla değişmez. İpuçları yalnızca yön tuşları, `OK` ve `Geri` olan kumandaya göre yazılır.
 
+## Hareket (hafif animasyonlar)
+
+Hareket yalnızca durumu anlatmak içindir; hepsi kısa ve sakindir (80–500 ms), GPU katmanında çalışır.
+
+- **Odak geçişi (TV):** halka, ışıma ve zemin 130 ms'de yumuşakça açılıp kapanır; kumandayla gezerken sıçrama olmaz.
+- **Basma geri bildirimi:** OK tuşuna ya da dokunuşa basılıyken düğme, kart ve çip %3–5 küçülür, bırakınca geri yaylanır.
+- **Canlı göstergesi:** "CANLI" rozetindeki nokta saniyede bir yavaşça nabız atar; çalan kanalın ekolayzer çubukları hafifçe oynar.
+- **İlerleme çubukları:** program ilerlemesi değişince akıcı uzar.
+- **Karşılama:** içerik yukarı kayarak belirir, logonun arkasında yavaş bir altın ışıma nefes alır.
+- **Uyarılar:** alttan kayarak girer, süre dolunca kayarak çıkar.
+- Sekme geçişleri 140 ms çapraz solmadır; oynatıcı çubuğu ve çekmece kayarak açılır.
+
 ## Yazı ve boyutlar
 
 - TV: başlık 26–32 sp, kanal adı 16–18 sp, açıklama 13–15 sp, en küçük 12 sp (eski 9–10 sp'lik yazılar kaldırıldı).

@@ -27,6 +27,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -188,6 +194,21 @@ fun RedoXLandingScreen(
         try { primaryFocusRequester.requestFocus() } catch (_: Exception) {}
     }
 
+    // Giriş: içerik hafifçe yukarı kayarak belirir; logonun arkasında yavaş bir altın ışıma nefes alır
+    val entrance = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        entrance.animateTo(1f, tween(durationMillis = 420, easing = FastOutSlowInEasing))
+    }
+    val glowPulse by rememberInfiniteTransition(label = "landing_glow").animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 2600, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "landing_glow_pulse"
+    )
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -207,7 +228,12 @@ fun RedoXLandingScreen(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    alpha = entrance.value
+                    translationY = (1f - entrance.value) * 20.dp.toPx()
+                }
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -253,7 +279,20 @@ fun RedoXLandingScreen(
             }
 
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                RedoXMark(markSize = markSize)
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.size(markSize)) {
+                    Box(
+                        modifier = Modifier
+                            .requiredSize(markSize * 1.9f)
+                            .graphicsLayer { alpha = 0.30f + 0.70f * glowPulse }
+                            .background(
+                                Brush.radialGradient(
+                                    listOf(RedoXColors.Gold.copy(alpha = 0.22f), Color.Transparent)
+                                ),
+                                CircleShape
+                            )
+                    )
+                    RedoXMark(markSize = markSize)
+                }
                 Spacer(modifier = Modifier.height(4.dp))
                 RedoXWordmarkImage(width = wordWidth)
                 Spacer(modifier = Modifier.height(10.dp))
@@ -788,34 +827,45 @@ fun RedoXTvRootScreen(
         }
 
         state.statusMessage?.let { message ->
+            var toastShown by remember(message) { mutableStateOf(false) }
             LaunchedEffect(message) {
-                delay(3500)
+                toastShown = true
+                delay(3200)
+                toastShown = false
+                delay(300)
                 viewModel.clearStatusMessage()
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            AnimatedVisibility(
+                visible = toastShown,
+                enter = fadeIn(tween(160)) + slideInVertically(tween(220)) { it / 2 },
+                exit = fadeOut(tween(200)) + slideOutVertically(tween(220)) { it / 2 },
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 16.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(TvThemeColors.SurfaceElevated)
-                    .border(2.dp, RedoXColors.Gold, RoundedCornerShape(14.dp))
-                    .padding(horizontal = 20.dp, vertical = 11.dp)
             ) {
-                Icon(
-                    imageVector = RedoXIcons.NotificationsActive,
-                    contentDescription = null,
-                    tint = RedoXColors.Gold,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = message,
-                    color = TvThemeColors.TextPrimary,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(14.dp))
+                        .background(TvThemeColors.SurfaceElevated)
+                        .border(2.dp, RedoXColors.Gold, RoundedCornerShape(14.dp))
+                        .padding(horizontal = 20.dp, vertical = 11.dp)
+                ) {
+                    Icon(
+                        imageVector = RedoXIcons.NotificationsActive,
+                        contentDescription = null,
+                        tint = RedoXColors.Gold,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = message,
+                        color = TvThemeColors.TextPrimary,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1
+                    )
+                }
             }
         }
     }

@@ -1,10 +1,20 @@
 package com.example.chromecasttv
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,12 +43,16 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -52,6 +66,24 @@ import androidx.compose.ui.unit.sp
 // Telefon / tablet ortak tasarım bileşenleri (RedoX "Kızıl & Altın" belirteçleriyle)
 // Tüm renkler RedoXColors'tan okunur; palet/AMOLED seçimi anında yansır.
 // ============================================================================
+
+/** Dokunulunca (basılıyken) öğe hafifçe küçülür, bırakınca geri yaylanır. */
+@Composable
+fun Modifier.pressScale(
+    interactionSource: MutableInteractionSource,
+    pressedScale: Float = 0.97f
+): Modifier {
+    val pressed by interactionSource.collectIsPressedAsState()
+    val scale by animateFloatAsState(
+        targetValue = if (pressed) pressedScale else 1f,
+        animationSpec = tween(durationMillis = 90),
+        label = "press_scale"
+    )
+    return this.graphicsLayer {
+        scaleX = scale
+        scaleY = scale
+    }
+}
 
 /** Bölüm başlığı (+ isteğe bağlı sağ eylem). */
 @Composable
@@ -140,12 +172,20 @@ fun MCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val shape = RoundedCornerShape(18.dp)
+    val interaction = remember { MutableInteractionSource() }
     Column(
         modifier = modifier
+            .pressScale(interaction, 0.98f)
             .clip(shape)
             .background(RedoXColors.Surface)
             .border(1.dp, RedoXColors.Line.copy(alpha = 0.7f), shape)
-            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier)
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(interactionSource = interaction, indication = LocalIndication.current) { onClick() }
+                } else {
+                    Modifier
+                }
+            )
             .padding(14.dp),
         content = content
     )
@@ -173,9 +213,11 @@ fun MChip(
     icon: ImageVector? = null
 ) {
     val shape = RoundedCornerShape(50)
+    val interaction = remember { MutableInteractionSource() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .pressScale(interaction)
             .defaultMinSize(minHeight = 44.dp)
             .clip(shape)
             .background(if (selected) RedoXColors.Primary.copy(alpha = 0.18f) else RedoXColors.Surface)
@@ -184,7 +226,7 @@ fun MChip(
                 color = if (selected) RedoXColors.Primary else RedoXColors.Line,
                 shape = shape
             )
-            .clickable(role = Role.Button) { onClick() }
+            .clickable(interactionSource = interaction, indication = LocalIndication.current, role = Role.Button) { onClick() }
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         if (icon != null) {
@@ -217,14 +259,16 @@ fun MPrimaryButton(
 ) {
     val shape = RoundedCornerShape(14.dp)
     val content = if (enabled) RedoXColors.OnPrimary else RedoXColors.TextTertiary
+    val interaction = remember { MutableInteractionSource() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
+            .pressScale(interaction)
             .defaultMinSize(minHeight = 48.dp)
             .clip(shape)
             .background(if (enabled) RedoXColors.PrimaryBrush else SolidColor(RedoXColors.SurfaceHigh))
-            .clickable(enabled = enabled, role = Role.Button) { onClick() }
+            .clickable(interactionSource = interaction, indication = LocalIndication.current, enabled = enabled, role = Role.Button) { onClick() }
             .padding(horizontal = 20.dp, vertical = 10.dp)
     ) {
         if (icon != null) {
@@ -314,7 +358,11 @@ fun MProgressBar(
     color: Color = RedoXColors.Gold,
     height: Dp = 4.dp
 ) {
-    val clamped = progress.coerceIn(0f, 1f)
+    val clamped by animateFloatAsState(
+        targetValue = progress.coerceIn(0f, 1f),
+        animationSpec = tween(durationMillis = 500),
+        label = "progress"
+    )
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -334,6 +382,15 @@ fun MProgressBar(
 /** "CANLI" rozeti: beyaz nokta + yazı, kızıl zemin. */
 @Composable
 fun MLiveBadge(modifier: Modifier = Modifier) {
+    val pulse by rememberInfiniteTransition(label = "live_pulse").animateFloat(
+        initialValue = 1f,
+        targetValue = 0.35f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "live_pulse_alpha"
+    )
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -344,6 +401,7 @@ fun MLiveBadge(modifier: Modifier = Modifier) {
         Box(
             modifier = Modifier
                 .size(5.dp)
+                .graphicsLayer { alpha = pulse }
                 .clip(CircleShape)
                 .background(Color.White)
         )
@@ -358,21 +416,55 @@ fun MLiveBadge(modifier: Modifier = Modifier) {
     }
 }
 
-/** Çalan kanalı belirten küçük "ekolayzer" çubukları (durağan). */
+/** Çalan kanalı belirten küçük "ekolayzer" çubukları (hafifçe oynar). */
 @Composable
 fun MEqualizer(
     modifier: Modifier = Modifier,
     color: Color = RedoXColors.PrimaryBright
 ) {
+    val transition = rememberInfiniteTransition(label = "equalizer")
+    val a by transition.animateFloat(
+        initialValue = 0.35f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(520, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "eq_a"
+    )
+    val b by transition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0.4f,
+        animationSpec = infiniteRepeatable(tween(430, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "eq_b"
+    )
+    val c by transition.animateFloat(
+        initialValue = 0.5f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(610, easing = FastOutSlowInEasing), RepeatMode.Reverse),
+        label = "eq_c"
+    )
     Row(
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = Arrangement.spacedBy(2.dp),
         modifier = modifier.height(12.dp)
     ) {
-        Box(modifier = Modifier.width(3.dp).height(6.dp).clip(RoundedCornerShape(2.dp)).background(color))
-        Box(modifier = Modifier.width(3.dp).height(12.dp).clip(RoundedCornerShape(2.dp)).background(color))
-        Box(modifier = Modifier.width(3.dp).height(8.dp).clip(RoundedCornerShape(2.dp)).background(color))
+        EqualizerBar(scale = { a }, color = color)
+        EqualizerBar(scale = { b }, color = color)
+        EqualizerBar(scale = { c }, color = color)
     }
+}
+
+@Composable
+private fun EqualizerBar(scale: () -> Float, color: Color) {
+    Box(
+        modifier = Modifier
+            .width(3.dp)
+            .height(12.dp)
+            .graphicsLayer {
+                scaleY = scale()
+                transformOrigin = TransformOrigin(0.5f, 1f)
+            }
+            .clip(RoundedCornerShape(2.dp))
+            .background(color)
+    )
 }
 
 /** Kanal satırı (liste görünümü). Dokun: izle • Uzun bas: seçenekler. Çalan kanal kızıl tonla işaretlenir. */
@@ -390,9 +482,11 @@ fun MChannelRow(
     trailing: (@Composable () -> Unit)? = null
 ) {
     val shape = RoundedCornerShape(16.dp)
+    val interaction = remember { MutableInteractionSource() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .pressScale(interaction)
             .fillMaxWidth()
             .defaultMinSize(minHeight = 72.dp)
             .clip(shape)
@@ -402,7 +496,12 @@ fun MChannelRow(
                 color = if (isPlaying) RedoXColors.Primary.copy(alpha = 0.55f) else RedoXColors.Line,
                 shape = shape
             )
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+            .combinedClickable(
+                interactionSource = interaction,
+                indication = LocalIndication.current,
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .padding(horizontal = 12.dp, vertical = 10.dp)
     ) {
         ChannelBrandLogoBox(channel = channel, boxSize = 48.dp, fontSize = 12.sp)
@@ -485,14 +584,21 @@ fun MChannelCard(
     isFavorite: Boolean = false
 ) {
     val shape = RoundedCornerShape(18.dp)
+    val interaction = remember { MutableInteractionSource() }
     Column(
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = modifier
+            .pressScale(interaction)
             .height(150.dp)
             .clip(shape)
             .background(RedoXColors.Surface)
             .border(1.dp, RedoXColors.Line, shape)
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+            .combinedClickable(
+                interactionSource = interaction,
+                indication = LocalIndication.current,
+                onClick = onClick,
+                onLongClick = onLongClick
+            )
             .padding(12.dp)
     ) {
         Row(
