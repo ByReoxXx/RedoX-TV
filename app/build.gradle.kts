@@ -36,6 +36,8 @@ android {
         targetSdk = 34
         versionCode = 210
         versionName = "2.1.0"
+        // Arayüz yalnızca Türkçe/İngilizce: kitaplıkların diğer dillerdeki metinleri pakete girmez
+        resourceConfigurations += listOf("tr", "en")
         buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV 2\"")
         // Güncelleme denetimi bu depodaki "latest release"e bakar. GitHub Actions'ta depo adı otomatik gelir.
         val githubRepo = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"
@@ -92,8 +94,10 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // Kod ve kaynak küçültme (R8): APK ~yarıya iner, açılış ve bellek kullanımı düzelir
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             isDebuggable = false
             val releaseSigning = signingConfigs.getByName("release")
             signingConfig = if (releaseSigning.storeFile != null) {
@@ -101,6 +105,12 @@ android {
             } else {
                 signingConfigs.getByName("debug")
             }
+        }
+        // CI emülatör önizlemesi hata ayıklama sürümüyle çalışır; sürümle AYNI kod küçültmeyle derlenir ki
+        // R8 kaynaklı bir sorun (ör. yansımayla çağrılan bir sınıfın silinmesi) önizlemede de görülsün.
+        getByName("debug") {
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
