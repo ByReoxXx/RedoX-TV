@@ -16,7 +16,7 @@
 | **480p** | 480p ve en çok ~1,8 Mbps |
 | **Veri Tasarrufu** | 360p ve en çok ~0,9 Mbps |
 
-Telefon/tablette *Mobil veri tasarrufu* açıksa, yalnızca mobil veri kullanılırken kalite otomatik olarak **Veri Tasarrufu**'na düşer (Wi-Fi'de değişmez). Kalite oynatıcıdan (TV: kontrol çubuğundaki **Kalite**, mobil: ⚙ ayarlar) veya *Ayarlar*'dan seçilir.
+Telefon/tablette *Mobil veri tasarrufu* açıksa, yalnızca mobil veri kullanılırken kalite otomatik olarak **Veri Tasarrufu**'na düşer (Wi-Fi'de değişmez). Kalite oynatıcıdan (TV: kontrol çubuğundaki **Kalite** simgesi, mobil: ⚙ ayarlar) veya *Ayarlar*'dan seçilir.
 
 ## 📊 Gerçek istatistikler
 
@@ -24,7 +24,7 @@ Oynatıcı bilgi alanı **ölçülen** değerleri gösterir: çözünürlük (ö
 
 ## 🌙 Gece modu
 
-Konuşmaları belirginleştirir, ani yüksek sesleri baskılar (Android'in `LoudnessEnhancer` efektiyle; ses seviyesi düşürülüp kazanç artırılır). Desteklemeyen cihazlarda etkisizdir ve uygulama bundan etkilenmez. Bilgi çubuğunda etkinse 🌙 simgesi görünür.
+Konuşmaları belirginleştirir, ani yüksek sesleri baskılar (Android'in `LoudnessEnhancer` efektiyle; ses seviyesi düşürülüp kazanç artırılır). Desteklemeyen cihazlarda etkisizdir ve uygulama bundan etkilenmez. Bilgi çubuğunda etkinse "Gece modu" etiketi görünür.
 
 ## ⏯️ Canlı yayında duraklatma
 
