@@ -11,6 +11,8 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +34,7 @@ fun RedoXApp(viewModel: TvViewModel, host: RedoXHost) {
 private fun PhoneScaffold(env: MobileEnv) {
     val nav = env.nav
     val mini = env.state.pipChannel
+    val radio by RadioHub.state.collectAsState()
 
     // Geri: ikincil ekranlardan önceki ekrana; kök sekmelerden Ana Sayfa'ya
     BackHandler(enabled = nav.canGoBack || nav.current != MobileTab.HOME) {
@@ -51,6 +54,9 @@ private fun PhoneScaffold(env: MobileEnv) {
                         onExpand = { env.viewModel.expandPipToFullScreen() },
                         onClose = { env.viewModel.closePip() }
                     )
+                } else if (radio.isActive && !radio.playerOpen) {
+                    // Radyo çalarken: dokununca tam ekran radyo oynatıcı açılır
+                    MobileRadioMiniBar(onExpand = { RadioHub.openPlayer() })
                 }
                 NavigationBar(
                     containerColor = RedoXColors.Sidebar,

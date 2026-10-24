@@ -500,12 +500,20 @@ fun RedoXTvRootScreen(
         state.activePlayingChannel?.id?.let { lastWatchedChannelId = it }
     }
 
+    // Radyo (demo): liste bir kez yüklenir; bir TV kanalı başlayınca radyo susar
+    val radioContext = LocalContext.current
+    LaunchedEffect(Unit) { RadioHub.ensureLoaded(radioContext) }
+    val radio by RadioHub.state.collectAsState()
+    LaunchedEffect(state.activePlayingChannel?.id) {
+        if (state.activePlayingChannel != null) RadioHub.stop()
+    }
+
     // Kumanda: yalnızca yön tuşları, OK ve Geri olan kumandalarda (Chromecast) Geri bir üst düzeye çıkar:
     // içerik -> yan menü -> (uyarı görünürken ikinci basış) uygulamadan çık.
     val railFocusRequester = remember { FocusRequester() }
     var railHasFocus by remember { mutableStateOf(false) }
     var exitArmed by remember { mutableStateOf(false) }
-    val onMainScreen = state.activePlayingChannel == null && !state.showLandingScreen
+    val onMainScreen = state.activePlayingChannel == null && !state.showLandingScreen && !radio.playerOpen
     BackHandler(enabled = onMainScreen && !railHasFocus) {
         try { railFocusRequester.requestFocus() } catch (_: Exception) {}
     }
@@ -562,6 +570,11 @@ fun RedoXTvRootScreen(
         return
     }
 
+    if (radio.playerOpen) {
+        TvRadioPlayerScreen()
+        return
+    }
+
     if (state.showLandingScreen) {
         RedoXLandingScreen(
             state = state,
@@ -588,6 +601,8 @@ fun RedoXTvRootScreen(
                 builtInCount = state.builtInChannels.size,
                 customM3uCount = state.customM3uChannels.size,
                 favoriteCount = state.favoriteOrderList.size,
+                radioCount = radio.stations.size,
+                radioPlayingName = radio.current?.takeIf { radio.isActive }?.name,
                 sleepTimerMinutes = state.sleepTimerRemainingMinutes,
                 onSelectTab = { viewModel.selectTab(it) },
                 onOpenLanding = { viewModel.openLandingScreen() },
@@ -602,13 +617,21 @@ fun RedoXTvRootScreen(
                     .fillMaxHeight()
                     .padding(horizontal = 36.dp, vertical = 20.dp)
             ) {
-                TvTopStatusHeader(
-                    state = state,
-                    onQuickHealthCheckClick = { viewModel.runChannelHealthCheck() },
-                    onQuickMultiViewClick = { viewModel.selectTab(MainNavTab.MULTI_VIEW) },
-                    onQuickSearchClick = { viewModel.selectTab(MainNavTab.SEARCH) },
-                    onQuickAddM3uClick = { viewModel.selectTab(MainNavTab.M3U_MANAGER) }
-                )
+                if (state.selectedTab == MainNavTab.RADIO) {
+                    TvRadioHeader(
+                        stationCount = radio.stations.size,
+                        sleepMinutes = radio.sleepMinutes,
+                        onCycleSleep = { RadioHub.cycleSleep() }
+                    )
+                } else {
+                    TvTopStatusHeader(
+                        state = state,
+                        onQuickHealthCheckClick = { viewModel.runChannelHealthCheck() },
+                        onQuickMultiViewClick = { viewModel.selectTab(MainNavTab.MULTI_VIEW) },
+                        onQuickSearchClick = { viewModel.selectTab(MainNavTab.SEARCH) },
+                        onQuickAddM3uClick = { viewModel.selectTab(MainNavTab.M3U_MANAGER) }
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -637,6 +660,9 @@ fun RedoXTvRootScreen(
                                 onRestoreHidden = { viewModel.restoreAllHiddenChannels() },
                                 onEditChannel = { editingChannel = it }
                             )
+                        }
+                        MainNavTab.RADIO -> {
+                            TvRadioScreen(onOpenPlayer = { RadioHub.openPlayer() })
                         }
                         MainNavTab.FAVORITES -> {
                             FavoritesReorderScreen(
@@ -751,6 +777,12 @@ fun RedoXTvRootScreen(
                             )
                         }
                     }
+                }
+
+                // Radyo çalarken diğer sekmelerde altta ince "Şimdi çalıyor" çubuğu (▼ ile odaklanır)
+                if (radio.isActive && state.selectedTab != MainNavTab.RADIO) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TvRadioMiniBar(onOpenRadio = { viewModel.selectTab(MainNavTab.RADIO) })
                 }
             }
         }

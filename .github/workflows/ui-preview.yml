@@ -66,6 +66,9 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
+      - name: Radyo listesini önizlemeden çıkar (herkese açık görüntülerde gerçek liste görünmesin; uydurma örnek liste kullanılır)
+        run: rm -f app/src/main/assets/radios.enc
+
       - name: Derle (assemble${{ matrix.flavor }}Debug)
         run: gradle --no-daemon ":app:assemble${{ matrix.flavor }}Debug"
 

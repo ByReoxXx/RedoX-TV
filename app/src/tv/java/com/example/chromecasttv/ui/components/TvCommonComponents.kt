@@ -1030,6 +1030,9 @@ fun TvSideNavigationRail(
     builtInCount: Int,
     customM3uCount: Int,
     favoriteCount: Int,
+    /** Radyo sekmesi: istasyon sayısı rozeti ve çalan istasyonun adı (alt başlıkta "X çalıyor"). */
+    radioCount: Int = 0,
+    radioPlayingName: String? = null,
     sleepTimerMinutes: Int?,
     onSelectTab: (MainNavTab) -> Unit,
     onOpenLanding: () -> Unit,
@@ -1087,16 +1090,20 @@ fun TvSideNavigationRail(
                     MainNavTab.ALL_CHANNELS -> builtInCount
                     MainNavTab.FAVORITES -> favoriteCount
                     MainNavTab.CUSTOM_M3U -> customM3uCount
+                    MainNavTab.RADIO -> radioCount
                     else -> 0
                 }.takeIf { it > 0 }?.toString()
+                val radioPlaying = tab == MainNavTab.RADIO && radioPlayingName != null
 
                 TvRailRow(
                     icon = tab.icon,
                     title = tab.title,
-                    subtitle = tab.subtitle,
+                    subtitle = if (radioPlaying) "$radioPlayingName çalıyor" else tab.subtitle,
+                    subtitleColor = if (radioPlaying) RedoXColors.Gold else RedoXColors.TextTertiary,
                     badgeText = badgeText,
                     selected = selectedTab == tab,
-                    rowHeight = if (compact) 48.dp else 52.dp,
+                    // Yan menü 7 satıra çıktı: alçak (540 dp) ekranda satırlar daralır ki liste kaydırmadan sığsın
+                    rowHeight = if (compact) 40.dp else 52.dp,
                     iconSize = 22.dp,
                     focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
                     onClick = { onSelectTab(tab) }
@@ -1152,7 +1159,8 @@ private fun TvRailRow(
     rowHeight: Dp,
     iconSize: Dp,
     focusRequester: FocusRequester?,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    subtitleColor: Color = RedoXColors.TextTertiary
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val shape = RoundedCornerShape(14.dp)
@@ -1199,7 +1207,7 @@ private fun TvRailRow(
             if (subtitle != null) {
                 Text(
                     text = subtitle,
-                    color = RedoXColors.TextTertiary,
+                    color = subtitleColor,
                     fontSize = 12.sp,
                     maxLines = 1,
                     softWrap = false,

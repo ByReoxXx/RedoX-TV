@@ -237,6 +237,7 @@ data class TrackOption(
 
 enum class MainNavTab(val title: String, val subtitle: String, val icon: ImageVector) {
     ALL_CHANNELS("Canlı TV", "Tüm kanallar", RedoXIcons.LiveTv),
+    RADIO("Radyo", "Müzik ve haber", RedoXIcons.Radio),
     FAVORITES("Favorilerim", "Sıralanabilir listeler", RedoXIcons.Star),
     CUSTOM_M3U("Özel M3U", "Eklenen listelerim", RedoXIcons.FolderOpen),
     MULTI_VIEW("Bölünmüş Ekran", "2'li ve 4'lü izle", RedoXIcons.GridView),
