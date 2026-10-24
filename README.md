@@ -10,6 +10,8 @@
 ![Media3](https://img.shields.io/badge/Media3-ExoPlayer-F5C542?style=for-the-badge)
 ![Sürüm](https://img.shields.io/badge/S%C3%BCr%C3%BCm-2.0.0-08080F?style=for-the-badge)
 
+**[⬇️ APK'ları indir (Releases)](https://github.com/ByReoxXx/RedoX-TV-2/releases)** • [Hata / öneri (Issues)](https://github.com/ByReoxXx/RedoX-TV-2/issues) • [Wiki](wiki/Home.md)
+
 **RedoX TV 2**, eski RedoX TV'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür. Aynı sadık arayüz düzeni, yeni kırmızı-altın-lacivert görünüm ve yeni özelliklerle gelir. Üç cihaz sınıfı için **üç ayrı APK** üretir; her biri kendi arayüzüne sahiptir:
 
 | APK | Cihaz | Arayüz | Paket kimliği |
@@ -98,7 +100,7 @@ Bilgisayarınıza Android Studio / JDK / SDK kurmanız **gerekmez**; derleme Git
 
 Workflow, `wiki/` klasörünü de GitHub Wiki'ye eşitler (depoda Wiki'yi açıp ilk sayfayı oluşturduysanız).
 
-> Güncelleme denetimi ve kanal paketi senkronu, uygulamanın **kendi** deposuna bakar: GitHub Actions'ta derlerseniz depo adı otomatik gömülür; yerelde derlerseniz `ByReoxXx/Redox-TV` varsayılan olur (`GITHUB_REPOSITORY` ortam değişkeniyle değiştirilebilir).
+> Güncelleme denetimi ve kanal paketi senkronu, uygulamanın **kendi** deposuna bakar: GitHub Actions'ta derlerseniz depo adı otomatik gömülür; yerelde derlerseniz `ByReoxXx/RedoX-TV-2` varsayılan olur (`GITHUB_REPOSITORY` ortam değişkeniyle değiştirilebilir).
 
 ---
 
