@@ -983,7 +983,7 @@ fun RedoXPlayerScreen(
             }
         }
 
-        // ALT İNTERAKTİF OSD: ortada oynatma denetimleri + bilgi satırı + program ilerlemesi + yayın denetimleri
+        // ALT İNTERAKTİF OSD: bilgi satırı + ortada oynatma denetimleri + program ilerlemesi + yayın denetimleri
         // (140ms hafif slide, 3.8 sn hareketsizlikte otomatik gizlenir). Düğmeler yalnızca simgedir;
         // odaktaki düğmenin adı altta tek satırda gösterilir (tüm ekran genişliklerinde taşma olmaz).
         AnimatedVisibility(
@@ -1006,49 +1006,6 @@ fun RedoXPlayerScreen(
                     .border(1.dp, Color.White.copy(alpha = 0.10f), osdShape)
                     .padding(horizontal = 26.dp, vertical = if (compactOsd) 14.dp else 18.dp)
             ) {
-                // ---- üst satır: oynatma denetimleri, ekranın ortasında
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(
-                        if (compactOsd) 12.dp else 16.dp,
-                        Alignment.CenterHorizontally
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TvOsdButton(
-                        icon = Icons.Rounded.SkipPrevious,
-                        label = "Önceki kanal",
-                        onFocusLabel = { focusedOsdLabel = it },
-                        onClick = { onZapChannel(-1) }
-                    )
-                    TvOsdButton(
-                        icon = Icons.Rounded.History,
-                        label = "15 sn geri",
-                        onFocusLabel = { focusedOsdLabel = it },
-                        onClick = { rewindTimeshift15Sec() }
-                    )
-                    TvOsdButton(
-                        icon = if (isPausedByTimeshift) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
-                        label = if (isPausedByTimeshift) "Devam et" else "Duraklat",
-                        primary = true,
-                        onFocusLabel = { focusedOsdLabel = it },
-                        onClick = { toggleTimeshiftPause() },
-                        modifier = Modifier.focusRequester(primaryActionFocusRequester)
-                    )
-                    TvOsdButton(
-                        icon = Icons.Rounded.FiberManualRecord,
-                        label = "Canlıya dön",
-                        onFocusLabel = { focusedOsdLabel = it },
-                        onClick = { jumpToLiveEdge() }
-                    )
-                    TvOsdButton(
-                        icon = Icons.Rounded.SkipNext,
-                        label = "Sonraki kanal",
-                        onFocusLabel = { focusedOsdLabel = it },
-                        onClick = { onZapChannel(+1) }
-                    )
-                }
-
                 // ---- kanal bilgisi
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     ChannelBrandLogoBox(
@@ -1111,6 +1068,49 @@ fun RedoXPlayerScreen(
                             )
                         }
                     }
+                }
+
+                // ---- oynatma denetimleri: kanal bilgisinin altında, ekranın ortasında
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        if (compactOsd) 12.dp else 16.dp,
+                        Alignment.CenterHorizontally
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TvOsdButton(
+                        icon = Icons.Rounded.SkipPrevious,
+                        label = "Önceki kanal",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { onZapChannel(-1) }
+                    )
+                    TvOsdButton(
+                        icon = Icons.Rounded.History,
+                        label = "15 sn geri",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { rewindTimeshift15Sec() }
+                    )
+                    TvOsdButton(
+                        icon = if (isPausedByTimeshift) Icons.Rounded.PlayArrow else Icons.Rounded.Pause,
+                        label = if (isPausedByTimeshift) "Devam et" else "Duraklat",
+                        primary = true,
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { toggleTimeshiftPause() },
+                        modifier = Modifier.focusRequester(primaryActionFocusRequester)
+                    )
+                    TvOsdButton(
+                        icon = Icons.Rounded.FiberManualRecord,
+                        label = "Canlıya dön",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { jumpToLiveEdge() }
+                    )
+                    TvOsdButton(
+                        icon = Icons.Rounded.SkipNext,
+                        label = "Sonraki kanal",
+                        onFocusLabel = { focusedOsdLabel = it },
+                        onClick = { onZapChannel(+1) }
+                    )
                 }
 
                 if (playingChannel.hasRealEpg) {
