@@ -698,6 +698,21 @@ fun RedoXPlayerScreen(
             }
         }
 
+        // OSD ölçüleri ve üst çubuk (saat): uyarı kutularının ALTINDA çizilsin diye onlardan önce gelir
+        val osdVisible = showOsd && !showChannelDrawer
+        val osdK = if (isCompactOsd()) 1f else 1.4f
+        val isFavorite = favoriteIds.contains(playingChannel.id)
+        val screenHeightDp = LocalConfiguration.current.screenHeightDp
+
+        AnimatedVisibility(
+            visible = osdVisible,
+            enter = fadeIn(tween(120)),
+            exit = fadeOut(tween(120)),
+            modifier = Modifier.align(Alignment.TopCenter)
+        ) {
+            PlayerTopBar(k = osdK, showClock = typedChannelDigits.isEmpty())
+        }
+
         autoFailoverBanner?.let { bannerText ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -1014,20 +1029,6 @@ fun RedoXPlayerScreen(
         // Video önde kalır: dock ekran yüksekliğinin yaklaşık %15'ini kaplar (eski kart ~%43'tü). Kanal değişince veya
         // OK'a basınca 3,8 sn görünür (Seçenekler açıkken 9 sn). Düğmeler yalnızca simgedir; odaktaki düğmenin adı
         // dock'un üstünde tek satırda görünür. Boştayken (odak videodayken) dock'un üstünde kısayol ipuçları durur.
-        val osdVisible = showOsd && !showChannelDrawer
-        val osdK = if (isCompactOsd()) 1f else 1.4f
-        val isFavorite = favoriteIds.contains(playingChannel.id)
-        val screenHeightDp = LocalConfiguration.current.screenHeightDp
-
-        AnimatedVisibility(
-            visible = osdVisible,
-            enter = fadeIn(tween(120)),
-            exit = fadeOut(tween(120)),
-            modifier = Modifier.align(Alignment.TopCenter)
-        ) {
-            PlayerTopBar(k = osdK, showClock = typedChannelDigits.isEmpty())
-        }
-
         AnimatedVisibility(
             visible = osdVisible,
             enter = slideInVertically(animationSpec = tween(140), initialOffsetY = { it }) + fadeIn(tween(120)),
