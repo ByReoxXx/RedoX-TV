@@ -95,8 +95,8 @@ fun TvSettingsScreen(
                 }
             }
             TvSettingToggleRow(
-                title = "AMOLED siyah",
-                subtitle = "Arka planı saf siyah yapar (OLED ekranlarda pil ve kontrast kazancı).",
+                title = "OLED modu (AMOLED siyah)",
+                subtitle = "Arka planı ve oynatıcı çubuğunu saf siyah yapar; OLED ekranlarda siyah pikseller kapalı kalır (kontrast ve pil kazancı).",
                 checked = RedoXThemeState.amoled,
                 onToggle = { RedoXThemeState.updateAmoled(context, !RedoXThemeState.amoled) }
             )

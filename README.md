@@ -50,11 +50,11 @@ Arayüz paleti doğrudan logodan ölçülmüştür:
 |---|---|---|
 | Kızıl (şarap → mercan) | `#590823` `#96112F` `#BD1436` `#F02848` `#FA6465` | Eylemler, canlı rozeti, seçili öğeler; düğmelerde `#F02848` → `#BD1436` gradyanı |
 | Altın | `#A17844` `#DAA24F` `#F3C05D` `#FDDE7A` | **Odak halkası**, favori yıldızı, ilerleme çubukları, "TV" yazısı |
-| Lacivert-siyah | `#0A0A14` `#161621` `#1F1D2A` | Zemin, kart, yükseltilmiş yüzey (isteğe bağlı saf siyah AMOLED) |
+| Lacivert-siyah | `#0A0A14` `#161621` `#1F1D2A` | Zemin, kart, yükseltilmiş yüzey (isteğe bağlı OLED modu: saf siyah) |
 
 **Tasarım dili "Kızıl Halka":** logodaki altın halka arayüzün odak göstergesidir. TV'de odaktaki öğe 3 dp altın çerçeve ve yumuşak altın ışımayla belirir; kırmızı yalnızca eylem ve canlı yayın içindir; emoji yerine simge kullanılır; TV'de en küçük yazı 12 sp, telefon ve tablette dokunma hedefleri en az 44 dp'dir.
 
-Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), AMOLED siyah ve yazı boyutu seçilebilir; logo her zaman kırmızı-altın kalır. Vektör logo dosyaları (SVG) ve README başlığı görseli: [`docs/brand/`](docs/brand).
+Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), OLED modu (saf siyah) ve yazı boyutu seçilebilir; logo her zaman kırmızı-altın kalır. Vektör logo dosyaları (SVG) ve README başlığı görseli: [`docs/brand/`](docs/brand).
 
 ---
 
@@ -66,7 +66,7 @@ Ayarlar'dan alternatif paletler (Okyanus, Orman, Mono), AMOLED siyah ve yazı bo
 - **Arama.** Kanal adı, kategori, numara ve **gerçek program adları** içinde; küçük yazım hatalarını tolere eder; sesli arama.
 - **Akıllı raflar.** "İzlemeye devam et", "En çok izlediklerin", "Favorilerinde şimdi yayında".
 - **Çoklu favori listeleri.** İstediğiniz kadar liste (Çocuklar, Spor…); sıralama, yeniden adlandırma, silme. **Kanal adı / numarası düzenleme** (yalnızca bu cihazda, geri alınabilir).
-- **Tema seçenekleri.** Palet, AMOLED siyah, yazı boyutu.
+- **Tema seçenekleri.** Palet, OLED modu (saf siyah), yazı boyutu.
 - **Güvenlik ve bakım.** Katı TLS, PIN'li yerel sunucu, güncelleme denetimi, dosyaya yedekleme, yerel tanılama günlüğü ([Güvenlik](#güvenlik)).
 - Eski sürümden gelenler: çoklu kaynak ve otomatik yedek akış geçişi, canlı yayında duraklatma, ebeveyn PIN kilidi, kanal gizleme, M3U / Xtream / dosya yükleme, 2'li ve 4'lü bölünmüş ekran, uyku zamanlayıcı.
 

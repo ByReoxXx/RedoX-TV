@@ -99,6 +99,29 @@ if [ "$KIND" = "tv" ]; then
     shot "${P}-14-geri-yan-menu"
     key KEYCODE_BACK; sleep 1
     shot "${P}-15-cikis-uyarisi"
+
+    # Özel M3U klasörleri: adlandırılmış iki liste ekle (hata ayıklama sürümünde run-as ile), uygulamayı yeniden aç,
+    # Özel M3U sekmesine in; klasör listesi, klasörün içi ve Geri ile dönüş
+    adb shell am force-stop "$PKG"; sleep 1
+    printf '#EXTM3U\n#EXTINF:-1 group-title="Spor",Mac Kanali 1\nhttps://example.com/spor1.m3u8\n#EXTINF:-1 group-title="Spor",Mac Kanali 2\nhttps://example.com/spor2.m3u8\n#EXTINF:-1 group-title="Haber",Haber Kanali\nhttps://example.com/haber.m3u8\n' > shots/_a.m3u
+    printf '#EXTM3U\n#EXTINF:-1 group-title="Cocuk",Cizgi Film 1\nhttps://example.com/cocuk1.m3u8\n#EXTINF:-1 group-title="Cocuk",Cizgi Film 2\nhttps://example.com/cocuk2.m3u8\n' > shots/_b.m3u
+    adb push shots/_a.m3u /data/local/tmp/redox_a.m3u >/dev/null || true
+    adb push shots/_b.m3u /data/local/tmp/redox_b.m3u >/dev/null || true
+    DIR="/data/data/$PKG"
+    adb shell "run-as $PKG sh -c 'mkdir -p files/imported_playlists shared_prefs && cp /data/local/tmp/redox_a.m3u files/imported_playlists/a.m3u && cp /data/local/tmp/redox_b.m3u files/imported_playlists/b.m3u'" || true
+    printf "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n<map>\n    <string name=\"custom_m3u_playlists_str\">pl-a|Spor Listem|$DIR/files/imported_playlists/a.m3u||true;;;pl-b|Cocuk ve Aile|$DIR/files/imported_playlists/b.m3u||true</string>\n</map>\n" > shots/_prefs.xml
+    adb push shots/_prefs.xml /data/local/tmp/redox_prefs.xml >/dev/null || true
+    adb shell "run-as $PKG sh -c 'cp /data/local/tmp/redox_prefs.xml shared_prefs/redoxtv_clean_prefs_v5.xml'" || true
+    rm -f shots/_a.m3u shots/_b.m3u shots/_prefs.xml
+    launch; sleep 22
+    key KEYCODE_DPAD_CENTER; sleep 7            # Canlı TV'ye başla
+    key KEYCODE_BACK; sleep 1                   # yan menü
+    keys 2 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Özel M3U
+    shot "${P}-16-klasorler"
+    key KEYCODE_DPAD_CENTER; sleep 3            # klasörü aç
+    shot "${P}-17-klasor-ici"
+    key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 2         # ızgaradan çiplere, çiplerden klasör listesine
+    shot "${P}-18-klasorlere-geri"
   done
   adb shell wm density reset || true
 else
