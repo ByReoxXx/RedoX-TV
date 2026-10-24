@@ -115,7 +115,7 @@ if [ "$KIND" = "tv" ]; then
     rm -f shots/_a.m3u shots/_b.m3u shots/_prefs.xml
     launch; sleep 22
     key KEYCODE_DPAD_CENTER; sleep 7            # Canlı TV'ye başla
-    key KEYCODE_BACK; sleep 1                   # yan menü
+    key KEYCODE_BACK; sleep 1; key KEYCODE_BACK; sleep 1         # ızgaradan çiplere, çiplerden yan menüye
     keys 2 KEYCODE_DPAD_DOWN; key KEYCODE_DPAD_CENTER; sleep 3   # Özel M3U
     shot "${P}-16-klasorler"
     key KEYCODE_DPAD_CENTER; sleep 3            # klasörü aç
