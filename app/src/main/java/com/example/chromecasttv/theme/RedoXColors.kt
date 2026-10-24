@@ -127,7 +127,7 @@ object RedoXColors {
     val Sidebar: Color get() = if (RedoXThemeState.amoled) Color(0xFF040408) else Ink850
     val Surface: Color get() = if (RedoXThemeState.amoled) Color(0xFF0A0A10) else Ink800
     val SurfaceHigh: Color get() = if (RedoXThemeState.amoled) Color(0xFF13131B) else Ink700
-    val Overlay = Color(0xEB0A0A14)
+    val Overlay = Color(0xF50A0A14)
     val Scrim = Color(0xB3000000)
 
     // Seçili palete bağlı vurgu renkleri

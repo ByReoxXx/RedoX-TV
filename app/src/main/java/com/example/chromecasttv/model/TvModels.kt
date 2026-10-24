@@ -238,13 +238,13 @@ data class TrackOption(
 )
 
 enum class MainNavTab(val title: String, val subtitle: String, val icon: ImageVector) {
-    ALL_CHANNELS("Canlı TV", "Kategoriler & Kanallar", Icons.Rounded.LiveTv),
-    FAVORITES("Favorilerim", "Sıralanabilir Listeler", Icons.Rounded.Star),
-    CUSTOM_M3U("Özel M3U Kanalları", "Eklenen Listelerim", Icons.Rounded.FolderOpen),
-    MULTI_VIEW("Bölünmüş Ekran", "2'li & 4'lü Canlı İzle", Icons.Rounded.GridView),
-    EPG_GUIDE("Yayın Rehberi", "Şu An & Sıradaki", Icons.Rounded.CalendarMonth),
-    SEARCH("Kanal Ara", "Kanal, program veya numara", Icons.Rounded.Search),
-    M3U_MANAGER("M3U & Dosya Yükle", "Dosya, Xtream & QR", Icons.Rounded.UploadFile),
+    ALL_CHANNELS("Canlı TV", "Kategoriler, kanallar", Icons.Rounded.LiveTv),
+    FAVORITES("Favorilerim", "Sıralanabilir listeler", Icons.Rounded.Star),
+    CUSTOM_M3U("Özel M3U", "Eklenen listelerim", Icons.Rounded.FolderOpen),
+    MULTI_VIEW("Bölünmüş Ekran", "2'li ve 4'lü izle", Icons.Rounded.GridView),
+    EPG_GUIDE("Yayın Rehberi", "Şu an ve sıradaki", Icons.Rounded.CalendarMonth),
+    SEARCH("Kanal Ara", "Kanal, program, numara", Icons.Rounded.Search),
+    M3U_MANAGER("M3U ve Dosya", "Dosya, Xtream, QR", Icons.Rounded.UploadFile),
     SETTINGS("Ayarlar", "Tema, rehber, güvenlik", Icons.Rounded.Settings)
 }
 

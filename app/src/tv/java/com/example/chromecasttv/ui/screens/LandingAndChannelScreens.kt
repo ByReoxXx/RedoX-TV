@@ -633,7 +633,7 @@ fun RedoXTvRootScreen(
                                 onHideChannel = { viewModel.hideChannel(it) },
                                 onRestoreHidden = { viewModel.restoreAllHiddenChannels() },
                                 onEditChannel = { editingChannel = it },
-                                emptyMessage = "Henüz özel bir M3U listesi eklemediniz. 'M3U & Dosya Yükle' sekmesinden dosya veya link ekleyebilirsiniz."
+                                emptyMessage = "Henüz özel bir M3U listesi eklemediniz. 'M3U ve Dosya' sekmesinden dosya veya link ekleyebilirsiniz."
                             )
                         }
                         MainNavTab.MULTI_VIEW -> {
@@ -993,181 +993,188 @@ fun FocusedChannelHeroBanner(
 ) {
     val shape = RoundedCornerShape(22.dp)
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(168.dp)
-            .clip(shape)
-            .background(
-                Brush.horizontalGradient(
-                    listOf(RedoXColors.SurfaceHigh, RedoXColors.Surface, RedoXColors.WineGlow)
-                )
-            )
-            .border(1.dp, RedoXColors.Line, shape)
-            .padding(horizontal = 26.dp, vertical = 20.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        ChannelBrandLogoBox(
-            channel = channel,
-            boxSize = 112.dp,
-            fontSize = 28.sp
-        )
+    BoxWithConstraints(modifier = Modifier.fillMaxWidth()) {
+        // Dar alanda (≈ 960 dp genişlikli ekranlarda içerik < 860 dp) ölçüler küçülür, ikincil etiketler gizlenir
+        val compact = maxWidth < 860.dp
 
-        Spacer(modifier = Modifier.width(24.dp))
-
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(7.dp)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                TvLiveBadge(text = if (isBroken) "ÇALIŞMIYOR" else "CANLI", broken = isBroken)
-                Text(
-                    text = "CH ${channel.number}",
-                    color = TvThemeColors.TextSecondary,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    maxLines = 1,
-                    softWrap = false
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        modifier = Modifier
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(TvThemeColors.categoryColor(channel.category))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(if (compact) 140.dp else 168.dp)
+                .clip(shape)
+                .background(
+                    Brush.horizontalGradient(
+                        listOf(RedoXColors.SurfaceHigh, RedoXColors.Surface, RedoXColors.WineGlow)
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
+                )
+                .border(1.dp, RedoXColors.Line, shape)
+                .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (compact) 14.dp else 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ChannelBrandLogoBox(
+                channel = channel,
+                boxSize = if (compact) 76.dp else 112.dp,
+                fontSize = if (compact) 20.sp else 28.sp
+            )
+
+            Spacer(modifier = Modifier.width(if (compact) 16.dp else 24.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 7.dp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    TvLiveBadge(text = if (isBroken) "ÇALIŞMIYOR" else "CANLI", broken = isBroken)
                     Text(
-                        text = channel.category,
+                        text = "CH ${channel.number}",
                         color = TvThemeColors.TextSecondary,
                         fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         softWrap = false
                     )
-                }
-                TvStatPill(
-                    text = "${channel.qualityBadge} · ${channel.sources.size} akış" + if (channel.hasRealEpg) " · rehber" else ""
-                )
-                if (isHealthy && !isBroken) {
-                    TvStatPill(text = "Aktif akış", color = RedoXColors.Mint)
-                }
-                if (isLocked) {
-                    TvStatPill(text = "PIN kilitli")
-                }
-            }
-
-            Text(
-                text = channel.name,
-                color = TvThemeColors.TextPrimary,
-                fontSize = 32.sp,
-                fontWeight = FontWeight.ExtraBold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            if (isBroken) {
-                Text(
-                    text = "Bu kanalın akışı şu an yanıt vermiyor. Başka bir akış denemek için İzle'ye basın.",
-                    color = TvThemeColors.BrokenRed,
-                    fontSize = 15.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            } else {
-                Row(
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = channel.nowTitleOrLive(),
-                        color = TvThemeColors.TextPrimary,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Medium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false)
-                    )
-                    if (channel.hasRealEpg) {
-                        Text(
-                            text = channel.currentProgramTime,
-                            color = TvThemeColors.TextSecondary,
-                            fontSize = 15.sp,
-                            maxLines = 1,
-                            softWrap = false
-                        )
-                    }
-                }
-                if (channel.hasRealEpg) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        TvProgressBar(
-                            progress = channel.progressForUi(),
-                            height = 6.dp,
-                            modifier = Modifier.width(320.dp)
+                        Box(
+                            modifier = Modifier
+                                .size(8.dp)
+                                .clip(CircleShape)
+                                .background(TvThemeColors.categoryColor(channel.category))
                         )
-                        Spacer(modifier = Modifier.width(14.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "Sırada: ${channel.nextProgramTitle}",
+                            text = channel.category,
                             color = TvThemeColors.TextSecondary,
                             fontSize = 14.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                } else {
+                    if (!compact) {
+                        TvStatPill(
+                            text = "${channel.qualityBadge} · ${channel.sources.size} akış" + if (channel.hasRealEpg) " · rehber" else ""
+                        )
+                        if (isHealthy && !isBroken) {
+                            TvStatPill(text = "Aktif akış", color = RedoXColors.Mint)
+                        }
+                        if (isLocked) {
+                            TvStatPill(text = "PIN kilitli")
+                        }
+                    }
+                }
+
+                Text(
+                    text = channel.name,
+                    color = TvThemeColors.TextPrimary,
+                    fontSize = if (compact) 26.sp else 32.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                if (isBroken) {
                     Text(
-                        text = "Gerçek yayın rehberi yok; program adı uydurulmaz.",
-                        color = RedoXColors.TextTertiary,
-                        fontSize = 14.sp,
-                        maxLines = 1
+                        text = "Bu kanalın akışı şu an yanıt vermiyor. Başka bir akış denemek için İzle'ye basın.",
+                        color = TvThemeColors.BrokenRed,
+                        fontSize = 15.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
+                } else {
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = channel.nowTitleOrLive(),
+                            color = TvThemeColors.TextPrimary,
+                            fontSize = if (compact) 16.sp else 18.sp,
+                            fontWeight = FontWeight.Medium,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
+                        if (channel.hasRealEpg) {
+                            Text(
+                                text = channel.currentProgramTime,
+                                color = TvThemeColors.TextSecondary,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                softWrap = false
+                            )
+                        }
+                    }
+                    if (channel.hasRealEpg) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TvProgressBar(
+                                progress = channel.progressForUi(),
+                                height = 6.dp,
+                                modifier = Modifier.width(if (compact) 150.dp else 320.dp)
+                            )
+                            Spacer(modifier = Modifier.width(14.dp))
+                            Text(
+                                text = "Sırada: ${channel.nextProgramTitle}",
+                                color = TvThemeColors.TextSecondary,
+                                fontSize = 14.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                    } else if (!compact) {
+                        Text(
+                            text = "Gerçek yayın rehberi yok; program adı uydurulmaz.",
+                            color = RedoXColors.TextTertiary,
+                            fontSize = 14.sp,
+                            maxLines = 1
+                        )
+                    }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-        Column(
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            TvActionButton(
-                text = "İzle",
-                icon = Icons.Rounded.PlayArrow,
-                isPrimary = true,
-                onClick = onWatchClick
-            )
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                TvIconPill(
-                    icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
-                    label = if (isFavorite) "Favoride" else "Favori ekle",
-                    onClick = onToggleFavorite,
-                    active = isFavorite
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 12.dp)
+            ) {
+                TvActionButton(
+                    text = "İzle",
+                    icon = Icons.Rounded.PlayArrow,
+                    isPrimary = true,
+                    onClick = onWatchClick
                 )
-                TvIconPill(
-                    icon = Icons.Rounded.Lock,
-                    label = if (isLocked) "Kilitli" else "Kilitle",
-                    onClick = onToggleLock,
-                    active = isLocked
-                )
-                TvIconPill(
-                    icon = Icons.Rounded.Edit,
-                    label = "Düzenle",
-                    onClick = onEditChannel
-                )
-                TvIconPill(
-                    icon = Icons.Rounded.VisibilityOff,
-                    label = "Gizle",
-                    onClick = onHideChannel
-                )
-                if (hiddenCount > 0) {
+                Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)) {
                     TvIconPill(
-                        icon = Icons.Rounded.Refresh,
-                        label = "Geri yükle ($hiddenCount)",
-                        onClick = onRestoreHidden
+                        icon = if (isFavorite) Icons.Rounded.Star else Icons.Rounded.StarBorder,
+                        label = if (isFavorite) "Favoride" else "Favori ekle",
+                        onClick = onToggleFavorite,
+                        active = isFavorite
                     )
+                    TvIconPill(
+                        icon = Icons.Rounded.Lock,
+                        label = if (isLocked) "Kilitli" else "Kilitle",
+                        onClick = onToggleLock,
+                        active = isLocked
+                    )
+                    TvIconPill(
+                        icon = Icons.Rounded.Edit,
+                        label = "Düzenle",
+                        onClick = onEditChannel
+                    )
+                    TvIconPill(
+                        icon = Icons.Rounded.VisibilityOff,
+                        label = "Gizle",
+                        onClick = onHideChannel
+                    )
+                    if (hiddenCount > 0) {
+                        TvIconPill(
+                            icon = Icons.Rounded.Refresh,
+                            label = "Geri yükle ($hiddenCount)",
+                            onClick = onRestoreHidden
+                        )
+                    }
                 }
             }
         }
