@@ -169,6 +169,7 @@ object RadioHub {
     private var appContext: Context? = null
     private var attemptJob: Job? = null
     private var listenerAttached = false
+    private var pendingPlayId: String? = null
 
     /** Çalarken kopan yayın için aynı kaynağa yeniden bağlanma hakkı (istasyon/kaynak değişince sıfırlanır). */
     private var retriesLeft = 2
@@ -206,8 +207,17 @@ object RadioHub {
                 )
             }
             // İsteğe bağlı: uygulama açılınca son radyoyu çal (bir TV kanalı başlarsa radyo zaten susar)
-            if (autoStart && lastId != null && list.any { it.id == lastId && it.id !in hidden }) play(lastId)
+            val pending = pendingPlayId
+            pendingPlayId = null
+            if (pending != null) play(pending, openPlayer = true)
+            else if (autoStart && lastId != null && list.any { it.id == lastId && it.id !in hidden }) play(lastId)
         }
+    }
+
+    /** Alarm gibi dış tetikleyiciler için: liste henüz yüklenmediyse yüklenince çalar. */
+    fun requestPlay(context: Context, id: String) {
+        ensureLoaded(context)
+        if (_state.value.loaded) play(id, openPlayer = true) else pendingPlayId = id
     }
 
     // ------------------------------------------------------------------ liste

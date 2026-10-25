@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.sp
 // Şimdilik DEMO: gerçek ses çalmaz ([RadioHub] örnek veriyle canlandırır).
 // ============================================================================
 
-private enum class RadioSheet { NONE, OPTIONS, STATIONS, HISTORY }
+private enum class RadioSheet { NONE, OPTIONS, STATIONS, HISTORY, ALARM }
 
 /** Radyo sekmesi: tür çipleri + istasyon listesi (tablette sağda oynatıcı paneli). */
 @Composable
@@ -584,7 +584,8 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
         )
 
         when (sheet) {
-            RadioSheet.OPTIONS -> MRadioOptionsSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE }, onHistory = { sheet = RadioSheet.HISTORY })
+            RadioSheet.OPTIONS -> MRadioOptionsSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE }, onHistory = { sheet = RadioSheet.HISTORY }, onAlarm = { sheet = RadioSheet.ALARM })
+            RadioSheet.ALARM -> MRadioAlarmSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE })
             RadioSheet.HISTORY -> MRadioHistorySheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE })
             RadioSheet.STATIONS -> MRadioStationsSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE })
             RadioSheet.NONE -> Unit
@@ -696,7 +697,7 @@ private fun MRadioSheetItem(icon: ImageVector, label: String, danger: Boolean = 
 }
 
 @Composable
-private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit, onHistory: () -> Unit) {
+private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit, onHistory: () -> Unit, onAlarm: () -> Unit) {
     val station = ui.current
     val fav = station != null && station.id in ui.favoriteIds
     MRadioSheet(onDismiss = onDismiss) {
@@ -745,6 +746,7 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit,
         MRadioSheetItem(icon = RedoXIcons.MusicNote, label = if (ui.spectrumOn) "Ses dalgasını kapat" else "Ses dalgasını aç") { RadioHub.toggleSpectrum() }
         MRadioSheetItem(icon = RedoXIcons.VolumeUp, label = if (ui.staticOn) "Radyo cızırtısını kapat" else "Radyo cızırtısını aç") { RadioHub.toggleStatic() }
         MRadioSheetItem(icon = RedoXIcons.History, label = "Şarkı geçmişi (${ui.history.size})") { onHistory() }
+        MRadioSheetItem(icon = RedoXIcons.Schedule, label = "Radyo alarmı") { onAlarm() }
         MRadioSheetItem(icon = RedoXIcons.PlayArrow, label = if (ui.autoStart) "Açılışta radyoyu başlatma" else "Açılışta son radyoyu çal") { RadioHub.toggleAutoStart() }
         val shareContext = androidx.compose.ui.platform.LocalContext.current
         if (station != null) {
@@ -772,6 +774,67 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
+    }
+}
+
+@Composable
+private fun BoxScope.MRadioAlarmSheet(ui: RadioUiState, onDismiss: () -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var config by remember { mutableStateOf(RadioAlarm.load(context)) }
+    val station = ui.current
+    // Kayıtlı istasyon yoksa çalan (ya da son) istasyon önerilir
+    val target = config.stationId?.let { id -> ui.stations.firstOrNull { it.id == id } } ?: station
+    fun update(next: RadioAlarmConfig) {
+        config = next
+        RadioAlarm.apply(context, next)
+    }
+    MRadioSheet(onDismiss = onDismiss) {
+        Text(text = "Radyo alarmı", color = RedoXColors.TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = if (target != null) "Çalacak istasyon: ${target.name}" else "Önce bir istasyon çalın; alarm onu açar.",
+            color = RedoXColors.TextSecondary, fontSize = 13.5.sp
+        )
+        MRadioSectionLabel("SAAT")
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            MRadioStepper(value = config.hour, label = "saat", range = 24) { update(config.copy(hour = it)) }
+            Text(text = ":", color = RedoXColors.TextPrimary, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            MRadioStepper(value = config.minute, label = "dakika", range = 60, step = 5) { update(config.copy(minute = it)) }
+        }
+        MRadioSectionLabel("TEKRAR")
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            MChip(text = "Her gün", selected = config.daily, onClick = { update(config.copy(daily = true)) })
+            MChip(text = "Bir kez", selected = !config.daily, onClick = { update(config.copy(daily = false)) })
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        val on = config.enabled
+        MRadioSheetItem(
+            icon = RedoXIcons.NotificationsActive,
+            label = if (on) "Alarmı kapat (%02d:%02d)".format(config.hour, config.minute) else "Alarmı kur"
+        ) {
+            if (on) update(config.copy(enabled = false))
+            else if (target != null) update(config.copy(enabled = true, stationId = target.id, stationName = target.name))
+        }
+        Text(
+            text = "Bildirim izni gerekir. Alarm, uygulama kapalıyken de bildirim gösterir; dokununca radyo çalar. Cihazda denenmedi.",
+            color = RedoXColors.TextTertiary, fontSize = 12.sp
+        )
+    }
+}
+
+@Composable
+private fun MRadioStepper(value: Int, label: String, range: Int, step: Int = 1, onChange: (Int) -> Unit) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = "▲", color = RedoXColors.Gold, fontSize = 20.sp,
+            modifier = Modifier.clickable { onChange((value + step) % range) }.padding(horizontal = 18.dp, vertical = 4.dp)
+        )
+        Text(text = "%02d".format(value), color = RedoXColors.TextPrimary, fontSize = 30.sp, fontWeight = FontWeight.ExtraBold)
+        Text(
+            text = "▼", color = RedoXColors.Gold, fontSize = 20.sp,
+            modifier = Modifier.clickable { onChange((value - step + range) % range) }.padding(horizontal = 18.dp, vertical = 4.dp)
+        )
+        Text(text = label, color = RedoXColors.TextTertiary, fontSize = 11.sp)
     }
 }
 

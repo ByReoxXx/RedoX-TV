@@ -105,6 +105,7 @@ class MainActivity : ComponentActivity(), RedoXHost {
         }
 
         pendingChannelId = channelIdFromIntent(intent)
+        handleRadioAlarm(intent)
 
         setContent {
             RedoXAppTheme {
@@ -126,6 +127,7 @@ class MainActivity : ComponentActivity(), RedoXHost {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        handleRadioAlarm(intent)
         val id = channelIdFromIntent(intent) ?: return
         val vm = activeViewModel
         if (vm != null) vm.playChannelById(id) else pendingChannelId = id
@@ -273,6 +275,18 @@ class MainActivity : ComponentActivity(), RedoXHost {
         } catch (_: Exception) {
             voiceCallback = null
         }
+    }
+
+    /** Radyo alarmı bildirimi: ekranı açıp istasyonu çalar. */
+    private fun handleRadioAlarm(source: Intent?) {
+        val id = source?.getStringExtra(RadioAlarm.EXTRA_STATION_ID) ?: return
+        source.removeExtra(RadioAlarm.EXTRA_STATION_ID)
+        try {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } catch (_: Exception) {
+        }
+        RadioHub.requestPlay(applicationContext, id)
     }
 
     private fun channelIdFromIntent(source: Intent?): String? {
