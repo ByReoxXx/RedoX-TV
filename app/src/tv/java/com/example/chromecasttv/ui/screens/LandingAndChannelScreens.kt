@@ -1518,6 +1518,7 @@ fun TvChannelGridCard(
                 scaleY = cardScale
             }
             .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier)
+            .hoverFocus(focusRequester)
             .tvSurface(
                 focused = cardFocused,
                 shape = shape,

@@ -140,6 +140,8 @@ fun MobileShell(
             MobileRadioPlayerOverlay()
         }
 
+        WhatsNewDialog()
+
         state.pendingPinChannel?.let { channel ->
             MPinDialog(
                 channel = channel,

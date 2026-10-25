@@ -103,10 +103,9 @@ if [ "$KIND" = "tv" ]; then
 
     # ---- Radyo (K2 Kadran; yalnız ui-radio dalında): liste, oynatıcı, katmanlar, durumlar ve mini çubuk ----
     if [ "$RADIO" = 1 ]; then
-      # Önceki adımlar yayın yüklenme süresine göre kayabilir (çekmece açılmayabilir): durumu sıfırla
-      adb shell am force-stop "$PKG"; sleep 2; launch; sleep 22
-      # yeniden açılışta son kanal oynatıcıda açılır: kanal listesi (yan menü görünür) çıkana kadar Geri (en çok 4)
-      for _ in 1 2 3 4; do
+      # Yeniden başlatma son kanalı oynatıcıda otomatik açtığı için sıfırlanmaz: 07b'de liste ekranındayız,
+      # (kategori çipinden) Geri ile yan menüye çıkılır. Oynatıcı açıksa liste görünene kadar Geri.
+      for _ in 1 2 3; do
         if python3 ci/ui.py has "Favorilerim"; then break; fi
         key KEYCODE_BACK; sleep 3
       done

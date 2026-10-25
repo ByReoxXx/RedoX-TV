@@ -31,6 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.pointer.isShiftPressed
+import androidx.compose.ui.input.pointer.pointerInput
+import kotlinx.coroutines.launch
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -67,7 +70,26 @@ fun EpgGridView(
     val clock = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
     val scroll = rememberScrollState()
 
-    Column(modifier = modifier.fillMaxWidth()) {
+    val wheelScope = androidx.compose.runtime.rememberCoroutineScope()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .pointerInput(scroll) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent(androidx.compose.ui.input.pointer.PointerEventPass.Initial)
+                        if (event.type != androidx.compose.ui.input.pointer.PointerEventType.Scroll) continue
+                        val delta = event.changes.firstOrNull()?.scrollDelta ?: continue
+                        val shift = event.keyboardModifiers.isShiftPressed
+                        val amount = if (delta.x != 0f) delta.x else if (shift) delta.y else 0f
+                        if (amount != 0f) {
+                            wheelScope.launch { scroll.scrollBy(amount * 90f) }
+                            event.changes.forEach { it.consume() }
+                        }
+                    }
+                }
+            }
+    ) {
         // Zaman başlığı
         Row(modifier = Modifier.fillMaxWidth().height(28.dp)) {
             Spacer(modifier = Modifier.width(labelWidth))
