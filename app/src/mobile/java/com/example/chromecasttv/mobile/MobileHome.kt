@@ -23,7 +23,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +59,11 @@ fun MobileHomeScreen(
         features.reminders.filter { it.startMillis > now - 60_000L }.sortedBy { it.startMillis }.take(3)
     }
     val cardWidth = if (isTablet) 190.dp else 160.dp
+
+    // Daha önce görülmemiş yerleşik kanallar (kanal listesi güncellenince); "Tamam" ile görülmüş sayılır
+    val appContext = androidx.compose.ui.platform.LocalContext.current
+    var newDismissed by remember { mutableStateOf(false) }
+    val newChannels = remember(state.builtInChannels) { NewChannelsTracker.pending(appContext, state.builtInChannels) }
 
     LazyColumn(
         contentPadding = PaddingValues(bottom = 28.dp),
@@ -159,6 +167,43 @@ fun MobileHomeScreen(
                             )
                         }
                         MGhostButton(text = "Aç", onClick = { host.openUrl(update.htmlUrl) })
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Yeni eklenen kanallar
+        if (newChannels.isNotEmpty() && !newDismissed) {
+            item(key = "new_channels") {
+                MCard(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = RedoXIcons.LiveTv,
+                            contentDescription = null,
+                            tint = RedoXColors.Gold,
+                            modifier = Modifier.size(26.dp)
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Yeni kanallar eklendi",
+                                color = RedoXColors.TextPrimary,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 15.sp
+                            )
+                            Text(
+                                text = NewChannelsTracker.summary(newChannels),
+                                color = RedoXColors.TextSecondary,
+                                fontSize = 13.sp
+                            )
+                        }
+                        MGhostButton(
+                            text = "Tamam",
+                            onClick = {
+                                NewChannelsTracker.markSeen(appContext, state.builtInChannels)
+                                newDismissed = true
+                            }
+                        )
                     }
                 }
             }

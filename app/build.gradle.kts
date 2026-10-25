@@ -179,6 +179,9 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.6.0")
 
+    // Birim testleri (JVM): ayrıştırıcılar, rehber eşleştirme, radyo durum yardımcıları
+    testImplementation("junit:junit:4.13.2")
+
     // Android TV ana ekran entegrasyonu (Watch Next / önizleme kanalı)
     "tvImplementation"("androidx.tvprovider:tvprovider:1.0.0")
 }

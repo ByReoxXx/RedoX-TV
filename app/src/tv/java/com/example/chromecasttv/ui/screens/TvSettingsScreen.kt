@@ -350,9 +350,14 @@ fun TvSettingsScreen(
                         if (showLog) logText = CrashLogger.readLog(context)
                     }
                 )
+                TvCompactChipButton(
+                    text = "Hata Raporu Paylaş",
+                    icon = RedoXIcons.Add,
+                    onClick = { host.shareText(CrashLogger.report(context)) }
+                )
                 if (showLog) {
                     TvCompactChipButton(
-                        text = "Paylaş",
+                        text = "Günlüğü Paylaş",
                         icon = RedoXIcons.Add,
                         onClick = { host.shareText(logText.ifBlank { "Günlük boş." }) }
                     )

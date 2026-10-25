@@ -2,6 +2,10 @@
 
 Eski sürümlerde rehber, kategori şablonlarından üretilen **uydurma** program adlarıydı. RedoX TV 2'de rehber **gerçek XMLTV verisinden** gelir; veri yoksa uygulama program adı **uydurmaz**, yalnızca "Canlı yayın" yazar.
 
+## Varsayılan rehber
+
+Ayarlar'dan hiç adres kaydetmediyseniz uygulama varsayılan olarak herkese açık bir Türkiye rehberini (`iptv-epg.org`, ~100 kanal, 7 günlük) kullanır; bizim kanalların yaklaşık yarısıyla eşleşir, yerel kanalların çoğunda rehber verisi yoktur. Bu üçüncü taraf bir kaynaktır: kapanırsa rehber boş kalır, program adı yine uydurulmaz. **Veri tasarrufu** açıkken mobil veride otomatik yenilenmez (elle yenileme çalışır). Adresi Ayarlar'dan silebilir ya da kendi XMLTV adresinizle değiştirebilirsiniz.
+
 ## Rehberi açmak
 
 <p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/14-yayin-rehberi.jpg" alt="Rehber yüklenmediğinde" width="80%"><br><sub>XMLTV adresi eklenmediyse rehber ekranı böyle görünür; program adı uydurulmaz.</sub></p>
