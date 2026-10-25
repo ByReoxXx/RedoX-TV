@@ -75,12 +75,10 @@ jobs:
           out = [f"{t} test, {f} başarısız, {s} atlandı"] + bad
           if t == 0:
               out = ["Test sonucu üretilmedi (derleme hatası olabilir). Günlüğün sonu:"] + open("test.log", errors="replace").read().splitlines()[-25:]
-          open("test-summary.txt", "w", encoding="utf-8").write("
-".join(out))
+          open("test-summary.txt", "w", encoding="utf-8").write(chr(10).join(out))
           PY
           { echo "### Birim testleri"; echo '```'; cat test-summary.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-          ENC=$(sed ':a;N;$!ba;s/%/%25/g;s///g;s/
-/%0A/g' test-summary.txt)
+          ENC=$(sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g' test-summary.txt)
           echo "::warning title=Birim testleri::${ENC}"
 
   build:
