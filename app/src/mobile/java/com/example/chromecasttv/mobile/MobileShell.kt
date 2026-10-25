@@ -96,6 +96,29 @@ fun MobileShell(
 
     val env = MobileEnv(viewModel, host, state, features, nav, actions, snackbar, isTablet)
 
+    // Klavye: Ctrl+1…9,0 sekmeler, Ctrl+F/K arama, Esc / Alt+Sol geri
+    HardwareKeyHandler { event ->
+        val ctrl = event.isCtrlPressed
+        val code = event.keyCode
+        when {
+            ctrl && code in android.view.KeyEvent.KEYCODE_1..android.view.KeyEvent.KEYCODE_9 -> {
+                MobileTab.entries.getOrNull(code - android.view.KeyEvent.KEYCODE_1)?.let { nav.selectRoot(it) }
+                true
+            }
+            ctrl && code == android.view.KeyEvent.KEYCODE_0 -> {
+                MobileTab.entries.getOrNull(9)?.let { nav.selectRoot(it) }
+                true
+            }
+            ctrl && (code == android.view.KeyEvent.KEYCODE_F || code == android.view.KeyEvent.KEYCODE_K) -> {
+                nav.selectRoot(MobileTab.SEARCH)
+                true
+            }
+            code == android.view.KeyEvent.KEYCODE_ESCAPE ||
+                (event.isAltPressed && code == android.view.KeyEvent.KEYCODE_DPAD_LEFT) -> nav.back()
+            else -> false
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         scaffold(env)
 

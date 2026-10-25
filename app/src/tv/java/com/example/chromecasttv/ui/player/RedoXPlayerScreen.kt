@@ -613,6 +613,7 @@ fun RedoXPlayerScreen(
                                 true
                             }
                             keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE ||
+                            keyCode == KeyEvent.KEYCODE_SPACE ||
                             keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE ||
                             keyCode == KeyEvent.KEYCODE_MEDIA_PLAY -> {
                                 toggleTimeshiftPause()

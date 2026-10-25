@@ -133,6 +133,12 @@ class MainActivity : ComponentActivity(), RedoXHost {
         if (vm != null) vm.playChannelById(id) else pendingChannelId = id
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        // Telefon/tablette klavye kısayolları; TV'de kumanda/klavye yön tuşlarıyla çalışmaya devam eder
+        if (BuildConfig.DEVICE_KIND != "tv" && HardwareKeys.dispatch(event)) return true
+        return super.dispatchKeyEvent(event)
+    }
+
     override fun onResume() {
         super.onResume()
         if (BuildConfig.DEVICE_KIND == "tv") {
