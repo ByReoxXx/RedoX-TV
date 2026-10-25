@@ -1,6 +1,8 @@
 package com.example.chromecasttv
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Snackbar
@@ -10,6 +12,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,7 +41,14 @@ fun MobileTopBar(env: MobileEnv) {
                     Icon(RedoXIcons.ArrowBack, contentDescription = "Geri")
                 }
             } else {
-                RedoXMark(markSize = 42.dp, modifier = Modifier.padding(start = 12.dp, end = 4.dp))
+                // Logoya dokunmak ana sayfaya götürür
+                RedoXMark(
+                    markSize = 42.dp,
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 4.dp)
+                        .clip(CircleShape)
+                        .clickable(onClickLabel = "Ana sayfa") { nav.selectRoot(MobileTab.HOME) }
+                )
             }
         },
         actions = {
