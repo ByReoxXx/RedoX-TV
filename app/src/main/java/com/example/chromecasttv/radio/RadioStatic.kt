@@ -15,7 +15,7 @@ import java.util.Random
 object RadioStatic {
     private const val RATE = 22_050
     private const val FRAMES = RATE * 3 / 2
-    private const val VOLUME = 0.22f
+    private const val VOLUME = 0.09f
 
     private val handler = Handler(Looper.getMainLooper())
     private var track: AudioTrack? = null
@@ -77,14 +77,16 @@ object RadioStatic {
     private fun build(): AudioTrack {
         val rnd = Random(7)
         val pcm = ShortArray(FRAMES)
-        var envelope = 0.6f
+        var envelope = 0.7f
+        var target = 0.7f
         var low = 0f
         for (i in 0 until FRAMES) {
-            if (i % 441 == 0) envelope = 0.35f + rnd.nextFloat() * 0.65f      // ~50 Hz'de şiddet değişimi: "kırıltı"
+            if (i % 1_100 == 0) target = 0.55f + rnd.nextFloat() * 0.45f          // yavaş, yumuşak şiddet dalgalanması
+            envelope += 0.004f * (target - envelope)
             val white = rnd.nextFloat() * 2f - 1f
-            low += 0.35f * (white - low)                                          // hafif alçak geçiren: sıcak cızırtı
-            var s = (0.7f * white + 0.9f * low) * envelope
-            if (rnd.nextInt(2500) == 0) s += if (rnd.nextBoolean()) 0.9f else -0.9f   // ara sıra çıtırtı
+            low += 0.12f * (white - low)                                          // güçlü alçak geçiren: tiz "cızz" yerine yumuşak "şşş"
+            var s = (0.18f * white + 1.6f * low) * envelope
+            if (rnd.nextInt(6_000) == 0) s += if (rnd.nextBoolean()) 0.3f else -0.3f   // seyrek, hafif çıtırtı
             pcm[i] = (s.coerceIn(-1f, 1f) * 0.6f * Short.MAX_VALUE).toInt().toShort()
         }
         val attrs = AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA).setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()

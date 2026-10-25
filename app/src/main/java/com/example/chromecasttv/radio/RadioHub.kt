@@ -3,6 +3,8 @@ package com.example.chromecasttv
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.Metadata
+import androidx.media3.extractor.metadata.icy.IcyInfo
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import kotlinx.coroutines.CoroutineScope
@@ -342,17 +344,33 @@ object RadioHub {
                 }
             }
 
+            // ICY şarkı bilgisi doğrudan yayından (MediaMetadata birleşimine bağlı kalmadan)
+            override fun onMetadata(metadata: Metadata) {
+                val station = _state.value.current ?: return
+                if (isDemo(station)) return
+                for (i in 0 until metadata.length()) {
+                    val icy = metadata.get(i) as? IcyInfo ?: continue
+                    val text = icy.title?.trim().orEmpty()
+                    if (text.isNotEmpty()) setSongFromText(text)
+                }
+            }
+
             override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                 val s = _state.value
                 val station = s.current ?: return
                 if (isDemo(station)) return
                 val text = mediaMetadata.title?.toString()?.trim().orEmpty()
                 if (text.isEmpty() || text == station.name) return
-                val sep = text.indexOf(" - ")
-                val song = if (sep > 0) RadioSong(artist = text.substring(0, sep).trim(), title = text.substring(sep + 3).trim()) else RadioSong(artist = "", title = text)
-                _state.update { it.copy(song = song) }
+                setSongFromText(text)
             }
         })
+    }
+
+    /** "Sanatçı - Şarkı" metnini şarkı bilgisine çevirir (ayraç yoksa tamamı şarkı adı). */
+    private fun setSongFromText(text: String) {
+        val sep = text.indexOf(" - ")
+        val song = if (sep > 0) RadioSong(artist = text.substring(0, sep).trim(), title = text.substring(sep + 3).trim()) else RadioSong(artist = "", title = text)
+        _state.update { if (it.song == song) it else it.copy(song = song) }
     }
 
     private class DemoBehavior(val connectMs: Long, val failFirst: Boolean, val dead: Boolean)
