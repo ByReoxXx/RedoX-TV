@@ -188,6 +188,16 @@ fun RedoXLandingScreen(
     val primaryFocusRequester = remember { FocusRequester() }
     val lastChannel = state.recentChannels.firstOrNull() ?: state.builtInChannels.firstOrNull()
 
+    // Yeni eklenen kanallar: bu açılışta bir kez duyurulur, sonra görülmüş sayılır
+    val landingContext = androidx.compose.ui.platform.LocalContext.current
+    val newChannels = remember(state.builtInChannels) { NewChannelsTracker.pending(landingContext, state.builtInChannels) }
+    LaunchedEffect(newChannels) {
+        if (newChannels.isNotEmpty()) {
+            kotlinx.coroutines.delay(6_000L)
+            NewChannelsTracker.markSeen(landingContext, state.builtInChannels)
+        }
+    }
+
     LaunchedEffect(Unit) {
         try { primaryFocusRequester.requestFocus() } catch (_: Exception) {}
     }
@@ -227,10 +237,14 @@ fun RedoXLandingScreen(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "${state.builtInChannels.size + state.customM3uChannels.size} kanal hazır",
+                        text = "${state.builtInChannels.size + state.customM3uChannels.size} kanal hazır" +
+                            if (newChannels.isNotEmpty()) " • Yeni: ${NewChannelsTracker.summary(newChannels, 4)}" else "",
                         color = TvThemeColors.TextSecondary,
                         fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
+                        modifier = Modifier.widthIn(max = 520.dp)
                     )
                 }
                 Row(

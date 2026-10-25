@@ -323,8 +323,13 @@ fun MobileSettingsScreen(
                             if (showLog) logText = CrashLogger.readLog(context)
                         }
                     )
+                    MGhostButton(
+                        text = "Hata raporu paylaş",
+                        icon = RedoXIcons.Info,
+                        onClick = { host.shareText(CrashLogger.report(context)) }
+                    )
                     if (showLog) {
-                        MGhostButton(text = "Paylaş", onClick = { host.shareText(logText.ifBlank { "Günlük boş." }) })
+                        MGhostButton(text = "Günlüğü paylaş", onClick = { host.shareText(logText.ifBlank { "Günlük boş." }) })
                         MGhostButton(
                             text = "Temizle",
                             danger = true,

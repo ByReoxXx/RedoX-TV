@@ -51,6 +51,19 @@ object CrashLogger {
         }
     }
 
+    /** Paylaşıma hazır rapor: sürüm, cihaz bilgisi ve kaydedilmiş hata günlüğü (kişisel veri içermez). */
+    fun report(context: Context, logText: String = readLog(context)): String {
+        val dm = context.resources.displayMetrics
+        return buildString {
+            appendLine("${BuildConfig.APP_DISPLAY_NAME} hata raporu")
+            appendLine("Sürüm: ${BuildConfig.VERSION_NAME} (${BuildConfig.DEVICE_KIND})")
+            appendLine("Cihaz: ${android.os.Build.MANUFACTURER} ${android.os.Build.MODEL}, Android ${android.os.Build.VERSION.RELEASE} (API ${android.os.Build.VERSION.SDK_INT})")
+            appendLine("Ekran: ${dm.widthPixels}x${dm.heightPixels}, ${dm.densityDpi} dpi")
+            appendLine("---")
+            append(logText.takeLast(12_000).ifBlank { "Günlük boş: kaydedilmiş bir hata yok." })
+        }
+    }
+
     fun clear(context: Context) {
         try {
             logFile(context).delete()

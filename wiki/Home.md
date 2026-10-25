@@ -15,7 +15,7 @@
 1. **[📸 Ekran Görüntüleri](Ekran-Goruntuleri.md)** — TV, telefon ve tablet arayüzünden görüntüler
 2. **[🚀 Kurulum Rehberi](Kurulum-Rehberi.md)** — APK'lar, TV / tablet / telefon kurulumu, GitHub'da derleme ve imza anahtarı
 3. **[🎮 Kumanda ve Dokunmatik Kontroller](Kumanda-ve-Dokunmatik-Kontroller.md)** — TV kumanda haritası, telefon/tablet hareketleri
-4. **[📚 Kanal Listesi](Kanal-Listesi.md)** — yerleşik 121 kanallık paket: seçim, sıra, güncelleme
+4. **[📚 Kanal Listesi](Kanal-Listesi.md)** — yerleşik 133 kanallık paket: seçim, sıra, güncelleme
 5. **[📱 M3U, Xtream ve QR ile Yükleme](M3U-Xtream-ve-QR-Yukleme.md)** — kaynak ekleme, Özel M3U klasörleri, yedekleme
 6. **[📅 Yayın Rehberi ve Hatırlatıcılar](Yayin-Rehberi-ve-Hatirlaticilar.md)** — gerçek XMLTV rehberi, eşleştirme, hatırlatma
 7. **[📺 Oynatıcı, Yedek Akış ve Çoklu Ekran](Coklu-Ekran-ve-Oynatici.md)** — oynatıcı çubuğu, kalite, gece modu, PiP, arka plan sesi, 2x2
@@ -31,7 +31,7 @@
 
 | Özellik | Açıklama |
 | :--- | :--- |
-| **Hazır kanal listesi** | Türksat (TKGS) şifresiz kanallarıyla eşleşen **121 kanal / 398 yayın**, denenmiş; açılışta kendiliğinden güncellenir ([ayrıntı](Kanal-Listesi.md)) |
+| **Hazır kanal listesi** | Türksat (TKGS) şifresiz kanallarıyla eşleşen **133 kanal / 415 yayın**, denenmiş; açılışta kendiliğinden güncellenir ([ayrıntı](Kanal-Listesi.md)) |
 | **Üç ayrı APK** | TV (kumanda odaklı), tablet (gezinti rayı, ızgaralar), telefon (alt gezinti, hareketler, kumanda) |
 | **Eski uygulamadan bağımsız** | Paket `com.redoxtv.two`; eski RedoX TV ile yan yana kurulabilir, veriler paylaşılmaz |
 | **Tek satırlık oynatıcı çubuğu** | Ekranın ~%15'i; ayarlar **Seçenekler** menüsünde ([ayrıntı](Coklu-Ekran-ve-Oynatici.md)) |

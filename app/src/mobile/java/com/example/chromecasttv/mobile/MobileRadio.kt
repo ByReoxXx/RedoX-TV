@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.sp
 // Şimdilik DEMO: gerçek ses çalmaz ([RadioHub] örnek veriyle canlandırır).
 // ============================================================================
 
-private enum class RadioSheet { NONE, OPTIONS, STATIONS }
+private enum class RadioSheet { NONE, OPTIONS, STATIONS, HISTORY }
 
 /** Radyo sekmesi: tür çipleri + istasyon listesi (tablette sağda oynatıcı paneli). */
 @Composable
@@ -50,7 +50,12 @@ fun MobileRadioScreen(isTablet: Boolean) {
     val active = if (ui.selectedCategory in categories) ui.selectedCategory else RADIO_CAT_ALL
     // Favoriler listesi seçildiği andaki görüntüdür: yıldızı kaldırınca satır birden kaybolmaz
     val favSnapshot = remember(active) { ui.favoriteIds }
-    val filtered = remember(ui.stations, active, favSnapshot) { radioFilter(ui.stations, favSnapshot, active) }
+    val byCategory = remember(ui.stations, active, favSnapshot) { radioFilter(ui.stations, favSnapshot, active) }
+    var query by remember { mutableStateOf("") }
+    val filtered = remember(byCategory, query) {
+        val q = query.trim()
+        if (q.isEmpty()) byCategory else byCategory.filter { it.name.contains(q, ignoreCase = true) }
+    }
 
     if (isTablet) {
         Row(modifier = Modifier.fillMaxSize()) {
@@ -59,6 +64,8 @@ fun MobileRadioScreen(isTablet: Boolean) {
                 categories = categories,
                 active = active,
                 filtered = filtered,
+                query = query,
+                onQuery = { query = it },
                 openOnPlayingTap = false,
                 modifier = Modifier
                     .weight(0.46f)
@@ -79,6 +86,8 @@ fun MobileRadioScreen(isTablet: Boolean) {
             categories = categories,
             active = active,
             filtered = filtered,
+            query = query,
+            onQuery = { query = it },
             openOnPlayingTap = true,
             modifier = Modifier.fillMaxSize()
         )
@@ -91,10 +100,18 @@ private fun RadioListPane(
     categories: List<String>,
     active: String,
     filtered: List<TvChannel>,
+    query: String,
+    onQuery: (String) -> Unit,
     openOnPlayingTap: Boolean,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
+        MTextField(
+            value = query,
+            onValueChange = onQuery,
+            label = "İstasyon ara",
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)
+        )
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -540,7 +557,8 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
         )
 
         when (sheet) {
-            RadioSheet.OPTIONS -> MRadioOptionsSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE })
+            RadioSheet.OPTIONS -> MRadioOptionsSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE }, onHistory = { sheet = RadioSheet.HISTORY })
+            RadioSheet.HISTORY -> MRadioHistorySheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE })
             RadioSheet.STATIONS -> MRadioStationsSheet(ui = ui, onDismiss = { sheet = RadioSheet.NONE })
             RadioSheet.NONE -> Unit
         }
@@ -651,7 +669,7 @@ private fun MRadioSheetItem(icon: ImageVector, label: String, danger: Boolean = 
 }
 
 @Composable
-private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit) {
+private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit, onHistory: () -> Unit) {
     val station = ui.current
     val fav = station != null && station.id in ui.favoriteIds
     MRadioSheet(onDismiss = onDismiss) {
@@ -699,6 +717,7 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit)
         ) { station?.let { RadioHub.toggleFavorite(it.id) } }
         MRadioSheetItem(icon = RedoXIcons.MusicNote, label = if (ui.spectrumOn) "Ses dalgasını kapat" else "Ses dalgasını aç") { RadioHub.toggleSpectrum() }
         MRadioSheetItem(icon = RedoXIcons.VolumeUp, label = if (ui.staticOn) "Radyo cızırtısını kapat" else "Radyo cızırtısını aç") { RadioHub.toggleStatic() }
+        MRadioSheetItem(icon = RedoXIcons.History, label = "Şarkı geçmişi (${ui.history.size})") { onHistory() }
         MRadioSheetItem(icon = RedoXIcons.VisibilityOff, label = "İstasyonu gizle") {
             station?.let { RadioHub.hide(it.id) }
             onDismiss()
@@ -717,6 +736,45 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit)
                 fontSize = 12.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )
+        }
+    }
+}
+
+@Composable
+private fun BoxScope.MRadioHistorySheet(ui: RadioUiState, onDismiss: () -> Unit) {
+    val clipboard = androidx.compose.ui.platform.LocalClipboardManager.current
+    val clock = remember { java.text.SimpleDateFormat("dd.MM HH:mm", java.util.Locale("tr")) }
+    MRadioSheet(onDismiss = onDismiss) {
+        Text(text = "Şarkı geçmişi", color = RedoXColors.TextPrimary, fontSize = 18.sp, fontWeight = FontWeight.ExtraBold)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(text = "Yayından okunan şarkı bilgisi; yalnızca bu cihazda saklanır.", color = RedoXColors.TextTertiary, fontSize = 12.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        if (ui.history.isEmpty()) {
+            Text(text = "Henüz şarkı bilgisi yok. Şarkı adı yayınlayan bir istasyonu dinleyince burada birikir.", color = RedoXColors.TextSecondary, fontSize = 14.sp)
+        } else {
+            LazyColumn(modifier = Modifier.height(300.dp)) {
+                items(ui.history.size) { i ->
+                    val h = ui.history[i]
+                    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp)) {
+                        Text(
+                            text = if (h.artist.isBlank()) h.title else "${h.title} — ${h.artist}",
+                            color = RedoXColors.TextPrimary, fontSize = 15.sp, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis
+                        )
+                        Text(text = "${h.station} · ${clock.format(java.util.Date(h.timeMillis))}", color = RedoXColors.TextSecondary, fontSize = 12.sp)
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                MChip(text = "Listeyi kopyala", selected = false, onClick = {
+                    clipboard.setText(androidx.compose.ui.text.AnnotatedString(ui.history.joinToString("
+") { h ->
+                        (if (h.artist.isBlank()) h.title else "${h.artist} - ${h.title}") + " (${h.station})"
+                    }))
+                    RadioHub.toast("Liste kopyalandı")
+                })
+                MChip(text = "Temizle", selected = false, onClick = { RadioHub.clearHistory() })
+            }
         }
     }
 }

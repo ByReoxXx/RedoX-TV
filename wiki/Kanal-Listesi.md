@@ -4,20 +4,20 @@ RedoX TV 2 ilk açılışta hazır bir kanal listesiyle gelir. Bu sayfa listenin
 
 ## Ne içerir?
 
-**121 kanal / 398 yayın.** 105 kanalın birden fazla (en çok 6) yayın kaynağı vardır; bir kaynak açılmazsa uygulama kendiliğinden sıradakine geçer ([Oynatıcı ve yedek akış](Coklu-Ekran-ve-Oynatici.md)).
+**133 kanal / 415 yayın.** 109 kanalın birden fazla (en çok 6) yayın kaynağı vardır; bir kaynak açılmazsa uygulama kendiliğinden sıradakine geçer ([Oynatıcı ve yedek akış](Coklu-Ekran-ve-Oynatici.md)).
 
 | Kategori | Kanal |
 |---|---|
-| Ulusal | 26 |
-| Haber | 16 |
+| Ulusal | 27 |
+| Haber | 17 |
 | Spor | 6 |
 | Belgesel | 3 |
 | Müzik | 4 |
 | Çocuk | 7 |
-| Dini | 12 |
+| Dini | 14 |
 | Kıbrıs | 7 |
-| Dünya | 7 |
-| Yerel | 33 |
+| Dünya | 11 |
+| Yerel | 37 |
 
 Kategori çipleri her zaman bu sıradadır (Ulusal, Haber, Spor, Belgesel, Müzik, Çocuk, Dini, Kıbrıs, Dünya, Yerel); kanalların kendi sırası ise aşağıdaki gibidir.
 

@@ -17,6 +17,10 @@ enum class RadioPhase { STOPPED, CONNECTING, PLAYING, PAUSED, FAILOVER, ERROR }
 @Immutable
 data class RadioSong(val artist: String, val title: String)
 
+/** Çalan şarkı geçmişinin bir satırı (yayından okunan "Sanatçı - Şarkı" bilgisi). */
+@Immutable
+data class RadioHistoryItem(val timeMillis: Long, val station: String, val artist: String, val title: String)
+
 @Immutable
 data class RadioUiState(
     val loaded: Boolean = false,
@@ -41,6 +45,8 @@ data class RadioUiState(
     val spectrumOn: Boolean = true,
     /** İstasyon değişirken yayın açılana kadar nostaljik radyo cızırtısı çalınsın mı. */
     val staticOn: Boolean = true,
+    /** Son çalan şarkılar (en yenisi başta; kalıcı, en çok 100). */
+    val history: List<RadioHistoryItem> = emptyList(),
     val toast: String? = null
 ) {
     val current: TvChannel? get() = currentId?.let { id -> stations.firstOrNull { it.id == id } }

@@ -148,6 +148,8 @@ object RadioHub {
     private const val KEY_FAVS = "favorites"
     private const val KEY_HIDDEN = "hidden"
     private const val KEY_STATIC = "static_noise"
+    private const val KEY_HISTORY = "song_history"
+    private const val MAX_HISTORY = 100
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val _state = MutableStateFlow(RadioUiState())
@@ -192,8 +194,9 @@ object RadioHub {
             val favs = prefs?.getStringSet(KEY_FAVS, emptySet())?.toSet() ?: emptySet()
             val hidden = prefs?.getStringSet(KEY_HIDDEN, emptySet())?.toSet() ?: emptySet()
             val staticOn = prefs?.getBoolean(KEY_STATIC, true) ?: true
+            val history = readHistory()
             _state.update {
-                it.copy(loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden, staticOn = staticOn)
+                it.copy(loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden, staticOn = staticOn, history = history)
             }
         }
     }
@@ -348,6 +351,9 @@ object RadioHub {
             }
 
             override fun onPlayerError(error: PlaybackException) {
+                // Hata raporlarında görünsün (Ayarlar > Hata raporu paylaş)
+                val st = _state.value
+                appContext?.let { CrashLogger.log(it, "Radyo hatası: ${st.current?.name} • kaynak ${st.sourceIndex + 1} • ${error.errorCodeName}") }
                 onSourceFailed()
             }
 
@@ -399,7 +405,38 @@ object RadioHub {
     private fun setSongFromText(text: String) {
         val sep = text.indexOf(" - ")
         val song = if (sep > 0) RadioSong(artist = text.substring(0, sep).trim(), title = text.substring(sep + 3).trim()) else RadioSong(artist = "", title = text)
-        _state.update { if (it.song == song) it else it.copy(song = song) }
+        if (_state.value.song == song) return
+        val stationName = _state.value.current?.name.orEmpty()
+        _state.update {
+            val last = it.history.firstOrNull()
+            val fresh = last == null || last.title != song.title || last.artist != song.artist || last.station != stationName
+            it.copy(
+                song = song,
+                history = if (fresh) (listOf(RadioHistoryItem(System.currentTimeMillis(), stationName, song.artist, song.title)) + it.history).take(MAX_HISTORY) else it.history
+            )
+        }
+        prefs?.edit()?.putString(KEY_HISTORY, _state.value.history.joinToString("
+") { h ->
+            listOf(h.timeMillis.toString(), h.station, h.artist, h.title).joinToString("	") { f -> f.replace('	', ' ').replace('
+', ' ') }
+        })?.apply()
+    }
+
+    private fun readHistory(): List<RadioHistoryItem> {
+        val raw = prefs?.getString(KEY_HISTORY, "").orEmpty()
+        if (raw.isBlank()) return emptyList()
+        return raw.split('
+').mapNotNull { line ->
+            val p = line.split('	')
+            if (p.size < 4) null else RadioHistoryItem(p[0].toLongOrNull() ?: 0L, p[1], p[2], p[3])
+        }
+    }
+
+    /** Şarkı geçmişini siler. */
+    fun clearHistory() {
+        _state.update { it.copy(history = emptyList()) }
+        prefs?.edit()?.remove(KEY_HISTORY)?.apply()
+        toast("Şarkı geçmişi temizlendi")
     }
 
     private class DemoBehavior(val connectMs: Long, val failFirst: Boolean, val dead: Boolean)

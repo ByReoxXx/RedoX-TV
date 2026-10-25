@@ -44,7 +44,7 @@
     </td>
     <td width="33%" valign="top">
       <b>📚 Hazır kanal listesi</b><br>
-      Türksat'ın şifresiz (TKGS) kanallarıyla eşleşen <b>121 kanal / 398 yayın</b>, tek tek denenmiş. Aynı kanalın alternatif yayınları tek kanalda; liste açılışta kendiliğinden güncellenir.
+      Türksat'ın şifresiz (TKGS) kanallarıyla eşleşen <b>133 kanal / 415 yayın</b>, tek tek denenmiş. Aynı kanalın alternatif yayınları tek kanalda; liste açılışta kendiliğinden güncellenir.
     </td>
   </tr>
   <tr>
@@ -136,7 +136,7 @@ adb connect <TV-IP>:5555
 adb install -r RedoX-TV-2-v2.1.0-tv.apk
 ```
 
-**3. İzleyin.** Açılışta 121 kanal hazırdır: `OK` ile izleyin, `OK` basılı tutarak kanal özelliklerine (favori, kilit, düzenle, gizle) gidin. Oynatıcıda `OK` çubuğu açar, `◄` kanal listesini, `►` bir sonraki yayın kaynağını, `▲ ▼` kanal değiştirmeyi yapar.
+**3. İzleyin.** Açılışta 133 kanal hazırdır: `OK` ile izleyin, `OK` basılı tutarak kanal özelliklerine (favori, kilit, düzenle, gizle) gidin. Oynatıcıda `OK` çubuğu açar, `◄` kanal listesini, `►` bir sonraki yayın kaynağını, `▲ ▼` kanal değiştirmeyi yapar.
 
 **4. Kendi listenizi ekleyin.** TV'de **M3U ve Dosya** (ya da telefonda **Kaynaklar**): M3U adresi, dosya, Xtream Codes veya QR ile telefondan gönderme. Listeler **Özel M3U** sekmesinde, verdiğiniz adla klasör olur.
 
@@ -177,6 +177,8 @@ Ayrıntı: [Wiki → Kanal Listesi](https://github.com/ByReoxXx/RedoX-TV-2/wiki/
 <summary><b>🧩 Tüm özellikler</b></summary>
 
 ### Her üç cihazda
+- **📻 Radyo.** Ayrı bir sekme: TRT radyoları, ulusal ve yerel istasyonlar (şifreli liste, açılışta güncellenir). TV'de **kadran** arayüzü (`◄ ►` istasyon çevirir, `OK` duraklatır, `▲` istasyon çekmecesi), telefonda kaydırılan kadran, tablette liste + oynatıcı paneli. Kopan yayın kendini toparlar ve yedek yayına geçer; yayında varsa çalan şarkı gösterilir (telefon/tablette şarkı geçmişi); istasyon değişirken isteğe bağlı nostaljik cızırtı; uyku zamanlayıcısı; telefon ve tablette arka planda ses. Ayrıntı: [Radyo](https://github.com/ByReoxXx/RedoX-TV-2/wiki/Radyo).
+- **Yeni kanal duyurusu.** Kanal listesi güncellenince eklenen kanallar karşılama ekranında bir kez gösterilir.
 - **Gerçek yayın rehberi (XMLTV) ve hatırlatıcılar.** XMLTV adresi (`.xml` / `.xml.gz`) eklenir; M3U listelerinizdeki rehber adresleri de otomatik kullanılır. Kanallar rehberle `tvg-id` ve ad benzerliğiyle eşleşir. *Uydurma program adı gösterilmez:* rehberi olmayan kanalda yalnızca "Canlı yayın" yazar. Programa dokunarak hatırlatma eklersiniz.
 - **Kalite seçici, gerçek istatistikler, gece modu.** Otomatik / 1080p / 720p / 480p / Veri Tasarrufu. Çözünürlük, bit hızı, ağ tahmini ve düşen kare sayısı **ölçülen** değerlerdir. Gece modu konuşmaları belirginleştirir, ani yüksek sesleri baskılar.
 - **Arama.** Kanal adı, kategori, numara ve gerçek program adları içinde; küçük yazım hatalarını tolere eder.
@@ -184,7 +186,7 @@ Ayrıntı: [Wiki → Kanal Listesi](https://github.com/ByReoxXx/RedoX-TV-2/wiki/
 - **Çoklu favori listeleri.** İstediğiniz kadar liste; sıralama, yeniden adlandırma, silme. **Kanal adı / numarası düzenleme** (yalnızca bu cihazda, geri alınabilir).
 - **Çoklu kaynak ve otomatik yedek akış geçişi**, canlı yayında duraklatma, ebeveyn PIN kilidi, kanal gizleme, 2'li ve 4'lü bölünmüş ekran, uyku zamanlayıcı.
 - **Tema.** Kızıl & Altın (varsayılan), Okyanus, Orman, Mono paletleri; OLED modu (saf siyah); yazı boyutu.
-- **Güvenlik ve bakım.** Katı TLS, PIN'li yerel sunucu, güncelleme denetimi, dosyaya yedekleme, yerel tanılama günlüğü.
+- **Güvenlik ve bakım.** Katı TLS, PIN'li yerel sunucu, güncelleme denetimi, dosyaya yedekleme, yerel tanılama günlüğü ve tek dokunuşla paylaşılabilir **hata raporu** (sürüm, cihaz bilgisi, kayıtlı hatalar; kişisel veri içermez).
 
 ### Android TV
 - **Android TV ana ekranı entegrasyonu:** Favori Kanallar satırı ve "Devam et" (Watch Next) — TV'nizin ana ekranı destekliyorsa.
@@ -257,7 +259,7 @@ app/src/
 ## 🧭 Dürüstlük notları
 
 - **Gerçek cihaz denemesi sınırlıdır.** Kod GitHub Actions'ta derlenir ve emülatörlerde (telefon, tablet, Android TV) otomatik gezilir; ancak gerçek TV / telefon / tablet cihazlarında ve gerçek yayınlarla uzun süreli deneme yapılmadı. Sorun görürseniz [Issues](https://github.com/ByReoxXx/RedoX-TV-2/issues)'a yazın.
-- **Yayın rehberi varsayılan olarak boştur.** Gerçek XMLTV verisi yoksa arayüz program adı uydurmaz; rehber için Ayarlar'dan bir XMLTV adresi eklemeniz gerekir.
+- **Yayın rehberi herkese açık bir kaynaktan gelir.** Ayarlar'dan adres eklemediyseniz varsayılan olarak üçüncü taraf bir Türkiye rehberi (iptv-epg.org, ~100 kanal; yaklaşık 45'iyle eşleşir) kullanılır; veri tasarrufu açıkken mobil veride otomatik yenilenmez. Dilediğiniz zaman Ayarlar'dan silebilir ya da kendi XMLTV adresinizi ekleyebilirsiniz. Rehberi olmayan kanalda arayüz program adı uydurmaz.
 - **Ağ bit hızı** yalnızca ExoPlayer'ın ölçtüğü tahmindir; kaynağın gerçek kapasitesi değildir.
 - **Android TV ana ekranı**, **PiP** ve **arka plan sesi** üreticiye / Android sürümüne göre küçük farklar gösterebilir.
 - APK imzası sabit değildir (yukarıdaki kurulum notu).
