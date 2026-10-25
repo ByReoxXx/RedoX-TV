@@ -1096,7 +1096,7 @@ fun ChannelShowcaseScreen(
             )
         }
 
-        Spacer(modifier = Modifier.height(if (!bannerHasFocus) 8.dp else 14.dp))
+        Spacer(modifier = Modifier.height(if (!bannerHasFocus) 4.dp else 14.dp))
 
         if (chipCategories.size > 1) {
             LazyRow(
@@ -1104,7 +1104,7 @@ fun ChannelShowcaseScreen(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 4.dp)
+                    .padding(vertical = 2.dp)
             ) {
                 itemsIndexed(chipCategories, key = { idx, c -> "cat_${c}_$idx" }) { _, category ->
                     var isFocused by remember { mutableStateOf(false) }
@@ -1130,7 +1130,7 @@ fun ChannelShowcaseScreen(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .height(40.dp)
+                            .height(32.dp)
                             .then(if (isSelected) Modifier.focusRequester(chipRequester) else Modifier)
                             .tvSurface(
                                 focused = isFocused,
@@ -1141,7 +1141,7 @@ fun ChannelShowcaseScreen(
                             )
                             .onFocusChanged { isFocused = it.isFocused || it.hasFocus }
                             .clickable { onSelectCategory(category) }
-                            .padding(horizontal = 18.dp)
+                            .padding(horizontal = 14.dp)
                     ) {
                         if (chipIcon != null) {
                             Icon(
@@ -1156,7 +1156,7 @@ fun ChannelShowcaseScreen(
                             text = label,
                             color = if (isSelected || isFocused) TvThemeColors.TextPrimary else TvThemeColors.TextSecondary,
                             fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
-                            fontSize = 15.sp,
+                            fontSize = 13.sp,
                             maxLines = 1,
                             softWrap = false
                         )
@@ -1164,14 +1164,14 @@ fun ChannelShowcaseScreen(
                         Text(
                             text = count.toString(),
                             color = RedoXColors.TextTertiary,
-                            fontSize = 13.sp,
+                            fontSize = 11.sp,
                             maxLines = 1,
                             softWrap = false
                         )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(4.dp))
         }
 
         if (filtered.isEmpty()) {
@@ -1195,9 +1195,9 @@ fun ChannelShowcaseScreen(
             LazyVerticalGrid(
                 state = gridState,
                 columns = GridCells.Adaptive(minSize = 200.dp),
-                contentPadding = PaddingValues(horizontal = 6.dp, vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                contentPadding = PaddingValues(horizontal = 6.dp, vertical = 4.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth()
@@ -1225,7 +1225,7 @@ fun ChannelShowcaseScreen(
                 horizontalArrangement = Arrangement.spacedBy(26.dp),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(32.dp)
+                    .height(26.dp)
             ) {
                 TvKeyHint(key = "OK", label = "İzle")
                 TvKeyHint(key = "OK basılı tut", label = "Kanal özellikleri")
@@ -1293,7 +1293,7 @@ fun FocusedChannelHeroBanner(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(if (slim) 92.dp else if (compact) 140.dp else 168.dp)
+                .height(if (slim) 70.dp else if (compact) 140.dp else 168.dp)
                 .clip(shape)
                 .background(
                     Brush.horizontalGradient(
@@ -1310,12 +1310,12 @@ fun FocusedChannelHeroBanner(
                     )
                 }
                 .border(1.dp, RedoXColors.Line, shape)
-                .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (slim) 10.dp else if (compact) 14.dp else 20.dp),
+                .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (slim) 7.dp else if (compact) 14.dp else 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             ChannelBrandLogoBox(
                 channel = channel,
-                boxSize = if (slim) 56.dp else if (compact) 76.dp else 112.dp,
+                boxSize = if (slim) 46.dp else if (compact) 76.dp else 112.dp,
                 fontSize = if (compact) 20.sp else 28.sp
             )
 
@@ -1370,7 +1370,7 @@ fun FocusedChannelHeroBanner(
                 Text(
                     text = channel.name,
                     color = TvThemeColors.TextPrimary,
-                    fontSize = if (slim) 24.sp else if (compact) 26.sp else 32.sp,
+                    fontSize = if (slim) 21.sp else if (compact) 26.sp else 32.sp,
                     fontWeight = FontWeight.ExtraBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -1512,12 +1512,13 @@ fun TvChannelGridCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(124.dp)
+            .height(112.dp)
             .graphicsLayer {
                 scaleX = cardScale
                 scaleY = cardScale
             }
             .then(if (focusRequester != null) Modifier.focusRequester(focusRequester) else Modifier)
+            .hoverFocus(focusRequester)
             .tvSurface(
                 focused = cardFocused,
                 shape = shape,

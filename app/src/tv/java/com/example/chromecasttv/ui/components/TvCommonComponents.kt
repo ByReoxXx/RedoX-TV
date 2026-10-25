@@ -833,7 +833,7 @@ fun TvIconPill(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .height(48.dp)
+            .height(38.dp)
             .tvSurface(focused = focused, shape = shape, ringWidth = 2.5.dp)
             .onFocusChanged { focused = it.isFocused || it.hasFocus }
             .clickable(interactionSource = interactionSource, indication = LocalIndication.current) { onClick() }
@@ -847,7 +847,7 @@ fun TvIconPill(
                 focused -> TvThemeColors.TextPrimary
                 else -> TvThemeColors.TextSecondary
             },
-            modifier = Modifier.size(22.dp)
+            modifier = Modifier.size(19.dp)
         )
         AnimatedVisibility(visible = focused) {
             Text(
@@ -886,7 +886,7 @@ fun TvTopStatusHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxWidth()
-            .height(52.dp)
+            .height(42.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -896,13 +896,13 @@ fun TvTopStatusHeader(
                 imageVector = state.selectedTab.icon,
                 contentDescription = null,
                 tint = RedoXColors.PrimaryBright,
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(22.dp)
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(10.dp))
             Text(
                 text = state.selectedTab.title,
                 color = TvThemeColors.TextPrimary,
-                fontSize = 26.sp,
+                fontSize = 21.sp,
                 fontWeight = FontWeight.ExtraBold,
                 maxLines = 1,
                 softWrap = false,
@@ -952,7 +952,7 @@ fun TvTopStatusHeader(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .height(48.dp)
+                    .height(38.dp)
                     .clip(RoundedCornerShape(14.dp))
                     .background(TvThemeColors.SurfaceCard)
                     .border(1.dp, RedoXColors.Line, RoundedCornerShape(14.dp))
@@ -1048,7 +1048,7 @@ fun TvSideNavigationRail(
 
     Column(
         modifier = Modifier
-            .width(232.dp)
+            .width(210.dp)
             .fillMaxHeight()
             .onFocusChanged { onFocusInside(it.hasFocus) }
             .background(TvThemeColors.SidebarGlass)
@@ -1103,7 +1103,7 @@ fun TvSideNavigationRail(
                     badgeText = badgeText,
                     selected = selectedTab == tab,
                     // Yan menü 7 satıra çıktı: alçak (540 dp) ekranda satırlar daralır ki liste kaydırmadan sığsın
-                    rowHeight = if (compact) 40.dp else 52.dp,
+                    rowHeight = if (compact) 38.dp else 46.dp,
                     iconSize = 22.dp,
                     focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
                     onClick = { onSelectTab(tab) }
@@ -1127,7 +1127,7 @@ fun TvSideNavigationRail(
                     subtitle = null,
                     badgeText = null,
                     selected = selectedTab == tab,
-                    rowHeight = if (compact) 40.dp else 44.dp,
+                    rowHeight = if (compact) 38.dp else 40.dp,
                     iconSize = 20.dp,
                     focusRequester = if (selectedTab == tab) selectedItemFocusRequester else null,
                     onClick = { onSelectTab(tab) }
