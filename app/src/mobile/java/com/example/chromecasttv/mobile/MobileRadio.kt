@@ -767,8 +767,7 @@ private fun BoxScope.MRadioHistorySheet(ui: RadioUiState, onDismiss: () -> Unit)
             Spacer(modifier = Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 MChip(text = "Listeyi kopyala", selected = false, onClick = {
-                    clipboard.setText(androidx.compose.ui.text.AnnotatedString(ui.history.joinToString("
-") { h ->
+                    clipboard.setText(androidx.compose.ui.text.AnnotatedString(ui.history.joinToString("\n") { h ->
                         (if (h.artist.isBlank()) h.title else "${h.artist} - ${h.title}") + " (${h.station})"
                     }))
                     RadioHub.toast("Liste kopyalandı")

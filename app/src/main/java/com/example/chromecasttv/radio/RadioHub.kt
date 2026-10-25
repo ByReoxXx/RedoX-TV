@@ -415,19 +415,16 @@ object RadioHub {
                 history = if (fresh) (listOf(RadioHistoryItem(System.currentTimeMillis(), stationName, song.artist, song.title)) + it.history).take(MAX_HISTORY) else it.history
             )
         }
-        prefs?.edit()?.putString(KEY_HISTORY, _state.value.history.joinToString("
-") { h ->
-            listOf(h.timeMillis.toString(), h.station, h.artist, h.title).joinToString("	") { f -> f.replace('	', ' ').replace('
-', ' ') }
+        prefs?.edit()?.putString(KEY_HISTORY, _state.value.history.joinToString("\n") { h ->
+            listOf(h.timeMillis.toString(), h.station, h.artist, h.title).joinToString("\t") { f -> f.replace('\t', ' ').replace('\n', ' ') }
         })?.apply()
     }
 
     private fun readHistory(): List<RadioHistoryItem> {
         val raw = prefs?.getString(KEY_HISTORY, "").orEmpty()
         if (raw.isBlank()) return emptyList()
-        return raw.split('
-').mapNotNull { line ->
-            val p = line.split('	')
+        return raw.split('\n').mapNotNull { line ->
+            val p = line.split('\t')
             if (p.size < 4) null else RadioHistoryItem(p[0].toLongOrNull() ?: 0L, p[1], p[2], p[3])
         }
     }
