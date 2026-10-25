@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,6 +64,9 @@ fun MobileHomeScreen(
     // Daha önce görülmemiş yerleşik kanallar (kanal listesi güncellenince); "Tamam" ile görülmüş sayılır
     val appContext = androidx.compose.ui.platform.LocalContext.current
     var newDismissed by remember { mutableStateOf(false) }
+    // Son dinlenen radyo: çalmıyorsa "Radyoya devam et" kartı
+    val radioUi by RadioHub.state.collectAsState()
+    val lastRadio = radioUi.lastStationId?.let { id -> radioUi.stations.firstOrNull { it.id == id } }
     val newChannels = remember(state.builtInChannels) { NewChannelsTracker.pending(appContext, state.builtInChannels) }
 
     LazyColumn(
@@ -167,6 +171,34 @@ fun MobileHomeScreen(
                             )
                         }
                         MGhostButton(text = "Aç", onClick = { host.openUrl(update.htmlUrl) })
+                    }
+                }
+            }
+        }
+
+        // ------------------------------------------------------------ Radyoya devam et
+        if (lastRadio != null && !radioUi.isActive) {
+            item(key = "resume_radio") {
+                MCard(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        ChannelBrandLogoBox(channel = lastRadio, boxSize = 44.dp, fontSize = 12.sp)
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Radyoya devam et",
+                                color = RedoXColors.TextSecondary,
+                                fontSize = 12.sp
+                            )
+                            Text(
+                                text = lastRadio.name,
+                                color = RedoXColors.TextPrimary,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+                        MGhostButton(text = "Çal", onClick = { RadioHub.play(lastRadio.id) })
                     }
                 }
             }

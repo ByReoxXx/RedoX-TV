@@ -149,6 +149,8 @@ object RadioHub {
     private const val KEY_HIDDEN = "hidden"
     private const val KEY_STATIC = "static_noise"
     private const val KEY_HISTORY = "song_history"
+    private const val KEY_LAST = "last_station"
+    private const val KEY_AUTOSTART = "auto_start"
     private const val MAX_HISTORY = 100
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -195,9 +197,16 @@ object RadioHub {
             val hidden = prefs?.getStringSet(KEY_HIDDEN, emptySet())?.toSet() ?: emptySet()
             val staticOn = prefs?.getBoolean(KEY_STATIC, true) ?: true
             val history = readHistory()
+            val lastId = prefs?.getString(KEY_LAST, null)
+            val autoStart = prefs?.getBoolean(KEY_AUTOSTART, false) ?: false
             _state.update {
-                it.copy(loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden, staticOn = staticOn, history = history)
+                it.copy(
+                    loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden,
+                    staticOn = staticOn, history = history, lastStationId = lastId, autoStart = autoStart
+                )
             }
+            // İsteğe bağlı: uygulama açılınca son radyoyu çal (bir TV kanalı başlarsa radyo zaten susar)
+            if (autoStart && lastId != null && list.any { it.id == lastId && it.id !in hidden }) play(lastId)
         }
     }
 
@@ -243,10 +252,11 @@ object RadioHub {
         songJob?.cancel()
         attemptJob?.cancel()
         retriesLeft = 2
+        prefs?.edit()?.putString(KEY_LAST, id)?.apply()
         _state.update {
             it.copy(
                 currentId = id, tuningId = null, phase = RadioPhase.CONNECTING, sourceIndex = 0, failoverAttempt = 0,
-                song = null, playerOpen = it.playerOpen || openPlayer
+                song = null, playerOpen = it.playerOpen || openPlayer, lastStationId = id
             )
         }
         if (!isDemo(station)) {
@@ -569,6 +579,40 @@ object RadioHub {
 
     fun toggleSpectrum() {
         _state.update { it.copy(spectrumOn = !it.spectrumOn) }
+    }
+
+    /** Uygulama açılınca son radyoyu otomatik çalma (kalıcı). */
+    fun toggleAutoStart() {
+        val on = !_state.value.autoStart
+        _state.update { it.copy(autoStart = on) }
+        prefs?.edit()?.putBoolean(KEY_AUTOSTART, on)?.apply()
+        toast(if (on) "Açılışta son radyo çalacak" else "Açılışta radyo başlamayacak")
+    }
+
+    /** Telefon kumandası için: çalan istasyon, şarkı ve (isteğe bağlı) istasyon listesi. */
+    fun remoteState(includeStations: Boolean): org.json.JSONObject {
+        val s = _state.value
+        val o = JSONObject()
+        o.put("active", s.isActive)
+        o.put("phase", s.phase.name)
+        o.put("stationId", s.currentId ?: "")
+        o.put("station", s.current?.name ?: "")
+        o.put("song", s.song?.let { if (it.artist.isBlank()) it.title else it.artist + " - " + it.title } ?: "")
+        if (includeStations) {
+            val arr = org.json.JSONArray()
+            for (st in s.stations.take(200)) arr.put(JSONObject().put("id", st.id).put("name", st.name))
+            o.put("stations", arr)
+        }
+        return o
+    }
+
+    /** "Bu yayını bildir": yayın bilgisini günlüğe yazar ve paylaşılabilir rapor metnini döndürür. */
+    fun brokenStreamReport(context: Context, station: TvChannel): String {
+        val s = _state.value
+        val src = station.sources.getOrNull(s.sourceIndex)?.url ?: station.sources.firstOrNull()?.url ?: "-"
+        val line = "Radyo yayın bildirimi: " + station.name + " • kaynak " + (s.sourceIndex + 1) + "/" + station.sources.size + " • " + s.phase.name + " • " + src
+        CrashLogger.log(context, line)
+        return line + "\n\n" + CrashLogger.report(context)
     }
 
     /** İstasyon değişirken çalan radyo cızırtısını açar/kapatır (kalıcı). */

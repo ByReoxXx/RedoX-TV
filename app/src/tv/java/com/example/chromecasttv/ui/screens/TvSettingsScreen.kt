@@ -333,6 +333,11 @@ fun TvSettingsScreen(
                     onClick = { viewModel.restoreSettingsFromDevice() }
                 )
                 TvCompactChipButton(
+                    text = "Kanal Listesini Yenile",
+                    icon = RedoXIcons.Refresh,
+                    onClick = { viewModel.refreshChannelList() }
+                )
+                TvCompactChipButton(
                     text = "İzleme İstatistiklerini Temizle",
                     icon = RedoXIcons.DeleteOutline,
                     onClick = {

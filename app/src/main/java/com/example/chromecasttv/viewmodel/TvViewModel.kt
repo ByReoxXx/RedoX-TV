@@ -476,6 +476,20 @@ class TvViewModel(
             viewModelScope.launch { closePlayer() }
         }
 
+        override fun remoteRadio(action: String, id: String, delta: Int): org.json.JSONObject {
+            // Radyo durumu ana iş parçacığında değiştirilir; durum akışı iş parçacığı güvenli okunur
+            when (action) {
+                "play" -> if (id.isNotBlank()) viewModelScope.launch {
+                    closePlayer()
+                    RadioHub.play(id)
+                }
+                "toggle" -> viewModelScope.launch { RadioHub.togglePause() }
+                "step" -> viewModelScope.launch { RadioHub.stepNow(delta) }
+                "stop" -> viewModelScope.launch { RadioHub.stop() }
+            }
+            return RadioHub.remoteState(includeStations = action == "state")
+        }
+
         override fun remoteCast(name: String, url: String, logoUrl: String): Boolean {
             val lower = url.lowercase(Locale.US)
             val type = when {
@@ -953,6 +967,20 @@ class TvViewModel(
         val current = _activePlayingChannel.value ?: return
         _activePlayingChannel.value = null
         _pipChannel.value = current
+    }
+
+    /** Kanal listesini GitHub'dan hemen yeniden indirir (normalde her açılışta kendiliğinden yapılır). */
+    fun refreshChannelList() {
+        showStatusMessage("Kanal listesi indiriliyor…")
+        viewModelScope.launch(Dispatchers.IO) {
+            val updated = repository.syncRemoteGitHubChannelsJson()
+            if (!updated.isNullOrEmpty()) {
+                _builtInChannels.value = updated
+                showStatusMessage("Kanal listesi güncellendi: " + updated.size + " kanal")
+            } else {
+                showStatusMessage("Liste indirilemedi; internet bağlantısını denetleyin.")
+            }
+        }
     }
 
     fun closePip() {

@@ -112,6 +112,33 @@ private fun RadioListPane(
             label = "İstasyon ara",
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)
         )
+        // Favoriler şeridi: dinlerken tek dokunuşla geçiş (Favoriler çipi seçiliyken gösterilmez)
+        val favs = remember(ui.stations, ui.favoriteIds) { ui.stations.filter { it.id in ui.favoriteIds } }
+        if (favs.isNotEmpty() && active != RADIO_CAT_FAVORITES && query.isBlank()) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(favs, key = { "fav_${it.id}" }) { st ->
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .width(64.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable { if (st.id == ui.currentId && ui.isActive && openOnPlayingTap) RadioHub.openPlayer() else RadioHub.play(st.id) }
+                    ) {
+                        ChannelBrandLogoBox(channel = st, boxSize = 46.dp, fontSize = 12.sp)
+                        Text(
+                            text = st.name,
+                            color = if (st.id == ui.currentId && ui.isActive) RedoXColors.PrimaryBright else RedoXColors.TextSecondary,
+                            fontSize = 11.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+            }
+        }
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -718,6 +745,14 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit,
         MRadioSheetItem(icon = RedoXIcons.MusicNote, label = if (ui.spectrumOn) "Ses dalgasını kapat" else "Ses dalgasını aç") { RadioHub.toggleSpectrum() }
         MRadioSheetItem(icon = RedoXIcons.VolumeUp, label = if (ui.staticOn) "Radyo cızırtısını kapat" else "Radyo cızırtısını aç") { RadioHub.toggleStatic() }
         MRadioSheetItem(icon = RedoXIcons.History, label = "Şarkı geçmişi (${ui.history.size})") { onHistory() }
+        MRadioSheetItem(icon = RedoXIcons.PlayArrow, label = if (ui.autoStart) "Açılışta radyoyu başlatma" else "Açılışta son radyoyu çal") { RadioHub.toggleAutoStart() }
+        val shareContext = androidx.compose.ui.platform.LocalContext.current
+        if (station != null) {
+            MRadioSheetItem(icon = RedoXIcons.Info, label = "Bu yayını bildir (rapor paylaş)") {
+                shareTextIntent(shareContext, RadioHub.brokenStreamReport(shareContext, station), "Yayını bildir")
+                onDismiss()
+            }
+        }
         MRadioSheetItem(icon = RedoXIcons.VisibilityOff, label = "İstasyonu gizle") {
             station?.let { RadioHub.hide(it.id) }
             onDismiss()

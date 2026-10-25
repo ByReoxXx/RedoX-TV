@@ -47,6 +47,10 @@ data class RadioUiState(
     val staticOn: Boolean = true,
     /** Son çalan şarkılar (en yenisi başta; kalıcı, en çok 100). */
     val history: List<RadioHistoryItem> = emptyList(),
+    /** En son çalınan istasyon (kalıcı): ana sayfada "Radyoya devam et" için. */
+    val lastStationId: String? = null,
+    /** Uygulama açılınca son istasyonu otomatik çal (varsayılan kapalı). */
+    val autoStart: Boolean = false,
     val toast: String? = null
 ) {
     val current: TvChannel? get() = currentId?.let { id -> stations.firstOrNull { it.id == id } }

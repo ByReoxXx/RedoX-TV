@@ -38,6 +38,9 @@ interface ControlServerHandler {
     fun remoteVolume(delta: Int, absoluteLevel: Int): RemoteSnapshot
     fun remotePlayPause()
     fun remoteStop()
+
+    /** Telefon kumandasından TV'deki radyoyu yönetir: action = state | now | play | toggle | step | stop. */
+    fun remoteRadio(action: String, id: String, delta: Int): JSONObject
     fun remoteCast(name: String, url: String, logoUrl: String): Boolean
     fun remotePaired(deviceName: String)
 }
@@ -486,6 +489,9 @@ class LocalControlServer(
             "/api/stop" -> {
                 handler.remoteStop()
                 respondJson(out, 200, okJson())
+            }
+            "/api/radio" -> {
+                respondJson(out, 200, handler.remoteRadio(json.optString("action", "state"), json.optString("id", ""), json.optInt("delta", 1)))
             }
             "/api/cast" -> {
                 val url = json.optString("url", "").trim()

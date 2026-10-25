@@ -302,6 +302,19 @@ fun MobileSettingsScreen(
                     checked = prefs.updateCheckOnStart,
                     onCheckedChange = { v -> hub.updatePrefs { it.copy(updateCheckOnStart = v) } }
                 )
+                Text(
+                    text = "Kanal listesi: " + channelListInfoText(context, state.builtInChannels.size),
+                    color = RedoXColors.TextSecondary,
+                    fontSize = 12.sp
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    MGhostButton(
+                        text = "Kanal listesini yenile",
+                        icon = RedoXIcons.Refresh,
+                        onClick = { viewModel.refreshChannelList() }
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     MGhostButton(
                         text = "İzleme istatistiklerini temizle",

@@ -1154,6 +1154,7 @@ private fun BoxScope.TvRadioOptions(ui: RadioUiState, k: Float, onClose: () -> U
         TvRadioOptionRow(icon = RedoXIcons.Bedtime, label = "Uyku zamanlayıcı", value = radioSleepText(ui.sleepMinutes)) { RadioHub.cycleSleep() }
         TvRadioOptionRow(icon = RedoXIcons.MusicNote, label = "Ses dalgası", value = if (ui.spectrumOn) "Açık" else "Kapalı") { RadioHub.toggleSpectrum() }
         TvRadioOptionRow(icon = RedoXIcons.VolumeUp, label = "Radyo cızırtısı", value = if (ui.staticOn) "Açık" else "Kapalı") { RadioHub.toggleStatic() }
+        TvRadioOptionRow(icon = RedoXIcons.PlayArrow, label = "Açılışta son radyoyu çal", value = if (ui.autoStart) "Açık" else "Kapalı") { RadioHub.toggleAutoStart() }
         Box(modifier = Modifier.fillMaxWidth().height(1.dp).padding(horizontal = 8.dp).background(Color.White.copy(alpha = 0.10f)))
         TvRadioOptionRow(icon = RedoXIcons.Info, label = "Yayın bilgisi") {
             if (station != null) {

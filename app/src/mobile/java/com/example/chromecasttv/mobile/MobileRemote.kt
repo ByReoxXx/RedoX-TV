@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -69,6 +70,8 @@ fun MobileRemoteScreen(
     var snapshot by remember { mutableStateOf<RemoteSnapshot?>(null) }
     var online by remember { mutableStateOf<Boolean?>(null) }
     var tvChannels by remember { mutableStateOf<List<RemoteChannelInfo>?>(null) }
+    var radioInfo by remember { mutableStateOf<org.json.JSONObject?>(null) }
+    var radioStations by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
     var channelFilter by remember { mutableStateOf("") }
     var pairTarget by remember { mutableStateOf<DiscoveredTv?>(null) }
     var manualPair by remember { mutableStateOf(false) }
@@ -86,12 +89,28 @@ fun MobileRemoteScreen(
         snapshot = null
         online = null
         tvChannels = null
+        radioInfo = null
+        radioStations = emptyList()
         if (tv != null) {
             val client = hub.client(tv)
+            var firstRadio = true
             while (true) {
                 val snap = client.snapshot()
                 snapshot = snap
                 online = snap != null
+                if (snap != null) {
+                    // Radyo durumu (ilkinde istasyon listesiyle birlikte)
+                    val r = client.radio(if (firstRadio) "state" else "now")
+                    if (r != null) {
+                        radioInfo = r
+                        r.optJSONArray("stations")?.let { arr ->
+                            radioStations = (0 until arr.length()).mapNotNull { i ->
+                                arr.optJSONObject(i)?.let { o -> o.optString("id") to o.optString("name") }
+                            }
+                        }
+                        firstRadio = false
+                    }
+                }
                 delay(3_000L)
             }
         }
@@ -290,6 +309,56 @@ fun MobileRemoteScreen(
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                         MDigitButton("0") { sendKey("0") }
+                    }
+                }
+            }
+
+            // -------------------------------------------------------- TV'de radyo
+            item(key = "tvradio") {
+                MCard(modifier = Modifier.fillMaxWidth()) {
+                    MCardTitle("TV'de radyo")
+                    val r = radioInfo
+                    val stationName = r?.optString("station").orEmpty()
+                    val songText = r?.optString("song").orEmpty()
+                    Text(
+                        text = when {
+                            r == null -> "TV'ye bağlanınca burada görünür."
+                            stationName.isBlank() -> "Şu an TV'de radyo çalmıyor."
+                            songText.isBlank() -> stationName
+                            else -> stationName + " • " + songText
+                        },
+                        color = RedoXColors.TextSecondary,
+                        fontSize = 13.sp,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+                        MRemoteButton(RedoXIcons.SkipPrevious, "Önceki") {
+                            send { c -> val j = c.radio("step", "", -1); if (j != null) radioInfo = j; j != null }
+                        }
+                        MRemoteButton(RedoXIcons.Pause, "Duraklat") {
+                            send { c -> val j = c.radio("toggle"); if (j != null) radioInfo = j; j != null }
+                        }
+                        MRemoteButton(RedoXIcons.Stop, "Durdur") {
+                            send { c -> val j = c.radio("stop"); if (j != null) radioInfo = j; j != null }
+                        }
+                        MRemoteButton(RedoXIcons.SkipNext, "Sonraki") {
+                            send { c -> val j = c.radio("step", "", 1); if (j != null) radioInfo = j; j != null }
+                        }
+                    }
+                    if (radioStations.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(radioStations.size) { i ->
+                                val st = radioStations[i]
+                                MChip(
+                                    text = st.second,
+                                    selected = st.first == r?.optString("stationId"),
+                                    onClick = { send { c -> val j = c.radio("play", st.first); if (j != null) radioInfo = j; j != null } }
+                                )
+                            }
+                        }
                     }
                 }
             }
