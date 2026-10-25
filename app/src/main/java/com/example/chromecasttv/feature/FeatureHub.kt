@@ -129,6 +129,8 @@ class FeatureHub(
 
     fun refreshEpg(userInitiated: Boolean) {
         if (epgJob?.isActive == true) return
+        // Otomatik yenileme, veri tasarrufu açıkken mobil veride yapılmaz (rehber dosyası birkaç MB); elle yenileme her zaman çalışır
+        if (!userInitiated && mutableState.value.prefs.mobileDataSaver && isOnCellular(appContext)) return
         val urls = collectEpgUrls()
         if (urls.isEmpty()) {
             if (userInitiated) {
