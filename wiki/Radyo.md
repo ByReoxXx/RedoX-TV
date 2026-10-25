@@ -25,6 +25,14 @@ Diğer sekmelere geçince çalan radyo mini çubukta sürer; bir TV kanalı baş
 - **Favoriler şeridi:** Telefon ve tablette listenin üstünde favori istasyonlarınız tek dokunuşla.
 - **Bu yayını bildir:** Çalışmayan bir yayında Seçenekler'den rapor paylaşırsınız; yayın adı, kaynak ve cihaz bilgisi hazır gelir (kişisel veri içermez).
 
+## Radyo alarmı (telefon/tablet)
+
+**Seçenekler → Radyo alarmı:** ▲▼ ile saat ve dakikayı ayarlayın, **Her gün** ya da **Bir kez** seçin, **Alarmı kur**'a dokunun. Çalacak istasyon, o anda çalan (ya da son dinlenen) istasyondur. Alarm saatinde uygulama bir bildirim gösterir (kilit ekranında tam ekran); dokununca radyo çalar. Alarm cihaz yeniden başlayınca yeniden kurulur. *Bildirim izni gerekir; cihazda henüz denenmedi.*
+
+## TV'yi sessiz izle, radyo çalsın (telefon/tablet)
+
+**Seçenekler → TV'yi sessiz izle, radyo çalsın** açıkken bir TV kanalı açtığınızda radyo susmaz: TV görüntüsü sessiz izlenir, ses radyodan gelir (maçı izleyip radyo yorumunu dinlemek gibi). Kapalıyken (varsayılan) TV kanalı başlayınca radyo susar. Şimdilik yalnızca tek oynatıcıda çalışır; bölünmüş ekran ve Android TV'de yoktur.
+
 ## Dürüstlük notları
 
 - Radyo, gerçek cihazlarda uzun süreli denenmedi; emülatörde bağlantı hattı ve şarkı bilgisi doğrulandı, sesin kendisi dinlenemedi.

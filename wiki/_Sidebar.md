@@ -9,6 +9,8 @@
 * **[📅 Rehber & Hatırlatıcılar](Yayin-Rehberi-ve-Hatirlaticilar.md)**
 * **[📺 Oynatıcı & Çoklu Ekran](Coklu-Ekran-ve-Oynatici.md)**
 * **[📻 Radyo](Radyo.md)**
+* **[⌨️🖱️ Klavye & Fare](Klavye-ve-Fare.md)**
+* **[🆕 Yenilikler](Yenilikler.md)**
 * **[📲 Telefon = Kumanda](Telefon-Kumandasi.md)**
 * **[🔒 Güvenlik & Gizlilik](Guvenlik-ve-Gizlilik.md)**
 * **[🎨 Tasarım Dili & Logo](Tasarim-Dili-ve-Logo.md)**

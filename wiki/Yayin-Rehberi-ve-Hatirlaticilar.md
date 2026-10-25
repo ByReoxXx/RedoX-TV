@@ -39,3 +39,13 @@ Kanallar XMLTV kanallarıyla sırasıyla şunlara göre eşleşir: M3U'daki `tvg
 ## Arama ile bağlantısı
 
 Arama, gerçek program adlarını da tarar: "haber" yazınca yayın akışında "haber" geçen programların kanalları da listelenir.
+
+
+## Izgara görünümü
+
+Rehberde (telefon/tablet: **Rehber → Izgara**, TV: **Yayın Rehberi → Izgara Görünümü**) kanallar satır, zaman sütun olarak görünür. Üstte 30 dakikalık zaman işaretleri vardır, "şimdi" vurgulanır; sol sütunda kanal adı sabit kalır ve satırlar tek bir yatay kaydırmayı paylaşır.
+
+- **Yayındaki program** (vurgulu, altında ilerleme çubuğu): dokun / `OK` = kanalı izle.
+- **İleride bir program:** dokun / `OK` = hatırlatma ekle ya da kaldır (altın zil simgesi).
+- Fare: `Shift`+tekerlek ya da yatay tekerlek zaman ekseninde kaydırır.
+- Rehber verisi olmayan kanalda "Bu saatler için rehber verisi yok" yazar; program adı uydurulmaz.

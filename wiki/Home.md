@@ -24,6 +24,9 @@
 10. **[🛠️ Teknik Mimari ve Geliştirici Rehberi](Teknik-Mimari-ve-Gelistirici-Rehberi.md)** — kaynak kümeleri, derleme, CI
 11. **[❓ Sıkça Sorulan Sorular](Sikca-Sorulan-Sorular-SSS.md)** — sorun giderme
 12. **[🎨 Tasarım Dili ve Vektör Logo](Tasarim-Dili-ve-Logo.md)** — logodan ölçülen palet, altın odak halkası, vektör simgeler
+13. **[📻 Radyo](Radyo.md)** — kadran, çalan şarkı, alarm, karma mod
+14. **[⌨️🖱️ Klavye ve Fare](Klavye-ve-Fare.md)** — kısayollar, fare desteği
+15. **[🆕 Yenilikler](Yenilikler.md)** — sürüm sürüm değişiklikler
 
 ---
 
@@ -31,7 +34,7 @@
 
 | Özellik | Açıklama |
 | :--- | :--- |
-| **Hazır kanal listesi** | Türksat (TKGS) şifresiz kanallarıyla eşleşen **133 kanal / 415 yayın**, denenmiş; açılışta kendiliğinden güncellenir ([ayrıntı](Kanal-Listesi.md)) |
+| **Hazır kanal listesi** | Türksat (TKGS) şifresiz kanallarıyla eşleşen **133 kanal / 417 yayın**, denenmiş; açılışta kendiliğinden güncellenir ([ayrıntı](Kanal-Listesi.md)) |
 | **Üç ayrı APK** | TV (kumanda odaklı), tablet (gezinti rayı, ızgaralar), telefon (alt gezinti, hareketler, kumanda) |
 | **Eski uygulamadan bağımsız** | Paket `com.redoxtv.two`; eski RedoX TV ile yan yana kurulabilir, veriler paylaşılmaz |
 | **Tek satırlık oynatıcı çubuğu** | Ekranın ~%15'i; ayarlar **Seçenekler** menüsünde ([ayrıntı](Coklu-Ekran-ve-Oynatici.md)) |
@@ -43,6 +46,10 @@
 | **Çoklu favori listeleri** | Sınırsız liste; kanal adı/numarası düzenleme |
 | **Mobil oynatıcı** | Hareketler, otomatik PiP, bildirimli arka plan sesi, mini oynatıcı |
 | **Android TV ana ekranı** | Favori Kanallar satırı ve "Devam et" (cihaz destekliyorsa) |
+| **Radyo, alarm, karma mod** | Ayrı radyo sekmesi (kadran), radyo alarmı, TV'yi sessiz izleyip radyo dinleme ([ayrıntı](Radyo.md)) |
+| **Rehber ızgarası** | Kanallar × zaman; yayındakine dokun = izle, ileridekine = hatırlatıcı ([ayrıntı](Yayin-Rehberi-ve-Hatirlaticilar.md)) |
+| **Klavye ve fare** | Oynatıcı ve gezinme kısayolları, fare tekerleği ([ayrıntı](Klavye-ve-Fare.md)) |
+| **Sabit imza** | v2.5.1'den itibaren sürümler üzerine güncellenir ([ayrıntı](Kurulum-Rehberi.md)) |
 | **Güvenlik ve bakım** | Katı TLS, PIN'li yerel sunucu, güncelleme denetimi, dosyaya yedek, yerel tanılama günlüğü |
 
 > ⚠️ **Not:** Kod GitHub Actions'ta derlenir ve emülatörde otomatik gezilip ekran görüntüsü alınır; ancak gerçek TV / telefon / tablet cihazlarında ve gerçek yayınlarla uzun süreli deneme yapılmadı. Sorun görürseniz Issues'a yazın. Ayrıntı için [Teknik Mimari](Teknik-Mimari-ve-Gelistirici-Rehberi.md) sayfasına bakın.

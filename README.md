@@ -10,7 +10,7 @@
 
 <p align="center">
   <b>Android TV, tablet ve telefon için canlı TV oynatıcı.</b><br>
-  Yalnızca yön tuşlarıyla rahat kullanım · ekranın %15'ini kaplayan tek satırlık oynatıcı çubuğu · hazır, denenmiş kanal listesi · kendi M3U / Xtream listeleriniz klasör klasör.
+  Yalnızca yön tuşlarıyla rahat kullanım · tek satırlık oynatıcı çubuğu · hazır, denenmiş kanal listesi · <b>radyo</b>, <b>yayın rehberi ızgarası</b>, <b>radyo alarmı</b> · klavye ve fare desteği · kendi M3U / Xtream listeleriniz klasör klasör.
 </p>
 
 <p align="center">
@@ -30,6 +30,26 @@
 
 ---
 
+## 🆕 Yenilikler ve eski RedoX TV'den farklar
+
+RedoX TV 2, [eski RedoX TV](https://github.com/ByReoxXx/Redox-TV)'nin **ayrı bir uygulama olarak** (paket `com.redoxtv.two`, yan yana kurulabilir) yeniden tasarlanmış halidir. Eski uygulama 361 kanal / 1184 yayınlık geniş bir liste sunar; RedoX TV 2 ise **daha az ama seçilmiş, Türksat sırasında ve tek tek denenmiş** bir liste, yeni bir arayüz dili ve aşağıdaki yeni özellikleri getirir:
+
+| Yeni | Ne yapar |
+|---|---|
+| 📻 **Radyo sekmesi** | TRT ve ulusal/yerel istasyonlar; TV'de **kadran** arayüzü, telefonda kaydırılan kadran, tablette liste + oynatıcı paneli. Çalan şarkı bilgisi, şarkı geçmişi, nostaljik istasyon arası cızırtı, uyku zamanlayıcı, arka planda ses, kopan yayında otomatik yedek yayın. |
+| ⏰ **Radyo alarmı** | Telefon/tablette saat seçin, istasyon seçin; alarm saatinde bildirimle radyo çalar (günlük ya da tek seferlik). |
+| 🎧 **TV'yi sessiz izle, radyo çalsın** | Maç sesi yerine radyo yorumcusunu dinlemek ya da müzik dinlerken görüntüyü izlemek için karma mod. |
+| 🗓️ **Yayın rehberi ızgarası** | Kanallar × zaman (30 dk'lık sütunlar); yayındakine dokun = izle, ileridekine dokun = hatırlatıcı. Gerçek XMLTV verisi; veri yoksa program adı uydurulmaz. |
+| ⌨️🖱️ **Klavye ve fare** | Boşluk/K oynat-duraklat, ok tuşlarıyla sarma ve ses, N/P kanal, M sessiz, C/A altyazı ve ses izi, Ctrl+1…0 sekmeler, Ctrl+F arama; fare tekerleği ses (telefon/tablet) ya da kanal (TV). |
+| 📺 **Daha geniş TV listesi** | Kanallar arasında gezinirken büyük afiş ince şeride iner; ekranda ~2 satır daha kanal görünür. |
+| 🆕 **Yeni kanal duyurusu ve "Yenilikler"** | Liste güncellenince eklenen kanallar bir kez duyurulur; uygulama güncellenince kısa bir "Yenilikler" penceresi çıkar. |
+| 🔏 **Sabit imza anahtarı** | v2.5.1'den itibaren APK'lar aynı anahtarla imzalanır: bir sonraki sürüm **üzerine kurulur**, eskisini silmeniz gerekmez. |
+| 🔁 **Alternatif yayın ve kaynak birleştirme** | Aynı kanalın birden çok yayını tek kanalda; açılmazsa sıradakine otomatik geçer (en çok 8 kaynak). |
+
+Eski uygulamadan gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN kilidi, favori listeleri, telefonu kumanda yapma, EPG) burada da vardır.
+
+---
+
 ## ✨ Neden RedoX TV 2?
 
 <table>
@@ -44,7 +64,7 @@
     </td>
     <td width="33%" valign="top">
       <b>📚 Hazır kanal listesi</b><br>
-      Türksat'ın şifresiz (TKGS) kanallarıyla eşleşen <b>133 kanal / 415 yayın</b>, tek tek denenmiş. Aynı kanalın alternatif yayınları tek kanalda; liste açılışta kendiliğinden güncellenir.
+      Türksat'ın şifresiz (TKGS) kanallarıyla eşleşen <b>133 kanal / 417 yayın</b>, tek tek denenmiş. Aynı kanalın alternatif yayınları tek kanalda; liste açılışta kendiliğinden güncellenir.
     </td>
   </tr>
   <tr>
@@ -73,7 +93,7 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b> — kanal vitrini, kategori çipleri, 121 kanal</sub></td>
+    <td width="50%"><img src="docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b> — ince afiş şeridi, kategori çipleri, 133 kanal; ekranda daha çok kanal</sub></td>
     <td width="50%"><img src="docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Kanal özellikleri"><br><sub><b>Kanal özellikleri</b> — <code>OK</code> basılı tut: izle, favori, kilit, düzenle, gizle</sub></td>
   </tr>
   <tr>
@@ -106,12 +126,29 @@
   </tr>
 </table>
 
+### 📻 Radyo, 🗓️ rehber (telefon)
+
+> Radyo görüntülerindeki istasyonlar **örnek (demo)** listedir; gerçek liste şifreli dosyadan gelir.
+
+<table>
+  <tr>
+    <td width="25%"><img src="docs/screenshots/phone/11-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo</b> — istasyonlar, favoriler, arama</sub></td>
+    <td width="25%"><img src="docs/screenshots/phone/12-radyo-oynatici.jpg" alt="Radyo oynatıcı"><br><sub><b>Kadran</b> — çalan şarkı, ses dalgası</sub></td>
+    <td width="25%"><img src="docs/screenshots/phone/13-radyo-secenekler.jpg" alt="Radyo seçenekleri"><br><sub><b>Seçenekler</b> — alarm, TV'yi sessiz izle, geçmiş</sub></td>
+    <td width="25%"><img src="docs/screenshots/phone/14-rehber.jpg" alt="Rehber"><br><sub><b>Rehber</b> — gerçek yayın rehberi, ızgara düğmesi</sub></td>
+  </tr>
+</table>
+
 ### 💻 Tablet
 
 <table>
   <tr>
     <td width="50%"><img src="docs/screenshots/tablet/02-canli-tv.jpg" alt="Tablet Canlı TV"><br><sub><b>Canlı TV</b> — gezinti rayı, çok sütunlu ızgara</sub></td>
     <td width="50%"><img src="docs/screenshots/tablet/05-oynatici-kontroller.jpg" alt="Tablet oynatıcı"><br><sub><b>Oynatıcı</b> — dokun: kontroller, çift dokun: duraklat</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/tablet/11-radyo.jpg" alt="Tablet radyo"><br><sub><b>Radyo</b> — solda liste, sağda kadranlı oynatıcı paneli</sub></td>
+    <td><img src="docs/screenshots/tablet/12-rehber.jpg" alt="Tablet rehber"><br><sub><b>Rehber</b> — gerçek XMLTV verisi, ızgara görünümü</sub></td>
   </tr>
 </table>
 
@@ -125,22 +162,22 @@ Tüm görüntüler ve ayrıntılar: [📸 Wiki → Ekran Görüntüleri](https:/
 
 | APK | Cihaz | Arayüz |
 |---|---|---|
-| `RedoX-TV-2-v2.1.0-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz |
-| `RedoX-TV-2-v2.1.0-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran |
-| `RedoX-TV-2-v2.1.0-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** |
+| `RedoX-TV-2-v2.5.2-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz |
+| `RedoX-TV-2-v2.5.2-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran |
+| `RedoX-TV-2-v2.5.2-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** |
 
 **2. Kurun.** Telefon/tablette APK'ya dokunun ("bilinmeyen kaynaklardan yükleme"ye izin verin). Android TV'de USB bellek, *Downloader* uygulaması ya da `adb` ile:
 
 ```bash
 adb connect <TV-IP>:5555
-adb install -r RedoX-TV-2-v2.1.0-tv.apk
+adb install -r RedoX-TV-2-v2.5.2-tv.apk
 ```
 
 **3. İzleyin.** Açılışta 133 kanal hazırdır: `OK` ile izleyin, `OK` basılı tutarak kanal özelliklerine (favori, kilit, düzenle, gizle) gidin. Oynatıcıda `OK` çubuğu açar, `◄` kanal listesini, `►` bir sonraki yayın kaynağını, `▲ ▼` kanal değiştirmeyi yapar.
 
 **4. Kendi listenizi ekleyin.** TV'de **M3U ve Dosya** (ya da telefonda **Kaynaklar**): M3U adresi, dosya, Xtream Codes veya QR ile telefondan gönderme. Listeler **Özel M3U** sekmesinde, verdiğiniz adla klasör olur.
 
-> ⚠️ **Kurulum notu:** APK'lar her derlemede yeniden üretilen bir debug anahtarıyla imzalanır; bu yüzden **v2.0.0 kuruluysa önce onu kaldırın** (önce *M3U ve Dosya → Yedek al* ile yedek alabilirsiniz). Sabit imza anahtarı eklenirse sonraki sürümler üzerine kurulur → [Kurulum Rehberi](https://github.com/ByReoxXx/RedoX-TV-2/wiki/Kurulum-Rehberi).
+> ⚠️ **Kurulum notu:** v2.5.0 ve öncesi, her derlemede değişen bir debug anahtarıyla imzalanıyordu. **v2.5.1'den itibaren sabit bir anahtar kullanılır.** Eski bir sürüm kuruluysa **bir kez** kaldırıp yenisini kurun (önce *M3U ve Dosya → Yedek al* ile yedek alabilirsiniz); bundan sonraki sürümler üzerine güncellenir → [Kurulum Rehberi](https://github.com/ByReoxXx/RedoX-TV-2/wiki/Kurulum-Rehberi).
 
 ---
 
@@ -158,6 +195,20 @@ adb install -r RedoX-TV-2-v2.1.0-tv.apk
 | Oynatıcı | `0` | Önceki kanal |
 | Özel M3U | `OK` / `Geri` | Klasörü aç / klasör listesine dön |
 | Favoriler | `►` → `▲ ▼` → `OK` | Kanalı tut, taşı, bırak |
+
+**Klavye ve fare (telefon/tablet/ChromeOS ve TV):**
+
+| Tuş | İşlev |
+|---|---|
+| `Boşluk` / `K` | Oynat – duraklat |
+| `←` `→` | 10 saniye geri / ileri (canlı yayında yok) |
+| `↑` `↓` / fare tekerleği | Ses (TV oynatıcısında tekerlek kanal değiştirir) |
+| `M` | Sessiz |
+| `PgUp` `PgDn` / `N` `P` | Sonraki / önceki kanal |
+| `C` `A` `L` | Altyazı / ses izi / canlıya dön |
+| `Enter` | Denetimleri aç/kapat |
+| `Esc` | Oynatıcıyı küçült / geri (TV'de `Geri` gibi) |
+| `Ctrl+1…0` · `Ctrl+F` | Sekmelere geç · aramaya git (telefon/tablet) |
 
 **Telefon / tablet:** kanala dokun = izle, uzun bas = seçenekler (favori, kilit, gizle, düzenle, TV'de oynat). Oynatıcıda sol kenarda dikey kaydır = parlaklık, sağ kenarda = ses, yatay kaydır = kanal değiştir, çift dokun = duraklat/oynat. Ayrıntı: [Kumanda ve Dokunmatik Kontroller](https://github.com/ByReoxXx/RedoX-TV-2/wiki/Kumanda-ve-Dokunmatik-Kontroller).
 
@@ -237,7 +288,7 @@ Bilgisayarınıza Android Studio / JDK / SDK kurmanız **gerekmez**; derleme Git
 
 1. Depoyu kendi hesabınıza çatallayın ya da yeni bir depoya yükleyin.
 2. **Actions** sekmesinde *RedoX TV 2 - APK derle* çalışır; bitince **Artifacts** altında üç APK görünür.
-3. **Release için:** `git tag v2.1.0 && git push origin v2.1.0`. APK'lar Releases sayfasına yüklenir; uygulamadaki güncelleme denetimi bu sayfaya bakar. Sürüme özel "Yenilikler" metni `.github/release-notes/<etiket>.md` dosyasından eklenir.
+3. **Release için:** `git tag v2.5.2 && git push origin v2.5.2`. APK'lar Releases sayfasına yüklenir; uygulamadaki güncelleme denetimi bu sayfaya bakar. Sürüme özel "Yenilikler" metni `.github/release-notes/<etiket>.md` dosyasından eklenir.
 4. **Sabit imza anahtarı** için `REDOX_KEYSTORE_BASE64`, `REDOX_KEYSTORE_PASSWORD`, `REDOX_KEY_ALIAS`, `REDOX_KEY_PASSWORD` gizli değerlerini ekleyin ([adımlar](https://github.com/ByReoxXx/RedoX-TV-2/wiki/Kurulum-Rehberi)).
 5. `ui-*` dallarına her push'ta telefon, tablet ve Android TV emülatörlerinde uygulama açılıp gezilir, ekran görüntüleri alınır (`ci/capture.sh`); görüntüler `shots-phone` / `shots-tablet` / `shots-tv` dallarına yüklenir.
 
@@ -262,11 +313,12 @@ app/src/
 - **Yayın rehberi herkese açık bir kaynaktan gelir.** Ayarlar'dan adres eklemediyseniz varsayılan olarak üçüncü taraf bir Türkiye rehberi (iptv-epg.org, ~100 kanal; yaklaşık 45'iyle eşleşir) kullanılır; veri tasarrufu açıkken mobil veride otomatik yenilenmez. Dilediğiniz zaman Ayarlar'dan silebilir ya da kendi XMLTV adresinizi ekleyebilirsiniz. Rehberi olmayan kanalda arayüz program adı uydurmaz.
 - **Ağ bit hızı** yalnızca ExoPlayer'ın ölçtüğü tahmindir; kaynağın gerçek kapasitesi değildir.
 - **Android TV ana ekranı**, **PiP** ve **arka plan sesi** üreticiye / Android sürümüne göre küçük farklar gösterebilir.
-- APK imzası sabit değildir (yukarıdaki kurulum notu).
+- **Radyo alarmı, karma mod ve klavye/fare kısayolları** emülatörde derlenip gezildi; gerçek cihazda henüz denenmedi. Radyo alarmı bildirim iznine bağlıdır.
 
 ## 🙏 Atıflar ve sorumluluk reddi
 
 - **RedoX TV 2 bir oynatıcıdır; içerik barındırmaz veya sağlamaz.** Yerleşik liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir; kullanım sorumluluğu size aittir, lütfen yerel mevzuata uyun.
+- **Telif hakkı:** Ekran görüntülerinde bir televizyon ya da radyo yayınından kare **kullanılmaz**; oynatıcı görüntülerinde yalnızca telifsiz demo yayın, radyo görüntülerinde uydurma örnek istasyonlar yer alır. Kanal adları ve logoları ilgili yayıncıların ticari markalarıdır; yalnızca uygulamadaki listeyi göstermek için görüntülerde bulunur, RedoX TV 2 bu kuruluşlarla bağlantılı ya da onlarca onaylı değildir.
 - Ekran görüntülerindeki demo yayın: *Big Buck Bunny* © Blender Foundation | [www.blender.org](https://www.blender.org), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 - Kullanılan açık kaynak bileşenler: [Jetpack Compose](https://developer.android.com/jetpack/compose), [Media3 / ExoPlayer](https://developer.android.com/media/media3), [Coil](https://coil-kt.github.io/coil/), [OkHttp](https://square.github.io/okhttp/).
 

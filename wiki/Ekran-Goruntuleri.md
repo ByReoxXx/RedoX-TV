@@ -94,3 +94,26 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 ---
 
 ← [Ana sayfa](Home.md) • [Kurulum](Kurulum-Rehberi.md) • [Kumanda ve Dokunmatik Kontroller](Kumanda-ve-Dokunmatik-Kontroller.md)
+
+
+## 🆕 Radyo ve rehber (telefon / tablet)
+
+> Kanal adları ve logoları ilgili yayıncıların markalarıdır; yalnızca uygulamadaki listeyi göstermek için yer alır, onlarla bağlantı ya da onay söz konusu değildir. Görüntülerde bir yayından alınmış kare bulunmaz.
+
+> Radyo görüntülerindeki istasyonlar **örnek (demo)** listedir; gerçek liste şifreli dosyadan gelir.
+
+<table>
+  <tr>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/11-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo</b> — liste, favoriler, arama</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/12-radyo-oynatici.jpg" alt="Radyo oynatıcı"><br><sub><b>Kadran</b> — çalan şarkı, ses dalgası</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/13-radyo-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> — alarm, karma mod, geçmiş</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/14-rehber.jpg" alt="Rehber"><br><sub><b>Rehber</b> — Izgara düğmesi</sub></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/11-radyo.jpg" alt="Tablet radyo"><br><sub><b>Tablet radyo</b> — liste + oynatıcı paneli</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/12-rehber.jpg" alt="Tablet rehber"><br><sub><b>Tablet rehber</b></sub></td>
+  </tr>
+</table>

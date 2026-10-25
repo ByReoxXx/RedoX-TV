@@ -47,7 +47,7 @@ Android yalnızca **aynı anahtarla imzalanmış** güncellemeleri kabul eder. S
 keytool -genkeypair -v -keystore redox-release.keystore -alias redox -keyalg RSA -keysize 2048 -validity 36500
 base64 -w0 redox-release.keystore > redox-release.keystore.b64
 ```
-Depo *Settings → Secrets and variables → Actions* bölümüne ekleyin: `REDOX_KEYSTORE_BASE64`, `REDOX_KEYSTORE_PASSWORD`, `REDOX_KEY_ALIAS`, `REDOX_KEY_PASSWORD`. Tanımlamazsanız APK her derlemede yeni bir debug anahtarıyla imzalanır: kurulur ama önceki derlemenin üzerine güncellenemez (önce kaldırmanız gerekir). Keystore dosyasını depoya koymayın ve yedeğini saklayın.
+Depo *Settings → Secrets and variables → Actions* bölümüne ekleyin: `REDOX_KEYSTORE_BASE64`, `REDOX_KEYSTORE_PASSWORD`, `REDOX_KEY_ALIAS`, `REDOX_KEY_PASSWORD`. Tanımlamazsanız APK her derlemede yeni bir debug anahtarıyla imzalanır: kurulur ama önceki derlemenin üzerine güncellenemez (önce kaldırmanız gerekir). **Bu depodaki resmi sürümler v2.5.1'den itibaren sabit anahtarla imzalıdır;** v2.5.0 ve öncesi kuruluysa yeni sürüme geçerken eski uygulamayı bir kez kaldırmanız gerekir, sonrası üzerine güncellenir. Keystore dosyasını depoya koymayın ve yedeğini saklayın.
 
 ---
 
