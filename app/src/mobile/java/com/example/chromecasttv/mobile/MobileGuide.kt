@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -61,11 +62,37 @@ fun MobileGuideScreen(
         state.builtInChannels + state.customM3uChannels
     }
     var onlyWithGuide by remember { mutableStateOf(true) }
+    var gridMode by remember { mutableStateOf(false) }
     val shown = remember(all, onlyWithGuide) {
         (if (onlyWithGuide) all.filter { it.hasRealEpg }.ifEmpty { all } else all).distinctBy { it.id }
     }
 
-    LazyColumn(
+    if (gridMode) {
+        // Izgara görünümü: kanallar x zaman
+        Column(modifier = Modifier.fillMaxSize().padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                MGhostButton(text = "Liste görünümü", onClick = { gridMode = false })
+                MGhostButton(
+                    text = if (epg.isLoading) "Güncelleniyor…" else "Rehberi güncelle",
+                    onClick = { viewModel.features.refreshEpg(true) },
+                    icon = RedoXIcons.Refresh
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            EpgGridView(
+                channels = shown.filter { it.hasRealEpg },
+                epgMap = state.epgMap,
+                reminders = features.reminders,
+                now = now,
+                onPlayChannel = { viewModel.requestPlayChannel(it) },
+                onToggleReminder = { ch, program ->
+                    host.requestNotificationPermission()
+                    viewModel.features.toggleReminder(ch, program)
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
+    } else LazyColumn(
         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier.fillMaxSize()
@@ -106,6 +133,9 @@ fun MobileGuideScreen(
                         onClick = { viewModel.features.refreshEpg(true) },
                         icon = RedoXIcons.Refresh
                     )
+                    if (epg.hasRealData) {
+                        MGhostButton(text = "Izgara görünümü", onClick = { gridMode = true }, icon = RedoXIcons.CalendarMonth)
+                    }
                     if (!epg.hasRealData) {
                         MGhostButton(
                             text = "Ayarlar",
