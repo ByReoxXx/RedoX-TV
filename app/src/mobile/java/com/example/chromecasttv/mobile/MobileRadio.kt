@@ -747,6 +747,7 @@ private fun BoxScope.MRadioOptionsSheet(ui: RadioUiState, onDismiss: () -> Unit,
         MRadioSheetItem(icon = RedoXIcons.VolumeUp, label = if (ui.staticOn) "Radyo cızırtısını kapat" else "Radyo cızırtısını aç") { RadioHub.toggleStatic() }
         MRadioSheetItem(icon = RedoXIcons.History, label = "Şarkı geçmişi (${ui.history.size})") { onHistory() }
         MRadioSheetItem(icon = RedoXIcons.Schedule, label = "Radyo alarmı") { onAlarm() }
+        MRadioSheetItem(icon = RedoXIcons.VolumeUp, label = if (ui.mixMode) "TV açılınca radyoyu sustur" else "TV'yi sessiz izle, radyo çalsın") { RadioHub.toggleMix() }
         MRadioSheetItem(icon = RedoXIcons.PlayArrow, label = if (ui.autoStart) "Açılışta radyoyu başlatma" else "Açılışta son radyoyu çal") { RadioHub.toggleAutoStart() }
         val shareContext = androidx.compose.ui.platform.LocalContext.current
         if (station != null) {

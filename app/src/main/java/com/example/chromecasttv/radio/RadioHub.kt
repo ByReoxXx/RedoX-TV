@@ -151,6 +151,7 @@ object RadioHub {
     private const val KEY_HISTORY = "song_history"
     private const val KEY_LAST = "last_station"
     private const val KEY_AUTOSTART = "auto_start"
+    private const val KEY_MIX = "mix_mode"
     private const val MAX_HISTORY = 100
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -200,10 +201,11 @@ object RadioHub {
             val history = readHistory()
             val lastId = prefs?.getString(KEY_LAST, null)
             val autoStart = prefs?.getBoolean(KEY_AUTOSTART, false) ?: false
+            val mixMode = prefs?.getBoolean(KEY_MIX, false) ?: false
             _state.update {
                 it.copy(
                     loaded = true, stations = list.filter { s -> s.id !in hidden }, favoriteIds = favs, hiddenIds = hidden,
-                    staticOn = staticOn, history = history, lastStationId = lastId, autoStart = autoStart
+                    staticOn = staticOn, history = history, lastStationId = lastId, autoStart = autoStart, mixMode = mixMode
                 )
             }
             // İsteğe bağlı: uygulama açılınca son radyoyu çal (bir TV kanalı başlarsa radyo zaten susar)
@@ -589,6 +591,14 @@ object RadioHub {
 
     fun toggleSpectrum() {
         _state.update { it.copy(spectrumOn = !it.spectrumOn) }
+    }
+
+    /** Karma mod: TV kanalı açılınca radyo susmaz; TV görüntüsü sessiz izlenir, ses radyodan gelir (kalıcı). */
+    fun toggleMix() {
+        val on = !_state.value.mixMode
+        _state.update { it.copy(mixMode = on) }
+        prefs?.edit()?.putBoolean(KEY_MIX, on)?.apply()
+        toast(if (on) "TV sessiz izlenecek, radyo çalacak" else "TV açılınca radyo susacak")
     }
 
     /** Uygulama açılınca son radyoyu otomatik çalma (kalıcı). */

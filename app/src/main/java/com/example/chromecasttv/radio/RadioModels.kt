@@ -51,6 +51,7 @@ data class RadioUiState(
     val lastStationId: String? = null,
     /** Uygulama açılınca son istasyonu otomatik çal (varsayılan kapalı). */
     val autoStart: Boolean = false,
+    val mixMode: Boolean = false,
     val toast: String? = null
 ) {
     val current: TvChannel? get() = currentId?.let { id -> stations.firstOrNull { it.id == id } }
