@@ -20,6 +20,10 @@ Diğer sekmelere geçince çalan radyo mini çubukta sürer; bir TV kanalı baş
 - **Favoriler, tür çipleri, gizleme, arama** (telefon ve tablette istasyon arama).
 - **Uyku zamanlayıcısı.** 30 / 60 / 90 / 120 dakika.
 - **Telefon ve tablette arka planda ses**: bildirim ve kilit ekranı kontrolleri.
+- **Telefondan TV'de radyo:** Telefon uygulamasında **Kumanda → TV'de radyo** kartı: önceki / duraklat / durdur / sonraki ve istasyon seçimi (TV ile eşleşmiş olmanız gerekir; [Telefon = Kumanda](Telefon-Kumandasi.md)).
+- **Radyoya devam et:** Ana sayfada son dinlediğiniz istasyon için kart. İsterseniz **Seçenekler → Açılışta son radyoyu çal** ile uygulama açılınca otomatik başlar (varsayılan kapalı).
+- **Favoriler şeridi:** Telefon ve tablette listenin üstünde favori istasyonlarınız tek dokunuşla.
+- **Bu yayını bildir:** Çalışmayan bir yayında Seçenekler'den rapor paylaşırsınız; yayın adı, kaynak ve cihaz bilgisi hazır gelir (kişisel veri içermez).
 
 ## Dürüstlük notları
 

@@ -72,11 +72,14 @@ fun MobileShell(
     LaunchedEffect(Unit) { RadioHub.ensureLoaded(radioContext) }
     val radio by RadioHub.state.collectAsState()
     LaunchedEffect(hasPlayback) {
-        if (hasPlayback) RadioHub.stop()
+        if (hasPlayback && !RadioHub.state.value.mixMode) RadioHub.stop()
+    }
+    LaunchedEffect(radio.mixMode, radio.isActive, hasPlayback) {
+        PlaybackHub.setMuted(radio.mixMode && radio.isActive && hasPlayback)
     }
     // Radyo başlayınca açık TV oynatıcısı ve mini pencere kapanır (iki ses birden çalmaz)
     LaunchedEffect(radio.isActive) {
-        if (radio.isActive && hasPlayback) {
+        if (radio.isActive && hasPlayback && !radio.mixMode) {
             viewModel.closePlayer()
             viewModel.closePip()
         }

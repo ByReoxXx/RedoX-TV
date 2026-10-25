@@ -169,6 +169,15 @@ class RemoteClient(
 
     suspend fun stop(): Boolean = parse(call("POST", "/api/stop", JSONObject())) != null
 
+    /** TV'deki radyo: action = state | now | play | toggle | step | stop. Yanıt: etkin mi, aşama, istasyon, şarkı (+ istasyon listesi). */
+    suspend fun radio(action: String, id: String = "", delta: Int = 0): JSONObject? {
+        val body = JSONObject()
+        body.put("action", action)
+        body.put("id", id)
+        body.put("delta", delta)
+        return parse(call("POST", "/api/radio", body))
+    }
+
     suspend fun cast(name: String, url: String, logoUrl: String): Boolean {
         val body = JSONObject()
         body.put("name", name)

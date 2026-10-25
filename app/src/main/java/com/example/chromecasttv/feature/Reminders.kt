@@ -181,5 +181,6 @@ class BootReceiver : BroadcastReceiver() {
         val now = System.currentTimeMillis()
         val alive = ReminderStore(context).load().filter { it.startMillis > now }
         ReminderScheduler.rescheduleAll(context, alive)
+        RadioAlarm.schedule(context)
     }
 }

@@ -95,6 +95,22 @@ object PlaybackHub {
     private fun reapplyNight() {
         val p = exo ?: return
         night.update(p, nightEnabled)
+        if (muted) p.volume = 0f
+    }
+
+    private var muted = false
+
+    /** Karma mod: TV sesi kapatılır ve ses odağı bırakılır (radyo çalmaya devam eder). */
+    fun setMuted(mute: Boolean) {
+        if (muted == mute) return
+        muted = mute
+        val p = exo ?: return
+        p.setAudioAttributes(
+            androidx.media3.common.AudioAttributes.Builder()
+                .setUsage(C.USAGE_MEDIA).setContentType(C.AUDIO_CONTENT_TYPE_MOVIE).build(),
+            !mute
+        )
+        if (mute) p.volume = 0f else reapplyNight()
     }
 
     /** Arka plan ses modunda görüntüyü kapatarak veri ve pil tasarrufu sağlar. */

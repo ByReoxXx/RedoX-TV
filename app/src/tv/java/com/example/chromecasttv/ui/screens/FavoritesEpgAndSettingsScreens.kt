@@ -753,6 +753,7 @@ fun EpgTimelineGuideScreen(
 
     // Gerçek rehber yalnızca eşleşen kanallarda vardır; varsayılan olarak onlar gösterilir.
     var onlyWithGuide by remember { mutableStateOf(true) }
+    var gridMode by remember { mutableStateOf(false) }
     val shown = remember(channels, onlyWithGuide) {
         if (onlyWithGuide) channels.filter { it.hasRealEpg }.ifEmpty { channels } else channels
     }
@@ -812,6 +813,11 @@ fun EpgTimelineGuideScreen(
                 )
                 if (epgStatus.hasRealData) {
                     TvCompactChipButton(
+                        text = if (gridMode) "Liste Görünümü" else "Izgara Görünümü",
+                        icon = RedoXIcons.CalendarMonth,
+                        onClick = { gridMode = !gridMode }
+                    )
+                    TvCompactChipButton(
                         text = if (onlyWithGuide) "Hepsini Göster" else "Yalnız Rehberli",
                         icon = RedoXIcons.FilterList,
                         onClick = { onlyWithGuide = !onlyWithGuide }
@@ -827,7 +833,18 @@ fun EpgTimelineGuideScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyColumn(
+        if (gridMode) EpgGridView(
+            channels = shown.filter { it.hasRealEpg },
+            epgMap = epgMap,
+            reminders = reminders,
+            now = now,
+            onPlayChannel = onPlayChannel,
+            onToggleReminder = onToggleReminder,
+            modifier = Modifier.weight(1f).fillMaxWidth(),
+            dpPerMinute = 4.2f,
+            labelWidth = 170.dp,
+            rowHeight = 72.dp
+        ) else LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
