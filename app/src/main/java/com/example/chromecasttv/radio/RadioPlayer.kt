@@ -27,7 +27,10 @@ object RadioPlayer {
     fun player(context: Context): ExoPlayer {
         exo?.let { return it }
         val app = context.applicationContext
-        val http = OkHttpDataSource.Factory(HttpSecurity.streamClient(8_000, 15_000)).setUserAgent(USER_AGENT)
+        // Icy-MetaData: 1 → Shoutcast/Icecast sunucusu yayına "Sanatçı - Şarkı" bilgisini gömer (Media3 ayıklar)
+        val http = OkHttpDataSource.Factory(HttpSecurity.streamClient(8_000, 15_000))
+            .setUserAgent(USER_AGENT)
+            .setDefaultRequestProperties(mapOf("Icy-MetaData" to "1"))
         val load = DefaultLoadControl.Builder()
             .setBufferDurationsMs(5_000, 30_000, 1_500, 3_000)
             .build()

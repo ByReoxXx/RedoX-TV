@@ -9,6 +9,9 @@ import org.json.JSONObject
 // Yeni özelliklerin kalıcı depoları (SharedPreferences içinde küçük JSON dosyaları)
 // ============================================================================
 
+/** Varsayılan yayın rehberi (XMLTV, gzip): iptv-epg.org Türkiye, ~100 kanal, 7 günlük; Ayarlar'dan silinebilir/değiştirilebilir. */
+const val DEFAULT_EPG_URL = "https://iptv-epg.org/files/epg-tr.xml.gz"
+
 class FeaturePrefsStore(context: Context) {
     private val prefs =
         context.applicationContext.getSharedPreferences("redox_feature_prefs_v1", Context.MODE_PRIVATE)
@@ -18,10 +21,15 @@ class FeaturePrefsStore(context: Context) {
         val defaultQuality = if (BuildConfig.DEVICE_KIND == "tv") PlayerQuality.P1080 else PlayerQuality.AUTO
         val qualityName = prefs.getString("quality", defaultQuality.name) ?: defaultQuality.name
         val quality = PlayerQuality.values().firstOrNull { it.name == qualityName } ?: defaultQuality
-        val urls = (prefs.getString("epg_urls", "") ?: "")
-            .split("\n")
-            .map { it.trim() }
-            .filter { it.isNotEmpty() }
+        // Hiç kaydedilmemişse varsayılan herkese açık Türkiye rehberi kullanılır; kullanıcı silip kaydederse boş kalır
+        val urls = if (!prefs.contains("epg_urls")) {
+            listOf(DEFAULT_EPG_URL)
+        } else {
+            (prefs.getString("epg_urls", "") ?: "")
+                .split("\n")
+                .map { it.trim() }
+                .filter { it.isNotEmpty() }
+        }
         return FeaturePrefs(
             backgroundAudio = prefs.getBoolean("bg_audio", true),
             autoPip = prefs.getBoolean("auto_pip", true),
