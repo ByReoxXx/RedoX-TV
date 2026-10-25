@@ -70,7 +70,6 @@ fun EpgGridView(
     val clock = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
     val scroll = rememberScrollState()
 
-    val wheelScope = androidx.compose.runtime.rememberCoroutineScope()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -83,7 +82,7 @@ fun EpgGridView(
                         val shift = event.keyboardModifiers.isShiftPressed
                         val amount = if (delta.x != 0f) delta.x else if (shift) delta.y else 0f
                         if (amount != 0f) {
-                            wheelScope.launch { scroll.scrollBy(amount * 90f) }
+                            scroll.dispatchRawDelta(amount * 90f)
                             event.changes.forEach { it.consume() }
                         }
                     }
