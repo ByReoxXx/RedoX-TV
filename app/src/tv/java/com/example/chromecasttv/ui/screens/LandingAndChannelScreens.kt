@@ -1090,11 +1090,13 @@ fun ChannelShowcaseScreen(
                 onRestoreHidden = onRestoreHidden,
                 onEditChannel = { onEditChannel(previewChannel) },
                 watchFocusRequester = watchButtonRequester,
-                onFocusInside = { bannerHasFocus = it }
+                onFocusInside = { bannerHasFocus = it },
+                // Liste/çiplerde gezinirken afiş ince şeride iner; kanal ızgarasına daha çok yer kalır
+                slim = !bannerHasFocus
             )
         }
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(if (!bannerHasFocus) 8.dp else 14.dp))
 
         if (chipCategories.size > 1) {
             LazyRow(
@@ -1272,7 +1274,9 @@ fun FocusedChannelHeroBanner(
     /** Kanal kartında OK'a basılı tutulunca odağın gideceği "İzle" düğmesi. */
     watchFocusRequester: FocusRequester? = null,
     /** Afişteki herhangi bir düğme odağı aldığında / bıraktığında çağrılır. */
-    onFocusInside: (Boolean) -> Unit = {}
+    onFocusInside: (Boolean) -> Unit = {},
+    /** Ince şerit: yalnızca logo, ad, program ve "İzle" görünür (ızgaraya yer açar). */
+    slim: Boolean = false
 ) {
     val shape = RoundedCornerShape(22.dp)
     // Odaktaki kanalın marka rengi, logonun arkasında hafif ve sabit bir ışıma olarak görünür
@@ -1289,7 +1293,7 @@ fun FocusedChannelHeroBanner(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(if (compact) 140.dp else 168.dp)
+                .height(if (slim) 92.dp else if (compact) 140.dp else 168.dp)
                 .clip(shape)
                 .background(
                     Brush.horizontalGradient(
@@ -1306,12 +1310,12 @@ fun FocusedChannelHeroBanner(
                     )
                 }
                 .border(1.dp, RedoXColors.Line, shape)
-                .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (compact) 14.dp else 20.dp),
+                .padding(horizontal = if (compact) 18.dp else 26.dp, vertical = if (slim) 10.dp else if (compact) 14.dp else 20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             ChannelBrandLogoBox(
                 channel = channel,
-                boxSize = if (compact) 76.dp else 112.dp,
+                boxSize = if (slim) 56.dp else if (compact) 76.dp else 112.dp,
                 fontSize = if (compact) 20.sp else 28.sp
             )
 
@@ -1321,7 +1325,7 @@ fun FocusedChannelHeroBanner(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(if (compact) 5.dp else 7.dp)
             ) {
-                Row(
+                if (!slim) Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
@@ -1366,7 +1370,7 @@ fun FocusedChannelHeroBanner(
                 Text(
                     text = channel.name,
                     color = TvThemeColors.TextPrimary,
-                    fontSize = if (compact) 26.sp else 32.sp,
+                    fontSize = if (slim) 24.sp else if (compact) 26.sp else 32.sp,
                     fontWeight = FontWeight.ExtraBold,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -1404,7 +1408,7 @@ fun FocusedChannelHeroBanner(
                             )
                         }
                     }
-                    if (channel.hasRealEpg) {
+                    if (channel.hasRealEpg && !slim) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             TvProgressBar(
                                 progress = channel.progressForUi(),
@@ -1420,7 +1424,7 @@ fun FocusedChannelHeroBanner(
                                 overflow = TextOverflow.Ellipsis
                             )
                         }
-                    } else if (!compact) {
+                    } else if (!compact && !slim) {
                         Text(
                             text = "Bu kanal için rehber bilgisi yok.",
                             color = RedoXColors.TextTertiary,
@@ -1444,7 +1448,7 @@ fun FocusedChannelHeroBanner(
                     onClick = onWatchClick,
                     modifier = if (watchFocusRequester != null) Modifier.focusRequester(watchFocusRequester) else Modifier
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)) {
+                if (!slim) Row(horizontalArrangement = Arrangement.spacedBy(if (compact) 8.dp else 10.dp)) {
                     TvIconPill(
                         icon = if (isFavorite) RedoXIcons.StarFilled else RedoXIcons.StarBorder,
                         label = if (isFavorite) "Favoride" else "Favori ekle",
