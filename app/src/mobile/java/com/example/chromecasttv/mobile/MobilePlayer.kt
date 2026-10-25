@@ -54,6 +54,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -335,6 +337,44 @@ fun MobilePlayerScreen(
     val currentToggle by rememberUpdatedState(toggleAction)
     val gesturesOn = prefs.gesturesEnabled && !inPip
 
+    fun adjustVolume(direction: Int) {
+        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, direction, 0)
+        val max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).coerceAtLeast(1)
+        hud = "Ses %${(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) * 100f / max).roundToInt()}"
+    }
+
+    fun seekBy(deltaMs: Long) {
+        if (!player.isCurrentMediaItemSeekable) {
+            banner = "Bu canlı yayında geri/ileri sarma yok"
+            return
+        }
+        player.seekTo((player.currentPosition + deltaMs).coerceAtLeast(0L))
+        hud = if (deltaMs < 0) "−${-deltaMs / 1000} sn" else "+${deltaMs / 1000} sn"
+    }
+
+    // Klavye: Boşluk/K oynat-duraklat, ←/→ 10 sn, ↑/↓ ses, M sessiz, PgUp/PgDn ya da N/P kanal,
+    // C altyazı, A ses izi, L canlıya dön, Enter denetimler, Esc küçült
+    HardwareKeyHandler { event ->
+        if (event.isCtrlPressed || event.isAltPressed || inPip) return@HardwareKeyHandler false
+        controlsTick += 1
+        when (event.keyCode) {
+            android.view.KeyEvent.KEYCODE_SPACE, android.view.KeyEvent.KEYCODE_K, android.view.KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> { togglePlay(); true }
+            android.view.KeyEvent.KEYCODE_DPAD_LEFT -> { seekBy(-10_000L); true }
+            android.view.KeyEvent.KEYCODE_DPAD_RIGHT -> { seekBy(10_000L); true }
+            android.view.KeyEvent.KEYCODE_DPAD_UP -> { adjustVolume(AudioManager.ADJUST_RAISE); true }
+            android.view.KeyEvent.KEYCODE_DPAD_DOWN -> { adjustVolume(AudioManager.ADJUST_LOWER); true }
+            android.view.KeyEvent.KEYCODE_M -> { adjustVolume(AudioManager.ADJUST_TOGGLE_MUTE); true }
+            android.view.KeyEvent.KEYCODE_PAGE_UP, android.view.KeyEvent.KEYCODE_N -> { hud = "Sonraki kanal"; zap(+1); true }
+            android.view.KeyEvent.KEYCODE_PAGE_DOWN, android.view.KeyEvent.KEYCODE_P -> { hud = "Önceki kanal"; zap(-1); true }
+            android.view.KeyEvent.KEYCODE_C -> { cycleSubtitle(); true }
+            android.view.KeyEvent.KEYCODE_A -> { cycleAudio(); true }
+            android.view.KeyEvent.KEYCODE_L -> { goLive(); true }
+            android.view.KeyEvent.KEYCODE_ENTER, android.view.KeyEvent.KEYCODE_NUMPAD_ENTER -> { controlsVisible = !controlsVisible; true }
+            android.view.KeyEvent.KEYCODE_ESCAPE -> { onMinimize(); true }
+            else -> false
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -361,6 +401,30 @@ fun MobilePlayerScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                // Fare: tekerlek sesi ayarlar, imleç hareketi denetimleri gösterir
+                .pointerInput(Unit) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            when (event.type) {
+                                PointerEventType.Scroll -> {
+                                    val dy = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
+                                    if (dy != 0f) {
+                                        adjustVolume(if (dy < 0f) AudioManager.ADJUST_RAISE else AudioManager.ADJUST_LOWER)
+                                        event.changes.forEach { it.consume() }
+                                    }
+                                }
+                                PointerEventType.Move -> {
+                                    if (event.changes.firstOrNull()?.type == PointerType.Mouse) {
+                                        if (!controlsVisible) controlsVisible = true
+                                        controlsTick += 1
+                                    }
+                                }
+                                else -> Unit
+                            }
+                        }
+                    }
+                }
                 .pointerInput(gesturesOn) {
                     detectTapGestures(
                         onTap = {

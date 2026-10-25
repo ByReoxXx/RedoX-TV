@@ -133,6 +133,17 @@ class MainActivity : ComponentActivity(), RedoXHost {
         if (vm != null) vm.playChannelById(id) else pendingChannelId = id
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        // Telefon/tablette klavye kısayolları; TV'de kumanda/klavye yön tuşlarıyla çalışmaya devam eder
+        if (BuildConfig.DEVICE_KIND != "tv" && HardwareKeys.dispatch(event)) return true
+        // TV'de USB/Bluetooth klavyenin Esc tuşu Geri gibi davranır
+        if (BuildConfig.DEVICE_KIND == "tv" && event.keyCode == KeyEvent.KEYCODE_ESCAPE) {
+            if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) onBackPressedDispatcher.onBackPressed()
+            return true
+        }
+        return super.dispatchKeyEvent(event)
+    }
+
     override fun onResume() {
         super.onResume()
         if (BuildConfig.DEVICE_KIND == "tv") {

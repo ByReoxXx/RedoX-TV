@@ -72,6 +72,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -580,6 +582,25 @@ fun RedoXPlayerScreen(
             .background(Color.Black)
             .focusRequester(playerSurfaceFocusRequester)
             .focusable()
+            // Fare tekerleği kanal değiştirir; imleç hareketi OSD'yi gösterir
+            .pointerInput(Unit) {
+                var lastWheel = 0L
+                awaitPointerEventScope {
+                    while (true) {
+                        val pe = awaitPointerEvent()
+                        val change = pe.changes.firstOrNull() ?: continue
+                        if (pe.type == PointerEventType.Scroll) {
+                            val dy = change.scrollDelta.y
+                            val now = System.currentTimeMillis()
+                            if (dy != 0f && now - lastWheel > 350L && !showChannelDrawer) {
+                                lastWheel = now
+                                onZapChannel(if (dy < 0f) +1 else -1)
+                            }
+                            pe.changes.forEach { it.consume() }
+                        }
+                    }
+                }
+            }
             .onPreviewKeyEvent { event ->
                 if (event.nativeKeyEvent.action == KeyEvent.ACTION_DOWN) {
                     val keyCode = event.nativeKeyEvent.keyCode
@@ -613,6 +634,7 @@ fun RedoXPlayerScreen(
                                 true
                             }
                             keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE ||
+                            keyCode == KeyEvent.KEYCODE_SPACE ||
                             keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE ||
                             keyCode == KeyEvent.KEYCODE_MEDIA_PLAY -> {
                                 toggleTimeshiftPause()
@@ -622,12 +644,23 @@ fun RedoXPlayerScreen(
                                 rewindTimeshift15Sec()
                                 true
                             }
-                            keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_CHANNEL_UP -> {
+                            keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_CHANNEL_UP ||
+                            keyCode == KeyEvent.KEYCODE_PAGE_UP || keyCode == KeyEvent.KEYCODE_N -> {
                                 onZapChannel(+1)
                                 true
                             }
-                            keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN -> {
+                            keyCode == KeyEvent.KEYCODE_DPAD_DOWN || keyCode == KeyEvent.KEYCODE_CHANNEL_DOWN ||
+                            keyCode == KeyEvent.KEYCODE_PAGE_DOWN || keyCode == KeyEvent.KEYCODE_P -> {
                                 onZapChannel(-1)
+                                true
+                            }
+                            keyCode == KeyEvent.KEYCODE_M -> {
+                                (context.getSystemService(android.content.Context.AUDIO_SERVICE) as? android.media.AudioManager)
+                                    ?.adjustStreamVolume(
+                                        android.media.AudioManager.STREAM_MUSIC,
+                                        android.media.AudioManager.ADJUST_TOGGLE_MUTE,
+                                        android.media.AudioManager.FLAG_SHOW_UI
+                                    )
                                 true
                             }
                             keyCode == KeyEvent.KEYCODE_DPAD_LEFT -> {

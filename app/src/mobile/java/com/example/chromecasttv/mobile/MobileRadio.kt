@@ -363,6 +363,20 @@ private fun MobileRadioPlayerContent(onClose: (() -> Unit)?) {
     val ui by RadioHub.state.collectAsState()
     var sheet by remember { mutableStateOf(RadioSheet.NONE) }
     BackHandler(enabled = sheet != RadioSheet.NONE) { sheet = RadioSheet.NONE }
+    // Klavye: Boşluk duraklat, ←/→ istasyon değiştir, Esc kapat/geri
+    HardwareKeyHandler { event ->
+        if (event.isCtrlPressed || event.isAltPressed) return@HardwareKeyHandler false
+        when (event.keyCode) {
+            android.view.KeyEvent.KEYCODE_SPACE, android.view.KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> { RadioHub.togglePause(); true }
+            android.view.KeyEvent.KEYCODE_DPAD_RIGHT -> { RadioHub.zap(+1); true }
+            android.view.KeyEvent.KEYCODE_DPAD_LEFT -> { RadioHub.zap(-1); true }
+            android.view.KeyEvent.KEYCODE_ESCAPE -> {
+                if (sheet != RadioSheet.NONE) sheet = RadioSheet.NONE else onClose?.invoke()
+                sheet != RadioSheet.NONE || onClose != null
+            }
+            else -> false
+        }
+    }
 
     // Boştayken (tablet paneli) kadrandaki ilk istasyon gösterilir; başlık boş kalmaz
     val shown = ui.current ?: ui.tuning ?: ui.stations.firstOrNull()
