@@ -40,7 +40,9 @@ android {
         resourceConfigurations += listOf("tr", "en")
         buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV 2\"")
         // Güncelleme denetimi bu depodaki "latest release"e bakar. GitHub Actions'ta depo adı otomatik gelir.
-        val githubRepo = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"
+        // REDOX_REPO_OVERRIDE: yalnızca ekran görüntüsü derlemeleri; gerçek listeyi indirmesin diye boş bir depoya işaret ettirilir
+        val githubRepo = System.getenv("REDOX_REPO_OVERRIDE")?.takeIf { it.isNotBlank() }
+            ?: System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"
         buildConfigField("String", "GITHUB_REPO", "\"$githubRepo\"")
     }
 

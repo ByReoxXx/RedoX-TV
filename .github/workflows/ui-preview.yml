@@ -75,7 +75,7 @@ jobs:
       - name: Derle (assemble${{ matrix.flavor }}Debug)
         env:
           # Depo adı boş bir yere işaret eder: uygulama GitHub'daki gerçek listeyi indirip örnek listenin yerine koyamaz
-          GITHUB_REPOSITORY: demo/offline
+          REDOX_REPO_OVERRIDE: demo/offline
         run: gradle --no-daemon ":app:assemble${{ matrix.flavor }}Debug"
 
       - name: Emülatörde çalıştır ve ekran görüntüsü al
