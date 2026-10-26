@@ -6,8 +6,8 @@ TV'de oynatıcı kontrolleri **ekranın yalnızca ~%15'ini** kaplayan tek satır
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="Oynatıcı çubuğu"><br><sub><b>Çubuk</b> — solda kanal ve program, ortada oynatma düğmeleri, sağda kanal listesi, favori, alternatif yayın ve Seçenekler</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler menüsü"><br><sub><b>Seçenekler</b> — çubuğun üstüne açılır; <code>◄</code> ya da <code>Geri</code> kapatır</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="Oynatıcı çubuğu"><br><sub><b>Çubuk</b> — solda kanal ve program, ortada oynatma düğmeleri, sağda kanal listesi, favori, alternatif yayın ve Seçenekler</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler menüsü"><br><sub><b>Seçenekler</b> — çubuğun üstüne açılır; <code>◄</code> ya da <code>Geri</code> kapatır</sub></td>
   </tr>
 </table>
 
@@ -53,9 +53,9 @@ Duraklat/oynat, **15 sn geri sar** (TV) ve **Canlıya dön**. Duraklatma, oynat�
 
 <table>
   <tr>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/04-oynatici.jpg" alt="Telefon oynatıcı"><br><sub><b>Oynatıcı</b></sub></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/05-oynatici-kontroller.jpg" alt="Telefon oynatıcı kontrolleri"><br><sub><b>Kontroller</b></sub></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/06-mini-oynatici.jpg" alt="Mini oynatıcı"><br><sub><b>Mini oynatıcı</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/04-oynatici.jpg" alt="Telefon oynatıcı"><br><sub><b>Oynatıcı</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/05-oynatici-kontroller.jpg" alt="Telefon oynatıcı kontrolleri"><br><sub><b>Kontroller</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/06-mini-oynatici.jpg" alt="Mini oynatıcı"><br><sub><b>Mini oynatıcı</b></sub></td>
   </tr>
 </table>
 

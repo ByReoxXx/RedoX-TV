@@ -53,7 +53,7 @@ Depo *Settings → Secrets and variables → Actions* bölümüne ekleyin: `REDO
 
 ## ✅ İlk açılış
 
-<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV" width="80%"><br><sub>İlk açılışta kanal listesi hazırdır; <code>OK</code> ile izleyin.</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV" width="80%"><br><sub>İlk açılışta kanal listesi hazırdır; <code>OK</code> ile izleyin.</sub></p>
 
 1. **TV:** *Ayarlar → Yayın Rehberi*'ne XMLTV adresi, *M3U ve Dosya*'ye kendi listenizi ekleyin ([rehber](M3U-Xtream-ve-QR-Yukleme.md)).
 2. **Telefon:** *Kumanda* sekmesini açın, TV'yi seçin, TV ekranındaki 6 haneli kodu girin ([rehber](Telefon-Kumandasi.md)).

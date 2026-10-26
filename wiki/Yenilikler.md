@@ -19,4 +19,4 @@
 - **TV'yi sessiz izle, radyo çalsın** karma modu (telefon/tablet).
 - Radyo: 133 kanallık liste ve radyo sekmesi, çalan şarkı geçmişi, favoriler şeridi, arama, "Radyoya devam et", yeni kanallar kartı, logoya dokununca ana sayfa.
 
-Tüm sürümler: [Releases](https://github.com/ByReoxXx/RedoX-TV-2/releases).
+Tüm sürümler: [Releases](https://github.com/ByReoxXx/RedoX-TV/releases).

@@ -43,6 +43,6 @@ Yerleşik listeye kanal eklenmez ama **yanına** istediğiniz kadar kendi listen
 
 ## Bir yayın çalışmıyorsa
 
-Yayınlar üçüncü taraf sunuculardadır ve zamanla kapanabilir ya da adresi değişebilir. Önce başka bir **akış kaynağını** deneyin (TV: `►`). Sürekli sorun varsa kanal adını ve saatini yazarak [Issues](https://github.com/ByReoxXx/RedoX-TV-2/issues)'a bildirin; liste güncellenir ve herkese kendiliğinden ulaşır.
+Yayınlar üçüncü taraf sunuculardadır ve zamanla kapanabilir ya da adresi değişebilir. Önce başka bir **akış kaynağını** deneyin (TV: `►`). Sürekli sorun varsa kanal adını ve saatini yazarak [Issues](https://github.com/ByReoxXx/RedoX-TV/issues)'a bildirin; liste güncellenir ve herkese kendiliğinden ulaşır.
 
 > **Sorumluluk reddi:** RedoX TV bir oynatıcıdır; içerik barındırmaz veya sağlamaz. Liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir.

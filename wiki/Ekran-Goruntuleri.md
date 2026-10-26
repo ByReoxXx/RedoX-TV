@@ -10,12 +10,12 @@ TV arayüzü, Chromecast with Google TV kumandası gibi yalnızca yön tuşları
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/01-karsilama.jpg" alt="Karşılama"><br><sub><b>Karşılama</b> — logo ve tek tuşla Canlı TV'ye giriş</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b> — odaktaki kanalın vitrini, kategori çipleri, kanal ızgarası</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/01-karsilama.jpg" alt="Karşılama"><br><sub><b>Karşılama</b> — logo ve tek tuşla Canlı TV'ye giriş</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b> — odaktaki kanalın vitrini, kategori çipleri, kanal ızgarası</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Kanal özellikleri"><br><sub><b>Kanal özellikleri</b> — kartta <code>OK</code> basılı tut: İzle, Favori, Kilit, Düzenle, Gizle</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/16-radyo-kadran.jpg" alt="Radyo kadranı"><br><sub><b>Radyo</b> — kadran, çalan şarkı</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Kanal özellikleri"><br><sub><b>Kanal özellikleri</b> — kartta <code>OK</code> basılı tut: İzle, Favori, Kilit, Düzenle, Gizle</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/16-radyo-kadran.jpg" alt="Radyo kadranı"><br><sub><b>Radyo</b> — kadran, çalan şarkı</sub></td>
   </tr>
 </table>
 
@@ -25,12 +25,12 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/07-oynatici-bilgi.jpg" alt="Kanal değişince"><br><sub><b>Kanal değişince</b> — kanal bilgisi ve üstte kısayol ipuçları kısa süre görünür</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="Oynatıcı çubuğu"><br><sub><b>Kontroller</b> — <code>OK</code>: oynatma düğmeleri, kanal listesi, favori, alternatif yayın; odaktaki düğmenin adı üstte</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/07-oynatici-bilgi.jpg" alt="Kanal değişince"><br><sub><b>Kanal değişince</b> — kanal bilgisi ve üstte kısayol ipuçları kısa süre görünür</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="Oynatıcı çubuğu"><br><sub><b>Kontroller</b> — <code>OK</code>: oynatma düğmeleri, kanal listesi, favori, alternatif yayın; odaktaki düğmenin adı üstte</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler menüsü"><br><sub><b>Seçenekler</b> — kalite, ses, altyazı, ölçek, gece modu, küçük pencere, 2×2, kanal numarası, kanalı gizle, çık</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/10-kanal-cekmecesi.jpg" alt="Hızlı kanal listesi"><br><sub><b>Hızlı kanal listesi</b> — oynatıcıda <code>◄</code>; kategori çipleri, <code>OK</code> basılı tutarak favori</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler menüsü"><br><sub><b>Seçenekler</b> — kalite, ses, altyazı, ölçek, gece modu, küçük pencere, 2×2, kanal numarası, kanalı gizle, çık</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/10-kanal-cekmecesi.jpg" alt="Hızlı kanal listesi"><br><sub><b>Hızlı kanal listesi</b> — oynatıcıda <code>◄</code>; kategori çipleri, <code>OK</code> basılı tutarak favori</sub></td>
   </tr>
 </table>
 
@@ -38,16 +38,16 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/05-ozel-m3u-klasorler.jpg" alt="Özel M3U klasörleri"><br><sub><b>Özel M3U</b> — her liste, eklerken verdiğiniz adla bir klasör</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/06-klasor-ici.jpg" alt="Klasör içi"><br><sub><b>Klasörün içi</b> — kanallar kategori çipleriyle; <code>Geri</code> klasör listesine döner</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/05-ozel-m3u-klasorler.jpg" alt="Özel M3U klasörleri"><br><sub><b>Özel M3U</b> — her liste, eklerken verdiğiniz adla bir klasör</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/06-klasor-ici.jpg" alt="Klasör içi"><br><sub><b>Klasörün içi</b> — kanallar kategori çipleriyle; <code>Geri</code> klasör listesine döner</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/15-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo listesi</b> — favoriler, türler</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/12-m3u-ve-dosya.jpg" alt="M3U ve Dosya"><br><sub><b>M3U ve Dosya</b> — dosya, Xtream; telefondan QR ve kodla ekleme</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/15-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo listesi</b> — favoriler, türler</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/12-m3u-ve-dosya.jpg" alt="M3U ve Dosya"><br><sub><b>M3U ve Dosya</b> — dosya, Xtream; telefondan QR ve kodla ekleme</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/13-ayarlar.jpg" alt="Ayarlar"><br><sub><b>Ayarlar</b> — palet, OLED modu, yazı boyutu, kalite, gece modu…</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/17-radyo-secenekler.jpg" alt="Radyo seçenekleri"><br><sub><b>Radyo seçenekleri</b> — kaynak, uyku, cızırtı, geçmiş</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/13-ayarlar.jpg" alt="Ayarlar"><br><sub><b>Ayarlar</b> — palet, OLED modu, yazı boyutu, kalite, gece modu…</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/17-radyo-secenekler.jpg" alt="Radyo seçenekleri"><br><sub><b>Radyo seçenekleri</b> — kaynak, uyku, cızırtı, geçmiş</sub></td>
   </tr>
 </table>
 
@@ -57,20 +57,20 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 
 <table>
   <tr>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/01-ana-sayfa.jpg" alt="Ana sayfa"><br><sub><b>Ana sayfa</b></sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b></sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/03-klasor.jpg" alt="Klasör çipleri"><br><sub><b>Klasör çipleri</b> — eklenen listeler</sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/04-oynatici.jpg" alt="Oynatıcı"><br><sub><b>Oynatıcı</b></sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/01-ana-sayfa.jpg" alt="Ana sayfa"><br><sub><b>Ana sayfa</b></sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b></sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/03-klasor.jpg" alt="Klasör çipleri"><br><sub><b>Klasör çipleri</b> — eklenen listeler</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/04-oynatici.jpg" alt="Oynatıcı"><br><sub><b>Oynatıcı</b></sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/05-oynatici-kontroller.jpg" alt="Oynatıcı kontrolleri"><br><sub><b>Kontroller</b></sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/06-mini-oynatici.jpg" alt="Mini oynatıcı"><br><sub><b>Mini oynatıcı</b> — küçültünce ses sürer</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/07-favoriler.jpg" alt="Favoriler"><br><sub><b>Favoriler</b></sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/08-kumanda.jpg" alt="Kumanda"><br><sub><b>TV kumandası</b> — eşleştirme ve tuşlar</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/05-oynatici-kontroller.jpg" alt="Oynatıcı kontrolleri"><br><sub><b>Kontroller</b></sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/06-mini-oynatici.jpg" alt="Mini oynatıcı"><br><sub><b>Mini oynatıcı</b> — küçültünce ses sürer</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/07-favoriler.jpg" alt="Favoriler"><br><sub><b>Favoriler</b></sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/08-kumanda.jpg" alt="Kumanda"><br><sub><b>TV kumandası</b> — eşleştirme ve tuşlar</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/09-ana-sayfa-devam.jpg" alt="İzlemeye devam et"><br><sub><b>İzlemeye devam et</b> rafı</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/10-ayarlar.jpg" alt="Ayarlar"><br><sub><b>Ayarlar</b></sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/09-ana-sayfa-devam.jpg" alt="İzlemeye devam et"><br><sub><b>İzlemeye devam et</b> rafı</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/10-ayarlar.jpg" alt="Ayarlar"><br><sub><b>Ayarlar</b></sub></td>
     <td></td>
     <td></td>
   </tr>
@@ -82,12 +82,12 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/01-ana-sayfa.jpg" alt="Tablet ana sayfa"><br><sub><b>Ana sayfa</b> — gezinti rayı</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/02-canli-tv.jpg" alt="Tablet Canlı TV"><br><sub><b>Canlı TV</b> — çok sütunlu kanal ızgarası</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tablet/01-ana-sayfa.jpg" alt="Tablet ana sayfa"><br><sub><b>Ana sayfa</b> — gezinti rayı</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tablet/02-canli-tv.jpg" alt="Tablet Canlı TV"><br><sub><b>Canlı TV</b> — çok sütunlu kanal ızgarası</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/05-oynatici-kontroller.jpg" alt="Tablet oynatıcı"><br><sub><b>Oynatıcı</b> — dokun: kontroller, çift dokun: duraklat</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/10-ayarlar.jpg" alt="Tablet ayarlar"><br><sub><b>Ayarlar</b></sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tablet/05-oynatici-kontroller.jpg" alt="Tablet oynatıcı"><br><sub><b>Oynatıcı</b> — dokun: kontroller, çift dokun: duraklat</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tablet/10-ayarlar.jpg" alt="Tablet ayarlar"><br><sub><b>Ayarlar</b></sub></td>
   </tr>
 </table>
 
@@ -102,16 +102,16 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 
 <table>
   <tr>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/11-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo</b> — liste, favoriler, arama</sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/12-radyo-oynatici.jpg" alt="Radyo oynatıcı"><br><sub><b>Kadran</b> — çalan şarkı, ses dalgası</sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/13-radyo-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> — alarm, karma mod, geçmiş</sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/07-favoriler.jpg" alt="Favoriler"><br><sub><b>Favoriler</b> — sıralanabilir listeler</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/11-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo</b> — liste, favoriler, arama</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/12-radyo-oynatici.jpg" alt="Radyo oynatıcı"><br><sub><b>Kadran</b> — çalan şarkı, ses dalgası</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/13-radyo-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> — alarm, karma mod, geçmiş</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/phone/07-favoriler.jpg" alt="Favoriler"><br><sub><b>Favoriler</b> — sıralanabilir listeler</sub></td>
   </tr>
 </table>
 
 <table>
   <tr>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/11-radyo.jpg" alt="Tablet radyo"><br><sub><b>Tablet radyo</b> — liste + oynatıcı paneli</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/07-favoriler.jpg" alt="Tablet favoriler"><br><sub><b>Tablet favoriler</b></sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tablet/11-radyo.jpg" alt="Tablet radyo"><br><sub><b>Tablet radyo</b> — liste + oynatıcı paneli</sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tablet/07-favoriler.jpg" alt="Tablet favoriler"><br><sub><b>Tablet favoriler</b></sub></td>
   </tr>
 </table>

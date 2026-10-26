@@ -42,7 +42,7 @@ android {
         // Güncelleme denetimi bu depodaki "latest release"e bakar. GitHub Actions'ta depo adı otomatik gelir.
         // REDOX_REPO_OVERRIDE: yalnızca ekran görüntüsü derlemeleri; gerçek listeyi indirmesin diye boş bir depoya işaret ettirilir
         val githubRepo = System.getenv("REDOX_REPO_OVERRIDE")?.takeIf { it.isNotBlank() }
-            ?: System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"
+            ?: System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV"
         buildConfigField("String", "GITHUB_REPO", "\"$githubRepo\"")
     }
 

@@ -4,7 +4,7 @@
 
 Logodaki **altın halka** arayüzün **odak göstergesidir**; **kırmızı** yalnızca eylem ve canlı yayın içindir. Zemin logodaki lacivert-siyahtır. Üç cihazda (TV, tablet, telefon) aynı belirteçler kullanılır; yerleşim cihaza göre değişir.
 
-<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/brand/tasarim-paleti.png" alt="Renk paleti ve tasarım dili panosu" width="100%"><br><sub>Tasarım panosu: palet, odak halkası ve bileşenler</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/brand/tasarim-paleti.png" alt="Renk paleti ve tasarım dili panosu" width="100%"><br><sub>Tasarım panosu: palet, odak halkası ve bileşenler</sub></p>
 
 ## Palet (logodan ölçüldü)
 
@@ -19,7 +19,7 @@ Metin–zemin oranları: ana metin 16,3:1, ikincil 9,3:1, üçüncül 5,5:1, alt
 
 ## Odak halkası (TV)
 
-<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Odak halkası" width="80%"><br><sub>Odaktaki düğme altın halkayla belirir.</sub></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Odak halkası" width="80%"><br><sub>Odaktaki düğme altın halkayla belirir.</sub></p>
 
 - Odaktaki öğe: **3 dp altın çerçeve + küçük sabit altın ışıma** (`tvSurface`); geçiş animasyonu, büyüme ve basma küçülmesi yoktur, odak anında yanıt verir.
 - Seçili ama odakta olmayan öğe (ör. yan menüdeki sekme): kırmızı dolgu tonu.

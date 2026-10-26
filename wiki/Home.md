@@ -1,12 +1,12 @@
 # 🐂 RedoX TV Wiki
 
-**RedoX TV** (bu wiki), [ilk RedoX TV (v1.x)](https://github.com/ByReoxXx/Redox-TV)'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür: aynı sadık arayüz düzeni, logodan ölçülen kızıl-altın-lacivert palet ("Kızıl Halka" tasarım dili), tamamen vektör logo ve yeni özellikler. Üç cihaz sınıfı için **üç ayrı APK** üretir (TV, tablet, telefon); her birinin kendi arayüzü vardır.
+**RedoX TV** (bu wiki), [ilk RedoX TV (v1.x)](https://github.com/ByReoxXx/Redox-TV-Eski)'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür: aynı sadık arayüz düzeni, logodan ölçülen kızıl-altın-lacivert palet ("Kızıl Halka" tasarım dili), tamamen vektör logo ve yeni özellikler. Üç cihaz sınıfı için **üç ayrı APK** üretir (TV, tablet, telefon); her birinin kendi arayüzü vardır.
 
 > **RedoX = Red + Ox** — "kırmızı boğa". Logoda "RedoX TV" yazar; uygulamanın adı **RedoX TV**'dir.
 
-<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/brand/readme-hero.jpg" alt="RedoX TV — Android TV, tablet ve telefonda" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/brand/readme-hero.jpg" alt="RedoX TV — Android TV, tablet ve telefonda" width="100%"></p>
 
-**Hızlı bağlantılar:** [GitHub deposu](https://github.com/ByReoxXx/RedoX-TV-2) • [APK'ları indir (Releases)](https://github.com/ByReoxXx/RedoX-TV-2/releases) • [Hata / öneri (Issues)](https://github.com/ByReoxXx/RedoX-TV-2/issues)
+**Hızlı bağlantılar:** [GitHub deposu](https://github.com/ByReoxXx/RedoX-TV) • [APK'ları indir (Releases)](https://github.com/ByReoxXx/RedoX-TV/releases) • [Hata / öneri (Issues)](https://github.com/ByReoxXx/RedoX-TV/issues)
 
 ---
 

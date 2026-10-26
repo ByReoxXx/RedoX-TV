@@ -6,9 +6,9 @@ Tüm işlevler `▲ ▼ ◄ ►`, `OK` ve `Geri` ile yönetilir. Chromecast with
 
 <table>
   <tr>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/07-oynatici-bilgi.jpg" alt="Kanal değişince"><br><sub><b>Kanal değişince</b> — çubuk ve ipuçları</sub></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="OK ile kontroller"><br><sub><b><code>OK</code></b> — kontroller açılır</sub></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> menüsü</sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/07-oynatici-bilgi.jpg" alt="Kanal değişince"><br><sub><b>Kanal değişince</b> — çubuk ve ipuçları</sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/08-oynatici-kontroller.jpg" alt="OK ile kontroller"><br><sub><b><code>OK</code></b> — kontroller açılır</sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/09-oynatici-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> menüsü</sub></td>
   </tr>
 </table>
 

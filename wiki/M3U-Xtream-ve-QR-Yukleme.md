@@ -13,9 +13,9 @@ Kendi kanal listelerinizi üç yoldan ekleyebilirsiniz: **TV'nin kendi ekranınd
 
 <table>
   <tr>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/12-m3u-ve-dosya.jpg" alt="M3U ve Dosya"><br><sub><b>M3U ve Dosya</b></sub></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/05-ozel-m3u-klasorler.jpg" alt="Özel M3U klasörleri"><br><sub><b>Özel M3U</b> — her liste bir klasör</sub></td>
-    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/06-klasor-ici.jpg" alt="Klasörün içi"><br><sub><b>Klasörün içi</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/12-m3u-ve-dosya.jpg" alt="M3U ve Dosya"><br><sub><b>M3U ve Dosya</b></sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/05-ozel-m3u-klasorler.jpg" alt="Özel M3U klasörleri"><br><sub><b>Özel M3U</b> — her liste bir klasör</sub></td>
+    <td width="33%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV/main/docs/screenshots/tv/06-klasor-ici.jpg" alt="Klasörün içi"><br><sub><b>Klasörün içi</b></sub></td>
   </tr>
 </table>
 
