@@ -1,6 +1,6 @@
 # 📸 Ekran Görüntüleri
 
-> Görüntüler gerçek uygulamadan, GitHub Actions'taki otomatik emülatör turuyla alınır (`ci/capture.sh`). Oynatıcı görüntülerinde telifsiz demo yayın kullanılır: *Big Buck Bunny* © Blender Foundation | [www.blender.org](https://www.blender.org), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+> Görüntüler gerçek uygulamadan, GitHub Actions'taki otomatik emülatör turuyla alınır (`ci/capture.sh`). **Kanal adları, logolar ve istasyonlar uydurma bir örnek listedir**; gerçek bir kanalın adı ya da logosu görünmez. Oynatıcı görüntülerinde telifsiz demo yayınlar kullanılır: *Big Buck Bunny* ve *Tears of Steel* © Blender Foundation | [www.blender.org](https://www.blender.org), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
 ## 📺 Android TV
 
@@ -15,7 +15,7 @@ TV arayüzü, Chromecast with Google TV kumandası gibi yalnızca yön tuşları
   </tr>
   <tr>
     <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Kanal özellikleri"><br><sub><b>Kanal özellikleri</b> — kartta <code>OK</code> basılı tut: İzle, Favori, Kilit, Düzenle, Gizle</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/04-favoriler.jpg" alt="Favorilerim"><br><sub><b>Favorilerim</b> — birden fazla, sıralanabilir liste</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/16-radyo-kadran.jpg" alt="Radyo kadranı"><br><sub><b>Radyo</b> — kadran, çalan şarkı</sub></td>
   </tr>
 </table>
 
@@ -42,12 +42,12 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
     <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/06-klasor-ici.jpg" alt="Klasör içi"><br><sub><b>Klasörün içi</b> — kanallar kategori çipleriyle; <code>Geri</code> klasör listesine döner</sub></td>
   </tr>
   <tr>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/11-kanal-ara.jpg" alt="Kanal ara"><br><sub><b>Kanal Ara</b> — kanal, program ve numara</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/15-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo listesi</b> — favoriler, türler</sub></td>
     <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/12-m3u-ve-dosya.jpg" alt="M3U ve Dosya"><br><sub><b>M3U ve Dosya</b> — dosya, Xtream; telefondan QR ve kodla ekleme</sub></td>
   </tr>
   <tr>
     <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/13-ayarlar.jpg" alt="Ayarlar"><br><sub><b>Ayarlar</b> — palet, OLED modu, yazı boyutu, kalite, gece modu…</sub></td>
-    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/14-yayin-rehberi.jpg" alt="Yayın rehberi"><br><sub><b>Yayın Rehberi</b> — XMLTV adresi eklenmediyse bu uyarı görünür; program adı uydurulmaz</sub></td>
+    <td><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tv/17-radyo-secenekler.jpg" alt="Radyo seçenekleri"><br><sub><b>Radyo seçenekleri</b> — kaynak, uyku, cızırtı, geçmiş</sub></td>
   </tr>
 </table>
 
@@ -96,24 +96,22 @@ Alt çubuk (dock) ekranın yalnızca ~%15'ini kaplar; oynatıcıda `OK` açar, `
 ← [Ana sayfa](Home.md) • [Kurulum](Kurulum-Rehberi.md) • [Kumanda ve Dokunmatik Kontroller](Kumanda-ve-Dokunmatik-Kontroller.md)
 
 
-## 🆕 Radyo ve rehber (telefon / tablet)
+## 🆕 Radyo (telefon / tablet)
 
-> Kanal adları ve logoları ilgili yayıncıların markalarıdır; yalnızca uygulamadaki listeyi göstermek için yer alır, onlarla bağlantı ya da onay söz konusu değildir. Görüntülerde bir yayından alınmış kare bulunmaz.
 
-> Radyo görüntülerindeki istasyonlar **örnek (demo)** listedir; gerçek liste şifreli dosyadan gelir.
 
 <table>
   <tr>
     <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/11-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo</b> — liste, favoriler, arama</sub></td>
     <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/12-radyo-oynatici.jpg" alt="Radyo oynatıcı"><br><sub><b>Kadran</b> — çalan şarkı, ses dalgası</sub></td>
     <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/13-radyo-secenekler.jpg" alt="Seçenekler"><br><sub><b>Seçenekler</b> — alarm, karma mod, geçmiş</sub></td>
-    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/14-rehber.jpg" alt="Rehber"><br><sub><b>Rehber</b> — Izgara düğmesi</sub></td>
+    <td width="25%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/phone/07-favoriler.jpg" alt="Favoriler"><br><sub><b>Favoriler</b> — sıralanabilir listeler</sub></td>
   </tr>
 </table>
 
 <table>
   <tr>
     <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/11-radyo.jpg" alt="Tablet radyo"><br><sub><b>Tablet radyo</b> — liste + oynatıcı paneli</sub></td>
-    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/12-rehber.jpg" alt="Tablet rehber"><br><sub><b>Tablet rehber</b></sub></td>
+    <td width="50%"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/screenshots/tablet/07-favoriler.jpg" alt="Tablet favoriler"><br><sub><b>Tablet favoriler</b></sub></td>
   </tr>
 </table>

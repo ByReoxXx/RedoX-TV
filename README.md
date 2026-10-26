@@ -87,13 +87,13 @@ Eski uygulamadan gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN k
 
 ## 🖼️ Ekran görüntüleri
 
-> Görüntüler gerçek uygulamadan, GitHub Actions'taki otomatik emülatör turuyla alınır (`ci/capture.sh`). Oynatıcı görüntülerinde telifsiz demo yayın kullanılır: *Big Buck Bunny* © Blender Foundation, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+> Görüntüler gerçek uygulamadan, GitHub Actions'taki otomatik emülatör turuyla alınır (`ci/capture.sh`). **Kanal adları, logolar ve istasyonlar uydurma bir örnek listedir** (`ci/make_demo_channels.py`); gerçek bir kanalın adı ya da logosu görüntülerde yer almaz. Oynatıcı görüntülerinde telifsiz demo yayınlar kullanılır: *Big Buck Bunny* ve *Tears of Steel* © Blender Foundation, [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 
 ### 📺 Android TV
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b> — ince afiş şeridi, kategori çipleri, 133 kanal; ekranda daha çok kanal</sub></td>
+    <td width="50%"><img src="docs/screenshots/tv/02-canli-tv.jpg" alt="Canlı TV"><br><sub><b>Canlı TV</b> — ince afiş şeridi, kategori çipleri; ekranda daha çok kanal (örnek liste)</sub></td>
     <td width="50%"><img src="docs/screenshots/tv/03-kanal-ozellikleri.jpg" alt="Kanal özellikleri"><br><sub><b>Kanal özellikleri</b> — <code>OK</code> basılı tut: izle, favori, kilit, düzenle, gizle</sub></td>
   </tr>
   <tr>
@@ -106,7 +106,7 @@ Eski uygulamadan gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN k
   </tr>
   <tr>
     <td><img src="docs/screenshots/tv/05-ozel-m3u-klasorler.jpg" alt="Özel M3U klasörleri"><br><sub><b>Özel M3U</b> — her liste, verdiğiniz adla bir klasör</sub></td>
-    <td><img src="docs/screenshots/tv/04-favoriler.jpg" alt="Favoriler"><br><sub><b>Favorilerim</b> — sıralanabilir listeler</sub></td>
+    <td><img src="docs/screenshots/tv/16-radyo-kadran.jpg" alt="Radyo kadranı"><br><sub><b>Radyo</b> — kadran, çalan şarkı, ses dalgası</sub></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/tv/12-m3u-ve-dosya.jpg" alt="M3U ve Dosya"><br><sub><b>M3U ve Dosya</b> — dosya, Xtream, QR ile telefondan ekleme</sub></td>
@@ -126,16 +126,14 @@ Eski uygulamadan gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN k
   </tr>
 </table>
 
-### 📻 Radyo, 🗓️ rehber (telefon)
-
-> Radyo görüntülerindeki istasyonlar **örnek (demo)** listedir; gerçek liste şifreli dosyadan gelir.
+### 📻 Radyo (telefon)
 
 <table>
   <tr>
     <td width="25%"><img src="docs/screenshots/phone/11-radyo-liste.jpg" alt="Radyo listesi"><br><sub><b>Radyo</b> — istasyonlar, favoriler, arama</sub></td>
     <td width="25%"><img src="docs/screenshots/phone/12-radyo-oynatici.jpg" alt="Radyo oynatıcı"><br><sub><b>Kadran</b> — çalan şarkı, ses dalgası</sub></td>
     <td width="25%"><img src="docs/screenshots/phone/13-radyo-secenekler.jpg" alt="Radyo seçenekleri"><br><sub><b>Seçenekler</b> — alarm, TV'yi sessiz izle, geçmiş</sub></td>
-    <td width="25%"><img src="docs/screenshots/phone/14-rehber.jpg" alt="Rehber"><br><sub><b>Rehber</b> — gerçek yayın rehberi, ızgara düğmesi</sub></td>
+    <td width="25%"><img src="docs/screenshots/phone/07-favoriler.jpg" alt="Favoriler"><br><sub><b>Favoriler</b> — sıralanabilir listeler</sub></td>
   </tr>
 </table>
 
@@ -148,7 +146,7 @@ Eski uygulamadan gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN k
   </tr>
   <tr>
     <td><img src="docs/screenshots/tablet/11-radyo.jpg" alt="Tablet radyo"><br><sub><b>Radyo</b> — solda liste, sağda kadranlı oynatıcı paneli</sub></td>
-    <td><img src="docs/screenshots/tablet/12-rehber.jpg" alt="Tablet rehber"><br><sub><b>Rehber</b> — gerçek XMLTV verisi, ızgara görünümü</sub></td>
+    <td><img src="docs/screenshots/tablet/07-favoriler.jpg" alt="Tablet favoriler"><br><sub><b>Favoriler</b> — sıralanabilir listeler</sub></td>
   </tr>
 </table>
 
@@ -318,7 +316,7 @@ app/src/
 ## 🙏 Atıflar ve sorumluluk reddi
 
 - **RedoX TV 2 bir oynatıcıdır; içerik barındırmaz veya sağlamaz.** Yerleşik liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir; kullanım sorumluluğu size aittir, lütfen yerel mevzuata uyun.
-- **Telif hakkı:** Ekran görüntülerinde bir televizyon ya da radyo yayınından kare **kullanılmaz**; oynatıcı görüntülerinde yalnızca telifsiz demo yayın, radyo görüntülerinde uydurma örnek istasyonlar yer alır. Kanal adları ve logoları ilgili yayıncıların ticari markalarıdır; yalnızca uygulamadaki listeyi göstermek için görüntülerde bulunur, RedoX TV 2 bu kuruluşlarla bağlantılı ya da onlarca onaylı değildir.
+- **Telif hakkı:** Ekran görüntülerinde bir televizyon ya da radyo yayınından kare, gerçek kanal adı ya da logo **kullanılmaz**; kanal ve istasyon listeleri uydurma örnektir, oynatıcı görüntüleri telifsiz demo yayınlardandır. Uygulamadaki gerçek kanal adları ve logoları ilgili yayıncıların ticari markalarıdır; RedoX TV 2 bu kuruluşlarla bağlantılı ya da onlarca onaylı değildir.
 - Ekran görüntülerindeki demo yayın: *Big Buck Bunny* © Blender Foundation | [www.blender.org](https://www.blender.org), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 - Kullanılan açık kaynak bileşenler: [Jetpack Compose](https://developer.android.com/jetpack/compose), [Media3 / ExoPlayer](https://developer.android.com/media/media3), [Coil](https://coil-kt.github.io/coil/), [OkHttp](https://square.github.io/okhttp/).
 
