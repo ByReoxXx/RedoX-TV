@@ -1,0 +1,325 @@
+10-26 07:30:32.009  1124  1153 I MediaProvider: Invalidating LocalCallingIdentity cache for package com.redoxtv.two. Reason: op android:read_external_storage
+10-26 07:30:32.009  1124  1153 I MediaProvider: Invalidating LocalCallingIdentity cache for package com.redoxtv.two. Reason: op android:read_external_storage
+10-26 07:30:32.019  1124  1153 I MediaProvider: Invalidating LocalCallingIdentity cache for package com.redoxtv.two. Reason: op android:read_external_storage
+10-26 07:30:32.020  1124  1153 I MediaProvider: Invalidating LocalCallingIdentity cache for package com.redoxtv.two. Reason: op android:read_external_storage
+10-26 07:30:32.185  1124  1124 I MediaProvider: Invalidating LocalCallingIdentity cache for package com.redoxtv.two. Reason: package android.intent.action.PACKAGE_ADDED
+10-26 07:30:32.188   666   666 D AvrcpMediaPlayerList: Name of package changed: com.redoxtv.two
+10-26 07:30:33.380   471   548 I ActivityManager: Force stopping com.redoxtv.two appid=10076 user=0: from pid 2974
+10-26 07:30:35.660   471  1172 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two/com.example.chromecasttv.MainActivity} from uid 2000
+10-26 07:30:35.697   471   510 I ActivityManager: Start proc 3016:com.redoxtv.two/u0a76 for pre-top-activity {com.redoxtv.two/com.example.chromecasttv.MainActivity}
+10-26 07:30:35.740  3016  3016 I com.redoxtv.tw: Late-enabling -Xcheck:jni
+10-26 07:30:35.756  3016  3016 I com.redoxtv.tw: Unquickening 12 vdex files!
+10-26 07:30:35.758  3016  3016 W com.redoxtv.tw: Unexpected CPU variant for X86 using defaults: x86
+10-26 07:30:36.558   471   624 D NsdService: registerService: 3 name: RedoX TV AOSP TV on x86, type: _redoxtv2._tcp., host: null, port: 8585, txtRecord: 
+10-26 07:30:36.558   471   624 D NsdService: mdnssd [register, 3, RedoX TV AOSP TV on x86, _redoxtv2._tcp., 8585, ]
+10-26 07:30:36.735  3016  3016 W com.redoxtv.tw: Class androidx.compose.runtime.snapshots.SnapshotStateList failed lock verification and will run slower.
+10-26 07:30:36.735  3016  3016 W com.redoxtv.tw: Common causes for lock verification issues are non-optimized dex code
+10-26 07:30:36.735  3016  3016 W com.redoxtv.tw: and incorrect proguard optimizations.
+10-26 07:30:36.785  3016  3016 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/Rect;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:30:36.785  3016  3016 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/RectF;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:30:36.926  3016  3051 I TetheringManager: registerTetheringEventCallback:com.redoxtv.two
+10-26 07:30:39.919   471   508 D ArtManagerInternalImpl: /data/misc/iorapd/com.redoxtv.two/253/com.example.chromecasttv.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+10-26 07:30:39.919   471   508 I ActivityTaskManager: Displayed com.redoxtv.two/com.example.chromecasttv.MainActivity: +2s804ms
+10-26 07:30:40.012  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 218896(9533KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 6669KB/13MB, paused 91us total 398.204ms
+10-26 07:30:41.250  3016  3036 I com.redoxtv.tw: Waiting for a blocking GC ProfileSaver
+10-26 07:30:41.983  3016  3181 D ProfileInstaller: Installing profile for com.redoxtv.two
+10-26 07:30:42.324   471  1172 I AppsFilter: interaction: PackageSetting{727c447 com.redoxtv.two/10076} -> PackageSetting{fa66474 com.google.android.tv/10052} BLOCKED
+10-26 07:30:42.744   471  1172 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.redoxtv.two flg=0x4000010 (has extras) } to com.google.android.packageinstaller/com.android.packageinstaller.PackageInstalledReceiver
+10-26 07:30:42.745   471   509 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.redoxtv.two flg=0x4000010 (has extras) } to com.android.vending/com.google.android.finsky.packagemanager.impl.PackageMonitorReceiverImpl$RegisteredReceiver
+10-26 07:30:42.745   471   509 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.redoxtv.two flg=0x4000010 (has extras) } to com.google.android.gms/.games.chimera.GamesSystemBroadcastReceiverProxy
+10-26 07:30:42.745   471   509 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.redoxtv.two flg=0x4000010 (has extras) } to com.google.android.gms/.gass.chimera.PackageChangeBroadcastReceiver
+10-26 07:30:42.745   471   509 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.redoxtv.two flg=0x4000010 (has extras) } to com.google.android.gms/.chimera.GmsIntentOperationService$PersistentTrustedReceiver
+10-26 07:30:45.553   471  1243 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.PACKAGE_ADDED dat=package:com.redoxtv.two flg=0x4000010 (has extras) } to com.google.android.tv/com.android.tv.receiver.PackageIntentsReceiver
+10-26 07:30:58.650  3670  3670 D AndroidRuntime: Shutting down VM
+10-26 07:30:58.733  3016  3027 I com.redoxtv.tw: Compiler allocated 5229KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:31:06.711  3822  3822 D AndroidRuntime: Shutting down VM
+10-26 07:31:07.798  3982  3982 D AndroidRuntime: Shutting down VM
+10-26 07:31:08.734  4007  4007 D AndroidRuntime: Shutting down VM
+10-26 07:31:11.079  4091  4091 D AndroidRuntime: Shutting down VM
+10-26 07:31:12.928   471  4105 I PackageDexOptimizer: Running dexopt (dexoptNeeded=1) on: /data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw==/base.apk pkg=com.redoxtv.two isa=x86 dexoptFlags=boot_complete,debuggable,public,enable_hidden_api_checks targetFilter=verify oatDir=/data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw==/oat classLoaderContext=PCL[]{}
+10-26 07:31:12.929   378   540 V installd: DexInv: --- BEGIN '/data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw==/base.apk' ---
+10-26 07:31:12.940  4110  4110 W dex2oat32: /apex/com.android.art/bin/dex2oat32 --zip-fd=7 --zip-location=base.apk --input-vdex-fd=-1 --output-vdex-fd=9 --oat-fd=8 --oat-location=/data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw==/oat/x86/base.odex --instruction-set=x86 --instruction-set-variant=x86 --instruction-set-features=default --runtime-arg -Xbootclasspath:/apex/com.android.art/javalib/core-oj.jar:/apex/com.android.art/javalib/core-libart.jar:/apex/com.android.art/javalib/core-icu4j.jar:/apex/com.android.art/javalib/okhttp.jar:/apex/com.android.art/javalib/bouncycastle.jar:/apex/com.android.art/javalib/apache-xml.jar:/system/framework/framework.jar:/system/framework/ext.jar:/system/framework/telephony-common.jar:/system/framework/voip-common.jar:/system/framework/ims-common.jar:/system/framework/framework-atb-backward-compatibility.jar --runtime-arg -Xms64m --runtime-arg -Xmx512m --updatable-bcp-packages-file=/system/etc/updatable-bcp-packages.txt --resolve-startup-const-strings=true --max-image-block-size=524288 --compiler-filter=verify --swap-fd=10 --debuggable --classpath-dir=/data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw== --class-loader-context=PCL[]{} --generate-mini-debug-info --compact-dex-level=none --runtime-arg -Xtarget-sdk-version:34 --runtime-arg -Xhidden-api-policy:enabled --compilation-reason=boot
+10-26 07:31:12.940  4110  4110 I dex2oat32: /apex/com.android.art/bin/dex2oat32 --input-vdex-fd=-1 --output-vdex-fd=9 --updatable-bcp-packages-file=/system/etc/updatable-bcp-packages.txt --resolve-startup-const-strings=true --max-image-block-size=524288 --compiler-filter=verify --debuggable --classpath-dir=/data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw== --class-loader-context=PCL[]{} --generate-mini-debug-info --compact-dex-level=none --compilation-reason=boot
+10-26 07:31:13.920  4119  4119 D AndroidRuntime: Shutting down VM
+10-26 07:31:14.818   378   540 V installd: DexInv: --- END '/data/app/~~pj_5aiihIUc3mHTel1s7zQ==/com.redoxtv.two-O3-_KSQw3JL3e4Dbn0DvAw==/base.apk' (success) ---
+10-26 07:31:14.890   471  4105 I BackgroundDexOptService: Pinning optimized code {android, com.redoxtv.two}
+10-26 07:31:15.727  4141  4141 D AndroidRuntime: Shutting down VM
+10-26 07:31:18.545  4186  4186 D AndroidRuntime: Shutting down VM
+10-26 07:31:18.661  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 93397(3541KB) AllocSpace objects, 2(88KB) LOS objects, 49% free, 10093KB/19MB, paused 995us total 117.178ms
+10-26 07:31:18.677  3016  3016 W com.redoxtv.tw: Accessing hidden method Landroid/media/AudioTrack;->getLatency()I (greylist, reflection, allowed)
+10-26 07:31:18.760  3016  3027 I com.redoxtv.tw: JIT allocated 50KB for compiled code of void com.example.chromecasttv.RedoXPlayerScreenKt.RedoXPlayerScreen(com.example.chromecasttv.TvChannel, com.example.chromecasttv.TvChannel, java.util.List, java.util.Set, java.util.Set, java.util.Set, java.util.Map, java.util.Map, java.util.Map, java.lang.Integer, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, com.example.chromecasttv.FeaturePrefs, kotlin.jvm.functions.Function1, java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int, int)
+10-26 07:31:18.760  3016  3027 I com.redoxtv.tw: JIT allocated 56KB for stack maps of void com.example.chromecasttv.RedoXPlayerScreenKt.RedoXPlayerScreen(com.example.chromecasttv.TvChannel, com.example.chromecasttv.TvChannel, java.util.List, java.util.Set, java.util.Set, java.util.Set, java.util.Map, java.util.Map, java.util.Map, java.lang.Integer, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, com.example.chromecasttv.FeaturePrefs, kotlin.jvm.functions.Function1, java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int, int)
+10-26 07:31:18.761  3016  3027 I com.redoxtv.tw: Compiler allocated 9124KB to compile void com.example.chromecasttv.RedoXPlayerScreenKt.RedoXPlayerScreen(com.example.chromecasttv.TvChannel, com.example.chromecasttv.TvChannel, java.util.List, java.util.Set, java.util.Set, java.util.Set, java.util.Map, java.util.Map, java.util.Map, java.lang.Integer, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, com.example.chromecasttv.FeaturePrefs, kotlin.jvm.functions.Function1, java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int, int)
+10-26 07:31:22.398  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 63036(5562KB) AllocSpace objects, 14(556KB) LOS objects, 27% free, 14MB/19MB, paused 10.212ms total 200.704ms
+10-26 07:31:23.935  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 103686(8459KB) AllocSpace objects, 18(516KB) LOS objects, 49% free, 14MB/29MB, paused 25us total 747.357ms
+10-26 07:31:25.291  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 9193(9727KB) AllocSpace objects, 0(0B) LOS objects, 24% free, 22MB/29MB, paused 6.435ms total 134.521ms
+10-26 07:31:25.677  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 4378(5236KB) AllocSpace objects, 0(0B) LOS objects, 11% free, 26MB/29MB, paused 16us total 146.768ms
+10-26 07:31:26.226  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 7389(5027KB) AllocSpace objects, 2(136KB) LOS objects, 43% free, 31MB/55MB, paused 14us total 343.799ms
+10-26 07:31:27.578  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 10082(15MB) AllocSpace objects, 0(0B) LOS objects, 25% free, 41MB/55MB, paused 14us total 167.022ms
+10-26 07:31:28.648  4639  4639 D AndroidRuntime: Shutting down VM
+10-26 07:31:33.204  4952  4952 D AndroidRuntime: Shutting down VM
+10-26 07:31:34.140  5014  5014 D AndroidRuntime: Shutting down VM
+10-26 07:31:35.848  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 31023(2071KB) AllocSpace objects, 10(376KB) LOS objects, 2% free, 53MB/55MB, paused 19us total 107.291ms
+10-26 07:31:36.467  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 22742(1337KB) AllocSpace objects, 584(38MB) LOS objects, 49% free, 18MB/37MB, paused 13us total 464.373ms
+10-26 07:31:36.585  5071  5071 D AndroidRuntime: Shutting down VM
+10-26 07:31:37.583  5238  5238 D AndroidRuntime: Shutting down VM
+10-26 07:31:37.688  3016  3027 I com.redoxtv.tw: Compiler allocated 5087KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:31:39.682  5306  5306 D AndroidRuntime: Shutting down VM
+10-26 07:31:39.879  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 45303(2194KB) AllocSpace objects, 78(4968KB) LOS objects, 18% free, 30MB/37MB, paused 7.147ms total 85.199ms
+10-26 07:31:40.614  5397  5397 D AndroidRuntime: Shutting down VM
+10-26 07:31:42.585  5461  5461 D AndroidRuntime: Shutting down VM
+10-26 07:31:42.606  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 49431(2481KB) AllocSpace objects, 342(22MB) LOS objects, 50% free, 17MB/34MB, paused 14us total 797.163ms
+10-26 07:31:45.604  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 13427(1129KB) AllocSpace objects, 1(68KB) LOS objects, 0% free, 34MB/34MB, paused 24us total 408.912ms
+10-26 07:31:45.967  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 6825(441KB) AllocSpace objects, 2(136KB) LOS objects, 39% free, 37MB/61MB, paused 24us total 342.177ms
+10-26 07:31:47.792  5778  5778 D AndroidRuntime: Shutting down VM
+10-26 07:31:55.142  5884  5965 I Finsky  : [316] ItemStore: Not cached: com.redoxtv.two
+10-26 07:31:55.610  5884  5965 E Finsky  : [316] ItemStore: getItems RPC failed for item com.redoxtv.two
+10-26 07:31:57.375  6259  6259 D AndroidRuntime: Shutting down VM
+10-26 07:32:00.133  6280  6280 D AndroidRuntime: Shutting down VM
+10-26 07:32:01.642  6308  6308 D AndroidRuntime: Shutting down VM
+10-26 07:32:06.320  6323  6323 D AndroidRuntime: Shutting down VM
+10-26 07:32:07.107  6353  6353 D AndroidRuntime: Shutting down VM
+10-26 07:32:08.610  6366  6366 D AndroidRuntime: Shutting down VM
+10-26 07:32:09.121  6379  6379 D AndroidRuntime: Shutting down VM
+10-26 07:32:10.236  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 186702(7795KB) AllocSpace objects, 151(9860KB) LOS objects, 23% free, 46MB/61MB, paused 14us total 541.432ms
+10-26 07:32:13.201  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 49278(4080KB) AllocSpace objects, 447(29MB) LOS objects, 44% free, 29MB/53MB, paused 402us total 489.509ms
+10-26 07:32:14.474  6642  6642 D AndroidRuntime: Shutting down VM
+10-26 07:32:16.000  6733  6733 D AndroidRuntime: Shutting down VM
+10-26 07:32:16.516  6746  6746 D AndroidRuntime: Shutting down VM
+10-26 07:32:20.784  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 201348(8955KB) AllocSpace objects, 180(11MB) LOS objects, 38% free, 33MB/53MB, paused 18us total 101.873ms
+10-26 07:32:20.948  6846  6846 D AndroidRuntime: Shutting down VM
+10-26 07:32:22.551  6872  6872 D AndroidRuntime: Shutting down VM
+10-26 07:32:23.480  6885  6885 D AndroidRuntime: Shutting down VM
+10-26 07:32:24.384  6898  6898 D AndroidRuntime: Shutting down VM
+10-26 07:32:33.473  7129  7129 D AndroidRuntime: Shutting down VM
+10-26 07:32:33.582  3016  3036 I com.redoxtv.tw: Waiting for a blocking GC ProfileSaver
+10-26 07:32:33.598  3016  3036 I com.redoxtv.tw: WaitForGcToComplete blocked ProfileSaver on HeapTrim for 16.531ms
+10-26 07:32:34.980  7150  7150 D AndroidRuntime: Shutting down VM
+10-26 07:32:35.499  7163  7163 D AndroidRuntime: Shutting down VM
+10-26 07:32:37.679  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 81596(4592KB) AllocSpace objects, 14(612KB) LOS objects, 6% free, 50MB/53MB, paused 19us total 546.472ms
+10-26 07:32:38.226  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 221627(10MB) AllocSpace objects, 332(21MB) LOS objects, 49% free, 23MB/46MB, paused 19us total 285.060ms
+10-26 07:32:41.567  3016  3028 I com.redoxtv.tw: Background young concurrent copying GC freed 14917(2997KB) AllocSpace objects, 4(116KB) LOS objects, 4% free, 44MB/46MB, paused 15us total 287.251ms
+10-26 07:32:41.815  3016  3028 I com.redoxtv.tw: Background concurrent copying GC freed 10573(1101KB) AllocSpace objects, 1(68KB) LOS objects, 34% free, 45MB/69MB, paused 19us total 112.807ms
+10-26 07:32:43.482  7622  7622 D AndroidRuntime: Shutting down VM
+10-26 07:32:45.007  7682  7682 D AndroidRuntime: Shutting down VM
+10-26 07:32:45.512  7695  7695 D AndroidRuntime: Shutting down VM
+10-26 07:32:49.781  7800  7800 D AndroidRuntime: Shutting down VM
+10-26 07:32:51.314  7823  7823 D AndroidRuntime: Shutting down VM
+10-26 07:32:51.840  7838  7838 D AndroidRuntime: Shutting down VM
+10-26 07:32:55.607  7919  7919 D AndroidRuntime: Shutting down VM
+10-26 07:32:57.132  7932  7932 D AndroidRuntime: Shutting down VM
+10-26 07:32:57.632  7945  7945 D AndroidRuntime: Shutting down VM
+10-26 07:33:01.398  7962  7962 D AndroidRuntime: Shutting down VM
+10-26 07:33:02.907  7975  7975 D AndroidRuntime: Shutting down VM
+10-26 07:33:05.642  7992  7992 D AndroidRuntime: Shutting down VM
+10-26 07:33:07.304   471  3491 I ActivityManager: Force stopping com.redoxtv.two appid=10076 user=0: from pid 8011
+10-26 07:33:07.304   471  3491 I ActivityManager: Killing 3016:com.redoxtv.two/u0a76 (adj 0): stop com.redoxtv.two due to from pid 8011
+10-26 07:33:07.306   471  3491 W ActivityTaskManager: Force removing ActivityRecord{76d8b5a u0 com.redoxtv.two/com.example.chromecasttv.MainActivity t5 f}}: app died, no saved state
+10-26 07:33:08.782   471  3491 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two/com.example.chromecasttv.MainActivity} from uid 2000
+10-26 07:33:08.878   471   510 I ActivityManager: Start proc 8042:com.redoxtv.two/u0a76 for pre-top-activity {com.redoxtv.two/com.example.chromecasttv.MainActivity}
+10-26 07:33:08.909  8042  8042 I com.redoxtv.tw: Late-enabling -Xcheck:jni
+10-26 07:33:08.919  8042  8042 I com.redoxtv.tw: Unquickening 12 vdex files!
+10-26 07:33:08.920  8042  8042 W com.redoxtv.tw: Unexpected CPU variant for X86 using defaults: x86
+10-26 07:33:09.257   471   624 D NsdService: registerService: 4 name: RedoX TV AOSP TV on x86, type: _redoxtv2._tcp., host: null, port: 8585, txtRecord: 
+10-26 07:33:09.262   471   624 D NsdService: mdnssd [register, 4, RedoX TV AOSP TV on x86, _redoxtv2._tcp., 8585, ]
+10-26 07:33:09.279  8042  8077 I TetheringManager: registerTetheringEventCallback:com.redoxtv.two
+10-26 07:33:09.337  8042  8042 W com.redoxtv.tw: Class androidx.compose.runtime.snapshots.SnapshotStateList failed lock verification and will run slower.
+10-26 07:33:09.337  8042  8042 W com.redoxtv.tw: Common causes for lock verification issues are non-optimized dex code
+10-26 07:33:09.337  8042  8042 W com.redoxtv.tw: and incorrect proguard optimizations.
+10-26 07:33:09.366  8042  8042 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/Rect;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:33:09.366  8042  8042 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/RectF;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:33:10.601   471   508 D ArtManagerInternalImpl: /data/misc/iorapd/com.redoxtv.two/253/com.example.chromecasttv.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+10-26 07:33:10.652   471   508 I ActivityTaskManager: Displayed com.redoxtv.two/com.example.chromecasttv.MainActivity: +1s801ms
+10-26 07:33:10.939  8042  8054 I com.redoxtv.tw: ThreadFlipBegin blocked for 8.555ms
+10-26 07:33:10.939  8042  8077 I com.redoxtv.tw: IncrementDisableThreadFlip blocked for 8.644ms
+10-26 07:33:11.185  8042  8054 I com.redoxtv.tw: Background young concurrent copying GC freed 483070(21MB) AllocSpace objects, 24(692KB) LOS objects, 76% free, 7715KB/31MB, paused 37us total 264.705ms
+10-26 07:33:15.170  8042  8091 D ProfileInstaller: Installing profile for com.redoxtv.two
+10-26 07:33:30.960  8094  8094 D AndroidRuntime: Shutting down VM
+10-26 07:33:31.061  8042  8053 I com.redoxtv.tw: Compiler allocated 5352KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:33:32.203  8042  8054 I com.redoxtv.tw: Background concurrent copying GC freed 47953(2397KB) AllocSpace objects, 8(264KB) LOS objects, 49% free, 8499KB/16MB, paused 19us total 136.534ms
+10-26 07:33:38.484  8108  8108 D AndroidRuntime: Shutting down VM
+10-26 07:33:39.988  8121  8121 D AndroidRuntime: Shutting down VM
+10-26 07:33:40.061  8042  8053 I com.redoxtv.tw: Compiler allocated 5352KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:33:41.514  8134  8134 D AndroidRuntime: Shutting down VM
+10-26 07:33:42.439  8147  8147 D AndroidRuntime: Shutting down VM
+10-26 07:33:43.346  8160  8160 D AndroidRuntime: Shutting down VM
+10-26 07:33:47.053  8177  8177 D AndroidRuntime: Shutting down VM
+10-26 07:33:50.784  8194  8194 D AndroidRuntime: Shutting down VM
+10-26 07:33:52.306  8207  8207 D AndroidRuntime: Shutting down VM
+10-26 07:33:57.012   471  2450 I ActivityManager: Force stopping com.redoxtv.two appid=10076 user=0: from pid 8236
+10-26 07:33:57.012   471  2450 I ActivityManager: Killing 8042:com.redoxtv.two/u0a76 (adj 900): stop com.redoxtv.two due to from pid 8236
+10-26 07:33:59.093   471  1391 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two/com.example.chromecasttv.MainActivity} from uid 2000
+10-26 07:33:59.120   471   510 I ActivityManager: Start proc 8247:com.redoxtv.two/u0a76 for pre-top-activity {com.redoxtv.two/com.example.chromecasttv.MainActivity}
+10-26 07:33:59.193  8247  8247 I com.redoxtv.tw: Late-enabling -Xcheck:jni
+10-26 07:33:59.207  8247  8247 I com.redoxtv.tw: Unquickening 12 vdex files!
+10-26 07:33:59.207  8247  8247 W com.redoxtv.tw: Unexpected CPU variant for X86 using defaults: x86
+10-26 07:33:59.495   471   624 D NsdService: registerService: 5 name: RedoX TV AOSP TV on x86, type: _redoxtv2._tcp., host: null, port: 8585, txtRecord: 
+10-26 07:33:59.495   471   624 D NsdService: mdnssd [register, 5, RedoX TV AOSP TV on x86, _redoxtv2._tcp., 8585, ]
+10-26 07:33:59.540  8247  8282 I TetheringManager: registerTetheringEventCallback:com.redoxtv.two
+10-26 07:33:59.593  8247  8247 W com.redoxtv.tw: Class androidx.compose.runtime.snapshots.SnapshotStateList failed lock verification and will run slower.
+10-26 07:33:59.593  8247  8247 W com.redoxtv.tw: Common causes for lock verification issues are non-optimized dex code
+10-26 07:33:59.593  8247  8247 W com.redoxtv.tw: and incorrect proguard optimizations.
+10-26 07:33:59.619  8247  8247 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/Rect;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:33:59.619  8247  8247 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/RectF;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:34:01.112   471   508 D ArtManagerInternalImpl: /data/misc/iorapd/com.redoxtv.two/253/com.example.chromecasttv.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+10-26 07:34:01.113   471   508 I ActivityTaskManager: Displayed com.redoxtv.two/com.example.chromecasttv.MainActivity: +2s10ms
+10-26 07:34:01.541  8247  8259 I com.redoxtv.tw: Background young concurrent copying GC freed 1193254(52MB) AllocSpace objects, 35(1012KB) LOS objects, 83% free, 4775KB/28MB, paused 100us total 333.781ms
+10-26 07:34:04.558  8247  8295 D ProfileInstaller: Installing profile for com.redoxtv.two
+10-26 07:34:21.520  8310  8310 D AndroidRuntime: Shutting down VM
+10-26 07:34:29.286  8385  8385 D AndroidRuntime: Shutting down VM
+10-26 07:34:30.254  8400  8400 D AndroidRuntime: Shutting down VM
+10-26 07:34:31.199  8414  8414 D AndroidRuntime: Shutting down VM
+10-26 07:34:33.336  8431  8431 D AndroidRuntime: Shutting down VM
+10-26 07:34:36.075  8448  8448 D AndroidRuntime: Shutting down VM
+10-26 07:34:37.807  8465  8465 D AndroidRuntime: Shutting down VM
+10-26 07:34:40.554  8482  8482 D AndroidRuntime: Shutting down VM
+10-26 07:34:40.577  8247  8247 W com.redoxtv.tw: Accessing hidden method Landroid/media/AudioTrack;->getLatency()I (greylist, reflection, allowed)
+10-26 07:34:40.619  8247  8258 I com.redoxtv.tw: JIT allocated 50KB for compiled code of void com.example.chromecasttv.RedoXPlayerScreenKt.RedoXPlayerScreen(com.example.chromecasttv.TvChannel, com.example.chromecasttv.TvChannel, java.util.List, java.util.Set, java.util.Set, java.util.Set, java.util.Map, java.util.Map, java.util.Map, java.lang.Integer, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, com.example.chromecasttv.FeaturePrefs, kotlin.jvm.functions.Function1, java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int, int)
+10-26 07:34:40.619  8247  8258 I com.redoxtv.tw: JIT allocated 58KB for stack maps of void com.example.chromecasttv.RedoXPlayerScreenKt.RedoXPlayerScreen(com.example.chromecasttv.TvChannel, com.example.chromecasttv.TvChannel, java.util.List, java.util.Set, java.util.Set, java.util.Set, java.util.Map, java.util.Map, java.util.Map, java.lang.Integer, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, com.example.chromecasttv.FeaturePrefs, kotlin.jvm.functions.Function1, java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int, int)
+10-26 07:34:40.619  8247  8258 I com.redoxtv.tw: Compiler allocated 9281KB to compile void com.example.chromecasttv.RedoXPlayerScreenKt.RedoXPlayerScreen(com.example.chromecasttv.TvChannel, com.example.chromecasttv.TvChannel, java.util.List, java.util.Set, java.util.Set, java.util.Set, java.util.Map, java.util.Map, java.util.Map, java.lang.Integer, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function1, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function0, com.example.chromecasttv.FeaturePrefs, kotlin.jvm.functions.Function1, java.lang.String, kotlin.jvm.functions.Function0, androidx.compose.runtime.Composer, int, int, int, int)
+10-26 07:34:48.116  8665  8665 D AndroidRuntime: Shutting down VM
+10-26 07:34:50.577  8741  8741 D AndroidRuntime: Shutting down VM
+10-26 07:34:51.686  8781  8781 D AndroidRuntime: Shutting down VM
+10-26 07:34:52.896  8821  8821 D AndroidRuntime: Shutting down VM
+10-26 07:34:53.986  8900  8900 D AndroidRuntime: Shutting down VM
+10-26 07:34:55.070  8939  8939 D AndroidRuntime: Shutting down VM
+10-26 07:34:56.118  8977  8977 D AndroidRuntime: Shutting down VM
+10-26 07:34:57.223  9015  9015 D AndroidRuntime: Shutting down VM
+10-26 07:35:00.149  9101  9101 D AndroidRuntime: Shutting down VM
+10-26 07:35:09.787  9345  9345 D AndroidRuntime: Shutting down VM
+10-26 07:35:13.987  9462  9462 D AndroidRuntime: Shutting down VM
+10-26 07:35:15.610  9516  9516 D AndroidRuntime: Shutting down VM
+10-26 07:35:20.398  9618  9618 D AndroidRuntime: Shutting down VM
+10-26 07:35:21.063  9680  9680 D AndroidRuntime: Shutting down VM
+10-26 07:35:21.252  8247  8258 I com.redoxtv.tw: Compiler allocated 5268KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:35:25.756  9703  9703 D AndroidRuntime: Shutting down VM
+10-26 07:35:26.501  9726  9726 D AndroidRuntime: Shutting down VM
+10-26 07:35:28.015  9741  9741 D AndroidRuntime: Shutting down VM
+10-26 07:35:28.543  9754  9754 D AndroidRuntime: Shutting down VM
+10-26 07:35:31.265  9772  9772 D AndroidRuntime: Shutting down VM
+10-26 07:35:32.773  9785  9785 D AndroidRuntime: Shutting down VM
+10-26 07:35:33.287  9798  9798 D AndroidRuntime: Shutting down VM
+10-26 07:35:37.038  9815  9815 D AndroidRuntime: Shutting down VM
+10-26 07:35:38.562  9829  9829 D AndroidRuntime: Shutting down VM
+10-26 07:35:39.474  9842  9842 D AndroidRuntime: Shutting down VM
+10-26 07:35:40.376  9855  9855 D AndroidRuntime: Shutting down VM
+10-26 07:35:49.090  9872  9872 D AndroidRuntime: Shutting down VM
+10-26 07:35:50.593  9885  9885 D AndroidRuntime: Shutting down VM
+10-26 07:35:51.117  9898  9898 D AndroidRuntime: Shutting down VM
+10-26 07:35:51.214  8247  8258 I com.redoxtv.tw: Compiler allocated 4110KB to compile void com.example.chromecasttv.FavoritesEpgAndSettingsScreensKt.MultiViewSplitScreen(com.example.chromecasttv.TvUiState, kotlin.jvm.functions.Function0, kotlin.jvm.functions.Function2, kotlin.jvm.functions.Function1, androidx.compose.runtime.Composer, int)
+10-26 07:35:58.434  8247  8265 I com.redoxtv.tw: Waiting for a blocking GC ProfileSaver
+10-26 07:36:00.724  8247  8259 I com.redoxtv.tw: Background concurrent copying GC freed 123962(8956KB) AllocSpace objects, 164(10064KB) LOS objects, 49% free, 18MB/36MB, paused 19us total 1.825s
+10-26 07:36:00.724  8247  8265 I com.redoxtv.tw: WaitForGcToComplete blocked ProfileSaver on ProfileSaver for 2.290s
+10-26 07:36:21.280 13615 13615 D AndroidRuntime: Shutting down VM
+10-26 07:36:28.935 14857 14857 D AndroidRuntime: Shutting down VM
+10-26 07:36:31.233  8247  8259 I com.redoxtv.tw: Background young concurrent copying GC freed 148828(12MB) AllocSpace objects, 21(1428KB) LOS objects, 36% free, 23MB/36MB, paused 14us total 1.579s
+10-26 07:36:36.416 15819 15819 D AndroidRuntime: Shutting down VM
+10-26 07:36:40.186 16949 16949 D AndroidRuntime: Shutting down VM
+10-26 07:36:41.702 16962 16962 D AndroidRuntime: Shutting down VM
+10-26 07:36:42.204 16975 16975 D AndroidRuntime: Shutting down VM
+10-26 07:36:45.952 16992 16992 D AndroidRuntime: Shutting down VM
+10-26 07:36:47.467 17005 17005 D AndroidRuntime: Shutting down VM
+10-26 07:36:47.992 17018 17018 D AndroidRuntime: Shutting down VM
+10-26 07:36:51.717 17042 17042 D AndroidRuntime: Shutting down VM
+10-26 07:36:53.222 17058 17058 D AndroidRuntime: Shutting down VM
+10-26 07:36:55.958 17075 17075 D AndroidRuntime: Shutting down VM
+10-26 07:36:57.610   471  7863 I ActivityManager: Force stopping com.redoxtv.two appid=10076 user=0: from pid 17097
+10-26 07:36:57.610   471  7863 I ActivityManager: Killing 8247:com.redoxtv.two/u0a76 (adj 0): stop com.redoxtv.two due to from pid 17097
+10-26 07:36:57.611   471  7863 W ActivityTaskManager: Force removing ActivityRecord{bca9510 u0 com.redoxtv.two/com.example.chromecasttv.MainActivity t7 f}}: app died, no saved state
+10-26 07:36:58.980   471   499 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two/com.example.chromecasttv.MainActivity} from uid 2000
+10-26 07:36:58.993   471   510 I ActivityManager: Start proc 17121:com.redoxtv.two/u0a76 for pre-top-activity {com.redoxtv.two/com.example.chromecasttv.MainActivity}
+10-26 07:36:59.068 17121 17121 I com.redoxtv.tw: Late-enabling -Xcheck:jni
+10-26 07:36:59.091 17121 17121 I com.redoxtv.tw: Unquickening 12 vdex files!
+10-26 07:36:59.091 17121 17121 W com.redoxtv.tw: Unexpected CPU variant for X86 using defaults: x86
+10-26 07:36:59.418   471   624 D NsdService: registerService: 6 name: RedoX TV AOSP TV on x86, type: _redoxtv2._tcp., host: null, port: 8585, txtRecord: 
+10-26 07:36:59.418   471   624 D NsdService: mdnssd [register, 6, RedoX TV AOSP TV on x86, _redoxtv2._tcp., 8585, ]
+10-26 07:36:59.420 17121 17155 I TetheringManager: registerTetheringEventCallback:com.redoxtv.two
+10-26 07:36:59.495 17121 17121 W com.redoxtv.tw: Class androidx.compose.runtime.snapshots.SnapshotStateList failed lock verification and will run slower.
+10-26 07:36:59.495 17121 17121 W com.redoxtv.tw: Common causes for lock verification issues are non-optimized dex code
+10-26 07:36:59.495 17121 17121 W com.redoxtv.tw: and incorrect proguard optimizations.
+10-26 07:36:59.523 17121 17121 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/Rect;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:36:59.523 17121 17121 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/RectF;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:37:00.576   471   508 D ArtManagerInternalImpl: /data/misc/iorapd/com.redoxtv.two/253/com.example.chromecasttv.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+10-26 07:37:00.587   471   508 I ActivityTaskManager: Displayed com.redoxtv.two/com.example.chromecasttv.MainActivity: +1s586ms
+10-26 07:37:01.315 17121 17133 I com.redoxtv.tw: Background young concurrent copying GC freed 304194(13MB) AllocSpace objects, 29(816KB) LOS objects, 79% free, 6288KB/30MB, paused 66us total 220.885ms
+10-26 07:37:05.247 17121 17173 D ProfileInstaller: Installing profile for com.redoxtv.two
+10-26 07:37:21.102 17175 17175 D AndroidRuntime: Shutting down VM
+10-26 07:37:21.244 17121 17132 I com.redoxtv.tw: Compiler allocated 5352KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:37:28.619 17190 17190 D AndroidRuntime: Shutting down VM
+10-26 07:37:30.198 17203 17203 D AndroidRuntime: Shutting down VM
+10-26 07:37:31.731 17216 17216 D AndroidRuntime: Shutting down VM
+10-26 07:37:32.652 17230 17230 D AndroidRuntime: Shutting down VM
+10-26 07:37:33.565 17243 17243 D AndroidRuntime: Shutting down VM
+10-26 07:37:37.297 17260 17260 D AndroidRuntime: Shutting down VM
+10-26 07:37:41.010 17277 17277 D AndroidRuntime: Shutting down VM
+10-26 07:37:42.522 17290 17290 D AndroidRuntime: Shutting down VM
+10-26 07:37:46.530   471  3491 I ActivityManager: Force stopping com.redoxtv.two appid=10076 user=0: from pid 17314
+10-26 07:37:46.530   471  3491 I ActivityManager: Killing 17121:com.redoxtv.two/u0a76 (adj 900): stop com.redoxtv.two due to from pid 17314
+10-26 07:37:47.633   471  3491 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two/com.example.chromecasttv.MainActivity} from uid 2000
+10-26 07:37:47.659   471   510 I ActivityManager: Start proc 17336:com.redoxtv.two/u0a76 for pre-top-activity {com.redoxtv.two/com.example.chromecasttv.MainActivity}
+10-26 07:37:47.754 17336 17336 I com.redoxtv.tw: Late-enabling -Xcheck:jni
+10-26 07:37:47.767 17336 17336 I com.redoxtv.tw: Unquickening 12 vdex files!
+10-26 07:37:47.768 17336 17336 W com.redoxtv.tw: Unexpected CPU variant for X86 using defaults: x86
+10-26 07:37:48.046   471   624 D NsdService: registerService: 7 name: RedoX TV AOSP TV on x86, type: _redoxtv2._tcp., host: null, port: 8585, txtRecord: 
+10-26 07:37:48.046   471   624 D NsdService: mdnssd [register, 7, RedoX TV AOSP TV on x86, _redoxtv2._tcp., 8585, ]
+10-26 07:37:48.059 17336 17370 I TetheringManager: registerTetheringEventCallback:com.redoxtv.two
+10-26 07:37:48.139 17336 17336 W com.redoxtv.tw: Class androidx.compose.runtime.snapshots.SnapshotStateList failed lock verification and will run slower.
+10-26 07:37:48.139 17336 17336 W com.redoxtv.tw: Common causes for lock verification issues are non-optimized dex code
+10-26 07:37:48.139 17336 17336 W com.redoxtv.tw: and incorrect proguard optimizations.
+10-26 07:37:48.170 17336 17336 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/Rect;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:37:48.170 17336 17336 W com.redoxtv.tw: Accessing hidden method Landroid/graphics/Canvas;->drawPatch(Landroid/graphics/NinePatch;Landroid/graphics/RectF;Landroid/graphics/Paint;)V (greylist-max-o, linking, denied)
+10-26 07:37:49.694   471   508 D ArtManagerInternalImpl: /data/misc/iorapd/com.redoxtv.two/253/com.example.chromecasttv.MainActivity/compiled_traces/compiled_trace.pb doesn't exist
+10-26 07:37:49.765   471   508 I ActivityTaskManager: Displayed com.redoxtv.two/com.example.chromecasttv.MainActivity: +2s48ms
+10-26 07:37:49.942 17336 17348 I com.redoxtv.tw: Background young concurrent copying GC freed 1186482(52MB) AllocSpace objects, 30(836KB) LOS objects, 83% free, 5015KB/28MB, paused 40us total 174.504ms
+10-26 07:37:53.430 17336 17385 D ProfileInstaller: Installing profile for com.redoxtv.two
+10-26 07:38:09.994 17391 17391 D AndroidRuntime: Shutting down VM
+10-26 07:38:18.198 17409 17409 D AndroidRuntime: Shutting down VM
+10-26 07:38:20.781 17422 17422 D AndroidRuntime: Shutting down VM
+10-26 07:38:21.802 17435 17435 D AndroidRuntime: Shutting down VM
+10-26 07:38:22.716 17448 17448 D AndroidRuntime: Shutting down VM
+10-26 07:38:23.652 17461 17461 D AndroidRuntime: Shutting down VM
+10-26 07:38:25.850 17478 17478 D AndroidRuntime: Shutting down VM
+10-26 07:38:27.374 17491 17491 D AndroidRuntime: Shutting down VM
+10-26 07:38:28.902 17504 17504 D AndroidRuntime: Shutting down VM
+10-26 07:38:28.945 17336 17347 I com.redoxtv.tw: Compiler allocated 5352KB to compile void com.example.chromecasttv.LandingAndChannelScreensKt.RedoXTvRootScreen(com.example.chromecasttv.TvViewModel, com.example.chromecasttv.RedoXHost, androidx.compose.runtime.Composer, int)
+10-26 07:38:30.479 17517 17517 D AndroidRuntime: Shutting down VM
+10-26 07:38:31.384 17530 17530 D AndroidRuntime: Shutting down VM
+10-26 07:38:35.117 17548 17548 D AndroidRuntime: Shutting down VM
+10-26 07:38:36.629 17562 17562 D AndroidRuntime: Shutting down VM
+10-26 07:38:37.142 17575 17575 D AndroidRuntime: Shutting down VM
+10-26 07:38:40.877 17592 17592 D AndroidRuntime: Shutting down VM
+10-26 07:38:44.598 17609 17609 D AndroidRuntime: Shutting down VM
+10-26 07:38:55.045 17630 17630 D AndroidRuntime: Shutting down VM
+10-26 07:38:57.771 17647 17647 D AndroidRuntime: Shutting down VM
+10-26 07:38:59.537 17664 17664 D AndroidRuntime: Shutting down VM
+10-26 07:39:06.057 17677 17677 D AndroidRuntime: Shutting down VM
+10-26 07:39:09.563 17690 17690 D AndroidRuntime: Shutting down VM
+10-26 07:39:20.067 17703 17703 D AndroidRuntime: Shutting down VM
+10-26 07:39:21.576 17716 17716 D AndroidRuntime: Shutting down VM
+10-26 07:39:22.480 17729 17729 D AndroidRuntime: Shutting down VM
+10-26 07:39:23.398 17742 17742 D AndroidRuntime: Shutting down VM
+10-26 07:39:24.302 17755 17755 D AndroidRuntime: Shutting down VM
+10-26 07:39:25.203 17768 17768 D AndroidRuntime: Shutting down VM
+10-26 07:39:26.114 17781 17781 D AndroidRuntime: Shutting down VM
+10-26 07:39:27.017 17794 17794 D AndroidRuntime: Shutting down VM
+10-26 07:39:28.737 17811 17811 D AndroidRuntime: Shutting down VM
+10-26 07:39:30.254 17824 17824 D AndroidRuntime: Shutting down VM
+10-26 07:39:31.173 17837 17837 D AndroidRuntime: Shutting down VM
+10-26 07:39:32.077 17850 17850 D AndroidRuntime: Shutting down VM
+10-26 07:39:32.988 17864 17864 D AndroidRuntime: Shutting down VM
+10-26 07:39:33.892 17877 17877 D AndroidRuntime: Shutting down VM
+10-26 07:39:34.806 17890 17890 D AndroidRuntime: Shutting down VM
+10-26 07:39:42.438 17907 17907 D AndroidRuntime: Shutting down VM
+10-26 07:39:45.971 17920 17920 D AndroidRuntime: Shutting down VM
+10-26 07:39:47.494 17933 17933 D AndroidRuntime: Shutting down VM
+10-26 07:39:49.219 17948 17948 D AndroidRuntime: Shutting down VM
+10-26 07:39:51.268 17961 17961 D AndroidRuntime: Shutting down VM
+10-26 07:39:52.233 17976 17976 D AndroidRuntime: Shutting down VM
+10-26 07:39:53.145 17989 17989 D AndroidRuntime: Shutting down VM
+10-26 07:39:54.064 18002 18002 D AndroidRuntime: Shutting down VM
+10-26 07:39:57.836 18058 18058 D AndroidRuntime: Shutting down VM
+10-26 07:39:59.345 18071 18071 D AndroidRuntime: Shutting down VM
+10-26 07:39:59.863 18084 18084 D AndroidRuntime: Shutting down VM
+10-26 07:40:03.580 18101 18101 D AndroidRuntime: Shutting down VM
+10-26 07:40:05.084 18114 18114 D AndroidRuntime: Shutting down VM
+10-26 07:40:05.594 18127 18127 D AndroidRuntime: Shutting down VM
