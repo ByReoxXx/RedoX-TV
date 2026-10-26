@@ -37,7 +37,7 @@ vitrin_seed() {
   for f in a b c; do adb push "shots/_$f.m3u" "/data/local/tmp/redox_$f.m3u" >/dev/null || true; done
   local dir="/data/data/$PKG"
   adb shell "run-as $PKG sh -c 'mkdir -p files/imported_playlists shared_prefs && cp /data/local/tmp/redox_a.m3u files/imported_playlists/a.m3u && cp /data/local/tmp/redox_b.m3u files/imported_playlists/b.m3u && cp /data/local/tmp/redox_c.m3u files/imported_playlists/c.m3u'" || true
-  printf "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n<map>\n    <string name=\"custom_m3u_playlists_str\">pl-a|Çocuk ve Aile|$dir/files/imported_playlists/a.m3u||true;;;pl-b|Spor Listem|$dir/files/imported_playlists/b.m3u||true;;;pl-c|Açık Lisanslı Filmler|$dir/files/imported_playlists/c.m3u||true</string>\n    <string name=\"fav_order_csv\">ch_27_trt_1,ch_20_show_tv,ch_3_atv,ch_16_kanal_d,ch_21_star_tv,ch_64_ntv,ch_70_trt_haber,ch_50_trt_spor</string>\n</map>\n" > shots/_prefs.xml
+  printf "<?xml version='1.0' encoding='utf-8' standalone='yes' ?>\n<map>\n    <string name=\"custom_m3u_playlists_str\">pl-a|Çocuk ve Aile|$dir/files/imported_playlists/a.m3u||true;;;pl-b|Spor Listem|$dir/files/imported_playlists/b.m3u||true;;;pl-c|Açık Lisanslı Filmler|$dir/files/imported_playlists/c.m3u||true</string>\n    <string name=\"fav_order_csv\">ch_demo_01,ch_demo_02,ch_demo_03,ch_demo_07,ch_demo_12,ch_demo_16,ch_demo_19,ch_demo_22</string>\n</map>\n" > shots/_prefs.xml
   adb push shots/_prefs.xml /data/local/tmp/redox_prefs.xml >/dev/null || true
   adb shell "run-as $PKG sh -c 'cp /data/local/tmp/redox_prefs.xml shared_prefs/redoxtv_clean_prefs_v5.xml'" || true
   rm -f shots/_a.m3u shots/_b.m3u shots/_c.m3u shots/_prefs.xml
