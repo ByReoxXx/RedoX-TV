@@ -1,0 +1,368 @@
+10-26 07:30:08.756   521   907 I ActivityManager: Force stopping com.redoxtv.two.phone appid=10192 user=0: from pid 2317
+10-26 07:30:08.848   521   805 I SdkSandboxManager: No SDKs used. Skipping SDK data reconcilation for CallingInfo{mUid=10192, mPackageName='com.redoxtv.two.phone, mAppProcessToken='null'}
+10-26 07:30:09.754   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{c891089 com.google.android.youtube/10139} BLOCKED
+10-26 07:30:09.754   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{c5bf88e com.google.android.googlequicksearchbox/10132} BLOCKED
+10-26 07:30:09.754   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{4b848af com.google.android.as/10125} BLOCKED
+10-26 07:30:09.754   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{ef674bc com.google.android.devicelockcontroller/10190} BLOCKED
+10-26 07:30:09.754   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{be92c45 com.google.android.partnersetup/10124} BLOCKED
+10-26 07:30:09.754   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{230f9a com.google.android.apps.youtube.music/10156} BLOCKED
+10-26 07:30:09.755   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{8cac0cb com.google.android.cellbroadcastreceiver/10186} BLOCKED
+10-26 07:30:09.755   521   574 I AppsFilter: interaction: PackageSetting{1b9ef90 com.redoxtv.two.phone/10192} -> PackageSetting{d1420a8 com.google.android.inputmethod.latin/10140} BLOCKED
+10-26 07:30:10.229   521  1890 V SplashScreenExceptionList: SplashScreen checking exception for package com.redoxtv.two.phone (target sdk:34) -> false
+10-26 07:30:10.336   521  1890 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-26 07:30:10.463   521  2103 D CoreBackPreview: Window{b57a50c u0 Splash Screen com.redoxtv.two.phone}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@86005f8, mPriority=0, mIsAnimationCallback=false}
+10-26 07:30:10.587   521   552 I ActivityManager: Start proc 2545:com.redoxtv.two.phone/u0a192 for next-top-activity {com.redoxtv.two.phone/com.example.chromecasttv.MainActivity}
+10-26 07:30:10.831   521   543 E ActivityTaskManager: setVisibility=true while transition is not collecting or finishing ActivityRecord{e8da6df u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity t8} caller=com.android.server.wm.ActivityRecord.setVisibility:5287 com.android.server.wm.EnsureActivitiesVisibleHelper.makeVisibleAndRestartIfNeeded:259 com.android.server.wm.EnsureActivitiesVisibleHelper.setActivityVisibilityState:196 com.android.server.wm.EnsureActivitiesVisibleHelper.process:144 com.android.server.wm.TaskFragment.updateActivityVisibilities:1157 com.android.server.wm.Task.lambda$ensureActivitiesVisible$20:4878 com.android.server.wm.Task.$r8$lambda$glAS06h6u0gde7lZWW7SuxTbP1w:0 com.android.server.wm.Task$$ExternalSyntheticLambda16.accept:0 
+10-26 07:30:11.272  2545  2545 W ziparchive: Unable to open '/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.dm': No such file or directory
+10-26 07:30:11.272  2545  2545 W ziparchive: Unable to open '/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.dm': No such file or directory
+10-26 07:30:11.406  1050  1050 D CarrierSvcBindHelper: onPackageAdded: com.redoxtv.two.phone
+10-26 07:30:11.452  2545  2545 D nativeloader: Configuring clns-6 for other apk /data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.redoxtv.two.phone
+10-26 07:30:11.457  2545  2545 V GraphicsEnvironment: ANGLE GameManagerService for com.redoxtv.two.phone: false
+10-26 07:30:11.457  2545  2545 V GraphicsEnvironment: com.redoxtv.two.phone is not listed in per-application setting
+10-26 07:30:12.538  1050  1339 D ImsResolver: maybeAddedImsService, packageName: com.redoxtv.two.phone
+10-26 07:30:12.539  1050  1050 D CarrierSvcBindHelper: onHandleForceStop: [com.redoxtv.two.phone]
+10-26 07:30:12.671   837   837 I SafetyLabelChangedBroadcastReceiver: received broadcast packageName: com.redoxtv.two.phone, current user: UserHandle{0}, packageChangeEvent: NEW_INSTALL, intent user: UserHandle{0}
+10-26 07:30:13.126   521  2097 D CoreBackPreview: Window{18daf26 u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@1f32e35, mPriority=0, mIsAnimationCallback=false}
+10-26 07:30:14.730  1050  1050 D CarrierSvcBindHelper: onPackageModified: com.redoxtv.two.phone
+10-26 07:30:14.745  1050  1339 D ImsResolver: maybeAddedImsService, packageName: com.redoxtv.two.phone
+10-26 07:30:15.619   521   540 W ziparchive: Unable to open '/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.dm': No such file or directory
+10-26 07:30:15.620   521   540 I ActivityTaskManager: Displayed com.redoxtv.two.phone/com.example.chromecasttv.MainActivity for user 0: +5s530ms
+10-26 07:30:15.673   521  2098 W InputManager-JNI: Input channel object 'b57a50c Splash Screen com.redoxtv.two.phone (client)' was disposed without first being removed with the input manager!
+10-26 07:30:15.673   521   535 D CoreBackPreview: Window{b57a50c u0 Splash Screen com.redoxtv.two.phone EXITING}: Setting back callback null
+10-26 07:30:16.553   521   907 I ImeTracker: com.redoxtv.two.phone:7cb84f59: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-26 07:30:16.553   521   907 I ImeTracker: com.redoxtv.two.phone:7cb84f59: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-26 07:30:16.569  1540  1540 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.redoxtv.two.phone fieldId=0 fieldName=null extras=null}, false)
+10-26 07:30:16.862  2545  3143 D ProfileInstaller: Installing profile for com.redoxtv.two.phone
+10-26 07:30:18.904  1094  1140 I Launcher.IconCache: Database bulk icon loading failed, using fallback bulk icon loading for: ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity}
+10-26 07:30:19.777   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{e792583 com.google.android.youtube/10139} BLOCKED
+10-26 07:30:19.777   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{b2ee17e com.google.android.googlequicksearchbox/10132} BLOCKED
+10-26 07:30:19.777   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{11e96df com.google.android.as/10125} BLOCKED
+10-26 07:30:19.777   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{b785f2c com.google.android.gm/10144} BLOCKED
+10-26 07:30:19.777   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{7481df5 com.google.android.dialer/10128} BLOCKED
+10-26 07:30:19.778   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{353978a com.google.android.contacts/10155} BLOCKED
+10-26 07:30:19.778   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{17fc1fb com.google.android.apps.youtube.music/10156} BLOCKED
+10-26 07:30:20.046  1638  1638 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.redoxtv.two.phone], userId:[0], reason:[package is added.].
+10-26 07:30:27.709   521  2091 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{e5518a8 com.google.android.gm/10144} BLOCKED
+10-26 07:30:28.909  1638  1638 I AiAiEcho: AppFetcherImpl onPackageChanged com.redoxtv.two.phone.
+10-26 07:30:28.929  1638  2546 I AiAiEcho: AppIndexer Package:[com.redoxtv.two.phone] UserProfile:[0] Enabled:[true].
+10-26 07:30:28.929  1638  2546 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.redoxtv.two.phone], userId:[0], reason:[package is updated.].
+10-26 07:30:30.118   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{a6fce02 com.android.camera2/10147} BLOCKED
+10-26 07:30:30.118   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{9eb8313 com.google.android.devicelockcontroller/10190} BLOCKED
+10-26 07:30:30.118   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{ee8c950 com.google.android.rkpdapp/10174} BLOCKED
+10-26 07:30:30.118   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{b06d48c com.google.android.projection.gearhead/10123} BLOCKED
+10-26 07:30:31.950  1455  3935 I BlockstoreStorage: Clearing Blockstore Data for package com.redoxtv.two.phone [CONTEXT service_id=258 ]
+10-26 07:30:32.218   521   823 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{6b7a0f com.google.android.settings.intelligence/10118} BLOCKED
+10-26 07:30:32.225   521   823 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{9f7787a com.google.android.settings.intelligence/10118} BLOCKED
+10-26 07:30:32.416  1394  3917 I FontLog : Package com.redoxtv.two.phone has no metadata [CONTEXT service_id=132 ]
+10-26 07:30:37.997  4399  4399 D AndroidRuntime: Shutting down VM
+10-26 07:30:40.145   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{7ba9cc7 com.google.android.googlequicksearchbox/10132} BLOCKED
+10-26 07:30:40.145   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{f2392f4 com.google.android.apps.messaging/10129} BLOCKED
+10-26 07:30:40.145   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{5a41a1d com.google.android.gm/10144} BLOCKED
+10-26 07:30:40.145   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{6422492 com.google.android.settings.intelligence/10118} BLOCKED
+10-26 07:30:47.143  4730  4730 D AndroidRuntime: Shutting down VM
+10-26 07:30:50.562   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{69651d0 com.google.android.youtube/10139} BLOCKED
+10-26 07:30:50.562   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{1ce65c9 com.google.android.as/10125} BLOCKED
+10-26 07:30:50.562   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{3e471fa com.google.android.apps.maps/10154} BLOCKED
+10-26 07:30:50.563   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{a5ac4ce com.google.android.contacts/10155} BLOCKED
+10-26 07:30:53.238   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{19385c5 com.google.android.apps.messaging/10129} BLOCKED
+10-26 07:30:54.062  4895  4895 D AndroidRuntime: Shutting down VM
+10-26 07:30:54.485   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{3d4bd08 com.google.android.contacts/10155} BLOCKED
+10-26 07:30:58.432   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{b480a41 com.google.android.apps.messaging/10129} BLOCKED
+10-26 07:30:59.976  5010  5010 D AndroidRuntime: Shutting down VM
+10-26 07:31:01.030   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{8a50798 com.google.android.googlequicksearchbox/10132} BLOCKED
+10-26 07:31:01.405   521   769 I serviceDiscovery: [MdnsDiscoveryManager] Registering listener for serviceType: _redoxtv2._tcp.local
+10-26 07:31:02.018   521   534 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{ff15c46 com.google.android.settings.intelligence/10118} BLOCKED
+10-26 07:31:02.461   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{fcb0de4 com.google.android.as/10125} BLOCKED
+10-26 07:31:03.470   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{8ae6d40 com.google.android.as/10125} BLOCKED
+10-26 07:31:06.116  5223  5223 D AndroidRuntime: Shutting down VM
+10-26 07:31:07.831   521   769 I serviceDiscovery: [MdnsDiscoveryManager] Unregistering listener for serviceType:_redoxtv2._tcp.local
+10-26 07:31:12.096   521  1891 I MediaFocusControl: requestAudioFocus() from uid/pid 10192/2545 AA=USAGE_MEDIA/CONTENT_TYPE_MOVIE clientId=android.media.AudioManager@a629ccfandroidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@ede065c callingPack=com.redoxtv.two.phone req=1 flags=0x0 sdk=34
+10-26 07:31:13.023   521  2095 I MediaSessionStack: addSession to bottom of stack | record: com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:31:13.053   521  2095 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:31:13.267  1026  1026 D MediaPlayerList: onActiveSessionsChanged: controller: com.redoxtv.two.phone
+10-26 07:31:13.286   521   823 I ActivityManager: Background started FGS: Allowed [callingPackage: com.redoxtv.two.phone; callingUid: 10192; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { act=androidx.media3.session.MediaSessionService cmp=com.redoxtv.two.phone/com.example.chromecasttv.PlaybackService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null: isBindService:true]
+10-26 07:31:13.300  1026  1026 I MediaPlayerList: Adding wrapped media player: com.redoxtv.two.phone at key: 2
+10-26 07:31:13.312  1026  1026 D MediaPlayerList: onActiveSessionsChanged: controller: com.redoxtv.two.phone
+10-26 07:31:13.312  1026  1026 I MediaPlayerList: Adding wrapped media player: com.redoxtv.two.phone at key: 1
+10-26 07:31:13.752   835   835 D MediaResumeListener: Checking for service component for com.redoxtv.two.phone
+10-26 07:31:14.545   521   521 D MediaSessionService: Media button session is changed to com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:31:14.547  1026  1026 D MediaPlayerList: onActiveSessionsChanged: controller: com.redoxtv.two.phone
+10-26 07:31:14.552  1026  1026 D MediaPlayerList: onActiveSessionsChanged: controller: com.redoxtv.two.phone
+10-26 07:31:14.552  1026  1026 I MediaPlayerList: onMediaKeyEventSessionChanged: token=com.redoxtv.two.phone
+10-26 07:31:14.722  1026  1026 D MediaPlayerList: setActivePlayer(): setting player to com.redoxtv.two.phone
+10-26 07:31:14.722  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:14.731  1026  1026 I MediaPlayerList: onMediaKeyEventSessionChanged: token=com.redoxtv.two.phone
+10-26 07:31:14.731  1026  1026 D MediaPlayerList: setActivePlayer(): setting player to com.redoxtv.two.phone
+10-26 07:31:14.762   521  2095 I MediaSessionService: tempAllowlistTargetPkgIfPossible callingPackage:com.google.android.bluetooth targetPackage:com.redoxtv.two.phone reason:MediaSessionRecord:android.support.v4.media.session.command.GET_EXTRA_BINDER [WIU] [FGS]
+10-26 07:31:14.950  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:18.203   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{a2d31d5 com.google.android.contacts/10155} BLOCKED
+10-26 07:31:18.835  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=3609, buffered position=30016, speed=1.0, updated=111177, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:18.836  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:18.838  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:18.843  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=3609, buffered position=30016, speed=1.0, updated=111177, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:18.843  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:18.847  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:21.844  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=6335, buffered position=30016, speed=1.0, updated=114190, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:21.866  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:21.867  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:21.869  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=6335, buffered position=30016, speed=1.0, updated=114190, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:21.869  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:21.870  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:23.452  2545  2545 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@com.redoxtv.two.phone>
+10-26 07:31:24.979  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=9055, buffered position=30016, speed=1.0, updated=117251, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:25.000  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:25.001  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:25.012  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=9055, buffered position=30016, speed=1.0, updated=117251, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:25.012  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:25.013  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:27.975  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=11731, buffered position=30016, speed=1.0, updated=120320, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:28.030  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:28.032  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:28.089  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=11731, buffered position=30016, speed=1.0, updated=120320, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:28.090  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:28.090  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:28.602   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{ae8d66f com.google.android.contacts/10155} BLOCKED
+10-26 07:31:31.037  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=14245, buffered position=30016, speed=1.0, updated=123374, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:31.041  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:31.044  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:31.107  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=14245, buffered position=30016, speed=1.0, updated=123374, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:31.153  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:31.153  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:34.079  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=16625, buffered position=30016, speed=1.0, updated=126383, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:34.139  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:34.140  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:34.141  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=16625, buffered position=30016, speed=1.0, updated=126383, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:34.142  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:34.142  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:35.620   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{44e32fd com.google.android.googlequicksearchbox/10132} BLOCKED
+10-26 07:31:37.071  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=19091, buffered position=30016, speed=1.0, updated=129399, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:37.072  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:37.150  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:37.168  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=19091, buffered position=30016, speed=1.0, updated=129399, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:37.169  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:37.173  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:41.251   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{e4b1f4c com.google.android.contacts/10155} BLOCKED
+10-26 07:31:42.020  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=23113, buffered position=42016, speed=1.0, updated=133920, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:42.021  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:42.025  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:42.027  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=23113, buffered position=42016, speed=1.0, updated=133920, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:42.028  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:42.028  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:49.717  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=30577, buffered position=50016, speed=1.0, updated=142051, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:49.721  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:49.724  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:49.735  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=30577, buffered position=50016, speed=1.0, updated=142051, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:49.752  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:49.754  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:49.975   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{25a089f com.google.android.contacts/10155} BLOCKED
+10-26 07:31:52.159  5686  5686 D AndroidRuntime: Shutting down VM
+10-26 07:31:52.710  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=33578, buffered position=50016, speed=1.0, updated=145056, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:52.710  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:52.710  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:52.711  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=33578, buffered position=50016, speed=1.0, updated=145056, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:52.712  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:52.713  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:55.714  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=36324, buffered position=50016, speed=1.0, updated=148061, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:55.714  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:55.715  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:55.715  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=36324, buffered position=50016, speed=1.0, updated=148061, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:55.716  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:55.716  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:56.310  2545  2545 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@com.redoxtv.two.phone>
+10-26 07:31:58.717  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=39326, buffered position=50016, speed=1.0, updated=151064, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:58.718  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:58.719  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:58.720  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=39326, buffered position=50016, speed=1.0, updated=151064, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:31:58.721  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:31:58.721  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:31:58.974  6052  6052 D AndroidRuntime: Shutting down VM
+10-26 07:31:59.838   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{67effea com.google.android.contacts/10155} BLOCKED
+10-26 07:32:04.098  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=44669, buffered position=60000, speed=1.0, updated=156420, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:04.109  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:04.109  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:04.110  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=44669, buffered position=60000, speed=1.0, updated=156420, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:04.110  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:04.110  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:04.997   521   574 I AppsFilter: interaction: PackageSetting{d5db432 com.redoxtv.two.phone/10192} -> PackageSetting{3f49d76 com.google.android.contacts/10155} BLOCKED
+10-26 07:32:07.093  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=47703, buffered position=60000, speed=1.0, updated=159440, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:07.100  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:07.101  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:07.101  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=47703, buffered position=60000, speed=1.0, updated=159440, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:07.102  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:07.102  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:07.250   521  2095 I ActivityManager: Force stopping com.redoxtv.two.phone appid=10192 user=0: from pid 6236
+10-26 07:32:07.251   521  2095 I ActivityManager: Killing 2545:com.redoxtv.two.phone/u0a192 (adj 0): stop com.redoxtv.two.phone due to from pid 6236
+10-26 07:32:07.260   521  2095 W ActivityTaskManager: Force removing ActivityRecord{e8da6df u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity t8 f}}: app died, no saved state
+10-26 07:32:07.268   835   869 V WindowManagerShell: Transition requested: android.os.BinderProxy@1b00b8 TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=false baseIntent=Intent { flg=0x10000000 cmp=com.redoxtv.two.phone/com.example.chromecasttv.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} numActivities=0 lastActiveTime=43424 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@c078e91} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-26 07:32:07.274   521   907 I ImeTracker: com.redoxtv.two.phone:310d17db: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_REMOVE_CLIENT
+10-26 07:32:07.275   521  1891 I MediaSessionStack: removeSession | record: com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:32:07.280  1026  1026 W AudioMediaPlayerWrapper: The session was destroyed com.redoxtv.two.phone
+10-26 07:32:07.280  1026  1026 D MediaPlayerList: sessionUpdatedCallback(): packageName: com.redoxtv.two.phone
+10-26 07:32:07.285   521   907 I ImeTracker: com.redoxtv.two.phone:310d17db: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-26 07:32:07.285   521  1889 I WindowManager: WIN DEATH: Window{18daf26 u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity}
+10-26 07:32:07.286   521  1889 W InputManager-JNI: Input channel object '18daf26 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity (client)' was disposed without first being removed with the input manager!
+10-26 07:32:07.309  1026  1026 W AudioMediaPlayerWrapper: The session was destroyed com.redoxtv.two.phone
+10-26 07:32:07.309  1026  1026 D MediaPlayerList: sessionUpdatedCallback(): packageName: com.redoxtv.two.phone
+10-26 07:32:07.314   521   544 W WindowManager: Failed to deliver inset control state change to w=Window{18daf26 u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity EXITING}
+10-26 07:32:07.318  1050  1050 D CarrierSvcBindHelper: onHandleForceStop: [com.redoxtv.two.phone]
+10-26 07:32:07.333   521  1721 V ActivityManager: Got obituary of 2545:com.redoxtv.two.phone
+10-26 07:32:08.243   521   540 V WindowManager: Sent Transition #7 createdAt=10-26 07:32:07.260 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=8 displayId=0 isRunning=false baseIntent=Intent { flg=0x10000000 cmp=com.redoxtv.two.phone/com.example.chromecasttv.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} numActivities=0 lastActiveTime=43424 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{1bade3c Task{ecfd1fb #8 type=standard A=10192:com.redoxtv.two.phone}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-26 07:32:08.244   521   540 V WindowManager:     info={id=7 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{1bade3c Task{ecfd1fb #8 type=standard A=10192:com.redoxtv.two.phone}}} m=CLOSE f=NONE leash=Surface(name=Task=8)/@0x840e60e sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{RemoteToken{aaf17c5 Task{7cf868 #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x6766447 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{null m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{a3b9523 token=android.os.Binder@ee886b4})/@0x55f4409 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+10-26 07:32:08.386   521  1721 W WindowManager: Exception thrown during dispatchAppVisibility Window{18daf26 u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity EXITING}
+10-26 07:32:09.183   521  2095 V SplashScreenExceptionList: SplashScreen checking exception for package com.redoxtv.two.phone (target sdk:34) -> false
+10-26 07:32:09.189   835   869 V WindowManagerShell: Transition requested: android.os.BinderProxy@bd9e72e TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=9 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.redoxtv.two.phone/com.example.chromecasttv.MainActivity } baseActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} topActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} origActivity=null realActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} numActivities=1 lastActiveTime=161537 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@bcba2cf} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{c69945c com.example.chromecasttv.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-26 07:32:09.196   521  2095 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+10-26 07:32:09.210   521   552 I ActivityManager: Start proc 6280:com.redoxtv.two.phone/u0a192 for next-top-activity {com.redoxtv.two.phone/com.example.chromecasttv.MainActivity}
+10-26 07:32:09.234   521  2100 D CoreBackPreview: Window{9da897e u0 Splash Screen com.redoxtv.two.phone}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@e05e5f5, mPriority=0, mIsAnimationCallback=false}
+10-26 07:32:09.352   521   540 V WindowManager: Sent Transition #8 createdAt=10-26 07:32:09.167 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=9 displayId=0 isRunning=true baseIntent=Intent { flg=0x10000000 cmp=com.redoxtv.two.phone/com.example.chromecasttv.MainActivity } baseActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} topActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} origActivity=null realActivity=ComponentInfo{com.redoxtv.two.phone/com.example.chromecasttv.MainActivity} numActivities=1 lastActiveTime=161537 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{48e0ad7 Task{d1edc32 #9 type=standard A=10192:com.redoxtv.two.phone}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 128 - 0, 0) topActivityInfo=ActivityInfo{1124fc4 com.example.chromecasttv.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+10-26 07:32:09.352   521   540 V WindowManager:     info={id=8 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{48e0ad7 Task{d1edc32 #9 type=standard A=10192:com.redoxtv.two.phone}}} m=OPEN f=NONE leash=Surface(name=Task=9)/@0xfa6c9fb sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0},{WCT{RemoteToken{aaf17c5 Task{7cf868 #1 type=home}}} m=TO_BACK f=SHOW_WALLPAPER leash=Surface(name=Task=1)/@0x6766447 sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0}]}
+10-26 07:32:09.639  6280  6280 W ziparchive: Unable to open '/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.dm': No such file or directory
+10-26 07:32:09.639  6280  6280 W ziparchive: Unable to open '/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.dm': No such file or directory
+10-26 07:32:09.895  6280  6280 D nativeloader: Configuring clns-6 for other apk /data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.apk. target_sdk_version=34, uses_libraries=, library_path=/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/com.redoxtv.two.phone
+10-26 07:32:09.903  6280  6280 V GraphicsEnvironment: ANGLE GameManagerService for com.redoxtv.two.phone: false
+10-26 07:32:09.903  6280  6280 V GraphicsEnvironment: com.redoxtv.two.phone is not listed in per-application setting
+10-26 07:32:10.501   521  2097 D CoreBackPreview: Window{7f8c29a u0 com.redoxtv.two.phone/com.example.chromecasttv.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@156ffec, mPriority=0, mIsAnimationCallback=false}
+10-26 07:32:12.323   521   540 W ziparchive: Unable to open '/data/app/~~-kOMA9X2iqxSmFhjAo6CBA==/com.redoxtv.two.phone-CLnD1lW4x04_g6M4Dh7-lQ==/base.dm': No such file or directory
+10-26 07:32:12.325   521   540 I ActivityTaskManager: Displayed com.redoxtv.two.phone/com.example.chromecasttv.MainActivity for user 0: +3s160ms
+10-26 07:32:12.454   521  2097 D CoreBackPreview: Window{9da897e u0 Splash Screen com.redoxtv.two.phone EXITING}: Setting back callback null
+10-26 07:32:12.455   521  2095 W InputManager-JNI: Input channel object '9da897e Splash Screen com.redoxtv.two.phone (client)' was disposed without first being removed with the input manager!
+10-26 07:32:12.775   521  2096 I ImeTracker: com.redoxtv.two.phone:fc2eec8b: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+10-26 07:32:12.775   521  2096 I ImeTracker: com.redoxtv.two.phone:fc2eec8b: onCancelled at PHASE_SERVER_SHOULD_HIDE
+10-26 07:32:12.780  1540  1540 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=com.redoxtv.two.phone fieldId=0 fieldName=null extras=null}, false)
+10-26 07:32:14.998   521   574 I AppsFilter: interaction: PackageSetting{e3b110e com.redoxtv.two.phone/10192} -> PackageSetting{d2cb72f com.google.android.contacts/10155} BLOCKED
+10-26 07:32:15.166  6280  6366 D ProfileInstaller: Installing profile for com.redoxtv.two.phone
+10-26 07:32:28.930   521   574 I AppsFilter: interaction: PackageSetting{e3b110e com.redoxtv.two.phone/10192} -> PackageSetting{3cd141f com.google.android.contacts/10155} BLOCKED
+10-26 07:32:35.018  6474  6474 D AndroidRuntime: Shutting down VM
+10-26 07:32:43.809  6528  6528 D AndroidRuntime: Shutting down VM
+10-26 07:32:49.242  6557  6557 D AndroidRuntime: Shutting down VM
+10-26 07:32:50.436   521  2100 I MediaFocusControl: requestAudioFocus() from uid/pid 10192/6280 AA=USAGE_MEDIA/CONTENT_TYPE_MOVIE clientId=android.media.AudioManager@c952169androidx.media3.exoplayer.AudioFocusManager$AudioFocusListener@be367ee callingPack=com.redoxtv.two.phone req=1 flags=0x0 sdk=34
+10-26 07:32:51.151   521  2100 I MediaSessionStack: addSession to bottom of stack | record: com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:32:51.151   521  2100 D MediaSessionService: Media button session is changed to com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:32:51.152  1026  1026 I MediaPlayerList: Adding wrapped media player: com.redoxtv.two.phone at key: 1
+10-26 07:32:51.152  1026  1026 I MediaPlayerList: onMediaKeyEventSessionChanged: token=com.redoxtv.two.phone
+10-26 07:32:51.153  1026  1026 D MediaPlayerList: setActivePlayer(): setting player to com.redoxtv.two.phone
+10-26 07:32:51.153   521  2096 I MediaSessionService: tempAllowlistTargetPkgIfPossible callingPackage:com.google.android.bluetooth targetPackage:com.redoxtv.two.phone reason:MediaSessionRecord:android.support.v4.media.session.command.GET_EXTRA_BINDER [WIU] [FGS]
+10-26 07:32:51.172  1026  1026 I MediaPlayerList: Adding wrapped media player: com.redoxtv.two.phone at key: 2
+10-26 07:32:51.172  1026  1026 I MediaPlayerList: onMediaKeyEventSessionChanged: token=com.redoxtv.two.phone
+10-26 07:32:51.173  1026  1026 D MediaPlayerList: setActivePlayer(): setting player to com.redoxtv.two.phone
+10-26 07:32:51.178  1026  1026 V AudioMediaPlayerWrapper: onQueueChanged(): com.redoxtv.two.phone tried to update with no queue
+10-26 07:32:51.178  1026  1026 V AudioMediaPlayerWrapper: onQueueChanged(): com.redoxtv.two.phone tried to update with no queue
+10-26 07:32:51.179  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:51.184  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:51.186   521   594 I MediaSessionStack: onPlaybackStateChanged - Pushing session to top | record: com.redoxtv.two.phone/androidx.media3.session.id. (userId=0)
+10-26 07:32:51.188  1026  1026 D MediaPlayerList: onActiveSessionsChanged: controller: com.redoxtv.two.phone
+10-26 07:32:51.195  1026  1026 D MediaPlayerList: onActiveSessionsChanged: controller: com.redoxtv.two.phone
+10-26 07:32:51.246  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=BUFFERING(6), position=0, buffered position=0, speed=0.0, updated=203593, actions=7339671, custom actions=[], active item id=0, error=null}
+10-26 07:32:51.246  1026  1026 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:51.246  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=BUFFERING(6), position=0, buffered position=0, speed=0.0, updated=203593, actions=7339671, custom actions=[], active item id=0, error=null}
+10-26 07:32:51.246  1026  1026 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:51.268   521  1897 I ActivityManager: Background started FGS: Allowed [callingPackage: com.redoxtv.two.phone; callingUid: 10192; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { act=androidx.media3.session.MediaSessionService cmp=com.redoxtv.two.phone/com.example.chromecasttv.PlaybackService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null: isBindService:true]
+10-26 07:32:51.367  1026  1026 V AudioMediaPlayerWrapper: onQueueChanged(): com.redoxtv.two.phone
+10-26 07:32:51.367  1026  1026 W AudioMediaPlayerWrapper: onQueueChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:51.367  1026  1026 V AudioMediaPlayerWrapper: onQueueChanged(): com.redoxtv.two.phone
+10-26 07:32:51.367  1026  1026 W AudioMediaPlayerWrapper: onQueueChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:51.369  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:51.369  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:51.371  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:51.371  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:51.373  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=BUFFERING(6), position=0, buffered position=0, speed=0.0, updated=203720, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:51.373  1026  1026 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:51.373  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=BUFFERING(6), position=0, buffered position=0, speed=0.0, updated=203720, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:51.374  1026  1026 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:51.592   835   835 D MediaResumeListener: Checking for service component for com.redoxtv.two.phone
+10-26 07:32:52.286  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=0, buffered position=10016, speed=1.0, updated=204609, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:52.287  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:52.287  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:52.313  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=0, buffered position=10016, speed=1.0, updated=204609, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:52.328  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:52.330  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:52.383  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=0, buffered position=10016, speed=1.0, updated=204634, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:52.383  1026  1026 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:52.383  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=0, buffered position=10016, speed=1.0, updated=204634, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:52.384  1026  1026 W AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone tried to update with no new data
+10-26 07:32:56.870  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=3943, buffered position=30016, speed=1.0, updated=209163, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:56.877  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:56.903  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:56.904  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=3943, buffered position=30016, speed=1.0, updated=209163, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:56.905  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:56.906  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:59.823  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=6942, buffered position=30016, speed=1.0, updated=212167, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:59.826  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:59.827  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:32:59.832  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=6942, buffered position=30016, speed=1.0, updated=212167, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:32:59.833  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:32:59.833  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:01.436  6280  6280 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::1@1@com.redoxtv.two.phone>
+10-26 07:33:02.840  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=9963, buffered position=30016, speed=1.0, updated=215187, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:02.840  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:02.848  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:02.848  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=9963, buffered position=30016, speed=1.0, updated=215187, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:02.849  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:02.850  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:05.893  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=12728, buffered position=30016, speed=1.0, updated=218207, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:05.894  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:05.894  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:05.949  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=12728, buffered position=30016, speed=1.0, updated=218207, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:05.949  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:05.950  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:08.896  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=15787, buffered position=30016, speed=1.0, updated=221234, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:08.897  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:08.897  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:08.899  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=15787, buffered position=30016, speed=1.0, updated=221234, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:08.900  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:08.900  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:11.892  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=18788, buffered position=30016, speed=1.0, updated=224239, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:11.893  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:11.894  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:11.896  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=18788, buffered position=30016, speed=1.0, updated=224239, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:11.896  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:11.896  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:14.241  6671  6671 D AndroidRuntime: Shutting down VM
+10-26 07:33:16.461  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=23323, buffered position=50016, speed=1.0, updated=228808, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:16.461  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:16.462  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:16.463  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=23323, buffered position=50016, speed=1.0, updated=228808, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:16.464  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:16.465  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:19.464  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=26326, buffered position=50016, speed=1.0, updated=231811, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:19.465  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:19.465  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:19.466  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=26326, buffered position=50016, speed=1.0, updated=231811, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:19.466  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:19.467  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:19.825  6700  6700 D AndroidRuntime: Shutting down VM
+10-26 07:33:20.315  6280  6280 E FrameTracker: force finish cuj, time out: J<IME_INSETS_ANIMATION::0@1@com.redoxtv.two.phone>
+10-26 07:33:20.763   521   769 I serviceDiscovery: [MdnsDiscoveryManager] Registering listener for serviceType: _redoxtv2._tcp.local
+10-26 07:33:22.468  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=29327, buffered position=50016, speed=1.0, updated=234815, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:22.469  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:22.469  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:22.470  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=29327, buffered position=50016, speed=1.0, updated=234815, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:22.470  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:22.470  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:25.251  6730  6730 D AndroidRuntime: Shutting down VM
+10-26 07:33:25.470  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=32328, buffered position=50016, speed=1.0, updated=237817, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:25.471  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:25.471  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:25.473  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=32328, buffered position=50016, speed=1.0, updated=237817, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:25.473  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:25.474  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:26.352   521   769 I serviceDiscovery: [MdnsDiscoveryManager] Unregistering listener for serviceType:_redoxtv2._tcp.local
+10-26 07:33:28.474  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=35332, buffered position=50016, speed=1.0, updated=240821, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:28.475  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:28.475  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:28.476  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=35332, buffered position=50016, speed=1.0, updated=240821, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:28.477  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:28.477  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:31.476  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=38336, buffered position=50016, speed=1.0, updated=243823, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:31.477  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:31.477  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:31.477  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=38336, buffered position=50016, speed=1.0, updated=243823, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:31.478  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:31.478  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:31.806  6758  6758 D AndroidRuntime: Shutting down VM
+10-26 07:33:36.419  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=43279, buffered position=70016, speed=1.0, updated=248767, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:36.420  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:36.420  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
+10-26 07:33:36.423  1026  1026 V AudioMediaPlayerWrapper: onPlaybackStateChanged(): com.redoxtv.two.phone : PlaybackState {state=PLAYING(3), position=43279, buffered position=70016, speed=1.0, updated=248767, actions=7339999, custom actions=[], active item id=0, error=null}
+10-26 07:33:36.423  1026  1026 D AudioMediaPlayerWrapper: com.redoxtv.two.phone Only Title and Artist info sync for metadata
+10-26 07:33:36.424  1026  1026 V AudioMediaPlayerWrapper: trySendMediaUpdate(): Metadata has been updated for com.redoxtv.two.phone
