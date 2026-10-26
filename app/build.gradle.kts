@@ -34,8 +34,8 @@ android {
         applicationId = "com.redoxtv.two"
         minSdk = 28
         targetSdk = 34
-        versionCode = 252
-        versionName = "2.5.2"
+        versionCode = 253
+        versionName = "2.5.3"
         // Arayüz yalnızca Türkçe/İngilizce: kitaplıkların diğer dillerdeki metinleri pakete girmez
         resourceConfigurations += listOf("tr", "en")
         buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV\"")

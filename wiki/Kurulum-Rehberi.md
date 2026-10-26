@@ -4,9 +4,9 @@ RedoX TV üç ayrı APK olarak dağıtılır. **Cihazınıza uygun olanı** kuru
 
 | APK | Cihaz |
 |---|---|
-| `RedoX-TV-v2.1.0-tv.apk` | Android TV, Google TV (Chromecast with Google TV), TV Box, akıllı TV |
-| `RedoX-TV-v2.1.0-tablet.apk` | Android tablet |
-| `RedoX-TV-v2.1.0-phone.apk` | Android telefon (aynı zamanda TV kumandası) |
+| `RedoX-TV-v2.5.3-tv.apk` | Android TV, Google TV (Chromecast with Google TV), TV Box, akıllı TV |
+| `RedoX-TV-v2.5.3-tablet.apk` | Android tablet |
+| `RedoX-TV-v2.5.3-phone.apk` | Android telefon (aynı zamanda TV kumandası) |
 
 Uygulama ilk RedoX TV'den (v1.x) **bağımsızdır** (paket `com.redoxtv.two`); ikisi aynı cihazda yan yana durabilir.
 
@@ -17,7 +17,7 @@ Uygulama ilk RedoX TV'den (v1.x) **bağımsızdır** (paket `com.redoxtv.two`); 
 **Yöntem 1 — adb (bilgisayardan):**
 ```bash
 adb connect <TV-IP>:5555
-adb install -r RedoX-TV-v2.1.0-tv.apk
+adb install -r RedoX-TV-v2.5.3-tv.apk
 ```
 TV'de *Ayarlar → Cihaz Tercihleri → Hakkında → Derleme* üzerine 7 kez basarak geliştirici seçeneklerini açın, ardından *Ağ üzerinden hata ayıklama*yı etkinleştirin.
 

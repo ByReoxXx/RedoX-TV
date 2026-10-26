@@ -160,15 +160,15 @@ Tüm görüntüler ve ayrıntılar: [📸 Wiki → Ekran Görüntüleri](https:/
 
 | APK | Cihaz | Arayüz |
 |---|---|---|
-| `RedoX-TV-v2.5.2-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz |
-| `RedoX-TV-v2.5.2-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran |
-| `RedoX-TV-v2.5.2-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** |
+| `RedoX-TV-v2.5.3-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz |
+| `RedoX-TV-v2.5.3-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran |
+| `RedoX-TV-v2.5.3-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** |
 
 **2. Kurun.** Telefon/tablette APK'ya dokunun ("bilinmeyen kaynaklardan yükleme"ye izin verin). Android TV'de USB bellek, *Downloader* uygulaması ya da `adb` ile:
 
 ```bash
 adb connect <TV-IP>:5555
-adb install -r RedoX-TV-v2.5.2-tv.apk
+adb install -r RedoX-TV-v2.5.3-tv.apk
 ```
 
 **3. İzleyin.** Açılışta 133 kanal hazırdır: `OK` ile izleyin, `OK` basılı tutarak kanal özelliklerine (favori, kilit, düzenle, gizle) gidin. Oynatıcıda `OK` çubuğu açar, `◄` kanal listesini, `►` bir sonraki yayın kaynağını, `▲ ▼` kanal değiştirmeyi yapar.
