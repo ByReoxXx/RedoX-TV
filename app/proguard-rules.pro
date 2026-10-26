@@ -1,4 +1,4 @@
-# RedoX TV 2 — R8 (kod küçültme) kuralları
+# RedoX TV — R8 (kod küçültme) kuralları
 # Not: kod küçültme (R8) şu an KAPALI (app/build.gradle.kts: R8 büyük Compose işlevlerinde geçersiz DEX üretiyordu). Bu dosya
 # yeniden açılırsa kullanılmak üzere durur; kapalıyken etkisizdir.
 

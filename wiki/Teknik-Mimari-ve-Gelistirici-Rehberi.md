@@ -57,7 +57,7 @@ gradle :app:assembleTvRelease :app:assembleTabletRelease :app:assemblePhoneRelea
 ```
 Çıktılar: `app/build/outputs/apk/<çeşit>/release/`. İmza: `keystore.properties` (yerel) veya `REDOX_KEYSTORE_FILE`, `REDOX_KEYSTORE_PASSWORD`, `REDOX_KEY_ALIAS`, `REDOX_KEY_PASSWORD` ortam değişkenleri; hiçbiri yoksa debug anahtarı kullanılır.
 
-GitHub Actions (`.github/workflows/build.yml`): üç çeşit paralel derlenir, APK'lar `RedoX-TV-2-v<sürüm>-<çeşit>.apk` adıyla Artifacts'a yüklenir; `v*` etiketi veya elle tetikleme ile Release oluşur; `wiki/` klasörü GitHub Wiki'ye eşitlenir. `GITHUB_REPOSITORY` otomatik olarak `BuildConfig.GITHUB_REPO`'ya gömülür (güncelleme denetimi ve kanal paketi senkronu uygulamanın kendi deposuna bakar).
+GitHub Actions (`.github/workflows/build.yml`): üç çeşit paralel derlenir, APK'lar `RedoX-TV-v<sürüm>-<çeşit>.apk` adıyla Artifacts'a yüklenir; `v*` etiketi veya elle tetikleme ile Release oluşur; `wiki/` klasörü GitHub Wiki'ye eşitlenir. `GITHUB_REPOSITORY` otomatik olarak `BuildConfig.GITHUB_REPO`'ya gömülür (güncelleme denetimi ve kanal paketi senkronu uygulamanın kendi deposuna bakar).
 
 `.github/workflows/ui-preview.yml` ("Arayüz önizleme"): `ui-*` dallarına push'ta veya elle çalışır; telefon, tablet ve Android TV emülatörlerinde `ci/capture.sh` ile uygulamayı açar, gezer ve ekran görüntüsü alır (Artifacts + `shots-<tür>` dalları).
 

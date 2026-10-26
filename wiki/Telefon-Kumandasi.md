@@ -1,6 +1,6 @@
 # 📲 Telefon = Kumanda
 
-Telefon veya tablet uygulaması, aynı Wi-Fi ağındaki RedoX TV 2 (TV APK'sı) için kumandaya dönüşür.
+Telefon veya tablet uygulaması, aynı Wi-Fi ağındaki RedoX TV (TV APK'sı) için kumandaya dönüşür.
 
 ## 1) Eşleştirme
 
@@ -31,4 +31,4 @@ Telefondaki bir kanalı TV'ye göndermek için: kanala **uzun basın → TV'de o
 
 - TV listede görünmüyor: iki cihaz aynı ağda mı? Bazı yönlendiriciler istemci yalıtımı yapar (misafir ağı); **Adresi elle gir** deneyin.
 - "TV'ye ulaşılamadı": TV uyku modunda olabilir; uygulamayı açın. IP adresi değiştiyse yeniden eşleştirin.
-- Eski RedoX TV bu özelliği desteklemez; yalnızca **RedoX TV 2** TV APK'sı kumanda sunucusu çalıştırır.
+- İlk RedoX TV (v1.x) bu özelliği desteklemez; yalnızca bu uygulamanın **TV APK'sı** kumanda sunucusu çalıştırır.

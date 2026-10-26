@@ -131,7 +131,7 @@ class RemoteDiscovery(context: Context) {
                 override fun onServiceResolved(serviceInfo: NsdServiceInfo) {
                     val host = serviceInfo.host?.hostAddress
                     if (host != null) {
-                        val name = serviceInfo.serviceName ?: "RedoX TV 2"
+                        val name = serviceInfo.serviceName ?: "RedoX TV"
                         val tv = DiscoveredTv(name, host, serviceInfo.port)
                         val others = foundState.value.filterNot { it.host == tv.host && it.port == tv.port }
                         foundState.value = others + tv

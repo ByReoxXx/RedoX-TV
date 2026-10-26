@@ -29,7 +29,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        // "RedoX TV 2": eski RedoX TV (com.redoxtv.app) uygulamasından BAĞIMSIZ, ayrı bir uygulamadır.
+        // "RedoX TV": eski RedoX TV (com.redoxtv.app) uygulamasından BAĞIMSIZ, ayrı bir uygulamadır.
         // Farklı paket kimliği sayesinde ikisi aynı cihazda yan yana kurulabilir; veriler paylaşılmaz.
         applicationId = "com.redoxtv.two"
         minSdk = 28
@@ -38,7 +38,7 @@ android {
         versionName = "2.5.2"
         // Arayüz yalnızca Türkçe/İngilizce: kitaplıkların diğer dillerdeki metinleri pakete girmez
         resourceConfigurations += listOf("tr", "en")
-        buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV 2\"")
+        buildConfigField("String", "APP_DISPLAY_NAME", "\"RedoX TV\"")
         // Güncelleme denetimi bu depodaki "latest release"e bakar. GitHub Actions'ta depo adı otomatik gelir.
         val githubRepo = System.getenv("GITHUB_REPOSITORY")?.takeIf { it.isNotBlank() } ?: "ByReoxXx/RedoX-TV-2"
         buildConfigField("String", "GITHUB_REPO", "\"$githubRepo\"")

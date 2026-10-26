@@ -1,7 +1,7 @@
 # ❓ Sıkça Sorulan Sorular ve Sorun Giderme
 
-### Eski RedoX TV'nin üzerine mi kuruluyor?
-Hayır. RedoX TV 2 **ayrı bir uygulamadır** (`com.redoxtv.two`). Eski uygulama yerinde kalır; ayarlar/favoriler paylaşılmaz. Eski favorilerinizi taşımak için eski sürümde yedek alıp (`redox_tv_backup.txt`) yeni uygulamada **Yedekten geri yükle** diyebilirsiniz (eski ebeveyn PIN'i de okunur).
+### İlk RedoX TV'nin (v1.x) üzerine mi kuruluyor?
+Hayır. Bu sürüm **ayrı bir uygulamadır** (`com.redoxtv.two`). Eski uygulama yerinde kalır; ayarlar/favoriler paylaşılmaz. Eski favorilerinizi taşımak için eski sürümde yedek alıp (`redox_tv_backup.txt`) yeni uygulamada **Yedekten geri yükle** diyebilirsiniz (eski ebeveyn PIN'i de okunur).
 
 ### Üç APK'dan hangisini kurmalıyım?
 TV/TV box → `…-tv.apk`; tablet → `…-tablet.apk`; telefon → `…-phone.apk`. Her biri farklı bir arayüzdür.
@@ -16,7 +16,7 @@ Aynı APK'nın üzerine yalnızca **aynı anahtarla imzalanmış** sürüm yükl
 - Listeniz çalışmıyorsa sağlayıcıda süresi dolmuş olabilir.
 
 ### Program adları neden hep "Canlı yayın"?
-RedoX TV 2 program adı **uydurmaz**. *Ayarlar → Yayın Rehberi*'ne bir XMLTV adresi ekleyin; eşleşen kanallarda gerçek program adı görünür. Bkz. [Rehber](Yayin-Rehberi-ve-Hatirlaticilar.md).
+RedoX TV program adı **uydurmaz**. *Ayarlar → Yayın Rehberi*'ne bir XMLTV adresi ekleyin; eşleşen kanallarda gerçek program adı görünür. Bkz. [Rehber](Yayin-Rehberi-ve-Hatirlaticilar.md).
 
 ### Rehber adresi ekledim ama hiçbir kanal eşleşmedi
 Rehberdeki kanal adları/`tvg-id`'leri sizin listenizdekilerle uyuşmuyor olabilir. Aynı sağlayıcının hem M3U'sunu hem XMLTV'sini kullanmak en iyi sonucu verir. Durum satırı eşleşen kanal sayısını gösterir.

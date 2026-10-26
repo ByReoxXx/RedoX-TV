@@ -1,10 +1,10 @@
-# 🐂 RedoX TV 2 Wiki
+# 🐂 RedoX TV Wiki
 
-**RedoX TV 2**, eski RedoX TV'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür: aynı sadık arayüz düzeni, logodan ölçülen kızıl-altın-lacivert palet ("Kızıl Halka" tasarım dili), tamamen vektör logo ve yeni özellikler. Üç cihaz sınıfı için **üç ayrı APK** üretir (TV, tablet, telefon); her birinin kendi arayüzü vardır.
+**RedoX TV** (bu wiki), [ilk RedoX TV (v1.x)](https://github.com/ByReoxXx/Redox-TV)'nin **ayrı bir uygulama olarak** yeniden tasarlanmış sürümüdür: aynı sadık arayüz düzeni, logodan ölçülen kızıl-altın-lacivert palet ("Kızıl Halka" tasarım dili), tamamen vektör logo ve yeni özellikler. Üç cihaz sınıfı için **üç ayrı APK** üretir (TV, tablet, telefon); her birinin kendi arayüzü vardır.
 
-> **RedoX = Red + Ox** — "kırmızı boğa". Logoda "RedoX TV" yazar; uygulamanın adı **RedoX TV 2**'dir.
+> **RedoX = Red + Ox** — "kırmızı boğa". Logoda "RedoX TV" yazar; uygulamanın adı **RedoX TV**'dir.
 
-<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/brand/readme-hero.jpg" alt="RedoX TV 2 — Android TV, tablet ve telefonda" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ByReoxXx/RedoX-TV-2/main/docs/brand/readme-hero.jpg" alt="RedoX TV — Android TV, tablet ve telefonda" width="100%"></p>
 
 **Hızlı bağlantılar:** [GitHub deposu](https://github.com/ByReoxXx/RedoX-TV-2) • [APK'ları indir (Releases)](https://github.com/ByReoxXx/RedoX-TV-2/releases) • [Hata / öneri (Issues)](https://github.com/ByReoxXx/RedoX-TV-2/issues)
 
@@ -36,7 +36,7 @@
 | :--- | :--- |
 | **Hazır kanal listesi** | Türksat (TKGS) şifresiz kanallarıyla eşleşen **133 kanal / 417 yayın**, denenmiş; açılışta kendiliğinden güncellenir ([ayrıntı](Kanal-Listesi.md)) |
 | **Üç ayrı APK** | TV (kumanda odaklı), tablet (gezinti rayı, ızgaralar), telefon (alt gezinti, hareketler, kumanda) |
-| **Eski uygulamadan bağımsız** | Paket `com.redoxtv.two`; eski RedoX TV ile yan yana kurulabilir, veriler paylaşılmaz |
+| **İlk sürümden bağımsız** | Paket `com.redoxtv.two`; ilk RedoX TV (v1.x) ile yan yana kurulabilir, veriler paylaşılmaz |
 | **Tek satırlık oynatıcı çubuğu** | Ekranın ~%15'i; ayarlar **Seçenekler** menüsünde ([ayrıntı](Coklu-Ekran-ve-Oynatici.md)) |
 | **Özel M3U klasörleri** | Eklediğiniz her liste verdiğiniz adla bir klasör ([ayrıntı](M3U-Xtream-ve-QR-Yukleme.md)) |
 | **Gerçek yayın rehberi** | XMLTV (`.xml` / `.xml.gz`) + hatırlatıcılar; rehber yoksa program adı uydurulmaz |

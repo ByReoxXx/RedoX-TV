@@ -1,4 +1,4 @@
-name: RedoX TV 2 - APK derle
+name: RedoX TV - APK derle
 
 # TV, tablet ve telefon için üç ayrı APK derler.
 #   * Her push / çekme isteğinde: üç APK "Artifacts" olarak indirilebilir.
@@ -166,7 +166,7 @@ jobs:
         run: |
           mkdir -p dist
           SRC=$(ls app/build/outputs/apk/${{ matrix.flavor }}/release/*.apk | head -n1)
-          DEST="dist/RedoX-TV-2-v${{ steps.ver.outputs.version }}-${{ matrix.flavor }}.apk"
+          DEST="dist/RedoX-TV-v${{ steps.ver.outputs.version }}-${{ matrix.flavor }}.apk"
           cp "${SRC}" "${DEST}"
           ls -lh dist
           {
@@ -178,7 +178,7 @@ jobs:
       - name: APK'yı yükle
         uses: actions/upload-artifact@v4
         with:
-          name: RedoX-TV-2-${{ matrix.flavor }}
+          name: RedoX-TV-${{ matrix.flavor }}
           path: dist/*.apk
           if-no-files-found: error
           retention-days: 30
@@ -195,7 +195,7 @@ jobs:
       - name: APK'ları indir
         uses: actions/download-artifact@v4
         with:
-          pattern: RedoX-TV-2-*
+          pattern: RedoX-TV-*
           path: dist
           merge-multiple: true
 
@@ -207,15 +207,15 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then TAG="${GITHUB_REF_NAME}"; else TAG="v${VERSION}"; fi
           ls -lh dist
           cat > release-notes.md <<EOF
-          ## RedoX TV 2 ${TAG}
+          ## RedoX TV ${TAG}
 
           Üç ayrı APK (her biri kendi arayüzüyle):
 
           | Dosya | Cihaz |
           |---|---|
-          | \`RedoX-TV-2-v${VERSION}-tv.apk\` | Android TV / Google TV (kumanda ile) |
-          | \`RedoX-TV-2-v${VERSION}-tablet.apk\` | Tablet |
-          | \`RedoX-TV-2-v${VERSION}-phone.apk\` | Telefon (aynı zamanda TV kumandası) |
+          | \`RedoX-TV-v${VERSION}-tv.apk\` | Android TV / Google TV (kumanda ile) |
+          | \`RedoX-TV-v${VERSION}-tablet.apk\` | Tablet |
+          | \`RedoX-TV-v${VERSION}-phone.apk\` | Telefon (aynı zamanda TV kumandası) |
 
           Eski RedoX TV'den bağımsız, ayrı bir uygulamadır (paket: \`com.redoxtv.two\`); ikisi yan yana kurulabilir.
           EOF
@@ -225,7 +225,7 @@ jobs:
           if gh release view "${TAG}" >/dev/null 2>&1; then
             gh release upload "${TAG}" dist/*.apk --clobber
           else
-            gh release create "${TAG}" dist/*.apk --target "${GITHUB_SHA}" --title "RedoX TV 2 ${TAG}" --notes-file release-notes.md
+            gh release create "${TAG}" dist/*.apk --target "${GITHUB_SHA}" --title "RedoX TV ${TAG}" --notes-file release-notes.md
           fi
 
   wiki:

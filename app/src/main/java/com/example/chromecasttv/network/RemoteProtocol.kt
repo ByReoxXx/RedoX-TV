@@ -43,7 +43,7 @@ data class DiscoveredTv(
 )
 
 object RemoteProtocol {
-    // "RedoX TV 2" kendi servis türünü kullanır; eski RedoX TV ile karışmaz.
+    // "RedoX TV" kendi servis türünü kullanır; eski RedoX TV ile karışmaz.
     const val SERVICE_TYPE = "_redoxtv2._tcp."
     const val APP_ID = "redoxtv2"
 
@@ -89,7 +89,7 @@ object RemoteProtocol {
         val playingObj = o.optJSONObject("playing")
         return RemoteSnapshot(
             appVersion = o.optString("version", ""),
-            deviceName = o.optString("name", "RedoX TV 2"),
+            deviceName = o.optString("name", "RedoX TV"),
             playing = if (playingObj != null) channelFromJson(playingObj) else null,
             isPlaying = o.optBoolean("isPlaying", false),
             volume = o.optInt("volume", 0),

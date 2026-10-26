@@ -578,7 +578,7 @@ class TvViewModel(
         _showLandingScreen.value = true
     }
 
-    private fun remoteDeviceLabel(): String = "RedoX TV 2 ${Build.MODEL}".trim().take(40)
+    private fun remoteDeviceLabel(): String = "RedoX TV ${Build.MODEL}".trim().take(40)
 
     private fun toRemoteInfo(channel: TvChannel, ui: TvUiState): RemoteChannelInfo {
         return RemoteChannelInfo(

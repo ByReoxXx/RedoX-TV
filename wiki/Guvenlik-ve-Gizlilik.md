@@ -2,7 +2,7 @@
 
 ## Katı TLS (sertifika doğrulama)
 
-Eski RedoX TV, uygulama genelinde **her sertifikayı kabul ediyordu**. RedoX TV 2'de:
+İlk RedoX TV (v1.x), uygulama genelinde **her sertifikayı kabul ediyordu**. Bu sürümde:
 
 | Trafik | Doğrulama |
 |---|---|

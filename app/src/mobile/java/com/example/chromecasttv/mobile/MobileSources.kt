@@ -235,7 +235,7 @@ fun MobileSourcesScreen(
                     MGhostButton(
                         text = "Yedeği kaydet",
                         icon = RedoXIcons.Save,
-                        onClick = { saveBackupLauncher.launch("redox_tv2_yedek.txt") }
+                        onClick = { saveBackupLauncher.launch("redox_tv_yedek.txt") }
                     )
                     MGhostButton(
                         text = "Yedekten yükle",

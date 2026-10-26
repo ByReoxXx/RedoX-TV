@@ -156,7 +156,7 @@ fun MobileRemoteScreen(
                         Column {
                             Text("Henüz eşleşmiş TV yok", color = RedoXColors.TextPrimary, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                             Text(
-                                "TV'de RedoX TV 2'yi açın: Ayarlar > Telefon Kumandası'nda 6 haneli bağlantı kodu görünür.",
+                                "TV'de RedoX TV'yi açın: Ayarlar > Telefon Kumandası'nda 6 haneli bağlantı kodu görünür.",
                                 color = RedoXColors.TextSecondary,
                                 fontSize = 12.sp
                             )

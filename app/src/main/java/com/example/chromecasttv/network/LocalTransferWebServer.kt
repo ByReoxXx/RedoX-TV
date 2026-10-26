@@ -237,7 +237,7 @@ object LocalTransferWebServer {
             wrongPin -> "<div class=\"notice warn\">Kod hatalı. TV ekranındaki 6 haneli kodu girin.</div>"
             else -> ""
         }
-        return pageHead("RedoX TV 2 · Bağlan") + """
+        return pageHead("RedoX TV · Bağlan") + """
         <body>
             <div class="top">$logoImg<div><b><span class="r">RedoX</span> <span class="g">TV</span></b><small>TV BAĞLANTISI</small></div></div>
             $message
@@ -257,7 +257,7 @@ object LocalTransferWebServer {
 
     fun buildMobileWebHtml(notice: String = ""): String {
         val noticeHtml = if (notice.isBlank()) "" else "<div class=\"notice\">${escapeHtml(notice)}</div>"
-        return pageHead("RedoX TV 2 · Telefondan Gönder") + """
+        return pageHead("RedoX TV · Telefondan Gönder") + """
         <body>
             <div class="top">$logoImg<div><b><span class="r">RedoX</span> <span class="g">TV</span></b><small>TELEFONDAN GÖNDER</small></div></div>
             $noticeHtml

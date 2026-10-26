@@ -1,4 +1,4 @@
-### 🐂 RedoX TV 2 Wiki
+### 🐂 RedoX TV Wiki
 
 * **[🏠 Ana Sayfa](Home.md)**
 * **[📸 Ekran Görüntüleri](Ekran-Goruntuleri.md)**

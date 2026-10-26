@@ -1,6 +1,6 @@
 # 📚 Kanal Listesi (yerleşik paket)
 
-RedoX TV 2 ilk açılışta hazır bir kanal listesiyle gelir. Bu sayfa listenin **neyi içerdiğini**, **nasıl seçildiğini** ve **nasıl güncellendiğini** anlatır.
+RedoX TV ilk açılışta hazır bir kanal listesiyle gelir. Bu sayfa listenin **neyi içerdiğini**, **nasıl seçildiğini** ve **nasıl güncellendiğini** anlatır.
 
 ## Ne içerir?
 
@@ -45,4 +45,4 @@ Yerleşik listeye kanal eklenmez ama **yanına** istediğiniz kadar kendi listen
 
 Yayınlar üçüncü taraf sunuculardadır ve zamanla kapanabilir ya da adresi değişebilir. Önce başka bir **akış kaynağını** deneyin (TV: `►`). Sürekli sorun varsa kanal adını ve saatini yazarak [Issues](https://github.com/ByReoxXx/RedoX-TV-2/issues)'a bildirin; liste güncellenir ve herkese kendiliğinden ulaşır.
 
-> **Sorumluluk reddi:** RedoX TV 2 bir oynatıcıdır; içerik barındırmaz veya sağlamaz. Liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir.
+> **Sorumluluk reddi:** RedoX TV bir oynatıcıdır; içerik barındırmaz veya sağlamaz. Liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir.

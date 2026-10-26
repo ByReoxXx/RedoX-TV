@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-  <img src="docs/brand/readme-hero.jpg" alt="RedoX TV 2 — Android TV, tablet ve telefonda" width="100%">
+  <img src="docs/brand/readme-hero.jpg" alt="RedoX TV — Android TV, tablet ve telefonda" width="100%">
 </p>
 
-<h1 align="center">RedoX TV 2</h1>
+<h1 align="center">RedoX TV</h1>
 
 <p align="center">
   <b>Android TV, tablet ve telefon için canlı TV oynatıcı.</b><br>
@@ -30,9 +30,9 @@
 
 ---
 
-## 🆕 Yenilikler ve eski RedoX TV'den farklar
+## 🆕 Yenilikler ve ilk RedoX TV'den farklar
 
-RedoX TV 2, [eski RedoX TV](https://github.com/ByReoxXx/Redox-TV)'nin **ayrı bir uygulama olarak** (paket `com.redoxtv.two`, yan yana kurulabilir) yeniden tasarlanmış halidir. Eski uygulama 361 kanal / 1184 yayınlık geniş bir liste sunar; RedoX TV 2 ise **daha az ama seçilmiş, Türksat sırasında ve tek tek denenmiş** bir liste, yeni bir arayüz dili ve aşağıdaki yeni özellikleri getirir:
+Bu depodaki uygulama, [ilk RedoX TV (v1.x)](https://github.com/ByReoxXx/Redox-TV)'nin **ayrı bir uygulama olarak** (paket `com.redoxtv.two`, ilk sürümle yan yana kurulabilir) yeniden tasarlanmış halidir; adı da **RedoX TV**'dir. İlk RedoX TV 361 kanal / 1184 yayınlık geniş bir liste sunar; bu sürüm ise **daha az ama seçilmiş, Türksat sırasında ve tek tek denenmiş** bir liste, yeni bir arayüz dili ve aşağıdaki yeni özellikleri getirir:
 
 | Yeni | Ne yapar |
 |---|---|
@@ -46,11 +46,11 @@ RedoX TV 2, [eski RedoX TV](https://github.com/ByReoxXx/Redox-TV)'nin **ayrı bi
 | 🔏 **Sabit imza anahtarı** | v2.5.1'den itibaren APK'lar aynı anahtarla imzalanır: bir sonraki sürüm **üzerine kurulur**, eskisini silmeniz gerekmez. |
 | 🔁 **Alternatif yayın ve kaynak birleştirme** | Aynı kanalın birden çok yayını tek kanalda; açılmazsa sıradakine otomatik geçer (en çok 8 kaynak). |
 
-Eski uygulamadan gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN kilidi, favori listeleri, telefonu kumanda yapma, EPG) burada da vardır.
+İlk sürümden gelenler (bölünmüş ekran, QR ile M3U/Xtream yükleme, PIN kilidi, favori listeleri, telefonu kumanda yapma, EPG) burada da vardır.
 
 ---
 
-## ✨ Neden RedoX TV 2?
+## ✨ Neden RedoX TV?
 
 <table>
   <tr>
@@ -160,15 +160,15 @@ Tüm görüntüler ve ayrıntılar: [📸 Wiki → Ekran Görüntüleri](https:/
 
 | APK | Cihaz | Arayüz |
 |---|---|---|
-| `RedoX-TV-2-v2.5.2-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz |
-| `RedoX-TV-2-v2.5.2-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran |
-| `RedoX-TV-2-v2.5.2-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** |
+| `RedoX-TV-v2.5.2-tv.apk` | Android TV, Google TV, TV Box | Kumanda (D-Pad) odaklı "lean-back" arayüz |
+| `RedoX-TV-v2.5.2-tablet.apk` | Tabletler | Gezinti rayı, geniş ızgaralar, yan yana bölünmüş ekran |
+| `RedoX-TV-v2.5.2-phone.apk` | Telefonlar | Alt gezinti, mini oynatıcı, hareketler — aynı zamanda **TV kumandası** |
 
 **2. Kurun.** Telefon/tablette APK'ya dokunun ("bilinmeyen kaynaklardan yükleme"ye izin verin). Android TV'de USB bellek, *Downloader* uygulaması ya da `adb` ile:
 
 ```bash
 adb connect <TV-IP>:5555
-adb install -r RedoX-TV-2-v2.5.2-tv.apk
+adb install -r RedoX-TV-v2.5.2-tv.apk
 ```
 
 **3. İzleyin.** Açılışta 133 kanal hazırdır: `OK` ile izleyin, `OK` basılı tutarak kanal özelliklerine (favori, kilit, düzenle, gizle) gidin. Oynatıcıda `OK` çubuğu açar, `◄` kanal listesini, `►` bir sonraki yayın kaynağını, `▲ ▼` kanal değiştirmeyi yapar.
@@ -285,7 +285,7 @@ Ayrıntı: [Güvenlik ve Gizlilik](https://github.com/ByReoxXx/RedoX-TV-2/wiki/G
 Bilgisayarınıza Android Studio / JDK / SDK kurmanız **gerekmez**; derleme GitHub Actions'ta yapılır.
 
 1. Depoyu kendi hesabınıza çatallayın ya da yeni bir depoya yükleyin.
-2. **Actions** sekmesinde *RedoX TV 2 - APK derle* çalışır; bitince **Artifacts** altında üç APK görünür.
+2. **Actions** sekmesinde *RedoX TV - APK derle* çalışır; bitince **Artifacts** altında üç APK görünür.
 3. **Release için:** `git tag v2.5.2 && git push origin v2.5.2`. APK'lar Releases sayfasına yüklenir; uygulamadaki güncelleme denetimi bu sayfaya bakar. Sürüme özel "Yenilikler" metni `.github/release-notes/<etiket>.md` dosyasından eklenir.
 4. **Sabit imza anahtarı** için `REDOX_KEYSTORE_BASE64`, `REDOX_KEYSTORE_PASSWORD`, `REDOX_KEY_ALIAS`, `REDOX_KEY_PASSWORD` gizli değerlerini ekleyin ([adımlar](https://github.com/ByReoxXx/RedoX-TV-2/wiki/Kurulum-Rehberi)).
 5. `ui-*` dallarına her push'ta telefon, tablet ve Android TV emülatörlerinde uygulama açılıp gezilir, ekran görüntüleri alınır (`ci/capture.sh`); görüntüler `shots-phone` / `shots-tablet` / `shots-tv` dallarına yüklenir.
@@ -315,8 +315,8 @@ app/src/
 
 ## 🙏 Atıflar ve sorumluluk reddi
 
-- **RedoX TV 2 bir oynatıcıdır; içerik barındırmaz veya sağlamaz.** Yerleşik liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir; kullanım sorumluluğu size aittir, lütfen yerel mevzuata uyun.
-- **Telif hakkı:** Ekran görüntülerinde bir televizyon ya da radyo yayınından kare, gerçek kanal adı ya da logo **kullanılmaz**; kanal ve istasyon listeleri uydurma örnektir, oynatıcı görüntüleri telifsiz demo yayınlardandır. Uygulamadaki gerçek kanal adları ve logoları ilgili yayıncıların ticari markalarıdır; RedoX TV 2 bu kuruluşlarla bağlantılı ya da onlarca onaylı değildir.
+- **RedoX TV bir oynatıcıdır; içerik barındırmaz veya sağlamaz.** Yerleşik liste, internette herkese açık yayın adreslerine işaret eder. Yayınların telif ve erişim koşulları ilgili yayıncılara aittir; kullanım sorumluluğu size aittir, lütfen yerel mevzuata uyun.
+- **Telif hakkı:** Ekran görüntülerinde bir televizyon ya da radyo yayınından kare, gerçek kanal adı ya da logo **kullanılmaz**; kanal ve istasyon listeleri uydurma örnektir, oynatıcı görüntüleri telifsiz demo yayınlardandır. Uygulamadaki gerçek kanal adları ve logoları ilgili yayıncıların ticari markalarıdır; RedoX TV bu kuruluşlarla bağlantılı ya da onlarca onaylı değildir.
 - Ekran görüntülerindeki demo yayın: *Big Buck Bunny* © Blender Foundation | [www.blender.org](https://www.blender.org), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
 - Kullanılan açık kaynak bileşenler: [Jetpack Compose](https://developer.android.com/jetpack/compose), [Media3 / ExoPlayer](https://developer.android.com/media/media3), [Coil](https://coil-kt.github.io/coil/), [OkHttp](https://square.github.io/okhttp/).
 

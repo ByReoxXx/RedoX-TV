@@ -58,4 +58,4 @@ Tek bit eşlem istisnası: Android TV ana ekranı (başka bir süreç) poster ye
 
 ## Görme ve deneme
 
-Cihazınız yoksa: GitHub'da **Actions → "RedoX TV 2 - Arayüz önizleme"** iş akışı telefon, tablet ve Android TV emülatörlerinde uygulamayı açıp gezer ve ekran görüntüleri üretir (Artifacts ve `shots-<tür>` dalları).
+Cihazınız yoksa: GitHub'da **Actions → "RedoX TV - Arayüz önizleme"** iş akışı telefon, tablet ve Android TV emülatörlerinde uygulamayı açıp gezer ve ekran görüntüleri üretir (Artifacts ve `shots-<tür>` dalları).

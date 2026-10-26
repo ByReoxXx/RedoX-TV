@@ -1,8 +1,8 @@
-name: RedoX TV 2 - Arayüz önizleme (emülatör ekran görüntüleri)
+name: RedoX TV - Arayüz önizleme (emülatör ekran görüntüleri)
 
 # Telefon, tablet ve Android TV emülatöründe uygulamayı açar, gezinir ve ekran görüntüleri alır
 # (komutlar: ci/capture.sh). Görüntüler iki yere yüklenir:
-#   * Actions > Artifacts: "RedoX-TV-2-ekran-<tür>"
+#   * Actions > Artifacts: "RedoX-TV-ekran-<tür>"
 #   * Depodaki "shots-<tür>" dalı (herkese açık depoda doğrudan görüntülenebilir)
 # Çalışma: "ui-*" dallarına her push'ta ya da Actions > "Run workflow" ile elle.
 
@@ -87,7 +87,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: RedoX-TV-2-ekran-${{ matrix.kind }}
+          name: RedoX-TV-ekran-${{ matrix.kind }}
           path: shots/
           if-no-files-found: warn
           retention-days: 14

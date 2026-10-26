@@ -112,8 +112,8 @@ object TvHomePublisher {
         if (channelId <= 0L) {
             if (favorites.isEmpty()) return
             val builder = Class.forName(PKG + "PreviewChannel\$Builder").getConstructor().newInstance()
-            builder.invokeByName("setDisplayName", "RedoX TV 2 · Favori Kanallar")
-            builder.invokeByName("setDescription", "RedoX TV 2 favori kanallarınız")
+            builder.invokeByName("setDisplayName", "RedoX TV · Favori Kanallar")
+            builder.invokeByName("setDescription", "RedoX TV favori kanallarınız")
             builder.invokeByName("setAppLinkIntentUri", Uri.parse("redoxtv2://channel/home"))
             val logo = logoBitmap(context)
             if (logo != null) builder.invokeByName("setLogo", logo)

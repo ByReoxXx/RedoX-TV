@@ -1,6 +1,6 @@
 # 📅 Yayın Rehberi (EPG) ve Hatırlatıcılar
 
-Eski sürümlerde rehber, kategori şablonlarından üretilen **uydurma** program adlarıydı. RedoX TV 2'de rehber **gerçek XMLTV verisinden** gelir; veri yoksa uygulama program adı **uydurmaz**, yalnızca "Canlı yayın" yazar.
+Eski sürümlerde rehber, kategori şablonlarından üretilen **uydurma** program adlarıydı. RedoX TV'de rehber **gerçek XMLTV verisinden** gelir; veri yoksa uygulama program adı **uydurmaz**, yalnızca "Canlı yayın" yazar.
 
 ## Varsayılan rehber
 

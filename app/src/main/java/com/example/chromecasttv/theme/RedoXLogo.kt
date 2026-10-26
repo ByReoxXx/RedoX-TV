@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 // ============================================================================
 // RedoX logosu: kırmızı faset (low-poly) boğa başı + altın halka, parlayan altın gözler, altın burun halkası,
 // kırmızı italik "RedoX" + altın "TV". Ad = Red + Ox ("kırmızı boğa").
-// Logo her yerde "RedoX TV" der; uygulamanın adı (başlatıcı etiketi) "RedoX TV 2"dir.
+// Logo her yerde "RedoX TV" der; uygulamanın adı (başlatıcı etiketi) "RedoX TV"dir.
 // Logo tamamen VEKTÖRDÜR (VectorDrawable; PNG yok): redox_mark.xml (boğa + halka) ve redox_wordmark.xml (yazı).
 // Kullanıcının logosundan izlenerek üretildi; her ekran yoğunluğunda ve Android sürümünde keskin kalır,
 // uyarlanabilir/temalı simgeler (ic_launcher_foreground / ic_launcher_monochrome) aynı çizimden gelir.

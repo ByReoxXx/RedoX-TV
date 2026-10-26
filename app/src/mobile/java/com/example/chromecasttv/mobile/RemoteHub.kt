@@ -52,7 +52,7 @@ class RemoteHub private constructor(context: Context) {
         val result = RemoteClient(host.trim(), port, null).pair(pin.trim(), label)
         val token = result.token
         if (token != null) {
-            val tv = PairedTv(result.tvName.ifBlank { "RedoX TV 2" }, host.trim(), port, token)
+            val tv = PairedTv(result.tvName.ifBlank { "RedoX TV" }, host.trim(), port, token)
             pairedState.value = store.upsert(tv)
             select(tv)
         }

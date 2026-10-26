@@ -22,7 +22,7 @@ class PairedTvStore(context: Context) {
                 val host = o.optString("h", "")
                 val token = o.optString("t", "")
                 if (host.isBlank() || token.isBlank()) continue
-                out.add(PairedTv(o.optString("n", "RedoX TV 2"), host, o.optInt("p", 8585), token))
+                out.add(PairedTv(o.optString("n", "RedoX TV"), host, o.optInt("p", 8585), token))
             }
             out
         } catch (_: Exception) {
@@ -101,7 +101,7 @@ class RemoteClient(
     suspend fun hello(): String? {
         val json = parse(call("GET", "/api/hello")) ?: return null
         if (json.optString("app", "") != RemoteProtocol.APP_ID) return null
-        return json.optString("name", "RedoX TV 2")
+        return json.optString("name", "RedoX TV")
     }
 
     suspend fun pair(pin: String, deviceName: String): RemotePairResult {
@@ -117,7 +117,7 @@ class RemoteClient(
         }
         return when {
             reply.code in 200..299 && json.optString("token", "").isNotEmpty() ->
-                RemotePairResult(json.optString("token", ""), json.optString("name", "RedoX TV 2"), null)
+                RemotePairResult(json.optString("token", ""), json.optString("name", "RedoX TV"), null)
             reply.code == 429 -> RemotePairResult(null, "", "Çok fazla hatalı deneme. Biraz bekleyip tekrar deneyin.")
             reply.code == 403 -> RemotePairResult(null, "", "Kod hatalı.")
             else -> RemotePairResult(null, "", "Eşleştirme başarısız (HTTP ${reply.code}).")
