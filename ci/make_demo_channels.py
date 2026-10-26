@@ -34,7 +34,7 @@ def main():
         words = name.upper().split()
         slug = "".join(ch for ch in name.lower() if ch.isascii() and ch.isalnum()) or f"k{i}"
         first, second = (BBB, TOS) if i % 2 else (TOS, BBB)
-        out.append({"id": f"ch_demo_{i:02d}", "number": i, "name": name, "logoText": "\n".join(words[:2]), "c1": c1, "c2": c2,
+        out.append({"id": f"ch_demo_{i:02d}", "number": i, "name": name, "logoText": "".join(w[0] for w in words[:2]), "c1": c1, "c2": c2,
                     "cat": cat, "badge": badge, "logoUrl": "",
                     "sources": [{"label": "Ana Yayın", "url": first, "type": "HLS"},
                                 {"label": "Alternatif Akış 2", "url": second, "type": "HLS"}]})
